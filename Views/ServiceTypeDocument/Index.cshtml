@@ -1,0 +1,681 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+    var Host = System.Configuration.ConfigurationManager.AppSettings["AdharTokenForVerification"];
+    var serviceImags = System.Configuration.ConfigurationManager.AppSettings["ServiceImages"];
+    var MobileOTPAPIKey = System.Configuration.ConfigurationManager.AppSettings["MobileOTPAPIKey"];
+    var MobileOTPSenderId = System.Configuration.ConfigurationManager.AppSettings["MobileOTPSenderId"];
+    var MobileOTPChennel = System.Configuration.ConfigurationManager.AppSettings["MobileOTPChennel"];
+
+    //    var pancardTooltip = "1. Valid PAN number should be allowed"+Environment.NewLine
+    //+ "2.Length must be 10 varchar" + Environment.NewLine
+    //+ "3.First 5 letters in capital, next 4 digits and last one letter in capital" + Environment.NewLine
+    //+ "For Example: COBSS0987P";
+
+    var UserTypes = ViewBag.userTypesList as List<Dropdown>;
+    // var distinctService = ViewBag.DistinctServices;
+    var content = ViewBag.TandC as ContentPage;
+}
+<!-- FAVICON -->
+<link rel="shortcut icon" href="images/favicon.html">
+<!-- BOOTSTRAP -->
+<!-- ICONS -->
+<link href="~/Content/LoginSignUp/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Content/LoginSignUp/css/all.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/fontawesome.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<style>
+    dfnPan {
+        display: inline-block;
+        position: relative;
+        right: -80px;
+        top: -47px;
+        z-index: 999;
+    }
+
+        dfnPan > span {
+            display: none;
+        }
+
+        dfnPan:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(1em + 5px);
+            right: -190px;
+            background: #304767;
+            color: white;
+            width: 32rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+        }
+
+    dfnGST {
+        display: inline-block;
+        position: relative;
+        right: -43px;
+        top: -47px;
+        z-index: 999;
+    }
+
+        dfnGST > span {
+            display: none;
+        }
+
+        dfnGST:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(1em + 5px);
+            right: -230px;
+            background: #304767;
+            color: white;
+            width: 32rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+        }
+</style>
+
+
+<div class="form-header">
+    <input id="hostID" name="hostID" type="hidden" value=@Host />
+    <input id="mobileOTPAPIKey" name="mobileOTPAPIKey" type="hidden" value=@MobileOTPAPIKey />
+    <input id="mobileOTPSenderID" name="mobileOTPSenderID" type="hidden" value=@MobileOTPSenderId />
+    <input id="mobileOTPChennel" name="mobileOTPChennel" type="hidden" value=@MobileOTPChennel />
+    <input id="sendedOTP" name="sendedOTP" type="hidden" />
+    <input id="adharClientID" name="adharClientID" type="hidden" />
+    <input id="UserID" name="UserID" type="hidden" />
+    <input id="RegNo" name="RegNo" type="hidden" />
+    <input id="PartialorderId" name="PartialorderId" type="hidden" />
+
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-6 col-md-offset-2">
+                <div class="card">
+
+                    <div class="form">
+                        <div class="left-side">
+                            <div class="left-tophead">
+                                <img src="~/Content/images/emitra-home.jpg" alt="logo">
+                            </div>
+                            <div class="progress-bar1" id="divmenus">
+                                <div class="bar-line" id="bar"></div>
+                                <ul class="progress-bar1">
+                                    <li class="active" id="step1">Account</li>
+                                    <li id="step2">Credentials</li>
+                                    <li id="step3">Verification</li>
+                                    <li id="step4">Checkout</li>
+                                </ul>
+                            </div>
+                            <div id="loginphase" class="hide loginleftSideImage" style="margin-top: 135px;">
+                                @*<i class="fa-solid fa-lock-keyhole"></i>*@
+                                <i class='fa fa-user-lock'></i>
+                            </div>
+
+                        </div>
+                        <div class="right-side" id="content">
+                            <form action="@Url.Action("Login","LoginSignup")" method="post">
+                                <div class="main" id="Login" style="display:none;">
+                                    <div class="text">
+                                        <h2>I am Existing User</h2>
+                                    </div>
+                                    <div class="input-text">
+                                        <div class="input-div">
+                                            <input type="text" require name="Email" autocomplete="off" id="user_name">
+                                            <label for="">User Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="input-text">
+                                        <div class="input-div">
+                                            <input type="password" require id="Loginpassword" autocomplete="off" name="Password">
+                                            <label for="">Enter Password</label>
+                                            <span id="withoutslash-login" style="display:none">
+                                                <i class="fa fa-eye EyeIcon" id="logineye" style="color:black!important" onclick="revealPassword(this,'Loginpassword')"></i>
+                                            </span>
+
+                                            <span id="withslash-login" style="display:block">
+                                                <i class="fa fa-eye-slash EyeIcon" id="logineye" onclick="revealPassword(this,'Loginpassword')"></i>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                    <a onclick="ChangeFormWitoutVelidation('Resetpassword','Prev');">Forget Password</a>
+                                    <div class="buttons button_space" style="margin-top:25px">
+                                        <input type="submit" class="back_button" style="width:180px" value="Login">
+                                        <button class="next_button" style="background: none; color: cornflowerblue; border: 1px solid;" onclick="ChangeFormWitoutVelidation('main1','Prev');hidesmenu('show');">I Don't Have Account</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="main" id="Resetpassword" style="display:none;">
+                                <div class="text">
+                                    <h2>Reset Password</h2>
+                                </div>
+
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" require name="Email" autocomplete="off" id="Resetuser_name">
+                                        <label for="">User Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="password" id="txtResetpassword" name="Password" require />
+                                        <label for="">Enter Password</label>
+
+                                        <span id="withoutslash-Resetpassword" style="display:none">
+                                            <i class="fa fa-eye EyeIcon" id="Resetpasswordeye" style="color:black!important" onclick="revealPassword(this,'txtResetpassword')"></i>
+                                        </span>
+                                        <span id="withslash-Resetpassword" style="display:block">
+                                            <i class="fa fa-eye-slash EyeIcon" id="Resetpasswordeye" onclick="revealPassword(this,'txtResetpassword')"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="password" id="txtResetre-password" name="Re-Password" require />
+                                        <label for="">Re-Enter Password</label>
+
+                                        <span id="withoutslash-ResetRepassword" style="display:none">
+                                            <i class="fa fa-eye EyeIcon" id="ResetRepasswordeye" style="color:black!important" onclick="revealPassword(this,'txtResetre-password')"></i>
+                                        </span>
+                                        <span id="withslash-ResetRepassword" style="display:block">
+                                            <i class="fa fa-eye-slash EyeIcon" id="ResetRepasswordeye" onclick="revealPassword(this,'txtResetre-password')"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="buttons button_space" style="margin-top:25px">
+                                    <button style="width: 180px; background: none; color: cornflowerblue; border: 1px solid;" id="bcktoLogin" onclick="clearDataFromReset(); ChangeForm('Login','Prev');">Login</button>
+                                    <button class="next_button" onclick="Resetpassword(); clearDataFromReset();">Reset Password</button>
+                                </div>
+                            </div>
+
+                            <div class="main active" id="main1">
+                                <div class="text">
+                                    <h2>
+                                        Start With Your Account Today &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                        @*<button class="btn btn-lg btn-outline-primary" onclick="ChangeFormWitoutVelidation('Login', 'Prev'); hidesmenu('hide');">Login</button>*@
+                                        <a href="@Url.Action("login-alt","authentication")"><button class="btn btn-lg btn-outline-primary">Login</button></a>
+                                    </h2>
+                                </div>
+
+                                <div class="input-text tab" style=" border: 1px solid #cbced4; border-radius: 5px;">
+                                    <select class="form-control singleselect" id="UserType">
+                                        <option value="0" role=separator>Select User Type</option>
+                                        @{
+                                            if (UserTypes != null)
+                                            {
+                                                foreach (var item in UserTypes)
+                                                {
+                                                    <option value=@item.Id>@item.Text.Trim()</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" id="name" name="FirstName" require autocomplete="off" />
+                                        <label for="">Enter Name</label>
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" oninput="numberOnly(this.id);"
+                                               maxlength="10" id="mobile" name="MobileNumber" require autocomplete="off" />
+                                        <label for="">Enter Mobile Number</label>
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="email" id="email" name="EmailId" require autocomplete="off" />
+                                        <label for="">Enter Email</label>
+                                    </div>
+                                </div>
+                                <div class="buttons button_space">
+                                    @*<button class="back_button color-red" onclick="Thankyou();"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>*@
+                                    <button class="next_button color-blue" onsubmit="validateform();" id="main1" onclick="ChangeForm('main2', 'Next');SaveDetails('No');">Next Step &nbsp;<i class='fa fa-1x fa-angle-double-right'></i></button>
+                                </div>
+                            </div>
+
+                            <div class="main" id="main2" style="display:none;">
+                                <div class="text">
+                                    <h2>Create My Credentials</h2>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" id="Creusername" name="Name" require autocomplete="off" />
+                                        <label for="">Enter Username</label>
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="password" id="password" name="Password" require autocomplete="off" />
+                                        <label for="">Enter Password</label>
+
+                                        <span id="withoutslash-main2Pass" style="display:none">
+                                            <i class="fa fa-eye EyeIcon" id="main2Passeye" style="color:black!important" onclick="revealPassword(this,'password')"></i>
+                                        </span>
+                                        <span id="withslash-main2Pass" style="display:block">
+                                            <i class="fa fa-eye-slash EyeIcon" id="main2Passeye" onclick="revealPassword(this,'password')"></i>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="password" id="re-password" name="Re-Password" require autocomplete="off" />
+                                        <label for="">Re-Enter Password</label>
+
+                                        <span id="withoutslash-main2RePass" style="display:none">
+                                            <i class="fa fa-eye EyeIcon" id="main2RePasseye" style="color:black!important" onclick="revealPassword(this,'re-password')"></i>
+                                        </span>
+                                        <span id="withslash-main2RePass" style="display:block">
+                                            <i class="fa fa-eye-slash EyeIcon" id="main2RePasseye" onclick="revealPassword(this,'re-password')"></i>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div class="buttons button_space">
+                                    <button class="back_button color-red" onclick="ChangeForm('main1','Prev');SaveDetails('No');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>
+                                    <button class="next_button color-blue" onsubmit="validateform();" onclick="SaveDetails('No');ChangeForm('main3', 'Next');">Next Step &nbsp;<i class='fa fa-1x fa-angle-double-right'></i></button>
+                                </div>
+                            </div>
+
+                            <div class="main" id="main3" style="display:none;">
+
+
+
+                                <div class="text">
+                                    <h2>Verification Process</h2>
+                                    <p>Your selected Services are DMT and AePS to activate your account following information is needed</p>
+                                    @*<p>Your selected Services are <span id="ServicenamesDiv5" style="font-size: 16px;font-weight: bold;"></span> to activate your account following information is needed</p>*@
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+
+                                        <input type="text" id="pan" name="PanCard" maxlength="10" autocomplete="off">
+                                        @*<label for="" data-toggle='tooltip' data-placement='top' title='@pancardTooltip'>PAN Card</label>*@
+                                        <label for="">PAN Card</label>
+                                        @*Tool tip for  pan*@
+                                        <dfnPan>
+                                            <span>
+                                                <p>
+                                                    - Valid PAN number should be allowed</br>
+                                                    - Length must be 10 Charecters</br>
+                                                    - First 5 letters in capital </br>
+                                                    - Next 4 digits</br>
+                                                    - Last one letter in capital</br>
+                                                    - eg: COBSS0987P
+                                                </p>
+                                            </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                                        </dfnPan>
+                                        @*Tool tip for  pan*@
+                                    </div>
+                                    <div class="input-div">
+                                        <input type="file" required="" placeholder="Upload" id="PAN" name="PanCardImg" style="text-transform: inherit;" onchange="return encodeImageFileAsURL(this)">
+                                        @*<input type="file" required="" placeholder="Upload">*@
+                                        <input type="hidden" id="UploadedPanImage" />
+                                    </div>
+
+                                    <div class="buttons button_space">
+                                        <button id="panvarify" onclick="verifyDocs('PAN',this)">Verify</button>
+                                    </div>
+                                </div>
+
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" id="aadhar" oninput="numberOnly(this.id);" maxlength="12" name="AdhaarCard" autocomplete="off">
+                                        <label for="">Aadhaar Card</label>
+                                    </div>
+                                    <div class="input-div">
+                                        <input type="file" required="" placeholder="Upload" id="Aadhar" name="AdhaarCardImg" onchange="return encodeImageFileAsURL(this)">
+                                        @*<input type="file" required="" placeholder="Upload">*@
+                                        <input type="hidden" id="UploadedAadharImage" />
+                                    </div>
+
+                                    <div class="buttons button_space">
+                                        <button id="aadharvarify" onclick="verifyDocs('AADHAROTP',this)">OTP</button>
+                                        <button id="buttonotp" style="display:none" data-toggle="modal" data-target="#exampleModal"></button>
+
+                                    </div>
+                                </div>
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="Number" id="verifyMobile" readonly="readonly" placeholder="Enter Mobile Number" maxlength="10" name="MobileNumber">
+                                        @*<label for="verifyMobile">Enter Mobile Number</label>*@
+                                    </div>
+
+                                    <div class="buttons button_space">
+
+                                        <button id="mobilevarify" onclick="mobileVerify();">Verify</button>
+                                        <button id="buttonotpMobile" style="display:none" data-toggle="modal" data-target="#exampleModal"></button>
+                                    </div>
+
+                                </div>
+
+                                <div class="input-text">
+
+                                    <div class="input-div">
+                                        <input type="email" id="verifyEmail" readonly="readonly" placeholder="Enter Email" name="EmailId">
+                                        @*<label for="verifyEmail">Enter E-mail</label>*@
+                                    </div>
+                                    <div class="buttons button_space">
+                                        <button id="Emailvarify" onclick="EmailVerification()">Verify</button>
+                                    </div>
+                                </div>
+
+                                <div class="input-text">
+                                    <div class="input-div">
+                                        <input type="text" id="gst" name="Gst" maxlength="15" autocomplete="off" style="text-transform:uppercase">
+                                        <label for="">GST</label>
+
+                                        @*Tool tip for  pan*@
+                                        <dfnGST>
+                                            <span>
+                                                <p>
+                                                    -  Must be 15 charecters <br />
+                                                    -  First two state code <br />
+                                                    -  Next PAN number <br />
+                                                    -  Next one Number <br />
+                                                    -  Next one charecter <br />
+                                                    -  Last one number<br />
+                                                    - eg: 11COBSS0987P1Z3
+                                                </p>
+                                            </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                                        </dfnGST>
+                                    </div>
+                                </div>
+
+                                <div class="buttons button_space">
+                                    <button class="back_button color-red" onclick="SaveDetails('No');ChangeForm('main2','Prev');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>
+                                    <button class="next_button color-other" onclick="ChangeFormWitoutVelidation('main4', 'Next');SaveDetails('No'); BindCheckoutData();"><i class='fa fa-1x fa-forward'></i> &nbsp; Will do this later</button>
+                                    @* <button class="next_button color-blue" onsubmit="validateform();" onclick="SaveDetails('Yes'); BindCheckoutData();">Finish</button>*@
+                                    <button class="next_button color-blue" onsubmit="validateform();" onclick="ChangeForm('main4', 'Next');SaveDetails('No');">Next &nbsp; <i class='fa fa-1x fa-angle-double-right'></i>  </button>
+                                </div>
+                            </div>
+
+                            <div class="main main3adjust" id="main4" style="display:none;">
+
+                                <div class="text">
+                                    <h2>Checkout</h2>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+                                        <h4 style="color: cornflowerblue;"><span>Service List</span></h4>
+                                        <div id="ServiceCheckout"></div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6" style="right: 10px;">
+                                            <h4 style="color: cornflowerblue;"><span>Hardware List</span></h4>
+                                        </div>
+
+                                        <div class="col-lg-6" style="left: 197px;">
+                                            @*<h4 style="color: cornflowerblue;cursor:pointer"><span onclick="ChangeForm('main4', 'Prev'); Movebackword(); GethardwareList();"><i class="fa fa-plus"></i> ADD</span></h4>*@
+                                            <h4 style="color: cornflowerblue;cursor:pointer"><span onclick="ChangeForm('main4', 'Prev'); Movebackword();"><i class="fa fa-plus"></i> ADD</span></h4>
+                                        </div>
+                                        <div id="hardwareCheckout"></div>
+                                    </div>
+
+
+                                    <div class="col-lg-offset-7 col-lg-4">
+                                        <div id="TotalCheckout" class="invoice"></div>
+                                    </div>
+
+                                </div>
+                                <div class="input-text tab-two">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio" checked>Offline Payment
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio">Online Payment
+                                    </label>
+                                </div>
+                                <div class="input-text tab-three">
+                                    <div class="input-div icn-color">
+                                        <input type="checkbox" id="chkTnc">
+
+                                        <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Terms and Condition</a>
+                                    </div>
+                                </div>
+                                <div class="buttons button_space">
+                                    @*<button class="back_button color-red" onclick="ChangeForm('main5','Prev');SaveDetails('No');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>*@
+                                    @*<button class="back_button color-red" onclick="ChangeForm('Login','Prev');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>*@
+                                    <button class="next_button color-pay" onclick="SaveBookingData();">Pay now</button>
+                                    <button class="next_button color-pay" style="display:none" id="sayThanks" data-toggle="modal" data-target="#ThankYou">Pay now</button>
+                                </div>
+                            </div>
+
+                            @*Modal*@
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:none;">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Enter OTP</h5>
+                                            <button type="button" class="close" id="modalClose" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="input-text">
+                                                <div class="input-div">
+                                                    <input type="number" id="verifyAdharOTP" require>
+                                                    <label for="verifyAdhar">Enter OTP</label>
+                                                </div>
+
+                                                <div class="buttons button_space">
+                                                    <button id="verifyAdhar" style="display:none" onclick="VerifyAdharWithOTP()">Verify Aadhar</button>
+                                                    <button id="verifyMobileOTP" style="display:none" onclick="VerifyMobileWithOTP()">Verify Mobile</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Thankyou"></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <h2>Thank You</h2>
+
+                                            <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
+
+                                            <div style="margin-top: 20px;font-size:18px">
+                                                Thank you for using our service. <br />
+                                                Click OK to Process over you account. <br />
+                                                Cancle to finish journey.<br />
+                                                You can login later with your created credentials
+                                            </div>
+                                            <hr />
+                                            <div style="width: 90%;margin: auto;border: none;">
+                                                <table class="table table-responsive">
+                                                    <tr><th style="width: 46%;">Your Registration Number Is </th><td>:</td><td><span id="registraionNumber">Reg0012022</span></td></tr>
+                                                    <tr><th style="width: 46%;">Your OrderId Is </th><td>:</td><td><span id="OrderId">Inv/27042022/0001</span></td></tr>
+                                                </table>
+                                            </div>
+                                            <hr />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                                                <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+
+                                            <button type="button" class="btn btn-primary" onclick="clearAll(); gotoLogin();" data-dismiss="modal">OK</button>
+                                            <button type="button" class="btn btn-secondary" onclick="clearAll(); gotoLogin();" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade bd-example-modal-lg" id="TermsAndCondition" tabindex="-1" role="dialog" aria-labelledby="TermsAndCondition" data-backdrop="static" style="display:none;">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="TermsAndCondition">Terms and Condition</h3>
+                                            <button type="button" class="close" id="closeTNC" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" style="padding: 20px !important;">
+                                            @{
+                                                if (content != null)
+                                                {
+
+                                                    @Html.Raw(content.PageContent)
+                                                }
+                                                else
+                                                {
+                                                    <p>Unable to load data</p>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CheckTermsAndCondition()">I Accept</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/LoginSignUp/js/jquery.js"></script>
+<script src="~/Content/LoginSignUp/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Controllers/User/JS/Login.js"></script>
+<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script type="text/javascript">
+
+    var globaUserProperties = new Object();
+
+    var base_url = window.location;
+    globaUserProperties.domain = base_url.origin;//+ "/" + window.location.pathname.split('/')[1];
+    //alert(globaUserProperties.domain);
+    $(document).ready(function () {
+        $('.singleselect').select2();
+        $('[data-toggle="tooltip"]').tooltip()
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            responsiveClass: true,
+            mouseDrag: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: true
+                },
+                600: {
+                    items: 3,
+                    nav: false
+                },
+                1000: {
+                    items: 2,
+                    nav: true,
+                    loop: false
+                }
+            }
+        })
+
+        $('input[type=checkbox]').click(function (e) {
+            e.stopPropagation();
+            return true;
+        });
+
+        $("#mobile").blur(function (e) {
+            e.preventDefault();
+            validateMobile();
+            CheckUserMobile();
+        });
+
+        $("#email").blur(function (e) {
+            e.preventDefault();
+            var valu = $('#email').val();
+            if (valu.length > 0) {
+
+                var returnFromfun = isValidEmailAddress(valu);
+
+                if (returnFromfun == false) {
+                    var dic = '<div><h4><b>Email Address Not Valid</b></h4></div>';
+                    sweetAlert(dic, 'center', 'warning', 0);
+                    $('#email').val('');
+                }
+                else {
+                    CheckUserEmailAddress();
+                }
+            }
+        });
+
+        $("#password").on("keypress", function (e) {
+            if (e.which === 32)
+                e.preventDefault();
+        });
+
+        $("#re-password").on("keypress", function (e) {
+            if (e.which === 32)
+                e.preventDefault();
+        });
+
+        $("#re-password").on("keypress", function (e) {
+            if (e.which === 32)
+                e.preventDefault();
+        });
+
+        $("#Resetuser_name").blur(function (e) {
+            //console.log(e.which);
+            e.preventDefault();
+            validateUser(); // Checks if user exists or not
+        });
+
+        $("#pan").blur(function (e) {
+            var inputvalues = $(this).val().toUpperCase();
+            validatePanFormat(inputvalues);
+        });
+
+        $("#aadhar").blur(function (e) {
+            if ($("#aadhar").val().length > 0) {
+                if ($("#aadhar").val().length < 12) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<h4><b>Aadhaar Number</b> Length Must be <b>12 Digits</b> long</h4>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+            }
+        });
+
+        $("#gst").blur(function (e) {
+            var inputvalues = $(this).val().toUpperCase();
+            validateGSTFormat(inputvalues)
+        });
+
+    });
+</script>

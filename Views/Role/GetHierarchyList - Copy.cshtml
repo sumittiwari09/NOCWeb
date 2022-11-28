@@ -1,0 +1,402 @@
+﻿@using NewZapures_V2.Models;
+@{
+    ViewBag.Title = "Hierarchy List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var data = ViewBag.UserData as List<RegistredUser>;
+
+}
+@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+    <link href="~/Content/Hirarchy/css/style.css" rel="stylesheet" type="text/css" />
+}
+
+<div>
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
+                        <li class="breadcrumb-item active">@ViewBag.Title</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="tree">
+                <ul>
+                    <li>
+                        <a href="#"><img src="~/Content/Hirarchy/images/1.jpg"><span>Child</span></a>
+                        <ul>
+                            <li>
+                                <a href="#"><img src="~/Content/Hirarchy/images/2.jpg"><span>Grand Child</span></a>
+                                <ul>
+                                    <li> <a href="#"><img src="~/Content/Hirarchy/images/3.jpg"><span>Great Grand Child</span></a> </li>
+                                    <li> <a href="#"><img src="~/Content/Hirarchy/images/4.jpg"><span>Great Grand Child</span></a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><img src="~/Content/Hirarchy/images/5.jpg"><span>Grand Child</span></a>
+                                <ul>
+                                    <li> <a href="#"><img src="~/Content/Hirarchy/images/6.jpg"><span>Great Grand Child</span></a> </li>
+                                    <li> <a href="#"><img src="~/Content/Hirarchy/images/7.jpg"><span>Great Grand Child</span></a> </li>
+                                    <li> <a href="#"><img src="~/Content/Hirarchy/images/8.jpg"><span>Great Grand Child</span></a> </li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><img src="~/Content/Hirarchy/images/9.jpg"><span>Grand Child</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col">Registration No</th>
+                                <th scope="col" hidden>Party Id</th>
+                                <th scope="col">UserName</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile Number</th>
+                                <th scope="col">Service List</th>
+                                <th scope="col">Hardware List</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            @{ if (data != null)
+                                {
+                                    foreach (var item in data)
+                                    {
+
+                                        string id = @item.PartyId;
+                                        var checkboxId = "customSwitchSuccess" + @id;
+                                        <tr>
+                                            <td>@item.userType</td>
+                                            <td>@item.RegistrationNo</td>
+                                            <td hidden>@item.PartyId</td>
+                                            <td>@item.userName</td>
+                                            <td>@item.FirstName</td>
+                                            <td>@item.MobileNumber</td>
+                                            <td>@item.ServiceList</td>
+                                            <td>@item.HardwareList</td>
+                                            <td>
+                                                <div style="display: flex;align-items: end;justify-content: center;">
+                                                    <span class="custom-control custom-switch switch-success">
+                                                        <input type="checkbox" class="custom-control-input" id=@checkboxId @(item.IsActive == 1 ? "checked" : "") onchange="GetData(this, '@item.PartyId')"><label class="custom-control-label" for=@checkboxId></label>
+                                                    </span>
+                                                    <span onclick="BindHirarchyData('@item.PartyId','@item.FirstName')"><i class="fas fa-eye" style=" font-size:15px"></i></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                    <button class="next_button color-pay" style="display:none" id="remarks" data-toggle="modal" data-target="#exampleModal"></button>
+                    <button style="display:none" id="btnViewHirarchy" data-toggle="modal" data-target="#ViewHirarchy"></button>
+                </div>
+            </div>
+        </div>--> <!-- end col -->
+    <!--</div>--> <!-- end row -->
+
+    <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter Remarks</h5>
+                    <button type="button" class="close" id="modalClose" onclick="location.reload();" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-text">
+                        <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Select Reason</label>
+                        <select class="form-control singleselect mb-4" id="ddlBasicReason">
+                            <option value="0" role=separator>Select Any Reason</option>
+                            <option value="NW">Not In Working</option>
+                            <option value="NDU">Document Not Uploded</option>
+                            <option value="PNWR">Portal Not Working At That Region</option>
+                        </select>
+
+                        <div class="input-div">
+                            <textarea class="form-control" id="txtremarks" rows="5" cols="50" style="resize:none" name="Remark" placeholder="Reason" readonly></textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="buttons button_space mt-3">
+                        <button type="button" id="saveRemarks" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateDetails()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ViewHirarchy" tabindex="-1" role="dialog" aria-labelledby="ViewHirarchyLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-xl modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ViewHirarchyLabel">Enter Remarks</h5>
+                    <button type="button" class="close" id="modalClose" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col">User Type</th>
+                                <th scope="col">Registration Number</th>
+                                <th scope="col" hidden>Party Id</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Mobile Number</th>
+                                <th scope="col">Service List</th>
+                                <th scope="col">Hardware List</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblHirarchyDetailsBody">
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+</div>
+
+@section scripts {
+    <!-- Required datatable js -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables/jszip.min.js"></script>
+    <script src="~/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js"></script>
+}
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script>
+    var status;
+    var partyId;
+    $(".singleselect").select2();
+    $('#ddlBasicReason').change(function () {
+        $('#txtremarks').html('')
+        if ($(this).val() != 0) {
+            var seletedvalue = $("#ddlBasicReason option:selected").text();
+
+            $('#txtremarks').html(seletedvalue);
+        }
+        else {
+        }
+    });
+
+
+    function GetData(sender, item) {
+
+        if ($(sender).is(':checked')) {
+            console.log('checked');
+            status = 1;
+
+            partyId = item;
+            console.log(partyId)
+            updateUser(status, partyId);
+        }
+        else {
+            console.log('unchecked');
+            $('#remarks').click();
+            status = 0;
+            partyId = item;
+
+            console.log(partyId)
+        }
+        //console.log(sender);
+        //alert(item);
+    };
+
+    function UpdateDetails() {
+        var d = $('#txtremarks').val();
+
+        if (d.length <= 0) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Any Reason',
+                allowOutsideClick: false,
+                showCloseButton: true,
+            })
+
+        }
+        else {
+            updateUser(status, partyId);
+        }
+    }
+
+    function updateUser(status, partyId) {
+
+        var UpdateUserDetailsModel = {
+            Status: status,
+            PartyId: partyId
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/UpdateUser",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(UpdateUserDetailsModel),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
+                    //sweetAlert(dic, 'center', 'warning', 0);
+                    $('#modalClose').click();
+
+                    location.reload();
+                    //var url = globaUserProperties.domain + "/UserDetails/Index";//globaUserProperties.domain +
+
+                    //window.location.href = url;
+
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function BindHirarchyData(item, Name) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Role/GetHierarchyListBelow?partyId=" + item,
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: "",
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                var Maindata = data.Data;
+
+                if (data.StatusCode == 1) {
+
+                    $('#ViewHirarchyLabel').html('');
+                    $('#ViewHirarchyLabel').html(`Displaying Data For - ${Name} [${item}]`);
+                    if (Maindata.length > 0) {
+                        var htmldata = "";
+                        Maindata.forEach(function (userDetails) {
+                            htmldata += `<tr><td>${userDetails.userType}</td><td>${userDetails.RegistrationNo}</td><td hidden>${userDetails.PartyId}</td><td>${userDetails.userName}</td><td>${userDetails.FirstName}</td><td>${userDetails.MobileNumber}</td><td>${userDetails.ServiceList}</td><td>${userDetails.HardwareList}</td></tr>`
+                        })
+                        $('#tblHirarchyDetailsBody').html('');
+                        $('#tblHirarchyDetailsBody').html(htmldata);
+                        $('#btnViewHirarchy').click();
+                    }
+                    else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'No Data Available Under This User',
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                        })
+                    }
+                    /*location.reload();*/
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+
+
+
+    }
+
+</script>

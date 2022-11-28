@@ -1,0 +1,285 @@
+﻿@using NewZapures_V2.Models
+@model RoleMappingwithMenu
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "RoleMappingwithMenuCreate";
+    ViewBag.Create = "Add New Role Mapping Menu";
+    List<Dropdown> departmentlist = new List<Dropdown>();
+    if (ViewBag.departmentlist != null)
+    {
+        departmentlist = (List<Dropdown>)ViewBag.departmentlist;
+    }
+    List<ShowMenuDropDown> Menulist = new List<ShowMenuDropDown>();
+    if (ViewBag.Menulist != null)
+    {
+        Menulist = (List<ShowMenuDropDown>)ViewBag.Menulist;
+    }
+    var Groupdata = 0;
+    var Roledata = 0;
+    if (Model != null)
+    {
+        Groupdata = Model.GroupId;
+        Roledata = Model.RoleId;
+    }
+}
+
+@section styles{
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("RoleMappingwithMenuCreate", "Role", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <input name="RoleMappingWithMenuId" id="RoleMappingWithMenuId" type="hidden" value="@(Model != null ? Model.RoleMappingwithMenuid.ToString() : "0")">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Role/Department/Group Master</h4>
+                    <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("RoleIndex", "Role")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group is-empty row" id="Department">
+                        <label for="nameInput" class="col-sm-3 control-label">Department</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" name="DepartmentId" id="DepartmentId" required>
+                                <option value="">Select Department</option>
+                                @{
+                                    foreach (var item in departmentlist)
+                                    {
+                                        <option @(Model != null && Model.DepartmentId == Convert.ToInt32(item.Id) ? "selected" : "") value="@item.Id">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row" id="Group">
+                        <label for="nameInput" class="col-sm-3 control-label">Group</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" name="GroupId" id="GroupId" required>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty hidden" id="Role">
+                        <label for="nameInput" class="col-sm-3 control-label">Role</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" name="RoleId" id="RoleId">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row" id="Menu">
+                        <label for="nameInput" class="col-sm-3 control-label">Menu</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" name="MenuId" id="MenuId" required>
+                                <option value="">Select Menu</option>
+                                @{
+                                    foreach (var item in Menulist)
+                                    {
+                                        <option @(Model != null && Model.MenuId == item.MenuId ? "selected" : "") value="@item.MenuId">@item.MenuName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group is-empty row">
+
+                        <label for="nameInput" class="col-sm-4 control-label">Active</label>
+                        <div class="col-sm-2 custom-control custom-switch switch-success">
+                            <input type="checkbox" class="custom-control-input" id="Status" name="Status" value="@(Model != null? Model.Status.ToString() : "0")" @(Model != null && Model.Status == 1 ? "checked" : "")>
+                            <label class="custom-control-label" for="Status"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    <a href="@Url.Action("RoleMappingIndex", "Role")" class="btn btn-default">DISCARD</a>
+                    <button class="btn btn-primary"> Save </button>
+                </div>
+            </footer>
+        }
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(".singleselect").select2();
+        debugger;
+        //var Typedata = $("#Type").val();
+        //if (parseInt(Typedata) != 0) {
+
+        //    Typefunction();
+        //}
+        //if (parseInt(Typedata) == 3) {
+
+        //    var Id = $("#DepartmentId").val();
+        //    BindGroup(Id)
+        //}
+        $('input[type="checkbox"]').change(function () {
+            var id = $(this).val() == 0 ? 1 : 0;
+            $(this).val(id)
+
+        })
+        //$("#Type").change(function () {
+        //    Typefunction();
+        //});
+        //function Typefunction() {
+        //    $("#GroupId").select2("destroy");
+        //    $("#GroupId").html('');
+        //    $("#GroupId").select2();
+        //    var Id = $("#Type").val();
+        //    $("#Department").addClass('hidden');
+        //    $("#Group").addClass('hidden');
+        //    if (Id == 2) {
+        //        $("#Department").removeClass('hidden');
+        //        $("#DepartmentId").prop('required', true);
+        //    }
+        //    if (Id == 3) {
+        //        $("#Department").removeClass('hidden');
+        //        $("#DepartmentId").prop('required', true);
+        //        $("#Group").removeClass('hidden');
+        //        $("#GroupId").prop('required', true);
+
+        //    }
+        //}
+        var Ids = $("#DepartmentId").val();
+        if (parseInt(Ids) > 0) {
+            BindGroup(Ids);
+        }
+
+        if (parseInt('@Groupdata') > 0) {
+
+            BindRole(Ids, '@Groupdata');
+        }
+      /*  $("#DepartmentId").trigger("change");*/
+        //$("#GroupId").trigger('change');
+        $("#DepartmentId").change(function () {
+
+                var Id = $("#DepartmentId").val();
+
+                BindGroup(Id)
+
+        });
+        $("#GroupId").change(function () {
+            var Id = $("#DepartmentId").val();
+            var groupid = $(this).val();
+            BindRole(Id, groupid);
+        });
+
+          function BindGroup(Id) {
+            debugger;
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select Group</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    DepartmentId: Id
+
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroup",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if ('@Groupdata' == response.Data[i].Id && Id==Ids) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+                    }
+                    $("#GroupId").select2("destroy");
+                    $("#GroupId").html(strHTML);
+                    $("#GroupId").select2();
+                    $("#RoleId").select2("destroy");
+                    $("#RoleId").html('Select Role');
+                    $("#RoleId").select2();
+
+
+                }
+            });
+
+
+
+        }
+        function BindRole(DepartmentId, GroupId) {
+            debugger;
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select Role</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    DepartmentId: DepartmentId,
+                    GroupId: GroupId
+
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroupandRole",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if ('@Roledata' == response.Data[i].Id && '@Groupdata' == GroupId) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                                }
+                        }
+                        $("#RoleId").select2("destroy");
+                        $("#RoleId").html(strHTML);
+                        $("#RoleId").select2();
+
+
+                    }
+                });
+
+        }
+    </script>
+}
+

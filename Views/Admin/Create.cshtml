@@ -1,0 +1,259 @@
+﻿@using NewZapures_V2.Models
+@model CategoryMaster
+@{
+    ViewBag.Title = "Service Configuration";
+    ViewBag.Create = "Add New Service";
+
+    //var notificationData  = (List<NotificationData>)ViewBag.NotificationAllowed;
+
+    List<CustomMaster> HardRateList = new List<CustomMaster>();
+    if (ViewBag.HardwareLst != null)
+    {
+        HardRateList = (List<CustomMaster>)ViewBag.HardwareLst;
+    }
+    List<CustomMaster> VarificationLst = new List<CustomMaster>();
+    if (ViewBag.VarificationLst != null)
+    {
+        VarificationLst = (List<CustomMaster>)ViewBag.VarificationLst;
+    }
+    List<CustomMaster> DocumentList = new List<CustomMaster>();
+    if (ViewBag.DocumentLst != null)
+    {
+        DocumentList = (List<CustomMaster>)ViewBag.DocumentLst;
+    }
+    //var DocumentList = (List<CustomMaster>)ViewBag.DocumentLst;
+    //var VarificationLst = (List<CustomMaster>)ViewBag.VarificationLst;
+}
+@section styles {
+
+
+    @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
+}
+<style>
+    .hideclass {
+        display: none;
+    }
+
+    .showclass {
+        display: block;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+
+        @using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Service Configuration Master</h4>
+                    <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("Detail", "Admin")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Service Name</label>
+                        <div class="col-sm-6">
+                            <input name="Name" id="Name" type="text" value="@(Model != null ? Model.Name : "")" class="form-control" placeholder="Enter Service Name" required>
+                        </div>
+                    </div>
+                    @*<div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Type</label>
+                            <div class="col-sm-6">
+                                <select class="singleselect" name="Type" id="Type">
+                                    @{
+                                        <option value="">--Select--</option>
+                                        foreach (var item in Commonlist)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>*@
+                    @*<div class="form-group is-empty row openclass hideclass">
+                            <label for="nameInput" class="col-sm-3 control-label">Department Name</label>
+                            <div class="col-sm-6">
+                                <select class="singleselect" name="Departmentname" id="ddlDepartmentId">
+                                    <option value="">--Select--</option>
+
+
+                                </select>
+                            </div>
+                        </div>*@
+                    @*<div class="form-group is-empty row openclass ">
+                            <label for="nameInput" class="col-sm-3 control-label">Charges Applicable</label>
+
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ServiceRatelist" id="CollectionTime" multiple>
+                                    @{
+                                        <option value="">--Select--</option>
+
+
+                                        foreach (var item in RateList)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+
+
+                                    }
+
+                                </select>
+
+                            </div>
+                        </div>*@
+
+                    <div class="form-group is-empty row openclass">
+                        <label for="nameInput" class="col-sm-3 control-label">Required Devices</label>
+
+                        <div class="col-md-6">
+                            <select class="singleselect" name="HardwareList" id="id_select2_example" multiple>
+                                @{
+                                    <option value="">--Select--</option>
+
+
+                                    foreach (var item in HardRateList)
+                                    {
+                                        if (Model.CategoryId == 0)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option @(Model != null && Model.HardwareList.Contains(item.Id.ToString()) ? "selected" : "") value="@item.Id">@item.text</option>
+
+                                        }
+
+                                    }
+
+
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row openclass">
+                        <label for="nameInput" class="col-sm-3 control-label">Indentity Document</label>
+
+                        <div class="col-md-6">
+                            <select class="singleselect" name="DocumentList" id="id_select2_example" multiple>
+                                @{
+                                    <option value="">--Select--</option>
+
+
+                                    foreach (var item in DocumentList)
+                                    {
+                                        if (Model.CategoryId == 0)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option @(Model != null && Model.DocumentList.Contains(item.Id.ToString()) ? "selected" : "") value="@item.Id">@item.text</option>
+                                        }
+
+
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row openclass">
+                        <label for="nameInput" class="col-sm-3 control-label">Verification Required</label>
+
+                        <div class="col-md-6">
+                            <select class="singleselect" name="varificationList" id="id_select2_example" multiple>
+                                @{
+                                    <option value="">--Select--</option>
+
+
+                                    foreach (var item in VarificationLst)
+                                    {
+                                        if (Model.CategoryId == 0)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option @(Model != null && Model.varificationList.Contains(item.Id.ToString()) ? "selected" : "") value="@item.Id">@item.text</option>
+                                        }
+
+                                    }
+
+
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Class Name</label>
+                        <div class="col-sm-6">
+                            <input name="ClassName" id="ClassName" type="text" value="@(Model != null ? Model.ClassName : "")" class="form-control" placeholder="Enter Class Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    <a href="@Url.Action("Detail", "Admin")" class="btn btn-default">DISCARD</a>
+                    <button class="btn btn-primary"> Save </button>
+                </div>
+            </footer>
+        }
+    </div>
+</div>
+@section Scripts {
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js"></script>*@
+
+    @*<script src="~/Content/select2/js/select2.js"></script>*@
+    <script type="text/javascript">
+        $(".singleselect").select2();
+
+    </script>
+    <script type="text/javascript">
+        //function custom_template(obj) {
+        //    var data = $(obj.element).data();
+        //    var text = $(obj.element).text();
+        //    if (data && data['img_src']) {
+        //        img_src = data['img_src'];
+        //        template = $("<div class=\"row\"><img src=\"" + img_src + "\" style=\"width: 10%;\"/><p >" + text + "</p></div>");
+        //        return template;
+        //    }
+        //}
+        //var options = {
+        //    'templateSelection': custom_template,
+        //    'templateResult': custom_template,
+        //}
+        //$('#id_select2_example').select2(options);
+        $("#Type").change(function () {
+            $('.openclass').addClass('hideclass');
+            var id = $(this).val();
+            if (id == 2) {
+                $('.openclass').removeClass('hideclass');
+            }
+        });
+    </script>
+}

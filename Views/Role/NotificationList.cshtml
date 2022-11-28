@@ -1,0 +1,230 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Notification List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+    var partyId = servicesCollectiondata.PartyId;
+
+
+    var NotificationOpRequest = new NotificationOperationRequest { PartyId = partyId, RowID = 0, Type = "NotificationHistory" };
+
+    var NotificationData = ZapurseCommonlist.NotificationOperation(NotificationOpRequest);
+
+}
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item">Role</li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Notification List</h4>
+            </div>
+            <div class="card-body">
+                @{
+                    if (NotificationData.Count <= 0)
+                    {
+                        <div style="text-align:center"> No Data Available</div>
+                    }
+                    else
+                    {
+                        <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th hidden>NotificationId</th>
+                                    <th>Message</th>
+                                    @*<th>Readed</th>
+                                        <th>Deleted</th>
+                                        <th>Readed On</th>
+                                        <th>Deleted On</th>*@
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+
+                                    foreach (var item in NotificationData)
+                                    {
+                                        <tr>
+                                            <td hidden>@item.NotificationUserListID</td>
+                                            <td style="font-weight:@(item.IsRead==0?"700":"normal")">
+
+
+                                                @item.Message
+
+
+                                            </td>
+                                            @*<td>
+                                                    <div class="form-check form-switch">
+                                                        @{
+                                                            if (item.IsRead == 1)
+                                                            {
+                                                                <input id="switchRead_@item.NotificationUserListID" class="form-check-input" type="checkbox" name="Read_@item.NotificationUserListID" value="@item.IsRead" checked disabled>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input id="switchRead_@item.NotificationUserListID" class="form-check-input" type="checkbox" name="Read_@item.NotificationUserListID" value="@item.IsRead" disabled>
+                                                            }
+                                                        }
+
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check form-switch">
+                                                        @{
+                                                            if (item.IsDelete == 1)
+                                                            {
+                                                                <input id="switchDelete_@item.NotificationUserListID" class="form-check-input" type="checkbox" name="Delete_@item.NotificationUserListID" value="@item.IsDelete" checked disabled>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input id="switchDetele_@item.NotificationUserListID" class="form-check-input" type="checkbox" name="Delete_@item.NotificationUserListID" value="@item.IsDelete" disabled>
+                                                            }
+                                                        }
+
+
+                                                    </div>
+                                                </td>
+                                                <td>@item.ReadedOn</td>
+                                                <td>@item.DeletedOn</td>*@
+
+                                            <td>
+
+                                                @{
+                                                    if (item.IsRead == 0)
+                                                    {
+                                                        <span type="button" class="btn btn-outline-primary" onclick="ReadNotification(@item.NotificationUserListID)"><i class="fas fa-eye"></i></span>
+                                                    }
+                                                }
+                                                <button type="button" class="btn btn-outline-danger" onclick="DeleteNotification(@item.NotificationUserListID)"><i class="fas fa-times"></i></button>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    }
+                }
+
+
+            </div>
+        </div>
+
+
+    </div> <!-- end row -->
+</div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script>
+
+        function DeleteNotification(notificationId) {
+            var Model = {
+                RowID: parseInt(notificationId),
+                Type: "Delete"
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Role/DeleteNotification",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+                    console.log(data.Message);
+                    console.log(data);
+
+                    if (data.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `${data.Message} Permanantly Deleted`,
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: true,
+                        })
+                    }
+
+
+                    setTimeout(function () { location.reload() }, 2000);
+
+
+                },
+                error: function (d) {
+                }
+            });
+        }
+
+        function ReadNotification(notificationId) {
+            var Model = {
+                RowID: parseInt(notificationId),
+                Type: "MarkasRead"
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Role/ReadNotification",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+                        location.reload();
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+                }
+            });
+        }
+
+    </script>
+}

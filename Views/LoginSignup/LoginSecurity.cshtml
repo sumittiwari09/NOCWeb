@@ -1,0 +1,1527 @@
+﻿@using NewZapures_V2.Models;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mobileVerified = "";
+    var PanVerified = "";
+    var AadharVerified = "";
+    var EmailVerified = "";
+    var JanAdharVerified = "";
+    var ContinueDisplay = 0;
+    string str = "";
+    string userId = "";
+
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrlImage"];
+    var data = ViewBag.AllData as Data;
+
+    UserDetails details = new UserDetails();
+
+    if (data != null && data.userDetails != null)
+    {
+
+        details = data.userDetails;
+
+        userId = details.partyId;
+
+        ContinueDisplay = (details.emailVerified);
+
+
+        mobileVerified = details.mobileVerified == 0 ? "Pending" : "Done";
+
+        PanVerified = details.panVerified == 0 ? "Pending" : "Done";
+
+        AadharVerified = details.adhaarVerified == 0 ? "Pending" : "Done";
+
+        EmailVerified = details.emailVerified == 0 ? "Pending" : "Done";
+    }
+
+    if (data != null && data.serviceName != null)
+    {
+
+        foreach (var item in data.serviceName)
+        {
+            str = str + "," + item.serviceName;
+
+        }
+
+    }
+
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<style>
+
+    .documentImageContainer {
+        width: auto;
+        height: 125px;
+        border-radius: 20px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .notVerified {
+        background: red;
+        color: white;
+        width: 95px
+    }
+
+    .Verified {
+        color: white;
+        background: #02b502;
+    }
+
+    .border-left {
+        border-left: 2px solid #506ee4 !important;
+    }
+
+    .spinner1 {
+        /*display: inline-block;*/
+        opacity: 0;
+        /*max-width: 0;*/
+        /*-webkit-transition: opacity 0.25s, max-width 0.45s;
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s;*/ /* Duration fixed since we animate additional hidden width */
+    }
+
+    .has-spinner1.activeSpin {
+        cursor: progress;
+    }
+
+        .has-spinner1.activeSpin .spinner1 {
+            opacity: 1;
+            /*max-width: 50px;*/ /* More than it will ever come, notice that this affects on animation duration */
+        }
+
+
+    dfnAadhar {
+        display: flex;
+        position: relative;
+        right: -112px;
+        top: -27px;
+        z-index: 998;
+    }
+
+        dfnAadhar > span {
+            display: none;
+        }
+
+        dfnAadhar:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(-10px + 1px);
+            right: -190px;
+            background: #304767;
+            color: white;
+            width: 32rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+            z-index: 99999 !important;
+        }
+
+    dfnPan {
+        display: inline-flex;
+        position: relative;
+        right: -80px;
+        top: -26px;
+        z-index: 998;
+    }
+
+        dfnPan > span {
+            display: none;
+        }
+
+        dfnPan:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(1em + 5px);
+            right: -190px;
+            background: #304767;
+            color: white;
+            width: 32rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+        }
+</style>
+
+
+<!-- Page-Title -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
+                    <li class="breadcrumb-item active">Login And Security</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Login And Security</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+
+    <input id="sendedOTP" name="sendedOTP" type="hidden" />
+    <input id="adharClientID" name="adharClientID" type="hidden" />
+    <input type="hidden" id="serviceNames" value='@str' />
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">Credentials</h4>
+                <p class="text-muted mb-3"><hr /></p>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="UserName">Username</label>
+                            <input class="form-control" type="text" value=@details.EmailId readonly id="UserName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control" type="password" id="password" oncopy="return false" onpaste="return false">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="Resetpassword();">Reset Password</button>
+                    </div>
+                </div>
+
+            </div><!--end card-body-->
+        </div><!--end card-->
+
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">Upload Documents</h4>
+                <p class="text-muted mb-3"><hr /></p>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <div class="row">
+                                <label for="Aadhar" class="col-sm-12">Aadhaar Card</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10 col-sm-12 col-md-6">
+                                    <input class="form-control" type="file" id="Aadhar" onchange="return encodeImageFileAsURL(this)">
+                                </div>
+                                <div class="col-lg-2 col-sm-12 col-md-6 text-center">
+                                    <input type="hidden" id="UploadedAadharImage" />
+                                    <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="uploadAadhar()">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <div class="row">
+                                <label for="PAN" class="col-sm-12">Pan Card</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10 col-sm-12 col-md-6">
+                                    <input class="form-control" type="file" id="PAN" onchange="return encodeImageFileAsURL(this)">
+                                </div>
+                                <div class="col-lg-2 col-sm-12 col-md-6 text-center">
+                                    <input type="hidden" id="UploadedPanImage" />
+                                    <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="uploadPan()">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+
+                            <div class="row">
+                                <label for="addressProof" class="col-sm-12">Address Proof</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10 col-sm-12 col-md-6">
+                                    <input class="form-control" type="file" id="addressProof" onchange="return encodeImageFileAsURL(this)">
+                                </div>
+                                <div class="col-lg-2 col-sm-12 col-md-6 text-center">
+                                    <input type="hidden" id="UploadedAddressproof" />
+                                    <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="uploadAddressproof()">Upload</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+        @*Below section is for display the uploaded image remove the display none property to view *@
+
+
+        <div class="card" style="display:none">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">Uploaded Documents</h4>
+                <p class="text-muted mb-3"><hr /></p>
+
+                <div class="row">
+
+                    @if (data != null && data.Documents != null)
+                    {
+                        foreach (var item in data.Documents)
+                        {
+                            var url = @BaseURL + @item.UploadDocumentUrl;
+                            <div class="col-lg-6 border-left">
+                                <strong><span>@item.Name : - </span></strong>
+                                <div class="documentImageContainer mt-2" style="background-image: url(@url)">
+
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div><!--end card-body-->
+        </div>
+
+
+        @*above section is for display the uploaded image *@
+
+
+
+    </div><!--end col-->
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">Verification</h4>
+                <p class="text-muted mb-3"><hr /></p>
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="txtAadhar" class="col-sm-12">Aadhaar Card</label>
+
+
+                                <dfnAadhar>
+                                    <span>
+                                        <p>
+                                            - First digit should be any from 2-9</br>
+                                            - Next 3 digits after the first digit should be any digit from 0-9</br>
+                                            - Next 4 digits should be any from 0-9 </br>
+                                            - Next 4 digits should be any from 0-9</br>
+                                            - Must Be 12 digit long</br>
+                                            - eg: 367598346012
+                                        </p>
+                                    </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                                </dfnAadhar>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-12 col-md-6">
+                                    <input class="form-control" type="text" value='@(details.adhaarCard == "" ? "NA" :details.adhaarCard)' id="txtAadhar" oninput="numberOnly(this.id);" maxlength="12" @(AadharVerified == "Done" ? "readonly" : "")>
+                                </div>
+                                <div class="col-lg-3 col-sm-12 col-md-6 text-center">
+                                    @if (@AadharVerified == "Done")
+                                    {
+
+                                        <button type="button" class="btn waves-effect waves-light Verified"><i class="fas fa-check-circle" style="font-size:14px"></i> Verified</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn waves-effect waves-light notVerified" id="btnAadhaar" onclick="verifyDocs('AADHAROTP', this);"><i class="fas fa-times-circle" style="font-size:14px"></i> Verify</button>
+                                        <button id="buttonotp" style="display:none" data-toggle="modal" data-target="#exampleModal"></button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="txtemail" class="col-sm-12">Email Address</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-12 col-md-6">
+                                    <input class="form-control" type="email" value='@(details.EmailId == "" ? "NA" :details.EmailId)' id="txtemail" @(EmailVerified == "Done" ? "readonly" : "")>
+                                </div>
+                                <div class="col-lg-3 col-sm-12 col-md-6 text-center">
+                                    @if (@EmailVerified == "Done")
+                                    {
+
+                                        <button type="button" class="btn waves-effect waves-light Verified"><i class="fas fa-check-circle" style="font-size:14px"></i> Verified</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn waves-effect waves-light notVerified" id="btnEmail" onclick="EmailVerification();"><i class="fas fa-times-circle" style="font-size:14px"></i> Verify</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="row">
+                                <label for="txtpan" class="col-sm-12">Pan Card</label>
+
+                                <dfnPan>
+                                    <span>
+                                        <p>
+                                            - Valid PAN number should be allowed</br>
+                                            - Length must be 10 Characters</br>
+                                            - First 5 letters in capital </br>
+                                            - Next 4 digits</br>
+                                            - Last one letter in capital</br>
+                                            - eg: COBSS0987P
+                                        </p>
+                                    </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                                </dfnPan>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-12 col-md-6">
+                                    <input class="form-control" type="email" value='@(details.panCard == "" ? "NA" :details.panCard)' id="txtpan" @(PanVerified == "Done" ? "readonly" : "") style="text-transform:uppercase">
+                                </div>
+                                <div class="col-lg-3 col-sm-12 col-md-6 text-center">
+                                    @if (@PanVerified == "Done")
+                                    {
+
+                                        <button type="button" class="btn waves-effect waves-light Verified"><i class="fas fa-check-circle" style="font-size:14px"></i> Verified</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn waves-effect waves-light notVerified" id="btnPan" onclick="verifyDocs('PAN',this)"><i class="fas fa-times-circle" style="font-size:14px"></i> Verify</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="txtMobile" class="col-sm-12">Mobile Number</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-12 col-md-6">
+                                    <input class="form-control" type="email" value='@(details.mobileNumber == "" ? "NA" :details.mobileNumber)' id="txtMobile" oninput="numberOnly(this.id);" maxlength="10" @(mobileVerified == "Done" ? "readonly" : "")>
+                                </div>
+                                <div class="col-lg-3 col-sm-12 col-md-6 text-center">
+                                    @if (@mobileVerified == "Done")
+                                    {
+
+                                        <button type="button" class="btn waves-effect waves-light Verified"><i class="fas fa-check-circle" style="font-size:14px"></i> Verified</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn waves-effect waves-light notVerified" id="btnMobile" onclick="mobileVerify();"><i class="fas fa-times-circle" style="font-size:14px"></i> Verify</button>
+                                        <button id="buttonotpMobile" style="display:none" data-toggle="modal" data-target="#exampleModal"></button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+    <div class="col-lg-12">
+
+        <button id="btncountinue" style="display:none" class="btn btn-gradient-primary waves-effect waves-light" onclick="Countinue()">Continue To Profile</button>
+
+    </div><!--end col-->
+    @*Modal*@
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter OTP</h5>
+                    <button type="button" class="close" id="modalClose" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <label for="verifyAdharOTP" class="col-sm-12">Enter OTP</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-12 col-md-6">
+                            <input type="number" id="verifyAdharOTP" class="form-control" require style="outline-color: black; border: 1px solid #8e8e8e;">
+                        </div>
+                        <div class="col-lg-8 col-sm-12 col-md-6 text-center">
+                            <button id="verifyAdhar" type="button" class="btn btn-gradient-primary waves-effect waves-light" style="display:none" onclick="VerifyAdharWithOTP()">Verify Aadhar</button>
+                            <button id="verifyMobileOTP" type="button" class="btn btn-gradient-primary waves-effect waves-light" style="display:none" onclick="VerifyMobileWithOTP()">Verify Mobile</button>
+                            <button id="clearOTP" type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="ClearOTP()">Clear</button>
+                        </div>
+                    </div>
+
+
+
+
+
+                    @*<div class="input-text">
+                            <div class="input-div">
+                                <label for="verifyAdhar">Enter OTP</label>
+                                <input type="number" id="verifyAdharOTP" require>
+                            </div>
+
+                            <div class="buttons button_space">
+                                <button id="verifyAdhar" type="button" class="btn btn-gradient-primary waves-effect waves-light" style="display:none" onclick="VerifyAdharWithOTP()">Verify Aadhar</button>
+                                <button id="verifyMobileOTP" type="button" class="btn btn-gradient-primary waves-effect waves-light" style="display:none" onclick="VerifyMobileWithOTP()">Verify Mobile</button>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!--end row-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var imagebase64 = "";
+
+
+
+    var uploadedPan;
+    var uploadedAadhar;
+
+    $(document).ready(function () {
+
+        var data =String(@TempData["Unauthorized"]);
+
+        if (data == 1) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Unable To Load Data, API Returns Unauthorized, Invalid Token...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+
+
+        $("#txtpan").blur(function (e) {
+            var inputvalues = $(this).val().toUpperCase();
+            if (inputvalues.length > 0) {
+                var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+                if (!regex.test(inputvalues)) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Invalid Pan Number, Please Try Again',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    return regex.test(inputvalues);
+                }
+            }
+        });
+
+        $("#txtMobile").blur(function (e) {
+            e.preventDefault();
+            validateMobile();
+            CheckUserMobile();
+        });
+
+        $("#txtAadhar").blur(function (e) {
+            if ($("#txtAadhar").val().length > 0) {
+                if ($("#txtAadhar").val().length < 12) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<h4><b>Aadhaar Number</b> Length Must be <b>12 Digits</b> long</h4>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+                else {
+                    AadhaarNumber = $("#txtAadhar").val();
+                    var regex = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
+                    if (!regex.test(AadhaarNumber)) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Invalid Aadhaar Number, Please Try Again',
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        console.log('not valid');
+                        return regex.test(AadhaarNumber);
+                    }
+                    else {
+                        console.log('valid');
+                        return regex.test(AadhaarNumber);
+                    }
+                }
+            }
+        });
+
+    });
+
+
+
+        if ('@ContinueDisplay' == 1) {
+
+            $('#btncountinue').css('display', 'block');
+        }
+
+    function validateMobile() {
+
+        if ($("#txtMobile").val().length > 0) {
+            if ($("#txtMobile").val().substr(0, 1) == 0 || $("#txtMobile").val().length < 10) {
+
+                Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: '<h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4>...!',
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+
+                $("#txtMobile").focus();
+            }
+        }
+    }
+    function Resetpassword() {
+
+        if ($("#password").val().length < 6) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Password Must Have 6 Characters Long...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+        else {
+
+            var LoginModel = {
+                "Email": $("#UserName").val(),
+                "Password": $("#password").val(),
+                "Type": 'Reset'
+            }
+
+            var d = JSON.stringify(LoginModel);
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() +"/LoginSignup/ResetPassword",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(LoginModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1 && data.Message == "Password Updated Successfully!") {
+
+                        var url = GetglobalDomain() +"/authentication/login-alt";
+                        window.location.href = url;
+
+                        //$("#Resetuser_name").val('');
+                        //$("#txtResetpassword").val('');
+                        //$("#txtResetre-password").val('');
+
+                        //$("#bcktoLogin").click();
+                    }
+                    else {
+
+                    }
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+
+        }
+    }
+
+    function verifyDocs(doctype, sender) {
+
+        var partyId = '@details.partyId';
+
+        var VerificationURL = "";
+        var id = "";
+
+        if (doctype === "PAN") {
+            VerificationURL = 'https://kyc-api.aadhaarkyc.io/api/v1/pan/pan';
+            id = $("#txtpan").val();
+
+            var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+
+            $('#btnPan').addClass('has-spinner1').addClass('activeSpin');
+            $('#btnPan').html('');
+            $('#btnPan').html(h);
+
+        }
+
+        if (doctype === "AADHAROTP") {
+            VerificationURL = 'https://kyc-api.aadhaarkyc.io/api/v1/aadhaar-v2/generate-otp';
+            id = $("#txtAadhar").val();
+
+            var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+
+            $('#btnAadhaar').addClass('has-spinner1').addClass('activeSpin');
+
+            $('#btnAadhaar').html('');
+            $('#btnAadhaar').html(h);
+        }
+        if (id.length <= 0) {
+            if (doctype.includes("OTP")) {
+                doctype = doctype.replace("OTP", "");
+
+                $('#btnPan').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#btnPan').html('Verify');
+
+                $('#btnAadhaar').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#btnAadhaar').html('OTP');
+
+            }
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: doctype + '  Number Is Not Valid, Please Try Again...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+        else {
+
+
+            var Model = {
+                "id_number": id,
+                "url": VerificationURL,
+                "type": doctype
+            }
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/VerifyAdharPAN",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+
+                    if (data.OperationType == "PAN") {
+                        if (data.StatusCode == 200 && data.Message == "success") {
+                            var btn = $("#btnPan");
+                            btn.removeClass('has-spinner1').removeClass('activeSpin');
+
+                            //btn.fadeOut(700)
+                            //setTimeout(function () {
+                            //    btn.css("background-color", "#28a745").css("font-size", "17px");
+                            //    btn.attr("disabled", true);
+                            //    btn.html("<i class='fa fa-check-circle'></i>")
+                            //}, 700)
+                            //btn.fadeIn(700)
+                            btn.html("Verify")
+
+                            panVerified = 1;
+                            updateVerificationStatus(panVerified, partyId, id, 'Pan');
+
+                        }
+                        else {
+                            var btn = $("#btnPan");
+                            //btn.fadeOut(700)
+                            //setTimeout(function () {
+                            //    btn.css("background-color", "Red").css("font-size", "17px");
+                            //    //btn.attr("disabled", true);
+                            //    btn.html("<i class='fa fa-times-circle'></i>")
+                            //}, 700)
+                            //btn.fadeIn(700)
+                            //btn.html("Verify")
+                            btn.removeClass('has-spinner1').removeClass('activeSpin');
+                            btn.html("Verify")
+                            panVerified = 0;
+                            updateVerificationStatus(panVerified, partyId, id, 'Pan');
+                        }
+                    }
+
+                    if (data.OperationType == "AADHAROTP") {
+
+                        if (data.StatusCode == 200 && data.Message == "success") {
+
+                            $("#adharClientID").val(data.Data.client_id);
+                            $("#verifyAdhar").css('display', 'inline-block');
+                            $("#verifyMobileOTP").css('display', 'none');
+                            $("#btnAadhaar").removeClass('has-spinner1').removeClass('activeSpin');
+                            $("#btnAadhaar").html('Verify');
+
+
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3500,
+                                timerProgressBar: true,
+                                onOpen: function (toast) {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'OTP Sent To Aadhaar Linked Mobile Number '
+                            })
+
+
+                            $("#buttonotp").click();
+
+                        }
+                        if (data.StatusCode == 422 && data.Message == "verification_failed") {
+
+                            $("#btnAadhaar").removeClass('has-spinner1').removeClass('activeSpin');
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: data.Message + ' Please Check Your Aadhaar Number : ' + id,
+                                allowOutsideClick: false,
+                                showCloseButton: true,
+                                showConfirmButton: false
+                            });
+
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3500,
+                                timerProgressBar: true,
+                                onOpen: function (toast) {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'OTP Not Sent'
+                            })
+                        }
+                        console.log(data);
+                    }
+
+                    //console.log(data.Data);
+                },
+                error: function (d) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Server Is Down Kindly Do Manual Verification Process Or Try After 10 Minutes',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+            });
+        }
+    }
+
+    function mobileVerify() {
+
+        var mob = $("#txtMobile").val();
+
+        var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+
+        $('#btnMobile').addClass('has-spinner1').addClass('activeSpin');
+
+        $('#btnMobile').html('');
+        $('#btnMobile').html(h);
+
+        var maskedMobile = mob.replace(/\d(?=\d{4})/g, "*");
+        if (mob.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Mobile Number Can`t be blank...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+            $("#txtMobile").focus()
+            $("#btnMobile").removeClass('has-spinner1').removeClass('activeSpin');
+            $("#btnMobile").html('Verify');
+        }
+        else {
+            //var mobileVerification = {
+            //    "ApiKey": MobileOTPAPIKey,
+            //    "senderID": MobileOTPSenderId,
+            //    "Chennel": MobileOTPChennel,
+            //    "mobile": mob,
+            //    "messageContent": 'Welcome to www.zapurse.com.Client Verification Use this OTP ##var## to register your Mobile Number.'
+            //}
+
+            var mobileVerification = {
+                "mobile": mob,
+                "messageContent": 'Welcome to www.zapurse.com.Client Verification Use this OTP ##var## to register your Mobile Number.'
+            }
+
+
+            var d = JSON.stringify(mobileVerification);
+            console.table(d);
+            $("#verifyMobileOTP").css('display', 'inline-block');
+            $("#verifyAdhar").css('display', 'none');
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() +"/LoginSignup/MobileVerify",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(mobileVerification),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+                    if (data.Message == "Done") {
+                        $('#sendedOTP').val(data.Data.OTP);
+
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar: true,
+                            onOpen: function (toast) {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'OTP Sent To ' + maskedMobile
+                        })
+                        $("#btnMobile").removeClass('has-spinner1').removeClass('activeSpin');
+                        $("#btnMobile").html('Verify');
+                        $("#buttonotpMobile").click();
+                    }
+
+                },
+                error: function (d) {
+                    $("#btnMobile").removeClass('has-spinner1').removeClass('activeSpin');
+                    $("#btnMobile").html('Verify');
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+                }
+            });
+        }
+    }
+
+    function CheckUserMobile() {
+        var mobileTxt = $("#txtMobile").val();
+        var mobileDB = '@details.mobileNumber';
+
+        if (mobileTxt.length > 0 && (mobileDB !== mobileTxt)) {
+            var validationRequestModel = {
+                "Email": $("#txtMobile").val(),
+                "Password": $("#txtResetpassword").val(),
+                "Type": 'UserCheck'
+            }
+            var d = JSON.stringify(validationRequestModel);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/ValidateUser",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(validationRequestModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1 && data.Message == "User Details Exists") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Mobile Number Already Registered...!',
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        $("#txtMobile").focus()
+                    }
+                    //else {
+                    //    mobileVerify();
+                    //}
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    }
+
+    function VerifyAdharWithOTP() {
+        var OTP = $("#verifyAdharOTP").val();
+        var Aadhar = $("#txtAadhar").val();
+         var partyId = '@details.partyId';
+
+        if (OTP.length <= 0) {
+            var dic = '<div><h4><b>please enter valid OTP</b></h4></div>';
+            //sweetAlert(dic, 'center', 'warning', 0);
+            alert(dic);
+        }
+        else {
+            const ipAPI = 'https://kyc-api.aadhaarkyc.io/api/v1/aadhaar-v2/submit-otp'
+
+
+            var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+
+            $('#verifyAdhar').addClass('has-spinner1').addClass('activeSpin');
+
+            $('#verifyAdhar').html('');
+            $('#verifyAdhar').html(h);
+
+            var Model = {
+                "client_id": $("#adharClientID").val(),
+                "otp": OTP,
+                "url": ipAPI
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() +"/LoginSignup/VerifyAdharWithOTP",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+
+                    if (data.Message == "success" && data.StatusCode == 200) {
+
+                        //var btn = $("#aadharvarify");
+                        //btn.fadeOut(700)
+                        //setTimeout(function () {
+                        //    btn.css("background-color", "#28a745").css("font-size", "17px");
+                        //    btn.attr("disabled", true);
+                        //    btn.html("<i class='fa fa-check-circle'></i>")
+                        //}, 700)
+                        //btn.fadeIn(700)
+                        //btn.html("Verify")
+
+                        $('#verifyAdhar').removeClass('has-spinner1').removeClass('activeSpin');
+                        $('#verifyAdhar').html('Verify Aadhar');
+
+                        $('#verifyAdharOTP').val('');
+                        adharVerified = 1;
+
+                        saveAadhaarData(partyId, data);
+
+                        updateVerificationStatus(adharVerified, partyId, Aadhar, 'Aadhar');
+
+
+                        $("#modalClose").click();
+
+                    }
+                    else if (data.Message == "InternalServerError" && data.StatusCode == 500)
+                    {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Server Is Down Kindly Do Manual Verification Process Or Try After 10 Minutes',
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        $('#verifyAdhar').removeClass('has-spinner1').removeClass('activeSpin');
+                        $('#verifyAdhar').html('Verify Aadhar');
+
+                        $('#verifyAdharOTP').val('');
+
+                        $('#verifyAdharOTP').val('');
+                        $('#modalClose').click();
+
+                    }
+                    else {
+
+                        //var btn = $("#aadharvarify");
+                        //btn.fadeOut(700)
+                        //setTimeout(function () {
+                        //    btn.css("background-color", "Red").css("font-size", "17px");
+                        //    //btn.attr("disabled", true);
+                        //    btn.html("<i class='fa fa-times-circle'></i>")
+                        //}, 700)
+                        //btn.fadeIn(700)
+                        //btn.html("Verify")
+
+                        $('#verifyAdhar').removeClass('has-spinner1').removeClass('activeSpin');
+                        $('#verifyAdhar').html('Verify Aadhar');
+                        $('#verifyAdharOTP').val('');
+
+                        adharVerified = 0;
+                        $('#verifyAdharOTP').val('');
+
+                        updateVerificationStatus(adharVerified, partyId, Aadhar, 'Aadhar');
+
+                    }
+                    console.log(data);
+                },
+                error: function (d) {
+
+                }
+            });
+        }
+    }
+
+    function VerifyMobileWithOTP() {
+
+        var mob = $("#txtMobile").val();
+
+        var partyId = '@details.partyId';
+
+        var retriveOTP = $('#sendedOTP').val();
+        var enteredOTP = $('#verifyAdharOTP').val();
+        //console.log('otp');
+        //console.log('retrive OTP ', retriveOTP);
+
+        var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+        $('#verifyMobileOTP').addClass('has-spinner1').addClass('activeSpin');
+
+        $('#verifyMobileOTP').html('');
+        $('#verifyMobileOTP').html(h);
+
+        if (enteredOTP.length <= 0) {
+            var dic = '<div><h4><b>please enter valid OTP</b></h4></div>';
+           //sweetAlert(dic, 'center', 'warning', 0);
+            alert(dic);
+        }
+        else {
+            if (enteredOTP === retriveOTP) {
+
+
+                $('#verifyMobileOTP').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#verifyMobileOTP').html('Verify Mobile');
+
+                $('#verifyAdharOTP').val('');
+                mobileverified = 1;
+                updateVerificationStatus(mobileverified, partyId, mob, 'Mobile');
+
+            }
+            else {
+
+                $('#verifyMobileOTP').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#verifyMobileOTP').html('Verify Mobile');
+
+                $('#verifyAdharOTP').val('');
+                mobileverified = 0;
+                updateVerificationStatus(mobileverified, partyId, mob, 'Mobile');
+                var url = GetglobalDomain()+'/LoginSignup/LoginSecurity';
+                window.location.href = url;
+
+            }
+        }
+    }
+
+    function updateVerificationStatus(status, partyId, colValue,ColNam) {
+
+        var UpdateUserDetailsModel = {
+            Status: status,
+            PartyId: partyId,
+            ColName: ColNam,
+            ColValue: colValue
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() +"/LoginSignup/UpdateVerificationStatus",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(UpdateUserDetailsModel),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    if (ColNam !== 'Aadhar') {
+                        var url =GetglobalDomain() +"/LoginSignup/LoginSecurity";
+                        window.location.href = url;
+                    }
+                    location.reload();
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function encodeImageFileAsURL(element) {
+
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file);
+        console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            if (elementID == 'PAN') {
+                console.log(imagebase64);
+                $('#UploadedPanImage').val(imagebase64);
+                var c = $('#UploadedImage').val();
+                //uploadedPan = imagebase64;
+                //console.log("Converted Pan " + c)
+            }
+            if (elementID == 'Aadhar') {
+                console.log(imagebase64);
+                $('#UploadedAadharImage').val(imagebase64);
+                var c = $('#UploadedImage').val();
+                //uploadedAadhar = imagebase64;
+                //console.log("Converted Aadhar " + c)
+            }
+            if (elementID == 'addressProof') {
+                console.log(imagebase64);
+                $('#UploadedAddressproof').val(imagebase64);
+                var c = $('#UploadedImage').val();
+                //uploadedAadhar = imagebase64;
+                //console.log("Converted Aadhar " + c)
+            }
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+
+        //var panImage = $('#UploadedPanImage').val().split(",");
+        //var aadharImage = $('#UploadedAadharImage').val().split(",");
+    }
+
+    function uploadPan() {
+
+        var panImage = $('#UploadedPanImage').val().split(",");
+        var partyId = '@details.partyId';
+
+        if (panImage[1] == null) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please select file to upload...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+        else {
+            var uploadPanModal = {
+                PartyId: partyId,
+                Image: panImage[1]
+            }
+            var d = JSON.stringify(uploadPanModal);
+            //console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/UploadPan",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(uploadPanModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    //console.log(data);
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Pan Uploaded Successfully...!',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+
+                    setTimeout(function () {
+                        var url = GetglobalDomain() + "/LoginSignup/LoginSecurity";
+                        window.location.href = url;
+                    }, 700)
+
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+
+        }
+    }
+
+    function uploadAadhar() {
+
+        var adharImage = $('#UploadedAadharImage').val().split(",");
+        var partyId = '@details.partyId';
+
+        //console.log(adharImage[1]);
+
+        if (adharImage[1] == null) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please select file to upload...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+        else {
+            var uploadAadharModal = {
+                PartyId: partyId,
+                Image: adharImage[1]
+            }
+            var d = JSON.stringify(uploadAadharModal);
+            //console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/UploadAadhaar",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(uploadAadharModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    //console.log(data);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Aadhar Uploaded Successfully...!',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+
+
+                    setTimeout(function () {
+                        var url = GetglobalDomain() + "/LoginSignup/LoginSecurity";
+                        window.location.href = url;
+                    }, 700)
+
+
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+    function uploadAddressproof() {
+
+        var addressproofImage = $('#UploadedAddressproof').val().split(",");
+        var partyId = '@details.partyId';
+
+        //console.log(adharImage[1]);
+
+        if (addressproofImage[1] == null) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please select file to upload...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+        else {
+            var uploadAadharModal = {
+                PartyId: partyId,
+                Image: addressproofImage[1]
+            }
+            var d = JSON.stringify(uploadAadharModal);
+            //console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/UploadAddressProof",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(uploadAadharModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    //console.log(data);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'AddressProof Uploaded Successfully...!',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+
+
+                    setTimeout(function () {
+                        var url = GetglobalDomain() + "/LoginSignup/LoginSecurity";
+                        window.location.href = url;
+                    }, 700)
+
+
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+
+    function saveAadhaarData(partyId,item) {
+
+        var addAadharModal = {
+            PartyId: partyId,
+            Aadhaar: item
+        }
+
+        var d = JSON.stringify(addAadharModal)
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/LoginSignup/SaveAadhaarData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(addAadharModal),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+                //var url = get +"/LoginSignup/LoginSecurity";
+                //window.location.href = url;
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+    }
+
+     function Countinue() {
+
+            var s = $('#serviceNames').val();
+
+         var url = GetglobalDomain() +"/Home/MyProfile?Id=" + '@userId' + "&service=" + s;
+            window.location.href = url;
+
+
+            //var s = $('#serviceNames').val();
+            //console.log(s);
+
+            //var url = '/Welcome/Finalpage?services=' + s;
+
+            //window.location.href = url;
+    }
+
+    function EmailVerification() {
+        var emailVerfy = 0;
+
+        var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i></span>'
+
+        $('#btnEmail').addClass('has-spinner1').addClass('activeSpin');
+
+        $('#btnEmail').html('');
+        $('#btnEmail').html(h);
+
+         var partyId = '@details.partyId';
+        var email = $('#txtemail').val();
+        if (email.length <= 0) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Email Can`t Be Empty, Please Try Again...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+            emailVerfy = 0;
+        }
+
+        else {
+            var btn = $("#btnEmail");
+            btn.removeClass('has-spinner1').removeClass('activeSpin');
+            //btn.fadeOut(700)
+            //setTimeout(function () {
+            //    btn.css("background-color", "#28a745").css("font-size", "17px").css("padding", "0px 37px");
+            //    btn.attr("disabled", true);
+            //    btn.html("<i class='fa fa-check-circle'></i>")
+            //}, 700)
+            //btn.fadeIn(700)
+            btn.html("Verify")
+
+
+            emailVerfy = 1;
+            updateVerificationStatus(emailVerfy, partyId, email, 'Email');
+
+        }
+    }
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    function ClearOTP() {
+        //alert('clicked')
+        $('#verifyAdharOTP').val('');
+    }
+
+</script>

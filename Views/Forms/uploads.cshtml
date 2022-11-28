@@ -1,0 +1,68 @@
+﻿@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">UI Kit</a></li>
+                    <li class="breadcrumb-item active">File Uploads</li>
+                </ol>
+            </div>
+            <h4 class="page-title">File Uploads</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">File Upload 1</h4>
+                <p class="text-muted mb-3">Your so fresh input file — Default version</p>
+                <input type="file" id="input-file-now" class="dropify" />
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">File Upload 2</h4>
+                <p class="text-muted mb-3">You can add a default value</p>
+                <input type="file" id="input-file-now-custom-1" class="dropify" data-default-file="/plugins/dropify/images/1.jpg" />
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">File Upload 3</h4>
+                <p class="text-muted mb-3">You can set the height</p>
+                <input type="file" id="input-file-now-custom-2" class="dropify" data-height="500" />
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">File Upload 4</h4>
+                <p class="text-muted mb-3">You can combine options</p>
+                <input type="file" id="input-file-now-custom-3" class="dropify" data-height="500" data-default-file="/plugins/dropify/images/2.jpg" />
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}

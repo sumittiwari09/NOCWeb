@@ -1,0 +1,118 @@
+﻿
+@using NewZapures_V2.Models
+@model TargetMaster
+@{
+    ViewBag.Title = "Target Configuration";
+    ViewBag.Create = "Add New Target";
+
+    //var notificationData = (List<NotificationData>)ViewBag.NotificationAllowed;
+    // var TemplatesType = ViewBag.templatesTypeList as List<Dropdown>;
+
+    // var templateId = (int)ViewBag.TemplateId;
+    // var rowId = (string)ViewBag.rowId;
+    //var htmlContent = (string)ViewBag.HTMLContent;
+    //var pageTitle = (string)ViewBag.PageTitle;
+
+}
+@section styles {
+    @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
+}
+<style>
+    .hideclass {
+        display: none;
+    }
+
+    .showclass {
+        display: block;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+                <button onclick="location.href='@Url.Action("Create", "Target")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            </div>
+            <div class="card-body">
+                <div class="card-body maindiv">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>Service Name</th>
+                                    <th>Target Type</th>
+                                    <th>Target Amount</th>
+                                    <th>Amount</th>                                                                   
+                                    <th style="width: 150px">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        var date = DateTime.Parse(item.StartingDate);
+                                        var SRTDate = string.Format("{0:dd/MMM/yyyy}", date);
+
+                                        var date1 = DateTime.Parse(item.StartTargetDate);
+                                        var TRGDate = string.Format("{0:dd/MMM/yyyy}", date1);
+                                        <tr>
+                                            <th hidden>
+                                                @item.ID
+                                            </th>
+                                            <th>
+                                                @item.CatName
+                                                <p class="specialuser" style="background:@(item.TargetType=="Year"?"Red":item.TargetType=="Days"?"Green":"")">@item.TargetPeriod @(item.TargetType=="Year"?"years":item.TargetType== "Days" ? "days":"months")</p>
+                                            </th>
+                                            <th>@item.TargetAmount</th>
+                                            @*<th>@item.TargetPeriod</th>*@
+                                            <th>@SRTDate</th>
+                                            <th>@TRGDate</th>
+                                            @*<th>@item.TargetType</th>*@
+                                            <th>
+                                                <div class="form-check form-switch">
+                                                    @{if (item.Status == 1)
+                                                        {
+                                                            <input id="Target-@item.CategoryId" class="form-check-input ChangeStatus" type="checkbox" data-id="Target-@item.ID" name="@item.ID" value="@item.Status" checked>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input id="Target-@item.CategoryId" class="form-check-input ChangeStatus" type="checkbox" data-id="Target-@item.ID" name="@item.ID" value="@item.Status">
+
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>                   
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div>
+@section Scripts {
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js"></script>*@
+
+    @*<script src="~/Content/select2/js/select2.js"></script>*@
+
+}

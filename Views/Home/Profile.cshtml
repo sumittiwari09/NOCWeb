@@ -1,0 +1,363 @@
+﻿@using NewZapures_V2.Models
+@model PartyMaster
+@{
+    ViewBag.Create = "Profile";
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var GetTypelist = ZapurseCommonlist.GetTypelist();
+
+}
+@section styles {
+    @*<link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+        <link href="~/plugins/filter/magnific-popup.css" rel="stylesheet" type="text/css" />
+        <link href="~/plugins/lightpick/lightpick.css" rel="stylesheet" />*@
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="~/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+}
+
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse</a></li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ol>
+            </div>
+            @*<h4 class="page-title">@( data.Count<1? "My Payment" : "My Payments")</h4>*@
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body  met-pro-bg">
+                <div class="met-profile">
+                    <div class="row">
+                        <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                            <div class="met-profile-main">
+                                <div class="met-profile-main-pic">
+                                    <img src="~/images/users/user-4.jpg" alt="" class="rounded-circle">
+                                    <span class="fro-profile_main-pic-change">
+                                        <i class="fas fa-camera"></i>
+                                    </span>
+                                </div>
+                                <div class="met-profile_user-detail">
+                                    <h5 class="met-user-name">@Model.FirstName</h5>
+                                    @{ foreach (var item in GetTypelist)
+                                        {
+                                            if (Model != null && Model.Type == item.Id)
+                                            {
+                                                <p class="mb-0 met-user-name-post">@item.Text</p>
+                                                @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type" value="@item.Text" readonly>*@
+                                            }
+                                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-4 ml-auto">
+                            <ul class="list-unstyled personal-detail">
+                                <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone </b> : @Model.MobileNumber</li>
+                                <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b> Email </b> : @Model.EmailId</li>
+                                <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b> : India</li>
+                            </ul>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end f_profile-->
+            </div><!--end card-body-->
+            <div class="card-body">
+                <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="general_detail_tab" data-toggle="pill" href="#general_detail">Profile</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="activity_detail_tab" data-toggle="pill" href="#activity_detail">Activity</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="portfolio_detail_tab" data-toggle="pill" href="#portfolio_detail">Portfolio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings_detail_tab" data-toggle="pill" href="#settings_detail">Settings</a>
+                        </li>*@
+                </ul>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div><!--end row-->
+<div class="row">
+
+    <div class="col-12">
+        <div class="tab-content detail-list" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="general_detail">
+                <div class="row">
+                    <div class="col-xl-12">
+
+                        <div class="card">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#GeneralDetails" role="tab">General Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#OfficialDetails" role="tab">Official Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#AddressDetails" role="tab">Contact Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#CompanyDetails" role="tab">Company Details</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active p-3" id="GeneralDetails" role="tabpanel">
+                                    @Html.Partial("~/Views/Home/_ProfileGeneralDetails.cshtml")
+                                </div>
+                                @*<div class="tab-pane p-3" id="OfficialDetails" role="tabpanel">
+                                        @Html.Partial("~/Views/Home/_ProfileOfficialDetails.cshtml")
+                                    </div>*@
+                                <div class="tab-pane p-3" id="AddressDetails" role="tabpanel">
+                                    @Html.Partial("~/Views/Home/_ProfileAddressDetails.cshtml")
+                                </div>
+                                <div class="tab-pane p-3" id="CompanyDetails" role="tabpanel">
+                                    @Html.Partial("~/Views/Home/_ProfileCompanyDetails.cshtml")
+                                </div>
+                            </div>
+
+                            <div style="display:none">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                            @*<label for="pro-start-date">First Name</label>*@
+                                            <input type="text" class="form-control" id="endPAAdd1" name="PAAdd11" value="@Model.PAAdd1" placeholder="Flat House No Building Company Appartment">
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                            @*<label for="pro-end-date">Middle Name</label>*@
+                                            <input type="text" class="form-control" id="endPAAdd2" name="PAAdd21" value="@Model.PAAdd2" placeholder="Area,Street Sector Village">
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                            @*<label for="pro-end-date">Middle Name</label>*@
+                                            <input type="text" class="form-control" id="endPAAdd3" name="PAAdd31" value="@Model.PAAdd3" placeholder="Address Line 3">
+                                        </div><!--end col-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                            @*<label for="pro-rate">Last Name</label>*@
+
+                                            <input type="text" class="form-control" id="endPALandMark" name="PALandMark1" value="@Model.PALandMark" placeholder="Land Mark">
+                                        </div><!--end col-->
+
+                                    </div><!--end row-->
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                            @*<label for="pro-rate">Last Name</label>*@
+
+                                            <input type="text" class="form-control" id="endPAPinCode" name="PAPinCode1" value="@Model.PAPinCode" placeholder="Pincode">
+                                        </div><!--end col-->
+
+                                    </div><!--end row-->
+                                </div>
+                            </div>
+
+                        </div><!--end col-->
+
+
+                    </div><!--end row-->
+                </div><!--end general detail-->
+
+
+
+
+
+
+            </div><!--end tab-content-->
+
+        </div><!--end col-->
+    </div><!--end row-->
+</div>
+@*@section scripts {
+        <script src="~/plugins/dropify/js/dropify.min.js"></script>
+        <script src="~/plugins/moment/moment.js"></script>
+        <script src="~/plugins/filter/isotope.pkgd.min.js"></script>
+        <script src="~/plugins/filter/masonry.pkgd.min.js"></script>
+        <script src="~/plugins/filter/jquery.magnific-popup.min.js"></script>
+        <script src="~/plugins/chartjs/chart.min.js"></script>
+        <script src="~/plugins/chartjs/roundedBar.min.js"></script>
+        <script src="~/plugins/lightpick/lightpick.js"></script>
+        <script src="~/scripts/pages/jquery.profile.init.js"></script>
+    }*@
+@section scripts {
+
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/filter/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/filter/masonry.pkgd.min.js"></script>
+    <script src="~/plugins/filter/jquery.magnific-popup.min.js"></script>
+    <script src="~/plugins/chartjs/chart.min.js"></script>
+    <script src="~/plugins/chartjs/roundedBar.min.js"></script>
+    <script src="~/plugins/lightpick/lightpick.js"></script>
+    <script src="~/scripts/pages/jquery.profile.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+
+        $('.singleselect').select2();
+        BindBlock(0, 0, 0);
+        $("#StateId").change(function () {
+            var Id = $(this).val();
+            BindBlock(Id, 0, 1)
+        });
+        $("#DistrictId").change(function () {
+            var districtId = $(this).val();
+            var Id = $("#StateId").val();
+            BindBlock(Id, districtId, 2)
+        });
+
+        $("#customCheck6").change(function () {
+            debugger;
+            var Id = $("#customCheck6").val();
+            if (Id == 0) {
+
+                var Add1 = $("#startCUADD").val();
+                var Add2 = $("#startCUADD2").val();
+                var Add3 = $("#startCUADD3").val();
+                var LandMark = $("#startCULandMark").val();
+                var PinCode = $("#startCUPinCode").val();
+
+                $("#customCheck6").val('1');
+                $("#startPAAdd1").val(Add1);
+                $("#startPAAdd2").val(Add2);
+                $("#startPAAdd3").val(Add3);
+                $("#startPALandMark").val(LandMark);
+                $("#startPAPinCode").val(PinCode);
+            }
+            else {
+                var Add1 = $("#endPAAdd1").val();
+                var Add2 = $("#endPAAdd2").val();
+                var Add3 = $("#endPAAdd3").val();
+                var LandMark = $("#endPALandMark").val();
+                var PinCode = $("#endPAPinCode").val();
+
+                $("#customCheck6").val('0');
+                $("#startPAAdd1").val(Add1);
+                $("#startPAAdd2").val(Add2);
+                $("#startPAAdd3").val(Add3);
+                $("#startPALandMark").val(LandMark);
+                $("#startPAPinCode").val(PinCode);
+            }
+
+        });
+
+        function BindBlock(Id, districtId, Type) {
+            debugger;
+            var strHTML = "";
+            if (Type == 0) {
+                strHTML += "<option value=''>Select State</option>"
+            }
+            if (Type == 1) {
+                strHTML += "<option value=''>Select District</option>"
+            }
+            if (Type == 2) {
+                strHTML += "<option value=''>Select City</option>"
+            }
+
+            var Params = JSON.stringify(
+                {
+                    Id: Id,
+                    districtId: districtId,
+                    Type: Type
+
+                });
+            if (Type == 0) {
+                $("#DistrictId").select2("destroy");
+                $("#DistrictId").html('Select District');
+                $("#DistrictId").select2();
+                $("#CityId").select2("destroy");
+                $("#CityId").html('Select City');
+                $("#CityId").select2();
+            }
+            if (Type == 1) {
+                $("#DistrictId").select2("destroy");
+                $("#DistrictId").html(strHTML);
+                $("#DistrictId").select2();
+                $("#CityId").select2("destroy");
+                $("#CityId").html('Select City');
+                $("#CityId").select2();
+            }
+            if (Type == 2) {
+
+                $("#CityId").select2("destroy");
+                $("#CityId").html(strHTML);
+                $("#CityId").select2();
+            }
+
+
+
+            $.ajax({
+                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                        strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+
+                    }
+                    if (Type == 1) {
+                        $("#DistrictId").select2("destroy");
+                        $("#DistrictId").html(strHTML);
+                        $("#DistrictId").select2();
+                        $("#CityId").select2("destroy");
+                        $("#CityId").html('Select City');
+                        $("#CityId").select2();
+                    }
+                    if (Type == 0) {
+                        $("#StateId").select2("destroy");
+                        $("#StateId").html(strHTML);
+                        $("#StateId").select2();
+                        $("#DistrictId").select2("destroy");
+                        $("#DistrictId").html('Select District');
+                        $("#DistrictId").select2();
+                        $("#CityId").select2("destroy");
+                        $("#CityId").html('Select City');
+                        $("#CityId").select2();
+                    }
+                    if (Type == 2) {
+
+                        $("#CityId").select2("destroy");
+                        $("#CityId").html(strHTML);
+                        $("#CityId").select2();
+                    }
+
+                }
+            });
+
+
+
+        }
+    </script>
+}

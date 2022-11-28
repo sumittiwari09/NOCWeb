@@ -1,0 +1,607 @@
+﻿@model NewZapures_V2.Models.ChangeRquestDataList
+@{
+    ViewBag.Title = "Client Change Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="~/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+
+}
+<style>
+    th {
+        width: 40% !important;
+    }
+
+    .callout.callout-danger {
+        border-color: #c23321;
+    }
+
+    .callout {
+        border-radius: 3px;
+        margin: 0 0 20px 0;
+        padding: 7px 7px 7px 7px;
+        border-left: 5px solid #eee;
+    }
+
+        .bg-red, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+            background-color: #FFC0CB !important;
+        }
+
+    .h4 {
+        color: #303e67 !important;
+        margin: 3px 0 !important;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Change Request</li>
+                    <li class="breadcrumb-item active">Details</li>
+                </ol>
+            </div>
+            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="">
+                <div class="table-responsive">
+                    @if (Model.ExistingParentDetails != null)
+                    {
+                        <table class="table table-bordered table-striped table-centered">
+                            <thead>
+                                <tr>
+                                    <th colspan="4">Current Parent Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="text-nowrap" scope="row">RegistrationNo</th>
+                                    <td>@Model.ExistingParentDetails.RegistrationId</td>
+                                    <th class="text-nowrap" scope="row">ParentName</th>
+                                    <td>
+                                        @Model.ExistingParentDetails.Name
+                                        <input type="text" id="parentidold" value="@Model.ExistingParentDetails.PartyId" hidden />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-nowrap" scope="row">ParentType</th>
+                                    <td>@Model.ExistingParentDetails.PartyType</td>
+                                    <th class="text-nowrap" scope="row">Parent Mobile No</th>
+                                    <td>@Model.ExistingParentDetails.Mobilenumber</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-nowrap" scope="row">Parent EmailId</th>
+                                    <td>@Model.ExistingParentDetails.EmailId</td>
+                                    <th class="text-nowrap" scope="row">Company Addredd</th>
+                                    <td>@Model.ExistingParentDetails.CompanyAddress</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-nowrap" scope="row">State</th>
+                                    <td>@Model.ExistingParentDetails.State</td>
+                                    <th class="text-nowrap" scope="row">Status</th>
+                                    <td><span class="badge badge-success">@Model.ExistingParentDetails.Currentstatus</span></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+        <div id="requteddiv" hidden="hidden">
+            <div class="card">
+                <div class="">
+                    <div class="table-responsive">
+                        @if (Model.RequestedParentDetails != null)
+                        {
+                            if (@Model.RequestedParentDetails.Name == null)
+                            {
+                                <table class="table table-bordered table-striped table-centered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="4">Reuested Parent Detail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3">@Model.RequestedParentDetails.RegistrationId</td>
+                                            <td><span class="badge badge-warning">@Model.RequestedParentDetails.Currentstatus</span></td>
+                                        </tr>
+                                        @*<tr>
+                                                <td>@Model.RequestedParentDetails.RegistrationId</td>
+
+                                            </tr>*@
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table class="table table-bordered table-striped table-centered">
+                                    <thead>
+                                        <tr style="background-color: #ff9f43">
+                                            <th colspan="4">Reuested Parent Detail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-nowrap" scope="row">Request Type</th>
+                                            <td colspan="3">@Model.RequestedParentDetails.Narration</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-nowrap" scope="row">RegistrationNo</th>
+                                            <td>@Model.RequestedParentDetails.RegistrationId</td>
+                                            <th class="text-nowrap" scope="row">ParentName</th>
+                                            <td>@Model.RequestedParentDetails.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-nowrap" scope="row">ParentType</th>
+                                            <td>@Model.RequestedParentDetails.PartyType</td>
+                                            <th class="text-nowrap" scope="row">Parent Mobile No</th>
+                                            <td>@Model.RequestedParentDetails.Mobilenumber</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-nowrap" scope="row">Parent EmailId</th>
+                                            <td>@Model.RequestedParentDetails.EmailId</td>
+                                            <th class="text-nowrap" scope="row">Company Addredd</th>
+                                            <td>@Model.RequestedParentDetails.CompanyAddress</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-nowrap" scope="row">State</th>
+                                            <td>@Model.RequestedParentDetails.State</td>
+                                            <th class="text-nowrap" scope="row">Status</th>
+                                            <td><span class="badge badge-warning">@Model.RequestedParentDetails.Currentstatus</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div>
+    </div> <!-- end col -->
+
+    <div class="col-6" id="divsendrequest">
+        <div class="card" style="margin-bottom: 0px;">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+            </div>
+            <div class="">
+
+                <table class="table table-bordered table-centered" style="margin-bottom: auto;">
+
+                    <tbody>
+                        <tr>
+                            <th class="text-wrap" scope="row">what is your change Request for?</th>
+                            <td>
+                                <div class="resultscore">
+                                    <div class="radio radio-success form-check-inline">
+                                        <input type="radio" id="inlineRadio1" value="MyParent" name="radioInline" checked="checked" onchange="getValue(this)">
+                                        <label for="inlineRadio1">My Parent</label>
+                                    </div>
+                                    <div class="radio radio-success form-check-inline">
+                                        <input type="radio" id="inlineRadio2" value="MyLevel" name="radioInline" onchange="getValue(this)">
+                                        <label for="inlineRadio2">My Level</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="div11" hidden="hidden">
+                            <th class="text-wrap" scope="row">Level</th>
+                            <td class="form-group">
+                                @if (ViewBag.Type == "4")
+                                {
+                                    <label>Retailer To Distributer</label>
+                                }
+                                else if (ViewBag.Type == "3")
+                                {
+                                    <label>Distributer to Stokist</label>
+                                }
+                                else if (ViewBag.Type == "2")
+                                {
+                                    <label>Stokist to Company</label>
+                                }
+                            </td>
+                        </tr>
+                        <tr class="div1">
+                            <th class="text-wrap" scope="row">Do you know other parent which you want to go?</th>
+                            <td>
+                                <div class="resultscore2">
+                                    <div class="radio radio-success form-check-inline">
+                                        <input type="radio" id="inlineRadio3" value="Yes" name="radioInlinet" checked="checked" onchange="getValue(this)">
+                                        <label for="inlineRadio3">Yes</label>
+                                    </div>
+                                    <div class="radio radio-success form-check-inline">
+                                        <input type="radio" id="inlineRadio4" value="No" name="radioInlinet" onchange="getValue(this)">
+                                        <label for="inlineRadio4">No</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="div2">
+                            @*@using (Html.BeginForm("GetVenderDetail", "Home", FormMethod.Post))
+                                {*@
+                            <th class="text-wrap" scope="row">Under Whom you want to go?</th>
+                            <td class="form-group">
+                                <select class="singleselect" name="PartyType" id="PartyType">
+                                    <option value="">Select Type</option>
+                                </select>
+                                @*@if (ViewData["PartyType"] != null)
+                                    {
+                                        @Html.DropDownListFor(m => m.PartyType, (SelectList)ViewData["PartyType"], "-- Select Type --", htmlAttributes: new { @class = "required col-8 form-control float-left", @id = "PartyType", @name = "PartyType", @value = @ViewData["PartyType"] })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.PartyType, (SelectList)ViewData["PartyType"], "-- Select Type --", htmlAttributes: new { @class = "required col-8 form-control float-left", @id = "PartyType", @name = "PartyType" })
+                                    }*@
+                            </td>
+                        </tr>
+                        <tr class="div3">
+                            <th>
+                                <label>New Parent Name</label><span style="color:red;">*</span>
+                            </th>
+                            <td>
+                                <select id="ParentDataName" name="ParentDataName" class="col-8 form-control float-left singleselect">
+                                    <option value="">Select Parent</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="div4">
+                            <td><a href='#' type='button' id="btnMyLevelChangeRequest" class='btn btn-sm btn-primary waves-effect waves-light'>Change Parent Request</a></td>
+                        </tr>
+                        <tr class="div5">
+
+                            <td colspan="2">
+                                <div class="callout callout-danger" style="height: 62px">
+                                    <h4 style="margin:3px 0px !important">Note!</h4>
+                                    <p>Already Send Request!! </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="tblRequestedParentDetails1" class="table table-bordered table-centered">
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+
+    </div>
+
+</div> <!-- end row -->
+<div class="row">
+
+</div>
+<div class="modal right fade custommodal fixheaderfooter" id="modaladdpricing" role="dialog">
+
+
+</div>@section Scripts {
+    <!-- Required datatable js -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables/jszip.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        function BindPartyTypelist(ChangeType) {
+            var strHTML = "";
+            strHTML += "<option value=''>Select Type</option>"
+            var Params = JSON.stringify(
+                {
+                    CangeRequestType: ChangeType
+                });
+            $("#PartyType").select2("destroy");
+            $("#PartyType").html(strHTML);
+            $("#PartyType").select2();
+            $.ajax({
+                url: GetglobalDomain() + "/Home/GetPartyTypeList?ChangeType=" + ChangeType,
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    for (var i = 0; i < response.Lst.length; i++) {
+                        strHTML += "<option value='" + response.Lst[i].ListID + "'>" + response.Lst[i].ListName + "</option>"
+                    }
+                    $("#PartyType").select2("destroy");
+                    $("#PartyType").html(strHTML);
+                    $("#PartyType").select2();
+                }
+            });
+        }
+        $(".singleselect").select2();
+    </script>
+    <script>
+      //  var globaUserProperties = new Object();
+
+
+        $(document).ready(function () {
+
+            BindPartyTypelist("MyParent");
+                @*@if (ViewBag.Type == "4")
+                {
+                   <label>Retailer To Distributer</label>
+                }
+                else if (ViewBag.Type == "3")
+                {
+                   <label>Distributer to Stokist</label>
+                }
+                else if (ViewBag.Type == "2")
+                {
+                   <label>Stokist to Company</label>
+                }*@
+
+                $(function () {
+                    debugger;
+                    $('#PartyType').on('change', function () {
+                        debugger;
+
+                        //$("#dvretailerparnt").show();
+                        $("#ParentDataName option").remove();
+                        $('#tblRequestedParentDetails1 tbody tr').remove();
+                        //var oldparentid = $("#parentidold").val();
+                        var oldparentid = $("#parentidold").val();
+                        var op = '';
+                        var ParentName = $("#PartyType" + " option:selected").text();
+                        alert(ParentName);
+                        //if (ParentName == "Admin") {
+                            $("#ParentDataName").removeAttr("required");
+                            //$("#dvretailerparnt").hide();
+                            //$("#dvvendorparent").hide();
+                             $.ajax({
+                                type: "GET",
+                                 url: GetglobalDomain() +"/Home/GetActiveParentList",
+                                 data: { ParentName: ParentName, ParentDataName: oldparentid },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                 success: function (Data) {
+                                     if (ParentName == "Admin") {
+                                         op += "<option value=''>Select Admin</option>";
+                                     } else if (ParentName == "Distributer") {
+                                         op += "<option value=''>Select Distributor</option>";
+                                     }
+                                     else if (ParentName == "Stockist") {
+                                         op += "<option value=''>Select Stockist</option>";
+                                     }
+                                     else if (ParentName == "White Label") {
+                                         op += "<option value=''>Select White Label</option>";
+                                     }
+                                    $.each(Data.Lst, function (i, item) {
+                                        op = op + '<option value="' + item.ListID + '">' + item.ListName + '</option>';
+                                    });
+                                    $("#ParentDataName").append(op);
+                                },
+                                error: function (Data) {
+                                    ValidationError('error');
+                                }
+                            });
+
+                        @*}
+                        else if (ParentName == "Distributor") {
+                            //$("#dvvendorparent").hide();
+                            //$("#ParentDataName").attr("required");
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetActiveParentList", "Home")',
+                                data: { ParentName: ParentName },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (Data) {
+                                    op += "<option value=''> --Select Distributor-- </option>";
+                                    $.each(Data.Lst, function (i, item) {
+                                        op = op + '<option value="' + item.ListID + '">' + item.ListName + '</option>';
+                                    });
+                                    $("#ParentDataName").append(op);
+                                },
+                                error: function (Data) {
+                                    ValidationError('error');
+                                }
+                            });
+                        }
+                        else if (ParentName == "DistributorSS") {
+                            $("#ParentDataName").attr("required");
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetActiveParentList", "SwitchClient")',
+                                data: { ParentName: "SuperStokist", ParentDataName: oldparentid },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (Data) {
+                                    op += "<option value=''> --Select SuperStokist-- </option>";
+                                    $.each(Data.Lst, function (i, item) {
+                                        op = op + '<option value="' + item.ListID + '">' + item.ListName + '</option>';
+                                    });
+                                    $("#ParentDataName").append(op);
+                                },
+                                error: function (Data) {
+                                    ValidationError('error');
+                                }
+                            });
+                        }
+                        else if (ParentName == "Distributer") {
+                            //$("#ParentDataName").attr("required");
+                            //$("#dvvendorparent").hide();
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetActiveParentList", "Home")',
+                                data: { ParentName: ParentName },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (Data) {
+                                    op += "<option value=''> --Select Distributer-- </option>";
+                                    $.each(Data.Lst, function (i, item) {
+                                        op = op + '<option value="' + item.ListID + '">' + item.ListName + '</option>';
+                                    });
+                                    $("#ParentDataName").append(op);
+                                },
+                                error: function (Data) {
+                                    ValidationError('error');
+                                }
+                            });
+                        }
+                        else if (ParentName == "Stockist") {
+                            //$("#ParentDataName").attr("required");
+                            //$("#dvvendorparent").hide();
+                            $.ajax({
+                                type: "GET",
+                                url: '@Url.Action("GetActiveParentList", "Home")',
+                                data: { ParentName: ParentName },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (Data) {
+                                    op += "<option value=''> --Select SuperStokist-- </option>";
+                                    $.each(Data.Lst, function (i, item) {
+                                        op = op + '<option value="' + item.ListID + '">' + item.ListName + '</option>';
+                                    });
+                                    $("#ParentDataName").append(op);
+
+                                },
+                                error: function (Data) {
+                                    ValidationError('error');
+                                }
+                            });
+                        }
+                        else {
+                            $("#dvretailerparnt").hide();
+                        }*@
+
+                    });
+                });
+        });
+    if ('@Model.RequestedParentDetails.RegistrationId' != '') {
+            $("#requteddiv").removeAttr("hidden", "hidden");
+            $('#btnMyLevelChangeRequest').addClass("disabled");
+            $('#btnMyLevelChangeRequest1').addClass("disabled");
+        }
+    else {
+        $(".div5").attr("style", "display:none");
+    }
+    $("#ParentDataName").change(function () {
+        debugger;
+            var NewParentId = $("#ParentDataName" + " option:selected").val();
+
+            var RequestFor = $('.resultscore input[type="radio"]:checked').val();
+        var doyouknowresource = $('.resultscore2 input[type="radio"]:checked').val();
+        alert(doyouknowresource);
+                        $.ajax({
+                                type: "GET",
+                            url: GetglobalDomain() + '/Home/GetParentDetail',
+                                data: { ParentPartyId: NewParentId },
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                             success: function (Data) {
+                                 $(".div4").attr("style", "display:none");
+                                 $('#tblRequestedParentDetails1 tbody tr').remove();
+                                 var markup = "<tr><th class='text-nowrap' scope='row'>Registration Number</th><td>" + Data.RegistrationId + "</td></tr><tr><th class='text-nowrap' scope='row'>Parent Name</th><td>" + Data.Name + "</td></tr><tr><th class='text-nowrap' scope='row'>ParentType</th><td>" + Data.PartyType + "</td></tr><tr><th class='text-nowrap' scope='row'>Parent Mobile No</th><td>" + Data.Mobilenumber + "</td></tr><tr><th colspan='2'><a href= " + GetglobalDomain() + '/Home/SaveChangeRequest?Id=' + Data.PartyId + "&RequestFor=" + RequestFor + "&doyouknowresource=" + doyouknowresource + " type='button' class='btn btn-sm btn-primary waves-effect waves-light' id='btnMyLevelChangeRequest1'>Change Parent Request</a></th></tr>";
+                                 $('#tblRequestedParentDetails1 tbody').append(markup);
+                                 if ('@Model.RequestedParentDetails.RegistrationId' != '') {
+                                     $("#requteddiv").removeAttr("hidden", "hidden");
+                                     $('#btnMyLevelChangeRequest').addClass("disabled");
+                                     $('#btnMyLevelChangeRequest1').addClass("disabled");
+                                 }
+                                },
+                                error: function (Data) {
+
+                                }
+                            });
+        });
+        $(".singleselect").select2();
+
+        function getValue(radio) {
+            debugger;
+            if (radio.value == "Yes") {
+                $(".div2").removeAttr("style", "display:block");
+                $(".div3").removeAttr("style", "display:block");
+                $(".div4").removeAttr("style", "display:block");
+                $("#btnMyLevelChangeRequest").attr("href", "#");
+            }
+            else if (radio.value == "No") {
+                $(".div2").attr("style", "display:none");
+                $(".div3").attr("style", "display:none");
+                $(".div4").attr("style", "display:block");
+
+                $('#tblRequestedParentDetails1 tbody tr').remove();
+                var RequestFor = $('.resultscore input[type="radio"]:checked').val();
+                var doyouknowresource = $('.resultscore2 input[type="radio"]:checked').val();
+                var link = GetglobalDomain() +"/Home/SaveChangeRequest?Id=''&RequestFor=" + RequestFor + "&doyouknowresource=" + doyouknowresource;
+                $("#btnMyLevelChangeRequest").attr("href", link);
+            }
+            else if (radio.value == "MyParent") {
+                //$(".div1").removeAttr("style", "display:block");
+                //$(".div2").removeAttr("style", "display:block");
+                //$(".div3").removeAttr("style", "display:block");
+                //$(".div4").removeAttr("style", "display:block");
+                $("#btnMyLevelChangeRequest").attr("href", "#");
+                $('#btnMyLevelChangeRequest').removeClass("disabled");
+                $('#btnMyLevelChangeRequest1').removeClass("disabled");
+                $(".div11").attr("hidden", "hidden");
+                BindPartyTypelist("MyParent");
+
+                if ('@Model.RequestedParentDetails.RegistrationId' != '') {
+            $("#requteddiv").removeAttr("hidden", "hidden");
+            $('#btnMyLevelChangeRequest').addClass("disabled");
+            $('#btnMyLevelChangeRequest1').addClass("disabled");
+        }
+            }
+            else if (radio.value == "MyLevel") {
+                //$(".div1").attr("style", "display:block");
+                //$(".div2").attr("style", "display:block");
+                //$(".div3").attr("style", "display:block");
+                //$(".div4").attr("style", "display:block");
+                //$("#ParentDataName option").remove();
+                //$('#tblRequestedParentDetails1 tbody tr').remove();
+                //var RequestFor = $('.resultscore input[type="radio"]:checked').val();
+                //var doyouknowresource = "No";
+                //var link = GetglobalDomain() + "/Home/SaveChangeRequest?Id=''&RequestFor=" + RequestFor + "&doyouknowresource=" + doyouknowresource;
+                $("#btnMyLevelChangeRequest").attr("href", "#");
+                $('#btnMyLevelChangeRequest').removeClass("disabled");
+                $('#btnMyLevelChangeRequest1').removeClass("disabled");
+
+                $(".div11").removeAttr("hidden", "hidden");
+                BindPartyTypelist("MyLevel");
+
+                if ('@Model.RequestedParentDetails.RegistrationId' != '') {
+            $("#requteddiv").removeAttr("hidden", "hidden");
+            $('#btnMyLevelChangeRequest').addClass("disabled");
+            $('#btnMyLevelChangeRequest1').addClass("disabled");
+        }
+            }
+        }
+    </script>
+}

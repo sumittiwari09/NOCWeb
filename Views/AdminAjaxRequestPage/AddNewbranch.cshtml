@@ -1,0 +1,20 @@
+﻿@using NewZapures_V2.Models
+@model List<Tree>
+@{
+    ViewBag.Title = "AddNewbranch";
+    Layout = null;
+    var partyid = ViewBag.partyId;
+}
+@foreach (var inneritem in Model.Where(p => p.ParentId.Contains(partyid)).ToList())
+{
+
+<li>
+    <a href="#"><img src="~/Content/tree/images/userimage.png" /></a>
+    <span data-id="@inneritem.PartyId" class="show">@inneritem.FirstName</span>
+    <ul id="inner_@inneritem.ParentId"></ul>
+</li>
+
+
+}
+
+

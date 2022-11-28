@@ -1,0 +1,86 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>NOC Logout</title>
+
+    <link href="~/Content/LoginSignUp/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+
+    <style>
+        .login-icon {
+            font-size: 40px;
+            width: 120px;
+            height: 120px;
+            line-height: 114px;
+            display: block;
+            margin: 20px auto 30px;
+            border-radius: 60px;
+            border: 1px solid #FFFFFF;
+            background-color: #2a4d63;
+            text-align: center;
+            color: #9cb347;
+        }
+    </style>
+</head>
+
+<body id="pages" class="full-layout no-nav-left no-nav-right  nav-top-fixed background-login     responsive remove-navbar login-layout   clearfix" data-active="pages " data-smooth-scrolling="1">
+    <div>
+        <!-- Header Start -->
+        <!-- Header Ends -->
+        <div class="content">
+            <div class="container">
+
+                <!-- Middle Content Start -->
+
+
+                <div class="logo">
+                    <h2><img src="~/Content/LoginSignUp/img/midiumlogo.png" alt="logo" style="    height: 40px;"></h2>
+                </div>
+            </div>
+            <div class="panel widget">
+                <div class="panel-body">
+                    <div class="login-icon"> <i class="fa  fa-sign-out-alt fa-shake"></i> </div>
+                    <h1 class="font-semibold text-center" style="font-size:52px">You Have Been Signed Out</h1>
+                    <form class="form-horizontal" action="#" role="form">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <h4 class="text-center mgbt-xs-20">Thank you for using our website</h4>
+                                <p class="text-center"> Please <a href="@Url.Action("login-alt","authentication")">click here</a> to login back to our site</p>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Panel Widget -->
+            @*<div class="register-panel text-center font-semibold"> <a href="index.php">Home</a> <span class="mgl-10 mgr-10 vd_soft-grey">|</span> <a href="#">About</a> <span class="mgl-10 mgr-10 vd_soft-grey">|</span> <a href="#">FAQ</a> <span class="mgl-10 mgr-10 vd_soft-grey">|</span> <a href="#">Contact</a> </div>*@
+
+        </div>
+        <!-- .content -->
+        <!-- Footer Start -->
+        <footer class="footer-2" id="footer">
+            <div class="vd_bottom ">
+                <div class="container">
+                    <div class="row">
+                        <div class=" col-xs-12">
+                            <div class="copyright text-center">
+                                Copyright &copy;2022 NOC. All Rights Reserved
+                            </div>
+                        </div>
+                    </div><!-- row -->
+                </div><!-- container -->
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>

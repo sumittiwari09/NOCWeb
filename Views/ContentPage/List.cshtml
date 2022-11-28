@@ -1,0 +1,61 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var templates = ViewBag.Templates as List<Dropdown>;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item"><a href=@Url.Action("Index","ContentPage")>Content Page</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Created Templates</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-6">
+
+                                <table class="table table-bordered table-hover" style="width:100%">
+
+                                    <thead>
+                                        <tr>
+                                            <th style="width:80%">Template Name</th>
+                                            <th style="width:20%"> Action </th>
+                                        </tr>
+                                    </thead>
+
+                                    @foreach (var item in templates)
+                                    {
+                                        <tr>
+                                            <td style="width:80%">@item.Text</td>
+                                            <td style="width:20%">
+                                                <a href=@Url.Action("ViewContent","ContentPage",new { Id=@item.Id})><span><i class="fa fa-eye" style="color: #0d6efd"></i></span></a> &nbsp;&nbsp;
+                                                @*<a href=@Url.Action("GetDetailsForEdit","ContentPage",new { Id=@item.Id})><span><i class="fa fa-pencil-alt"></i></span></a>*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->

@@ -1,0 +1,589 @@
+﻿@using NewZapures_V2.Models
+@model SlotMaster
+@{
+    ViewBag.Title = "Slot Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var SlotList = SlotDropdown.GetSlotList();
+    int DistrictdataId = 0;
+    int BlockdataId = 0;
+    int AreadataId = 0;
+
+    if (Model != null)
+    {
+        DistrictdataId = Model.DistrictId;
+        BlockdataId = Model.BlockId;
+        AreadataId = Model.AreaId;
+    }
+}
+
+
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <style>
+
+        .dr-pro-pic .dropify-wrapper, #settings_detail .dropify-wrapper {
+            width: 100%;
+            position: relative;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">E-Mitra@Home</li>
+                    <li class="breadcrumb-item">Slot</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("EditSlotEnquiry", "Slot", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <div class="card">
+
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">New Entry</h4>
+                    <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("Details", "Slot")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+                    <div class="form-group is-empty row">
+                        @*<label for="nameInput" class="col-sm-3 control-label">District</label>*@
+                        <div class="col-md-4">
+                            <select class="singleselect" name="DistrictId" id="DistrictId" required>
+                                <option value="">Select District</option>
+                            </select>
+                        </div>
+                        @*</div>
+                            <div class="form-group is-empty row">
+                                <label for="nameInput" class="col-sm-3 control-label">City</label>*@
+                        <div class="col-md-4">
+                            <select class="singleselect" name="BlockId" id="BlockId">
+                                <option value="">Select Block</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="singleselect" name="AreaId" id="AreaId">
+                                <option value="">Select Area</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-2 control-label">From Date</label>
+                        <div class="col-md-4">
+                            @*@Html.TextBoxFor(model => model.Fromdate, new { @Value = Model.Fromdate, @style = "width:100%", type = "date" })*@
+                            @*@Html.TextBox("FromDate", Model.Fromdate.ToString(), "{0:yyyy-MM-dd}", new { @style = "width:100%", type = "date" })*@
+                            <input type="date" class="form-control" name="FromDate" required value="@(Model!=null?Model.Fromdate:"")" id="FromDate" />
+                        </div>
+                        @*</div>
+                            <div class="form-group is-empty row">*@
+                        <label for="nameInput" class="col-sm-2 control-label">To Date</label>
+                        <div class="col-md-4">
+                            <input type="date" class="form-control" name="ToDate" required value="@(Model!=null?Model.Todate:"")" id="ToDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Slot List</h4>
+
+                </div>
+                <div class="card-body">
+                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>SlotIng</th>
+                                <th>Checked</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in SlotList)
+                                {
+                                    <tr>
+                                        <td>@item.Text</td>
+                                        <td>
+
+                                            <div class="checkbox checkbox-success checkbox-circle">
+                                                @if (Model.ActivateSlot == null)
+                                                {
+                                                    <input id="Checkbox_@item.Id" name="Checkbox_@item.Id" class="checkbox checkbox-success checkbox-circle" type="checkbox" value="0" />
+                                                }
+                                                else
+                                                {
+                                                    <input id="Checkbox_@item.Id" name="Checkbox_@item.Id" class="checkbox checkbox-success checkbox-circle" type="checkbox" value="@(Model != null && Model.ActivateSlot.Contains(item.Id.ToString()) ? "1" : "0") " @(Model != null && Model.ActivateSlot.Contains(item.Id.ToString()) ? "checked" : "") />
+                                                }
+                                                <label for="Checkbox_@item.Id">
+                                                </label>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Slot Colour Mapping</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group is-empty row">
+                        <div class="col-md-4">
+                            <input id="slotequiryid" type="hidden" value="" />
+                            <input id="innerslotid" name="SlotMasterId" type="hidden" value="@ViewBag.Id" />
+                            <select class="singleselect" name="Colorid" id="ColorId">
+                                @*<option value="">Select Color</option>
+                                    @{
+
+                                        <option style="background: black;" value="Red">Red</option>
+                                        <option style="background: black;" value="Blue">Blue</option>
+                                        <option style="background: black;" value="Yellow">Yellow</option>
+                                        <option style="background: black;" value="Green">Green</option>
+                                    }*@
+
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="enquiry" value="" id="enquiry" />
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" id="Adddata" type="button">Add</button>
+                            <button class="btn btn-primary" id="Resetdata" type="button">Reset</button>
+                        </div>
+
+                    </div>
+                    <div class="form-group is-empty">
+                        <table id="Colormapping" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Colour</th>
+                                    <th>No of Enquire</th>
+                                    @*<th>Active</th>*@
+                                    <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody id="tbodyColorMapping">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    <a href="@Url.Action("Details", "Slot")" class="btn btn-default">DISCARD</a>
+                    <button class="btn btn-primary"> Save </button>
+                </div>
+            </footer>
+            <input id="countmapping" value="0" type="hidden" />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script type="text/javascript">
+        $(".checkbox").click(function () {
+            var value = $(this).val();
+            if (value == 0) {
+                $(this).val('1');
+
+            }
+            else {
+                $(this).val('0');
+            }
+
+        });
+        $(".singleselect").select2();
+        var Id = $("#innerslotid").val();
+
+        $("#Adddata").click(function () {
+            var color = $("#ColorId").val();
+            var enquiry = $("#enquiry").val();
+
+            /*var Id = $("#countmapping").val();*/
+            /*  count = parseInt(count) + 1;*/
+
+            // $("#tbodyColorMapping").append("<tr id='mapping_" + count + "'><td id='color_" + count + "'>" + color + "</td><td id='enquiry_" + count +"'>" + enquiry + "</td><td><button class='btn btn-info btn-xs btn-edit' onclick=editdata("+count+") type='button' data-id="+count+" >Edit</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button></td></tr>");
+            /* $("#ColorId").select2('');*/
+            $("#ColorId").val('');
+
+            $("#enquiry").val('');
+
+            var updateid = $("#slotequiryid").val();
+            //  var Id = $("#innerslotid").val();
+            SaveinnerData(color, enquiry, Id, updateid);
+            ShowinnerData(Id);
+            $("#slotequiryid").val('');
+            $('#ColorId').val('').change();
+        });
+
+        function SaveinnerData(color, enquiry, Id, updateid) {
+            $.ajax({
+                url: '/Slot/AddInnerData?SlotColorId=' + color + '&enquiry=' + enquiry + '&Id=' + Id + '&UpdateId=' + updateid,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+                    ShowinnerData(Id);
+                    /*   $("#AddSection").html(response);*/
+                }
+            });
+            return false;
+        }
+        function ShowinnerData(Id) {
+            $.ajax({
+                url: '/Slot/ShowInnerData?Id=' + Id,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+
+
+                    $("#tbodyColorMapping").html(response);
+
+                    /*   $("#AddSection").html(response);*/
+
+                }
+            });
+            return false;
+        }
+        $(document).ready(function () {
+            BindDistrict(0,1);
+            BindSlotColor();
+            ShowinnerData(Id);
+
+            $("#DistrictId").change(function () {
+                var Id = $(this).val();
+                if (Id == 0) {
+                    SelectBindDistrict();
+                }
+                else {
+                    BindDistrict($(this).val(),2)
+                }
+            });
+            $("#BlockId").change(function () {
+                var DistrictId = $("#DistrictId").val();
+                var BlockId = $("#BlockId").val();
+                BindBlock(DistrictId, BlockId);
+            });
+
+        });
+        function SelectBindDistrict() {
+              $("#BlockId").select2("destroy");
+            $("#BlockId").html("<option value=''>Select Block</option>");
+                $("#BlockId").select2();
+                $("#AreaId").select2("destroy");
+                $("#AreaId").html("<option value=''>Select Area</option>");
+                $("#AreaId").select2();
+                return false;
+        }
+        function BindDistrict(DistrictId,type) {
+
+            var strHTML = "";
+            if (DistrictId == 0) {
+                strHTML += "<option value='0'>Select District Name</option>"
+                //$("#BlockId").select2("destroy");
+                //$("#BlockId").html(strHTML);
+                //$("#BlockId").select2();
+                //$("#AreaId").select2("destroy");
+                //$("#AreaId").html("<option value=''>Select</option>");
+                //$("#AreaId").select2();
+                //return false;
+            }
+            else {
+                strHTML += "<option value='-1'>Select Block Name</option>"
+            }
+            var Params = JSON.stringify(
+                {
+                    DistrictId: DistrictId
+
+                });
+
+
+            //$("#ChildCateId").select2("destroy");
+            //$("#ChildCateId").html(strHTML);
+            //$("#ChildCateId").select2();
+
+
+
+            $.ajax({
+                url: "/Slot/FillDataBlockArea",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        @*if ('@DistrictdataId' == response.Data[i].ID) {
+                            strHTML += "<option value='" + response.Data[i].ID + "' selected>" + response.Data[i].Name + "</option>"
+                        }
+                        else {*@
+                            strHTML += "<option value='" + response.Data[i].ID + "'>" + response.Data[i].Name + "</option>"
+                        //}
+                    }
+                    if (DistrictId == 0) {
+                        $("#DistrictId").select2("destroy");
+                        $("#DistrictId").html(strHTML);
+                        $("#DistrictId").select2();
+                        if ('@DistrictdataId' != 0 && type==1) {
+                            $("#DistrictId").val('@DistrictdataId').change();
+                        }
+
+                        $("#BlockId").select2("destroy");
+                        $("#BlockId").html("<option value=''>Select</option>");
+                        $("#BlockId").select2();
+                        $("#AreaId").select2("destroy");
+                        $("#AreaId").html("<option value=''>Select</option>");
+                        $("#AreaId").select2();
+                    }
+                    else {
+                        $("#BlockId").select2("destroy");
+                        $("#BlockId").html(strHTML);
+                        $("#BlockId").select2();
+                        if ('@BlockdataId' != 0) {
+                              $("#BlockId").val('@BlockdataId').change();
+                        }
+                        $("#AreaId").select2("destroy");
+                        $("#AreaId").html("<option value=''>Select</option>");
+                        $("#AreaId").select2();
+
+                    }
+
+                }
+            });
+
+
+
+        }
+
+        function BindSlotColor() {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select Colour</option>"
+
+
+            //$("#BlockId").select2("destroy");
+            //$("#BlockId").html(strHTML);
+            //$("#BlockId").select2();
+
+            //$("#ChildCateId").select2("destroy");
+            //$("#ChildCateId").html(strHTML);
+            //$("#ChildCateId").select2();
+
+
+
+            $.ajax({
+                url: "/Slot/FillSlotColor",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+
+                success: function (response) {
+
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                        strHTML += "<option value='" + response.Data[i].ID + "'>" + response.Data[i].Name + "</option>"
+
+                    }
+
+                    $("#ColorId").select2("destroy");
+                    $("#ColorId").html(strHTML);
+                    $("#ColorId").select2();
+
+
+
+
+                }
+            });
+
+
+
+        }
+        function BindBlock(DistrictId, BlockId) {
+
+            var strHTML = "";
+            strHTML += "<option value=''>Select Area Name</option>"
+            var Params = JSON.stringify(
+                {
+                    DistrictId: DistrictId,
+                    BlockId: BlockId
+
+                });
+
+            $("#AreaId").select2("destroy");
+            $("#AreaId").html(strHTML);
+            $("#AreaId").select2();
+
+            //$("#ChildCateId").select2("destroy");
+            //$("#ChildCateId").html(strHTML);
+            //$("#ChildCateId").select2();
+
+
+
+            $.ajax({
+                url: "/Slot/FillDataBlockArea",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                        strHTML += "<option value='" + response.Data[i].ID + "'>" + response.Data[i].Name + "</option>"
+
+                    }
+
+                    //$("#BlockId").select2("destroy");
+                    //$("#BlockId").html(strHTML);
+                    //$("#BlockId").select2();
+                    if (BlockId != 0) {
+                        $("#AreaId").select2("destroy");
+                        $("#AreaId").html(strHTML);
+                        $("#AreaId").select2();
+                          if ('@AreadataId' != 0) {
+                              $("#AreaId").val('@AreadataId').change();
+                        }
+                    }
+
+                }
+            });
+
+
+
+        }
+
+
+        //function BindArea(DistrictId, BlockId,AreaId) {
+
+        //    var strHTML = "";
+        //    strHTML += "<option value=''>Select Area Name</option>"
+        //    var Params = JSON.stringify(
+        //        {
+        //            DistrictId: DistrictId,
+        //            BlockId: BlockId,
+        //            AreaId: AreaId
+
+        //        });
+
+        //    //$("#BlockId").select2("destroy");
+        //    //$("#BlockId").html(strHTML);
+        //    //$("#BlockId").select2();
+
+        //    //$("#ChildCateId").select2("destroy");
+        //    //$("#ChildCateId").html(strHTML);
+        //    //$("#ChildCateId").select2();
+
+
+
+        //    $.ajax({
+        //        url: "/Slot/FillDataBlockArea",
+        //        type: 'POST',
+        //        dataType: "json",
+        //        contentType: "application/json",
+        //        data: Params,
+        //        success: function (response) {
+
+
+
+
+        //            for (var i = 0; i < response.Data.length; i++) {
+
+        //                strHTML += "<option value='" + response.Data[i].ID + "'>" + response.Data[i].Name + "</option>"
+
+        //            }
+
+
+        //            $("#AreaId").select2("destroy");
+        //            $("#AreaId").html(strHTML);;
+        //            $("#AreaId").select2();
+
+
+        //        }
+        //    });
+
+
+
+        //}
+
+        function editdata(Id, ColourId, Noofenquiry) {
+            $("#slotequiryid").val(Id);
+            //var colourid = $(this).data("id");
+            //alert(colourid);
+
+
+            //  var enquirydata = $("#enquiry_" + Id).val();
+            $("#enquiry").val(Noofenquiry);
+            // $("#ColorId").val(ColourId);
+            $('#ColorId').val(ColourId).change();
+        }
+        function deletedata(Id) {
+            $.confirm({
+                title: 'Remove Confirmation',
+                content: 'Are you sure to remove record',
+                type: 'red',
+                typeAnimated: true,
+                animation: 'rotate',
+                closeAnimation: 'scale',
+                buttons: {
+                    Confirm: {
+                        text: 'YES',
+                        btnClass: 'btn-red',
+                        action: function () {
+
+
+
+                            var Params = JSON.stringify({
+                                Id: Id
+
+                            });
+
+                            $.ajax({
+                                url: "/Slot/DeleteSlotEnquiry",
+                                type: 'POST',
+                                dataType: "json",
+                                data: Params,
+                                contentType: "application/json",
+                                success: function (response) {
+
+
+                                    ShowinnerData($("#innerslotid").val());
+
+
+                                }
+                            });
+
+                        }
+                    },
+                    close: {
+                        text: 'NO',
+                        action: function () { }
+                    }
+                }
+            });
+        }
+    </script>
+
+}

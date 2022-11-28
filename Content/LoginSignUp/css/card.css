@@ -1,0 +1,142 @@
+
+span.price-one {
+    font-size: 24px;
+    font-weight: 600;
+    color: #605f60;
+}
+.box-main h3 {
+    font-size: 16px;
+}
+
+a.btn {
+    text-decoration: underline;
+    color: #000;
+    font-size: 16px;
+    transition: 0.4s ease-in-out;
+    float: right;
+    margin-top: 22px;
+}
+a.btn:hover {text-decoration:underline;}
+.pricing span {
+    font-size: 13px;
+    text-align: right;
+    float: right;
+}
+.box-main {
+    width: 290px;
+    border: 1px solid #737373;
+    display: inline-block;
+    text-align: center;
+    padding: 20px 18px;
+    background: #fafafa;
+     box-shadow: 0 0 10px rgb(0 0 0/27%);
+    height: 360px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.pricing {
+    margin-top: 15px;
+    display: block;
+}
+body {
+    background: aliceblue;
+}
+.owl-dots {
+    display: none;
+}
+span.price-one svg, span.price-two svg {
+    color: #337ab7;
+    font-size: 24px;
+    margin-left: 0px;
+    /* vertical-align: inherit; */
+}
+span.price-two svg {
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.main .owl-nav {
+    position: absolute;
+    top: -60px;
+    right: 39px;
+    font-size: 30px;
+    color: #fff;
+}
+.text.sub-txt {
+    margin-bottom: 55px;
+}
+.owl-theme .owl-nav [class*=owl-]:hover {
+    background: #86979100;
+    color: #0e0ed0;
+    text-decoration: none;
+}
+a.card-icn {
+    display: block;
+    margin: 10px auto;
+   font-size: 45px;
+   
+}
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+.chkbx {
+    width: 100%;
+    float: left;
+    display: block;
+    text-align: left;
+}
+.box-main h3 {
+    margin: 0px 0px 28px 0px;
+    text-align: left;
+    font-weight: 600;
+}
+
+
+button.owl-prev::before  {
+    content: '';
+    width: 30px;
+    height: 30px;
+    background: #197cd4;
+    position: absolute;
+    border-radius: 50%;
+    top: 5px;
+    left: -29px;
+    z-index: -99;
+}
+
+button.owl-next::before{
+    
+     content: '';
+    width: 30px;
+    height: 30px;
+    background: #197cd4;
+    position: absolute;
+    border-radius: 50%;
+    top: 5px;
+    left: 11px;
+    z-index: -99;
+
+}
+
+button.owl-prev span {
+    position: absolute;
+    left: -19px;
+    top: -3px;
+    z-index: 999;
+    color: white;
+}
+button.owl-next span {
+    position: absolute;
+    left: 21px;
+    top: -2px;
+    color: white;
+}
+
+.txtt h4 {
+    font-size: 13px;
+    text-align: left;
+}
+.txtt {
+    width: 100%;
+}

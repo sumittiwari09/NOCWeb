@@ -1,0 +1,155 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var data = ViewBag.Payments as List<MyPayment>;
+
+}
+@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+}
+
+<style>
+
+    .shdow {
+        border-radius: 19px;
+        /*box-shadow: inset 3px 3px 12px 0px rgba(130,130,130,1);*/
+        box-shadow: 3px 3px 12px 0px rgba(130,130,130,1);
+    }
+
+    .heder {
+        font-size: 16px;
+        font-weight: 500;
+        background: linear-gradient(to right, #f32170, #ff6b08, #cf23cf, #eedd44);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        /* text-shadow: 0px 0px 25px #525252;*/
+    }
+
+    .tblrow {
+        color: black;
+        font-size: 14px;
+        text-align: left;
+        font-weight: 600
+    }
+
+    .tblitemrow {
+        text-align: left;
+        font-size: 16px
+    }
+
+    hr {
+        border-top: 1px solid #99b5ec;
+        width: 39em;
+    }
+</style>
+
+<!-- Page-Title -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
+                    <li class="breadcrumb-item active">My Payment</li>
+                </ol>
+            </div>
+            @*<h4 class="page-title">@( data.Count<1? "My Payment" : "My Payments")</h4>*@
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row mt-4 shdow" id="divChangeView" style="display: inline-block;font-size: 18px;margin-left: 10px;background: white;padding-right: 12px;padding-left: 12px;padding: 5px 15px;border-radius: 6px;">
+
+    <span data-toggle='tooltip' data-placement='top' title='List View' id="listview"><i class="fas fa-list-ul"></i></span>
+    &nbsp;
+    <span data-toggle='tooltip' data-placement='top' title='Card View' id="cardView"> <i class="far fa-clone" style="margin-right:10px"></i></span>
+
+</div>
+
+
+<div class="row mt-4" id="dealdata">
+
+</div>
+<script src="~/Content/LoginSignUp/js/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.min.js"></script>
+@section scripts {
+    <!-- Required datatable js -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables/jszip.min.js"></script>
+    <script src="~/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js"></script>
+}
+
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var displaydata = 10;
+    var partyID = "";
+    $(document).ready(function () {
+
+        $('#divChangeView').hover(function () {
+            $('#listview').css('cursor', 'pointer');
+            $('#cardView').css('cursor', 'pointer');
+        });
+
+        $('#listview').click(function () {
+            $('#divCardView').css('display', 'none');
+            $('#divListView').css('display', 'block');
+        });
+
+        $('#cardView').click(function () {
+            $('#divListView').css('display', 'none');
+            $('#divCardView').css('display', 'flex');
+        });
+
+        var currentPage = 0;
+
+        loadPageData(currentPage);
+        $(window).scroll(function () {
+            var i = $(document).height()
+            var j = $(window).scrollTop() + $(window).height();
+            if (i - j < 1) {
+                currentPage += 1;
+                loadPageData(currentPage);
+            }
+        });
+    });
+
+    function loadPageData(currentPage) {
+        var pageSize = displaydata;
+
+        $.ajax({
+            url: GetglobalDomain() + "/MyPayments/GetPayments?pageNumber=" + currentPage + "&pageSize=" + pageSize,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+                if (currentPage == 0) {
+                    $("#dealdata").html(response);
+                }
+                else {
+                    $("#dealdata").append(response);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+

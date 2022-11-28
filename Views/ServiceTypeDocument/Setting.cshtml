@@ -1,0 +1,761 @@
+﻿@using NewZapures_V2.Models
+
+@model List<Partial.setting>
+    @{
+    ViewBag.Title = "Setting Master";
+    List<Partial.CustomEnum>
+        customEnumslist = new List<Partial.CustomEnum>
+            ();
+            if (ViewBag.CustomEnumlist != null)
+            {
+            customEnumslist = (List<Partial.CustomEnum>
+                )ViewBag.CustomEnumlist;
+                }
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                }
+
+                @section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+                <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+                <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+                <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+                <link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+                <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+                }
+                <style>
+                    .sticky {
+                        position: sticky;
+                        top: 0;
+                        z-index: 1;
+                    }
+
+                    .modal {
+                        -webkit-border-radius: 12px !important;
+                        -moz-border-radius: 12px !important;
+                        border-radius: 12px !important;
+                    }
+
+                    .roundedCorners {
+                        border-radius: 33px !important;
+                    }
+
+                    .pull-right {
+                        position: absolute;
+                        top: 4px;
+                        right: 18px;
+                        border-radius: 30px;
+                        width: 55px;
+                    }
+
+                    .btnAdd {
+                        margin-right: 33px;
+                        border-radius: 30px;
+                        width: 55px;
+                    }
+
+                    .cardHeight {
+                        height: 351px;
+                        overflow-y: scroll;
+                        margin-bottom: 10px;
+                    }
+
+                        .cardHeight::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                    /* Hide scrollbar for IE, Edge and Firefox */
+                    .cardHeight {
+                        -ms-overflow-style: none; /* IE and Edge */
+                        scrollbar-width: none; /* Firefox */
+                    }
+
+                    .modal::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    /* Hide scrollbar for IE, Edge and Firefox */
+                    .modal {
+                        -ms-overflow-style: none; /* IE and Edge */
+                        scrollbar-width: none; /* Firefox */
+                    }
+                </style>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-right">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">CMS</li>
+
+                                    <li class="breadcrumb-item active">Setting</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">@ViewBag.Title</h4>
+                        </div><!--end page-title-box-->
+                    </div><!--end col-->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row mb-4">
+                            <div class="col-lg-12 text-right">
+                                <button class="btn btn-primary float-right" id="btnAddnew" data-toggle="modal" data-target="#settingMaster" style="color:white"><i class="mdi mdi-plus-circle-outline mr-1"></i> Add New Setting</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @{
+                            foreach (var item in Model)
+                            {
+                            var data = customEnumslist.Where(p => p.EnumNo == item.Id).OrderBy(p => p.Id);
+                            <input type="hidden" id="txt_@item.Id" value="@item.Name" />
+                            <div class="col-lg-6 example">
+                                <div class="card cardHeight">
+                                    <div class="sticky">
+                                        <div style="display: inline-flex;place-content: space-between;width: 100%;background: #f1f5fa;">
+                                            <h6 class="card-header "> @item.Name</h6>
+                                            <button id="lnk_@item.Name" class="btn btn-primary btn-sm nomargin Addclass col-lg-1 btnAdd" data-id="@item.Name" data-linkid="@item.Id"><i class="fas fa-plus" style="font-size: 20px;"></i></button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <table class="table table-striped" id="table_@item.Name">
+                                            <tbody id="tbody_@item.Name">
+                                                @{
+
+                                                foreach (var item1 in data)
+                                                {
+                                                <tr class="col-lg-12 col-12" id="delete_@item1.CustomEnumId">
+                                                    <td class="col-lg-10 col-10">
+                                                        @*<input value="@item1.SentenceText" data-id="@item1.CustomSentenceId" data-toggle="popover" title="" data-placement="left" data-content="<button  class='btn btn-primary btn-sm nomargin delete' onclick=deletedata(@item1.CustomSentenceId,@item.CustomSentenceMasterId)   title=''>Delete</button>" class="boxinput" type="text" id="txt_@(item1.CustomSentenceId)" />*@
+                                                        <input value="@item1.Name" data-id="@item1.CustomEnumId" data-toggle="popover" title="" data-placement="left" class="col-lg-12 col-12 boxinput form-control" type="text" id="txt_@(item1.CustomEnumId)" />
+
+                                                    </td>
+                                                    <td class="col-lg-2 col-2 ">
+                                                        <button class="btn btn-danger btn-xs padding5 pull-right delete col-lg-5" data-id="@item.Name-@item1.CustomEnumId" title="Delete">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="settingMaster" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="SettingMaster" aria-hidden="true">
+                        <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="settingMaster">All Settings</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" id="btnCloseMsettingMaster">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <input type="text" class="form-control col-8" id="txtSearchSettings" placeholder="Search Setting">
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-primary float-right" id="btnOpenAddPopup" data-toggle="modal" data-target="#exampleModal1" style="color:white"><i class="mdi mdi-plus-circle-outline mr-1"></i> Add New</button>
+                                        </div>
+                                    </div>
+                                    <div style="height: 660px;overflow-y: scroll;">
+                                        <table class="table table-bordered table-hover table-striped" id="tblsettings">
+                                            <thead>
+                                                <tr>
+                                                    <th hidden>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--<div class="modal-footer roundedCorners">-->
+                                @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                                <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+
+                                @*<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>*@
+                                <!--</div>-->
+
+                                <button type="button" class="btn btn-secondary" id="btnOpenEditPopup" style="display:none" data-toggle="modal" data-target="#exampleModal"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                    <button type="button" class="btn-close" data-toggle="#settingMaster" data-dismiss="modal" aria-label="Close" data-target="#settingMaster" id="btnCloseMEdit"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3" style="display:none">
+                                            <label for="txtsettingId" class="col-form-label">Setting Id :</label>
+                                            <input type="text" class="form-control" id="txtsettingId">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="txtsettingName" class="col-form-label">Setting Name :</label>
+                                            <input type="text" class="form-control" id="txtsettingName" autocomplete="off">
+                                        </div>
+
+                                        <div class="mb-3" id="divSettingStatus">
+                                            <label for="message-text" class="col-form-label">Status:</label>
+                                            <span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" /><label class="custom-control-label"></label></span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="UpdateDetails()">Update Details</button>
+                                    <button type="button" class="btn btn-primary" id="btnOpenSettingMasterPopup" style="display:none" data-target="#settingMaster">Update Details</button>
+                                    @*<button type="button" class="btn btn-primary">Send message</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" data-backdrop="static" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">Add New Settting</h5>
+                                    <button type="button" class="btn-close" data-toggle="#settingMaster" data-dismiss="modal" aria-label="Close" data-target="#settingMaster" id="btnCloseMEdit1"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="txtsettingNameAdd" class="col-form-label">Setting Name :</label>
+                                            <input type="text" class="form-control" id="txtsettingNameAdd" autocomplete="off">
+                                        </div>
+
+                                        <div class="mb-3" id="divSettingStatusAdd">
+                                            <label for="message-text" class="col-form-label">Status:</label>
+                                            <span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" id="sett_1" /><label class="custom-control-label" for="sett_1"></label></span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="SaveDetails()">Save Details</button>
+                                    <button type="button" class="btn btn-primary" id="btnOpenSettingMasterPopup" style="display:none" data-dismiss="modal" data-toggle="modal" data-target="#settingMaster">Update Details</button>
+                                    @*<button type="button" class="btn btn-primary">Send message</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @section Scripts {
+                @*@Scripts.Render("~/bundles/datatablejs")*@
+
+                <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+                @*
+                <script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+                <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+                <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+                <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+                <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+                <script src="~/scripts/pages/jquery.sweet-alert.init.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+                <script type="text/javascript">
+                    $(".Addclass").click(function () {
+                        var id = $(this).data("linkid");
+                        var type = $(this).data("id");
+                        var Params = JSON.stringify({
+                            Type: id
+                        });
+                        $.ajax({
+                            url: "@Url.Action("InsertSubjectLines", "Admin")",
+                            type: 'POST',
+                            dataType: "json",
+                            data: Params,
+                            contentType: "application/json",
+                            success: function (response) {
+                                var AddedId = Number(response.Data);
+                                //                alert("Hello");
+                                //                debugger;
+                                //
+                                //                var ids = 'delete_' + AddedId;
+
+                                //                var strHTML = "<tr  id='" + ids + "'><td ><input data-id='" + AddedId + "' class=' boxinput' type='text' id='txt_" + AddedId + "' /></td>";
+                                //                strHTML += "<td> <button class='btn btn-danger btn-xs padding5 pull-right delete'  data-id='"+type+'-'+AddedId+"'  title='Delete'>";
+                                //strHTML  +="<i class='zmdi zmdi-delete'></i> </button> </tr>";
+
+                                //                $("#tbody_"+type).append(strHTML);
+                                ////BindSubjectLineChangeEvent();
+                                ////BindCategoryChangeEvent();
+                                ////BindDeleteRow();
+                                if (AddedId > 0) {
+                                    location.reload();
+                                }
+                            }
+                        });
+
+                        return false;
+
+                    });
+
+                    $('#btnCloseMsettingMaster').click(function () {
+
+                        location.reload();
+                    })
+
+
+                    $("#btnAddnew").click(function () {
+                        bindAllData();
+                        clearAll();
+                    });
+                    $("#txtSearchSettings").on('input', function () {
+                        /*    console.log($(this).val());*/
+
+                        SearchSetting($(this).val())
+
+                    });
+
+                    $(document).ready(function () {
+                        var currentRequest = null;
+                        $(".delete").click(function () {
+                            debugger;
+                            var data = $(this).data("id");
+                            var deletedata = data.split('-');
+
+                            var k = deletedata[0];
+                            var i = deletedata[1];
+
+                            var deleteid = i;
+
+                            $.confirm({
+                                title: 'Remove Confirmation',
+                                content: 'Are you sure to remove record',
+                                type: 'red',
+                                typeAnimated: true,
+                                animation: 'rotate',
+                                closeAnimation: 'scale',
+                                buttons: {
+                                    Confirm: {
+                                        text: 'YES',
+                                        btnClass: 'btn-red',
+                                        action: function () {
+
+
+
+                                            var Params = JSON.stringify({
+                                                deteleId: i
+
+                                            });
+                                            debugger;
+                                            $.ajax({
+                                                url: "@Url.Action("DeleteCustomSentence", "Admin")",
+                                                type: 'POST',
+                                                dataType: "json",
+                                                data: Params,
+                                                contentType: "application/json",
+                                                success: function (response) {
+                                                    debugger;
+
+                                                    if (response.IsValid = 1) {
+                                                        debugger;
+                                                        //if (j == 36) {
+                                                        //  var row = "#Hotel #tbody_HotelSubCategory" + " #delete_" + i;
+                                                        //var row = "#table_" + k + "  #tbody_" + k + " #delete_" + i;
+                                                        //$(row).remove();
+                                                        Swal.fire({
+                                                            position: 'center',
+                                                            icon: 'success',
+                                                            title: 'Delete Successfully',
+                                                            showConfirmButton: false,
+                                                            timer: 3000
+                                                        })
+                                                        // }
+                                                        location.reload();
+                                                        //  GenerateSurveyQuestions(Surveyid);
+                                                    }
+
+
+                                                }
+                                            });
+
+                                        }
+                                    },
+                                    close: {
+                                        text: 'NO',
+                                        action: function () { }
+                                    }
+                                }
+                            });
+                            return false;
+                        });
+
+                        $(".boxinput").on("blur", function () {
+
+                            var Params = JSON.stringify({
+                                Id: $(this).data("id"),
+                                LineText: $(this).val()
+                            });
+
+                            $.ajax({
+                                url: "@Url.Action("UpdateSubjectLines", "Admin")",
+                                type: 'POST',
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: Params,
+
+                                success: function (response) {
+
+                                },
+                                error: function (e) {
+                                }
+                            });
+
+                        });
+                    });
+
+                    function bindAllData() {
+                        var param = {
+                            Id: "0"
+                        }
+
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "@Url.Action("GetAllSettings", "Home")",
+                            dataType: 'json',
+                            type: 'Post',
+                            cache: false,
+                            data: JSON.stringify(param),
+                            success: function (data) {
+                                //console.log(data.Data);
+                                var settingsData = data.Data;
+                                var tableRow = "";
+                                if (settingsData.length > 0) {
+                                    settingsData.forEach((data) => {
+                                        //console.log(data)
+                                        var settingID = `setting_${data.Id}`;
+                                        var isActive = "";
+                                        if (data.IsActive == 1)
+                                            isActive = `<span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" id=${settingID} checked><label class="custom-control-label" for=${settingID}></label></span>`
+                                        else
+                                            isActive = `<span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" id=${settingID}><label class="custom-control-label" for=${settingID}></label></span>`
+
+                                        tableRow += `<tr><td hidden>${data.Id}</td><td>${data.SettingName}</td><td>${isActive}</td><td><button type="button" class="btn btn-sm" onclick='setDetailsForItem(${data.Id})'><i class='fa fa-1x fa-pencil-alt' style='color:grey'></i></button></td></tr>`
+                                    });
+                                }
+                                $('#tblsettings tbody').html('');
+                                $('#tblsettings tbody').html(tableRow);
+                            },
+                            error: function (d) {
+                                console.log(d);
+                            }
+                        });
+                    }
+
+                    function SaveDetails() {
+
+                        var Name = $('#exampleModal1 .modal-body #txtsettingNameAdd').val();
+                        var status = $('#exampleModal1 .modal-body [id^=sett_]').is(':checked');
+
+                        status = (status == true ? 1 : 0);
+
+                        if (Name.length <= 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: `Name Required...`,
+                                allowOutsideClick: false,
+                                showCloseButton: true,
+                            })
+                        } else {
+                            var param = {
+                                Id: 0,
+                                SettingName: Name,
+                                IsActive: parseInt(status),
+                                Type: "Add"
+                            }
+
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                url: "@Url.Action("UpdateSetting", "Home")",
+                                dataType: 'json',
+                                type: 'Post',
+                                cache: false,
+                                data: JSON.stringify(param),
+                                success: function (data) {
+                                    var icon = data.Message.includes("Not") ? "warning" : "success";
+                                    if (data.StatusCode == 1) {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: `${icon}`,
+                                            title: `${data.Message}`,
+                                            allowOutsideClick: false,
+                                            showCloseButton: true,
+
+                                        })
+
+                                        if (!data.Message.includes("Not")) {
+                                            setTimeout(function () {
+                                                bindAllData();
+                                                $('#btnCloseMEdit1').click();
+                                                //$('#btnOpenSettingMasterPopup').click();
+                                            }, 1400)
+                                        }
+                                    }
+                                },
+                                error: function (d) {
+                                    console.log(d);
+                                }
+                            });
+                            clearAll();
+                        }
+                    }
+
+                    function SearchSetting(searchWhat) {
+                        var param = {
+                            Id: 0,
+                            SettingName: searchWhat,
+                            IsActive: parseInt(0),
+                            Type: "Search"
+                        }
+
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "@Url.Action("UpdateSetting", "Home")",
+                            dataType: 'json',
+                            type: 'Post',
+                            cache: false,
+                            data: JSON.stringify(param),
+                            success: function (data) {
+                                console.log('searched Data');
+                                console.log(data);
+
+                                $('#tblsettings tbody').html('');
+                                var settingsData = data.Data;
+                                var tableRow = "";
+                                if (settingsData.length > 0) {
+                                    settingsData.forEach((data) => {
+                                        //console.log(data)
+                                        var settingID = `setting_${data.Id}`;
+                                        var isActive = "";
+                                        if (data.IsActive == 1)
+                                            isActive = `<span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" id=${settingID} checked><label class="custom-control-label" for=${settingID}></label></span>`
+                                        else
+                                            isActive = `<span class="custom-control custom-switch switch-primary"><input type="checkbox" class="custom-control-input" id=${settingID}><label class="custom-control-label" for=${settingID}></label></span>`
+
+                                        tableRow += `<tr><td hidden>${data.Id}</td><td>${data.SettingName}</td><td>${isActive}</td><td><button type="button" class="btn btn-sm" onclick='setDetailsForItem(${data.Id})'><i class='fa fa-1x fa-pencil-alt' style='color:grey'></i></button>&nbsp;&nbsp;<button type="button" class="btn btn-sm" onclick='DeleteSetting(${data.Id})'><i class='fa fa-1x fa-trash-alt' style='color:red'></i></button></td></tr>`
+                                    });
+                                    $('#tblsettings tbody').html(tableRow);
+                                }
+                                else if (searchWhat.length <= 0) {
+                                    bindAllData();
+                                }
+                                else {
+                                    tableRow += `<tr><td colspan="4" style="text-align:center">No Data Available</td></tr>`
+                                    $('#tblsettings tbody').html(tableRow);
+                                }
+
+                            },
+                            error: function (d) {
+                                console.log(d);
+                            }
+                        });
+                    }
+
+                    function setDetailsForItem(settingID) {
+                        var param = {
+                            Id: settingID
+                        }
+
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "@Url.Action("GetAllSettings", "Home")",
+                            dataType: 'json',
+                            type: 'Post',
+                            cache: false,
+                            data: JSON.stringify(param),
+                            success: function (data) {
+                                console.log(data.Data);
+                                $('#btnOpenEditPopup').click();
+
+
+                                var settingName = data.Data[0].SettingName;
+                                var settingID = data.Data[0].Id;
+                                var status = data.Data[0].IsActive;
+
+                                $('#exampleModal .modal-title').html('');
+                                $('#exampleModal .modal-title').html(`Edit Details For : ${settingName}`);
+
+                                $('#exampleModal .modal-body #txtsettingName').val('');
+                                $('#exampleModal .modal-body #txtsettingName').val(settingName);
+
+                                $('#exampleModal .modal-body #txtsettingId').val('');
+                                $('#exampleModal .modal-body #txtsettingId').val(settingID);
+
+                                var statusId = 'sett_' + settingID;
+
+                                $('#exampleModal .modal-body #divSettingStatus input[type=checkbox]').removeAttr("Id");
+                                $('#exampleModal .modal-body #divSettingStatus input[type=checkbox]').attr("Id", statusId);
+                                $('#exampleModal .modal-body #divSettingStatus label').removeAttr("for");
+                                $('#exampleModal .modal-body #divSettingStatus label').attr("for", statusId);
+
+                                if (status == 1) {
+                                    $('#' + statusId).attr('checked', 'true');
+                                }
+                                else {
+                                    $('#' + statusId).removeAttr('checked');
+                                }
+                            },
+                            error: function (d) {
+                                console.log(d);
+                            }
+                        });
+                    }
+
+                    function UpdateDetails() {
+
+                        var ID = $('#exampleModal .modal-body #txtsettingId').val();
+                        var Name = $('#exampleModal .modal-body #txtsettingName').val();
+                        var status = $('#exampleModal .modal-body [id^=sett_]').is(':checked');
+
+                        status = (status == true ? 1 : 0);
+
+                        if (Name.length <= 0) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: `Name Required...`,
+                                allowOutsideClick: false,
+                                showCloseButton: true,
+                            })
+                        } else {
+                            var param = {
+                                Id: parseInt(ID),
+                                SettingName: Name,
+                                IsActive: parseInt(status),
+                                Type: "Edit"
+                            }
+
+                            $.ajax({
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                url: "@Url.Action("UpdateSetting", "Home")",
+                                dataType: 'json',
+                                type: 'Post',
+                                cache: false,
+                                data: JSON.stringify(param),
+                                success: function (data) {
+
+                                    var icon = data.Message.includes("Not") ? "warning" : "success";
+
+                                    if (data.StatusCode == 1) {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: `${icon}`,
+                                            title: `${data.Message}`,
+                                            allowOutsideClick: false,
+                                            showCloseButton: true,
+                                        })
+
+                                        if (!data.Message.includes("Not")) {
+                                            setTimeout(function () {
+                                                bindAllData();
+                                                $('#btnCloseMEdit').click();
+                                            }, 1400)
+                                        }
+                                    }
+                                },
+                                error: function (d) {
+                                    console.log(d);
+                                }
+                            });
+
+                        }
+                    }
+                    function DeleteSetting(Id) {
+
+                        var ID = Id;
+
+                        /*  console.log(ID, Name, status);*/
+
+                        var param = {
+                            Id: parseInt(ID),
+                            SettingName: "",
+                            IsActive: parseInt(0),
+                            Type: "Delete"
+                        }
+
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "@Url.Action("UpdateSetting", "Home")",
+                            dataType: 'json',
+                            type: 'Post',
+                            cache: false,
+                            data: JSON.stringify(param),
+                            success: function (data) {
+
+                                if (data.StatusCode == 1) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: `${data.Message}`,
+                                        allowOutsideClick: false,
+                                        showCloseButton: true,
+                                    })
+                                    $("#txtSearchSettings").val('');
+                                    bindAllData();
+                                }
+                            },
+                            error: function (d) {
+                                console.log(d);
+                            }
+                        });
+                        //clearAll();
+                    }
+
+                    function clearAll() {
+                        $('#exampleModal .modal-title').html('');
+                        $('#exampleModal .modal-body #txtsettingName').val('');
+                        $('#exampleModal .modal-body #txtsettingId').val('');
+
+                        //$('#exampleModal1 .modal-title').html('');
+                        $('#exampleModal1 .modal-body #txtsettingName').val('');
+                        $('#exampleModal1 .modal-body #txtsettingId').val('');
+                    }
+                </script>
+                }

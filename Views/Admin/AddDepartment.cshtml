@@ -1,0 +1,418 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Manage Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var departments = ViewBag.departmentList as List<AddDepartment>;
+}
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12 row" style="margin-left: -12px;">
+                        <div class="form-group col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px"><b>Department Name</b></label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtDepartment" name="DepartmentName">
+                                <input type="hidden" id="hddtxtDepartment">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-offset-6 col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">&nbsp;</label>
+                            <div>
+                                <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnSave" onclick="SaveDepartment();">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-lg-12">
+
+                        <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+
+                                <tr>
+                                    <th>Department ID</th>
+                                    <th>Department Name</th>
+                                    <th>Created On</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var i = 1;
+                                    foreach (var item in departments)
+                                    {
+                                        <tr id="tr_@item.DepartmentID">
+                                            <td>@i</td>
+                                            <td>
+                                                @item.DepartmentName
+                                            </td>
+                                            <td>
+                                                @item.CreatedDate
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    @{if (item.Status == "1")
+                                                        {
+                                                            <input class="form-check-input ChangeStatus" type="checkbox" data-id="DepartmentMaster-@item.DepartmentID" name="@item.DepartmentID" value="@item.Status" checked>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="form-check-input ChangeStatus" type="checkbox" data-id="DepartmentMaster-@item.DepartmentID" name="@item.DepartmentID" value="@item.Status">
+
+                                                        }
+                                                    }
+
+                                                </div>
+
+
+
+
+                                            </td>
+                                            <td>
+
+                                                @{
+                                                    <a id="@item.DepartmentID" class="fas fa-edit text-info font-16" name="2" data-id="@item.DepartmentID" title="Edit" onclick="EditDepartment(@item.DepartmentID);"></a>
+                                                    <a id="btnDeactive_@item.DepartmentID" class="Deleteclass" name="2" data-id="@item.DepartmentID" onclick="DeleteData(@item.DepartmentID)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+
+
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(".ChangeStatus").change(function () {
+            debugger;
+            var id = $(this).data("id");
+            var item = id.split('-');
+            var type = parseInt($(this).val());
+            if (type == 0) {
+                type = 1;
+            }
+            else {
+                type = 0;
+            }
+            var Params = JSON.stringify(
+                {
+                    TableId: item[0],
+                    type: type,
+                    Id: item[1]
+                });
+
+            $.ajax({
+                url: GetglobalDomain() + "/Role/ChangeStatus",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    debugger;
+                    if (response.isvalid == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Status Changes Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        if (type == 1) {
+                            $(this).val('0');
+                        }
+                        else {
+                            $(this).val('1');
+                        }
+
+                    }
+                }
+            });
+
+        });
+        function DeleteData(Id) {
+            var Id = Id;
+
+            /*  var TypeId = $(this).attr("name");*/
+            $.confirm({
+
+                title: 'Remove Confirmation',
+                content: 'Are you sure to remove record',
+                type: 'red',
+                typeAnimated: true,
+                animation: 'rotate',
+                closeAnimation: 'scale',
+                buttons: {
+                    Confirm: {
+                        text: 'YES',
+                        btnClass: 'btn-red',
+                        action: function () {
+
+
+
+                            var Params = JSON.stringify({
+                                TableId: 'DepartmentMaster',
+                                Id: Id,
+                                type: 2
+
+
+                            });
+                            /* ShowBALoader("LoaderBASinup1");*/
+                            $.ajax({
+                                url: GetglobalDomain() + "/Role/ChangeStatus",
+                                type: 'POST',
+                                dataType: "json",
+                                data: Params,
+                                contentType: "application/json",
+                                success: function (response) {
+
+
+                                    debugger;
+                                    if (response.IsValid = 1) {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'success',
+                                            title: 'Delete Successfully',
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        })
+                                        $("#tr_" + Id).remove();
+                                    }
+
+                                },
+
+                            });
+
+                        }
+                    },
+                    close: {
+                        text: 'NO',
+                        action: function () { }
+                    }
+                }
+            });
+        }
+    </script>
+}
+
+
+
+<script>
+    function SaveDepartment() {
+
+        var type = $('#btnSave').text();
+        var departmentID = $('#hddtxtDepartment').val();
+
+        console.log('Department', departmentID);
+        var Model = {
+            DepartmentID: (departmentID == "" ? 0 : departmentID),
+            DepartmentName: $('#txtDepartment').val(),
+            Type: (type == 'Save' ? 'Insert' : 'Update')
+        }
+        var d = checkValidate();
+        //console.log(d);
+        //console.log(JSON.stringify(Model));
+
+        if (d) {
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain()+ "/Admin/AddDepartment",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+
+                        if (data.Message.includes('Already Exists')) {
+                            data.Message = data.Message.replace("!", " Not Saved...!");
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'warning',
+                                title: data.Message,
+                                allowOutsideClick: false,
+                                showCloseButton: false,
+                                showConfirmButton: true,
+                            })
+                        }
+                        else {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: data.Message,
+                                allowOutsideClick: false,
+                                showCloseButton: false,
+                                showConfirmButton: false,
+                                timer: 2000,
+                            })
+                        }
+
+                        $('#txtDepartment').val('');
+                        DisableDelete(1);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000)
+                    }
+                    clearAll();
+                },
+                error: function (d) {
+                    console.log(d);
+                    clearAll();
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+
+    function EditDepartment(deptId) {
+        var Model = {
+            DepartmentID: deptId,
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Admin/EditDepartment",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+                console.log('ajax');
+                //console.log(data);
+
+                if (data.StatusCode == 1) {
+
+                    var dataDept = data.Data[0].DepartmentName;
+                    var dataDeptId = data.Data[0].DepartmentID;
+                    console.log(dataDept);
+
+                    $('#txtDepartment').val(dataDept);
+                    $('#hddtxtDepartment').val(dataDeptId);
+
+                    $('#btnSave').html('');
+                    $('#btnSave').html('Update');
+                    DisableDelete(0);
+                }
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+
+            }
+        });
+    }
+
+    function checkValidate() {
+        var status = true;
+
+        var DepartmentName = $('#txtDepartment').val();
+
+        if (DepartmentName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Department Name Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtDepartment').focus();
+            status = false;
+        }
+        return status;
+    }
+
+    function DisableDelete(opacity) {
+        var validate_inputs = document.querySelectorAll('.Deleteclass');
+        validate_inputs.forEach(function (input_valid) {
+
+            $(input_valid).css('opacity', opacity);
+
+        });
+    }
+
+    function clearAll() {
+        $('#hddtxtDepartment').val('');
+        $('#txtDepartment').val('')
+    }
+
+</script>

@@ -1,0 +1,104 @@
+﻿@model NewZapures_V2.Models.PartyMaster
+<div class="card-body">
+
+    @*<p class="text-muted mb-3">User Profile</p>*@
+    <div class="row">
+        <div class="col-lg-6">
+            <h4 class="mt-0 header-title">Company Details</h4>
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                            <input type="text" class="form-control" id="pro-start-date" value="@Model.CompanyContactNo" placeholder="Company Contact Number">
+                        </div><!--end col-->
+                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                            <input type="text" class="form-control" id="pro-end-date"  value="@Model.CompanyEmailId" placeholder="Comapny Email">
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                            <input type="text" class="form-control" id="pro-start-date"  value="@Model.GST" placeholder="GST No.">
+                        </div><!--end col-->
+                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                            <input type="text" class="form-control" id="pro-end-date" placeholder="TAN No.">
+                        </div><!--end col-->
+
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+            </form>  <!--end form-->
+        </div><!--end col-->
+        <div class="col-lg-6">
+
+            <h4 class="mt-0 header-title">
+                Company Address
+
+            </h4>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-start-date">First Name</label>*@
+                        <input type="text" class="form-control" id="COAdd1"  name="COAdd1" value="@Model.COAdd1" placeholder="Flat House No Building Company Appartment">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control"id="COAdd2"  name="COAdd2" value="@Model.COAdd2"  placeholder="Area,Street Sector Village">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control" id="COAdd3"  name="COAdd3" value="@Model.COAdd3"  placeholder="Address Line 3">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control"  id="COLandMark"  name="COLandMark" value="@Model.COLandMark" placeholder="Land Mark">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control" id="COPinCode"  name="COPinCode" value="@Model.COPinCode" placeholder="Pincode">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+        </div>
+    </div><!--end row-->
+    <footer class="form-footer" style="padding: 20px;">
+        <div class="pull-right" style="text-align: end;">
+            <button type="button" class="btn btn-default" id="btnDocument_Back">Back</button>
+            @*@if (Model.IsPortable == true)
+                {*@
+            <button type="submit" class="btn btn-primary" id="btnDocument_Next">Save</button>
+            @*}
+                else
+                {
+                    <button type="submit" class="btn btn-primary" id="btnDocument_Next">Next</button>
+                }*@
+        </div>
+    </footer>
+</div><!--end card-body-->

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Pendingcheque";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.PandingPaymentList> result = ViewData["PendingList"] as List<NewZapures_V2.Models.PandingPaymentList>;
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Pages</a></li>
+                    <li class="breadcrumb-item active">FAQs</li>
+                </ol>
+            </div>
+            <h4 class="page-title">FAQs</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+@*<div class="row">
+    <div class="col-lg-12">*@
+<div class="col-12">
+    <div class="card">
+        @*<div class="card-header panel-default" style="background-color: #cacdd2"> Payment Collection List</div>*@
+        <div class="card-body">
+
+            @*<h4 class="mt-0 header-title">Services</h4>
+                <p class="text-muted mb-3"></p>*@
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12 table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="tech-companies-1" class="table table-striped mb-0">
+                                    <thead class="panel-info">
+                                        <tr style="background-color:#506ee4;color:#fff">
+                                            <th hidden></th>
+                                            <th style="color: #fff">Type</th>
+                                            <th style="color: #fff">OrderNumber</th>
+                                            <th style="color: #fff">Party Name</th>
+                                            <th style="color: #fff">State-City</th>
+                                            @*<th style="color: #fff">Service</th>
+                                                <th style="color: #fff">Devices</th>*@
+                                            <th style="color: #fff">
+                                                Charges
+                                            </th>
+                                            <th style="color: #fff">Cheque Number</th>
+
+                                            <th style="color: #fff">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (result != null)
+                                        {
+                                            foreach (var item in result)
+                                            {
+                                                <tr>
+                                                    <td hidden>@item.OrderId</td>
+                                                    <td>Company</td>
+                                                    <td>@item.PartyId</td>
+                                                    <td>@item.Name</td>
+                                                    <td>Bhopal</td>
+                                                    @*<td>AePS </td>
+                                                        <td>NA</td>*@
+                                                    <td>
+                                                        @item.Charges
+                                                    </td>
+                                                    <td>@item.Transactionamt</td>
+                                                    <td>@item.BalanceAmt</td>
+                                                    <td>
+                                                        <a class="btn btn-primary btn-sm" style="color:#fff" value="Add" data-backdrop="static" data-keyboard="false" data-id="@item.PartyId" data-id2="@item.OrderId" id="btncollectmoney"
+                                                           data-toggle="modal" data-target="#modal-PaymentCollection">Collect Money</a>
+                                                        @*<a href="" title="Collect Money" class="btn btn-sm btn-primary waves-effect waves-light" data-toggle="modal" data-target="#modal-PaymentCollection"><i class="fa fa-user"></i></a>*@
+                                                        @*<button type="button" class="btn btn-sm btn-primary waves-effect waves-light">Collect Money</button>*@
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end card-body-->
+        </div> <!-- end col -->
+    </div><!--end col-->
+</div>
+
+

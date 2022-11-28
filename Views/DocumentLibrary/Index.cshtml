@@ -1,0 +1,120 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Document Library";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var companyType = ViewBag.companyType as List<Dropdown>;
+    var documentList = ViewBag.documentList as List<DocumentLibraryMaster>;
+}
+
+@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+}
+<style>
+    .sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Document Library</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Select Company Type</label>
+
+                            <select class="form-control singleselect" id="Companytype">
+                                <option value="0" role=separator>Select Company Type</option>
+                                @{
+                                    if (companyType != null)
+                                    {
+                                        foreach (var item in companyType)
+                                        {
+                                            <option value=@item.Id>@item.Text.Trim()</option>
+                                        }
+                                    }
+
+                                }
+                            </select>
+
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+
+                <div class="row" id="tbldocumentList" style="display:none">
+
+                </div>
+
+
+
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->
+<script src="~/Content/LoginSignUp/js/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script>
+
+
+    //$('#selectAll').click(function (e) {
+    //    $(this).closest('table').find('td [id^=chkb]').prop('checked', this.checked);
+    //});
+
+    //$('#MandatoryAll').click(function (e) {
+    //    $(this).closest('table').find('td [id^=customSwitchPrimary]').prop('checked', this.checked);
+    //});
+
+    $(".singleselect").select2();
+    $('#Companytype').change(function () {
+        var companyId = $(this).val();
+
+        if (companyId > 0) {
+            $('#tbldocumentList').css('display', 'block');
+            $('#saveButton').css('display', 'block');
+           //$(this).attr("disabled", true);
+
+            $.ajax({
+                url: GetglobalDomain() + "/DocumentLibrary/GetDocuments?DocumentList=DocumentList&companyId=" + companyId,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+                    $("#tbldocumentList").html('');
+                    $("#tbldocumentList").html(response);
+                }
+            });
+
+
+        }
+        else {
+            $('#Companytype').val(0);
+            $('#tbldocumentList').css('display', 'none');
+            $('#saveButton').css('display', 'none');
+        }
+    });
+
+
+</script>

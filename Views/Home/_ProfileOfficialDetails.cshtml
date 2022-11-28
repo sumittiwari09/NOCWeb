@@ -1,0 +1,47 @@
+﻿@using NewZapures_V2.Models
+@model PartyMaster
+    @{    var GetTypelist = ZapurseCommonlist.GetTypelist();
+            }
+<div class="card-body">
+    <h4 class="mt-0 header-title">Official Details</h4>
+    @*<p class="text-muted mb-3">User Profile</p>*@
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                <label for="pro-start-date">User Type</label>
+                @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type">*@
+                @*<select class="singleselect" name="Type" id="Type" disabled required>*@
+                   
+                    @{ foreach (var item in GetTypelist)
+                        {
+                            if(Model != null && Model.Type == item.Id)
+                {
+                                    <input type="text" class="form-control" id="pro-start-date" placeholder="User Type" value="@item.Text" readonly>
+                }
+                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                        }
+                    }
+                @*</select>*@
+                
+            </div><!--end col-->
+            <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                <label for="pro-end-date">User Role</label>
+                <input type="text" class="form-control" id="pro-end-date" placeholder="User Role">
+            </div><!--end col-->
+
+        </div><!--end row-->
+    </div><!--end form-group-->
+    <!--<footer class="form-footer" style="padding: 20px;">
+        <div class="pull-right" style="text-align: end;">
+            <button type="button" class="btn btn-default" id="btnDocument_Back">Back</button>-->
+            @*@if (Model.IsPortable == true)
+                {*@
+            <!--<button type="submit" class="btn btn-primary" id="btnDocument_Next">Save</button>-->
+            @*}
+                else
+                {
+                    <button type="submit" class="btn btn-primary" id="btnDocument_Next">Next</button>
+                }*@
+        <!--</div>
+    </footer>-->
+</div><!--end card-body-->

@@ -1,0 +1,392 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    @*<link rel="stylesheet" href="../zap-dashbaord/vendor/bootstrap/css/bootstrap.min.css" />*@
+    <link  rel="stylesheet" href="~/Content/DashboardCss/vendor/bootstrap/css/bootstrap-grid.rtl.min.css" />
+    @*<link href="../zap-dashbaord/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">*@
+    <link href="~/Content/DashboardCss/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+    @*<link href="./css/style.css" rel="stylesheet">*@
+    <link href="~/Content/DashboardCss/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Zapures</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Dashboard</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <main id="main" class="main">
+                @*<div class="pagetitle">
+                        <h1>Dashboard</h1>
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            </ol>
+                        </nav>
+                    </div>*@
+                <section class="section dashboard ">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-xxl-3 col-md-3">
+                                    <div class="card info-card sales-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">AePS</h5>
+                                            <div class="d-flex align-items-center">
+                                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-cart"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>Rs 2,00,000</h6>
+                                                    <span class="text-muted vw-detail"><input type="button" value="View Details"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-md-3">
+                                    <div class="card info-card sales-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">DMT</h5>
+                                            <div class="d-flex align-items-center">
+                                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-cart"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>Rs 1,90,000</h6>
+                                                    <span class="text-muted vw-detail"><input type="button" value="View Details"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-md-3">
+                                    <div class="card info-card sales-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Recharge </h5>
+                                            <div class="d-flex align-items-center">
+                                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-cart"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>Rs 35,000</h6>
+                                                    <span class="text-muted vw-detail"><input type="button" value="View Details"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-md-3">
+                                    <div class="card info-card sales-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">My Profit</h5>
+                                            <div class="d-flex align-items-center">
+                                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-cart"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>Rs 5,000</h6>
+                                                    <span class="text-muted vw-detail"><input type="button" value="View Details"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-md-6 same-gap">
+                                    <div class="card info-card recharge-crd">
+                                        <div class="card-body sub-card">
+                                            <h5 class="recharge-title">Recharges</h5>
+                                        </div>
+                                        <div class="network-card">
+                                            <div class="sub-ntwrk">
+                                                <div class="network-name">
+                                                    <h3>Airtel</h3>
+                                                </div>
+                                                <div class="network-data">
+                                                    <span>30000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="network-card">
+                                            <div class="sub-ntwrk">
+                                                <div class="network-name">
+                                                    <h3>BSNL</h3>
+                                                </div>
+                                                <div class="network-data">
+                                                    <span>30000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="network-card">
+                                            <div class="sub-ntwrk">
+                                                <div class="network-name">
+                                                    <h3>Vodafone</h3>
+                                                </div>
+                                                <div class="network-data">
+                                                    <span>30000</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-8 col-md-6 same-gap">
+                                    <section class="container-fluid">
+                                        <div id="recharge"></div>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-xxl-12">
+                                <div class="table-card">
+                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 200px">
+                                        <table class="table table-striped mb-0">
+                                            <thead style="background-color: #0f2a37;">
+                                                <tr>
+                                                    <th scope="col"style ="color:white">Provider</th>
+                                                    <th scope="col"style ="color:white">Balance Amount</th>
+                                                    <th scope="col"style ="color:white">Amount Level</th>
+                                                    <th scope="col"style ="color:white">Required Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Paytm</td>
+                                                    <td>5,00,000</td>
+                                                    <td>Red</td>
+                                                    <td>1,00,000</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Amibika</td>
+                                                    <td>30,000</td>
+                                                    <td>Purple</td>
+                                                    <td>6,00,000</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Shakti</td>
+                                                    <td>3,00,000</td>
+                                                    <td>Purple</td>
+                                                    <td>2,00,000</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                </section>
+                <section class="container-fluid">
+                    <div class="graph-text">
+                        <h2>Earned Commission this Month</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="Commission"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="container-fluid">
+                    <div class="graph-text">
+                        <h2>Partner Wise Earning</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="partnerearn"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="container-fluid">
+                    <div class="row">
+                        <div class="graph-text">
+                            <h2>Partner Count</h2>
+                        </div>
+                        <div class="col-xxl-6 col-md-6 same-gap">
+                            <div id="partnercount"></div>
+                        </div>
+                        <div class="col-xxl-6 col-md-6 same-gap">
+                            <div class="card info-card recharge-crd">
+                                <div class="card-body sub-card regist-partner">
+                                    <h5 class="recharge-title">New Register Partners</h5>
+                                </div>
+                                <div class="table-card partner">
+                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
+                                        <table class="table table-striped mb-0">
+                                            <thead style="background-color: #ad1b1b;">
+                                                <tr>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">User type</th>
+                                                    <th scope="col">State</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Ronit</td>
+                                                    <td>Distributor</td>
+                                                    <td>Maharastra</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Rupali</td>
+                                                    <td>Super stock</td>
+                                                    <td>Madhay Prdsh</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    </main>
+    </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            recharge();
+            $(window).resize(function () {
+                window.recharge.redraw();
+            });
+        });
+
+
+        window.recharge = Morris.Line({
+            element: 'recharge',
+            data: [
+                { y: 'Airtel', a: 70, b: 60 },
+                //{ y: 'BSNL', a: 75, b: 65 },
+               // { y: 'Vodafone', a: 50, b: 40 },
+                //{ y: '2009', a: 75, b: 65 },
+                //{ y: '2010', a: 50, b: 40 }
+
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A'],
+            lineColors: ['#1e88e5'],
+            lineWidth: '3px',
+            resize: true,
+            redraw: true
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            Commission();
+            $(window).resize(function () {
+                window.Commission.redraw();
+            });
+        });
+
+
+        window.Commission = Morris.Line({
+            element: 'Commission',
+            data: [
+                { y: '2003', a: 100, b: 90 },
+                { y: '2005', a: 75, b: 65 },
+                { y: '2007', a: 50, b: 40 },
+                { y: '2009', a: 75, b: 65 },
+                { y: '2010', a: 50, b: 40 }
+
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A'],
+            lineColors: ['#1e88e5'],
+            lineWidth: '3px',
+            resize: true,
+            redraw: true
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            lineChartt();
+            $(window).resize(function () {
+                window.partnerearn.redraw();
+            });
+        });
+
+
+        window.partnerearn = Morris.Line({
+            element: 'partnerearn',
+            data: [
+                { y: '2022', a: 100, b: 90 },
+                { y: '2007', a: 75, b: 65 },
+                { y: '2008', a: 50, b: 40 },
+                { y: '2009', a: 75, b: 65 },
+                { y: '2010', a: 50, b: 40 }
+
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A'],
+            lineColors: ['#1e88e5'],
+            lineWidth: '3px',
+            resize: true,
+            redraw: true
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            partnercount();
+            $(window).resize(function () {
+                window.partnercount.redraw();
+            });
+        });
+
+
+        window.partnercount = Morris.Line({
+            element: 'partnercount',
+            data: [
+                { y: '2005', a: 100, b: 90 },
+                { y: '2007', a: 75, b: 65 },
+                { y: '2008', a: 50, b: 40 },
+                { y: '2009', a: 75, b: 65 },
+                { y: '2010', a: 50, b: 40 }
+
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A'],
+            lineColors: ['#1e88e5'],
+            lineWidth: '3px',
+            resize: true,
+            redraw: true
+        });
+
+    </script>
+
+
+    @*<script src="./vendor/bootstrap/js/bootstrap.min.js"></script>*@
+    @*<script src="../../assets/js/plugins/chartjs.min.js"></script>*@
+    <script src="~/Content/DashboardCss/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

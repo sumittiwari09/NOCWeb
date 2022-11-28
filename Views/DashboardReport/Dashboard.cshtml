@@ -1,0 +1,956 @@
+﻿@using NewZapures_V2.Models
+
+@{
+    var walletAMT = (List<WalletAmtBO>)ViewBag.walletAmount;
+    var unreadMsglist = (List<NotificationOperationData>)ViewBag.notificationMaster;
+    var membresList = (List<WalletAmtBO>)ViewBag.bunessmakerList;
+    var targetActualList = (List<WalletAmtBO>)ViewBag.targetvsActualList;
+    //var walletRequestList = (List<WalletRechargeHistory>)ViewBag.walletRequestList;
+    List<WalletAmtBO> staaterRequestList = (List<WalletAmtBO>)ViewBag.statewaiseList;
+    var userWiseList = (List<WalletAmtBO>)ViewBag.userWiseList;
+
+    var whitelableProgress = userWiseList[0].WhiteLabel + "%";
+    var stockistProgress = userWiseList[0].Stockist + "%";
+    var distributerProgress = userWiseList[0].Distributer + "%";
+    var retailerrogress = userWiseList[0].Retailer + "%";
+    var totalCountProgress = userWiseList[0].TotalCount + "%";
+
+    List<WalletAmtBO> serviceIncome = (List<WalletAmtBO>)ViewBag.serviceIncomeList;
+
+
+
+    List<NEWANNMST> _lstNewAnnoucobj = new List<NEWANNMST>();
+    if (ViewBag.NewAnnouncement != null)
+    {
+        _lstNewAnnoucobj = (List<NEWANNMST>)ViewBag.NewAnnouncement;
+    }
+    IEnumerable<NewZapures_V2.Models.ClientWalletRechage> TransList = ViewData["WalletRechargeHistory"] as IEnumerable<NewZapures_V2.Models.ClientWalletRechage>;
+    var count = TransList.Count();
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@*<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">*@
+    <title> Dashboard </title>
+    @section styles{
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        @*<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">*@
+        <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">
+        <!-- overlayScrollbars -->
+        @*<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">*@
+        <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <!-- Theme style -->
+        @*<link rel="stylesheet" href="dist/css/adminlte.min.css">*@
+        <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+
+        <style>
+            .rectangle {
+                /*  height: 50px;*/
+                width: 98%;
+                /*  background: burlywood;*/
+                padding-left: 7px;
+                padding-top: 7px;
+                padding-bottom: 7px;
+                margin-left: 10px;
+                border-radius: 10px;
+            }
+
+            .circle {
+                height: 50px;
+                width: 55px;
+                background-color: black;
+                border-radius: 100%;
+                margin-left: 10px;
+                margin-top: 1%;
+            }
+
+            .col-xxl-3.users-list.clearfix a {
+                font-size: 10px;
+            }
+
+            .col-xxl-3.users-list.clearfix img {
+                width: 82%;
+                border-radius: 50%;
+            }
+
+
+
+            .col-xxl-3.users-list.clearfix {
+                display: inline-block;
+                width: 25%;
+                float: left;
+                text-align: center;
+            }
+        </style>
+    }
+
+@*</head>*@
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="~/Content/DashboardCss/AdminLTE2/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="">
+            <!-- Content Header (Page header) content-heade, container-fluid-->
+            <div class="">
+                <div class="">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Dashboard</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item">
+                                    <a href="@Url.Action("SignOut", "Home")">SignOut</a>
+                                </li>
+                                @*<li class="breadcrumb-item active"></li>*@
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="">
+                    <!-- Info boxes -->
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-mobile"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">@serviceIncome[4].CatDesc</span>
+                                    <span class="info-box-number">
+                                        <small>₹</small>
+                                        @serviceIncome[4].TxnAmnt
+
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box mb-3">
+                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">DMT</span>
+                                    <span class="info-box-number">₹41,410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <!-- fix for small devices only -->
+                        <div class="clearfix hidden-md-up"></div>
+
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box mb-3">
+                                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">AEPS</span>
+                                    <span class="info-box-number">₹760</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box mb-3">
+                                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">My Profite</span>
+                                    <span class="info-box-number">₹@serviceIncome[4].Profit</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row --><div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" style="background-color: #1f2d3d ">
+                                    <h5 class="card-title">Monthly Recap Report</h5>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fas fa-wrench"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                                <a class="dropdown-item">Action</a>
+                                                <a class="dropdown-item">Another action</a>
+                                                <a class="dropdown-item">Something else here</a>
+                                                <a class="dropdown-divider"></a>
+                                                <a class="dropdown-item">Separated link</a>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p class="text-center">
+                                                <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                                            </p>
+                                            <div class="chart" style="width: 100% !important; height: 85% !important;">
+                                                <div class="chartjs-size-monitor">
+                                                    <div class="chartjs-size-monitor-expand">
+                                                        <div class=""></div>
+                                                    </div><div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                                                </div>
+
+                                                @*<canvas id="sales-chart" height="180" style="height: 180px; display: block; width: 676px;" width="676" class="chartjs-render-monitor"></canvas>*@
+
+                                                <canvas id="salesChart" height="180" style="height: 180px; display: block; width: 676px;" width="676" class="chartjs-render-monitor"></canvas>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <p class="text-center">
+                                                <strong>User Count</strong>
+                                            </p>
+                                            <div class="progress-group">
+                                                White Lable
+                                                <span class="float-right"><b>@userWiseList[0].WhiteLabel</b>/@userWiseList[0].TotalCount</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-primary" style="width:@whitelableProgress ">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="progress-group">
+                                                Stockist
+                                                <span class="float-right"><b>@userWiseList[0].Stockist</b>/@userWiseList[0].TotalCount</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-danger" style="width: @stockistProgress"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="progress-group">
+                                                <span class="progress-text">Distributer</span>
+                                                <span class="float-right"><b>@userWiseList[0].Distributer</b>/@userWiseList[0].TotalCount</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-success" style="width: @distributerProgress"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="progress-group">
+                                                Retailer
+                                                <span class="float-right"><b>@userWiseList[0].Retailer</b>/@userWiseList[0].TotalCount</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-warning" style="width: @retailerrogress"></div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-group">
+                                                Total Count
+                                                <span class="float-right"><b>@userWiseList[0].TotalCount</b></span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-warning" style="width: @totalCountProgress"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <div class="row">
+
+                                            <div class="col-sm-3 col-6">
+                                                <div class="description-block border-right">
+                                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+                                                    <h5 class="description-header">₹@targetActualList[0].TargetAmount</h5>
+                                                    <span class="description-text"> <a href="GetTargetvsActual">TOTAL REVENUE</a></span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-3 col-6">
+                                                <div class="description-block border-right">
+                                                    <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+                                                    <h5 class="description-header">₹@targetActualList[0].TxnAmnt</h5>
+                                                    <span class="description-text">TOTAL COST</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-3 col-6">
+                                                <div class="description-block border-right">
+                                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                                                    <h5 class="description-header">₹</h5>
+                                                    <span class="description-text">TOTAL PROFIT</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-3 col-6">
+                                                <div class="description-block">
+                                                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+                                                    <h5 class="description-header">₹@targetActualList[0].AcheiveAmnt</h5>
+                                                    <span class="description-text">GOAL COMPLETIONS</span>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- /.row -->
+                            <!-- Main row -->
+                            <div class="row">
+                                <!-- Left col -->
+                                <div class="col-md-8">
+                                    <!-- MAP & BOX PANE -->
+                                    <div class="card">
+                                        <div class="card-header" style="background-color: #1f2d3d">
+                                            <h3 class="card-title">New Announcement</h3>
+
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            <div class="col-lg-12">
+                                                @if (_lstNewAnnoucobj.Count != 0)
+                                                {
+                                                    <marquee direction="up" onmouseover="this.stop();" onmouseout="this.start();" height="240">
+                                                        @{ foreach (var item in _lstNewAnnoucobj)
+                                                            {
+
+
+
+                                                                <div class="rectangle row" style="background:@(item.iNwsAnnoType == 1 ? "burlywood;" : "chocolate;")">
+
+
+                                                                    @{ if (item.iNwsAnnoType == 1)
+                                                                        {
+                                                                            <div class="circle">
+                                                                                <b style="padding-left: 30%;font-size: 225%;font-weight:revert;">N</b>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="circle" style="background-color: black !important;">
+                                                                                <b style="padding-left: 30%;font-size: 225%;font-weight: revert;">A</b>
+                                                                            </div>
+                                                                        }
+                                                                    }
+
+
+
+
+                                                                    <p style="margin-left: 5%;margin-top: 1%;margin-bottom: 2%;">
+                                                                        <b>@item.sSubject</b><br />
+                                                                        @Html.Raw(item.sMsg)
+                                                                    </p>
+                                                                </div>
+                                                                <br /> } }
+
+                                                    </marquee>}
+                                                @if (_lstNewAnnoucobj.Count == 0)
+                                                {
+                                                    <img src="~/images/annoucement.png" style="width:100%" />}
+
+                                            </div>
+                                            <!--<div class="d-md-flex">
+                                            <div class="p-1 flex-fill" style="overflow: hidden">-->
+                                            <!-- Map will be created here -->
+                                            <!--<div id="world-map-markers" style="height: 325px; overflow: hidden">
+                                                        <div class="map"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h1>Abhishek</h1>
+                                                </div>
+
+                                            </div>-->
+                                            <!-- /.d-md-flex -->
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <!-- DIRECT CHAT -->
+                                            <div class="card direct-chat direct-chat-warning">
+                                                <div class="card-header" style="background-color: #1f2d3d ">
+                                                    <h3 class="card-title">Today's  Wallet Request</h3>
+                                                    <div class="card-tools">
+                                                        <span title="3 New Messages" class="badge badge-warning">@count</span>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
+                                                            <i class="fas fa-comments"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body" style="background-color: #1f2d3d ">
+                                                    <!-- Conversations are loaded here -->
+                                                    <div class="direct-chat-messages">
+                                                        <table class="table table-sm mb-0">
+                                                            <thead>
+                                                                <tr class="title-heading" style="background-color:aquamarine">
+                                                                    <th>Party Name</th>
+
+                                                                    <th colspan="1">Amount</th>
+                                                                    @*<th colspan="2">Date</th>*@
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+                                                                    if (ViewData["WalletRechargeHistory"] != null)
+                                                                    {
+                                                                        int i = 1;
+                                                                        foreach (var item in TransList)
+                                                                        {
+                                                                            var date = DateTime.Parse(item.EntryDate);
+                                                                            var SRTDate = string.Format("{0:dd/MMM/yyyy}", date);
+                                                                            <tr>
+                                                                                <td>
+                                                                                    @item.PartyName
+                                                                                    <p class="specialuser badge badge-warning" style="background:">@item.Mode</p>
+                                                                                    <p>Date: @SRTDate</p>
+                                                                                </td>
+                                                                                <td>
+                                                                                    @item.Amount
+                                                                                </td>
+                                                                                @*<td colspan="2">
+                                                                                        @SRTDate
+                                                                                    </td>*@
+                                                                            </tr>
+                                                                            i++;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- /.card-body -->
+                                                @*<div class="card-footer">
+                                                        <form action="#" method="post">
+                                                            <div class="input-group">
+                                                                <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                                                                <span class="input-group-append">
+                                                                    <button type="button" class="btn btn-warning">Send</button>
+                                                                </span>
+                                                            </div>
+                                                        </form>
+                                                    </div>*@
+                                                <!-- /.card-footer-->
+                                            </div>
+                                            <!--/.direct-chat -->
+                                        </div>
+                                        <!-- /.col -->
+
+                                        <div class="col-md-6">
+                                            <!-- USERS LIST -->
+                                            <div class="card">
+                                                <div class="card-header" style="background-color: #1f2d3d ">
+                                                    <h3 class="card-title">Business Members</h3>
+
+                                                    <div class="card-tools">
+                                                        <span class="badge badge-danger">@membresList.Count New Members</span>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.card-header  clearfix-->
+                                                <div class="card-body p-2">
+                                                    @{
+                                                        foreach (var item in membresList)
+                                                        {
+                                                            <div style="display: inline-block; width: 25%; float: left; text-align: center;">
+                                                                <img src="~/Content/DashboardCss/AdminLTE2/img/user1-128x128.jpg" style=" width: 82%; border-radius: 50%;" alt="User Image">
+                                                                <a class="users-list-name" style="font-size: 10px;">@item.PartyName</a>
+                                                                <span class="users-list-date">@item.TxnAmnt</span>
+                                                            </div>
+
+
+                                                            @*<ul >
+                                                                    <li class="users-list">
+                                                                        <img src="~/Content/DashboardCss/AdminLTE2/img/user1-128x128.jpg" alt="User Image">
+                                                                        <a class="users-list-name">@item.PartyName</a>
+                                                                        <span class="users-list-date">@item.TxnAmnt</span>
+                                                                    </li>
+                                                                </ul>*@
+                                                        }
+                                                    }
+                                                    @*<li>
+                                                            <img src="dist/img/user8-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Norman</a>
+                                                            <span class="users-list-date">Yesterday</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user7-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Jane</a>
+                                                            <span class="users-list-date">12 Jan</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user6-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">John</a>
+                                                            <span class="users-list-date">12 Jan</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user2-160x160.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Alexander</a>
+                                                            <span class="users-list-date">13 Jan</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user5-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Sarah</a>
+                                                            <span class="users-list-date">14 Jan</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user4-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Nora</a>
+                                                            <span class="users-list-date">15 Jan</span>
+                                                        </li>
+                                                        <li>
+                                                            <img src="dist/img/user3-128x128.jpg" alt="User Image">
+                                                            <a class="users-list-name" href="#">Nadia</a>
+                                                            <span class="users-list-date">15 Jan</span>
+                                                        </li>*@
+
+                                                    <!-- /.users-list -->
+                                                </div>
+                                                <!-- /.card-body -->
+                                                <div class="card-footer text-center">
+                                                    <a href="javascript:">View All Users</a>
+                                                </div>
+                                                <!-- /.card-footer -->
+                                            </div>
+                                            <!--/.card -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- TABLE: LATEST ORDERS -->
+                                    <div class="card">
+                                        <div class="card-header border-transparent" style="background-color: #1f2d3d ">
+                                            <h3 class="card-title">Pending Orders</h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table m-0">
+                                                    <thead style=" background-color: #f39c12">
+                                                        <tr>
+                                                            <th class="col">Party Name</th>
+                                                            <th>Mobile No</th>
+                                                            <th>Transaction Date</th>
+                                                            <th>Transaction ID</th>
+                                                            <th>Amount</th>
+                                                            <th>Pending Since (InHr)</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (var item in ViewBag.transactionPendingList)
+                                                            {
+                                                                <tr>
+                                                                    <td><a href="pages/examples/invoice.html">@item.PartyName</a></td>
+                                                                    <td>@item.MobileNo</td>
+                                                                    <td>@item.TxnDate</td>
+                                                                    <td>@item.TxnId</td>
+                                                                    <td>@item.Amount</td>
+                                                                    <td>@item.PendingSinceInHr</td>
+                                                                    <td><span class="badge badge-warning">Pending</span></td>
+                                                                    <td>
+                                                                        <div class="sparkbar" data-color="#00a65a" data-height="20"></div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                        @*<tr>
+                                                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                                <td>Samsung Smart TV</td>
+                                                                                <td><span class="badge badge-success">Shipped</span></td>
+                                                                <td><span class="badge badge-warning">Pending</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                                <td>iPhone 6 Plus</td>
+                                                                <td><span class="badge badge-danger">Delivered</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                                <td>Samsung Smart TV</td>
+                                                                <td><span class="badge badge-info">Processing</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                                                <td>Samsung Smart TV</td>
+                                                                <td><span class="badge badge-warning">Pending</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                                                <td>iPhone 6 Plus</td>
+                                                                <td><span class="badge badge-danger">Delivered</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                                                <td>Call of Duty IV</td>
+                                                                <td><span class="badge badge-success">Shipped</span></td>
+                                                                <td>
+                                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                                                                </td>
+                                                            </tr>*@
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.table-responsive -->
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+
+                                            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                                        </div>
+                                        <!-- /.card-footer -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+
+                                <div class="col-md-4">
+                                    <!-- Info Boxes Style 2 -->
+                                    <div class="info-box mb-3 bg-warning">
+                                        <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Cash In Wallet Amount</span>
+                                            <span class="info-box-number">₹@walletAMT[0].CIW</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                    <div class="info-box mb-3 bg-success">
+                                        <span class="info-box-icon"><i class="far fa-heart"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Cash Out Wallet</span>
+                                            <span class="info-box-number"> ₹@walletAMT[0].COW</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                    <div class="info-box mb-3 bg-danger">
+                                        <span class="info-box-icon"><i class="fas fa-cloud-download-alt"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Pending Wallet Amount</span>
+                                            <span class="info-box-number">₹@walletAMT[0].PWA</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                    <div class="info-box mb-3 bg-info">
+                                        <span class="info-box-icon"><i class="far fa-comment"></i></span>
+
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Usable Wallet Amount</span>
+                                            <span class="info-box-number">₹@walletAMT[0].UWA</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+
+                                    <div class="card">
+                                        <div class="card-header" style="background-color: #1f2d3d">
+                                            <h3 class="card-title">State Wise Business</h3>
+
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="chart-responsive">
+                                                        <canvas id="pieChart1" height="150"></canvas>
+                                                        <input type="hidden" id="name" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(staaterRequestList.Select(p=>p.SName).ToList()))" />
+                                                        <input type="hidden" id="stateName" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(staaterRequestList.Select(p=>p.StateName).ToList()))" />
+                                                        <input type="hidden" id="amounts" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(staaterRequestList.Select(p=>p.TxnAmnt).ToList()))" />
+                                                    </div>
+                                                    <!-- ./chart-responsive -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-md-4">
+                                                    <ul class="chart-legend clearfix">
+                                                        <li><i class="far fa-circle text-danger">PartyName</i></li>
+                                                        <li><i class="far fa-circle text-success">StateName</i></li>
+                                                        @*<li><i class="far fa-circle text-warning">Amount</i></li>*@
+                                                        @*<li><i class="far fa-circle text-info"></i> Safari</li>
+                                                            <li><i class="far fa-circle text-primary"></i> Opera</li>
+                                                            <li><i class="far fa-circle text-secondary"></i> Navigator</li>*@
+                                                    </ul>
+                                                </div>
+                                                <!-- /.col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer p-2">
+                                            @{
+                                                foreach (var item in staaterRequestList)
+
+                                                {
+                                                    <ul class="nav nav-pills flex-column">
+                                                        <li class="nav-item" style="background-color: #1f2d3d">
+                                                            @item.SName
+                                                            <span class="nav-item m-2">@item.StateName</span>
+                                                            <a href="#" class="nav-link" style="padding: 0.5rem 1rem;">
+                                                                <span class="float-right text-danger">
+                                                                    <i class="fas fa-arrow-down text-sm"></i>
+                                                                    @item.TxnAmnt
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                }
+                                            }
+                                            @*<li class="nav-item" style="background-color: #1f2d3d">
+                                                    <a href="#" class="nav-link">
+                                                        BHOPAL
+                                                        <span class="float-right text-success">
+                                                            <i class="fas fa-arrow-up text-sm"></i> 4%
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" style="background-color: #1f2d3d">
+                                                    <a href="#" class="nav-link">
+                                                        MUMBAI
+                                                        <span class="float-right text-warning">
+                                                            <i class="fas fa-arrow-left text-sm"></i> 0%
+                                                        </span>
+                                                    </a>
+                                                </li>*@
+
+                                        </div>
+                                        <!-- /.footer -->
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- PRODUCT LIST -->
+                                    <div class="card">
+                                        <div class="card-header" style="background-color: #1f2d3d ">
+                                            <h3 class="card-title">UnRead Notification</h3>
+
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body p-0">
+                                            @{
+                                                foreach (var item in unreadMsglist)
+                                                {
+                                                    <ul class="products-list product-list-in-card pl-2 pr-2">
+
+                                                        <li class="item">
+                                                            <div class="product-img">
+                                                                <img src="~/Content/DashboardCss/AdminLTE2/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                                                            </div>
+                                                            <div class="product-info">
+                                                                <a href="javascript:void(0)" class="product-title">
+
+                                                                    <span class="badge badge-warning float-right">@item.NotificationUserListID</span>
+                                                                </a>
+                                                                <span class="product-description">
+                                                                    @item.Message
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                }
+                                            }
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer text-center">
+                                            @* <a href="javascript:void(0)" class="uppercase">View All Products</a>*@
+                                        </div>
+                                        <!-- /.card-footer -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div><!--/. container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        @*<footer class="main-footer">
+                <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+                All rights reserved.
+                <div class="float-right d-none d-sm-inline-block">
+                    <b>Version</b> 3.2.0
+                </div>
+            </footer>*@
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    @*<script src="plugins/jquery/jquery.min.js"></script>*@
+    @section Scripts{
+    
+        <script src="~/Content/globalDomain.js"></script>
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        @*<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        @*<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        @*<script src="dist/js/adminlte.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/js/adminlte.js"></script>
+
+
+        <!-- PAGE PLUGINS -->
+        <!-- jQuery Mapael -->
+        @*<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+        @*<script src="plugins/raphael/raphael.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/raphael/raphael.min.js"></script>
+
+        @*<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+        @*<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+        <!-- ChartJS -->
+        @*<script src="plugins/chart.js/Chart.min.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/plugins/chart.js/Chart.min.js"></script>
+
+        <!-- AdminLTE for demo purposes -->
+        @*<script src="dist/js/demo.js"></script>*@
+        @*<script src="~/Content/DashboardCss/AdminLTE2/js/demo.js"></script>*@
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        @*<script src="dist/js/pages/dashboard2.js"></script>*@
+        <script src="~/Content/DashboardCss/AdminLTE2/js/pages/dashboard2.js"></script>
+
+        <script type="text/javascript">
+
+            var pieChartCanvas = $('#pieChart1').get(0).getContext('2d')
+            //debugger
+            var pieData = {
+                labels: JSON.parse($("#name").val(), $("#stateName").val()),
+                datasets: [
+                    {
+                        data: JSON.parse($("#amounts").val()),
+                        backgroundColor: ['#f56954', '#00a65a', '#00a65a']
+                    }
+                ]
+            }
+            var pieOptions = {
+                legend: {
+                    display: false
+                }
+            }
+            // Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            // eslint-disable-next-line no-unused-vars
+            var pieChart1 = new Chart(pieChartCanvas, {
+                type: 'doughnut',
+                data: pieData,
+                options: pieOptions
+            })
+
+        </script>
+
+    }
+
+
+</body>
+
+@*</html>*@

@@ -1,0 +1,133 @@
+﻿@using NewZapures_V2.Models
+@model  SlotMaster
+@{
+    Layout = null;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<div class="modal-dialog" role="document" style=" max-width: inherit">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel2"><small>Freeze Date</small></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closetask"><span aria-hidden="true">&times;</span></button>
+
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("SaveFeezeDate", "Slot", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+            {
+                <input type="hidden" id="SlotMasterId" name="SlotMasterId" value="@ViewBag.Id" />
+                <div class="form-group is-empty row">
+                    <label for="nameInput" class="col-sm-2 control-label" style="font-size: initial; color: black;">Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" name="FreezeDate" required value="@Model.Fromdate.ToString()" max="@Model.Todate.ToString()" min="@Model.Fromdate.ToString()" id="FreezeDate" />
+                    </div>
+                    <label for="nameInput" class="col-sm-2 control-label" style="font-size: initial; color: black;">Remark</label>
+                    <div class="col-sm-10" style="padding-top:10px;">
+                        <textarea rows="3" id="Remark" name="Remark" placeholder="Enter Remark" class="form-control" required></textarea>
+
+                    </div>
+
+                    <label for="nameInput" class="col-sm-9 control-label" style="font-size: initial; color: black;"></label>
+                    <div class="pull-right col-sm-3" style="padding-top:10px;">
+                        <button id="btnFeezeDate1" class="btn btn-primary">SUBMIT</button>
+                    </div>
+                </div>
+            }
+            @*<div class="modal-footer" id="footer">
+                    <div class="pull-right">
+                        <button id="btnItinerary" class="btn btn-primary">SUBMIT</button>
+                        <button id="btncancel" class="btn btn-primary">CANCEL</button>
+                    </div>
+                </div>*@
+            <div class="form-horizontal " id="tableinfo">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Remark</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Freezetbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script type="text/javascript">
+    ShowFreezeData();
+    //$("#btnFeezeDate1").click(function () {
+    //    alert("sgcsfdfg");
+    //});
+    function ShowFreezeData() {
+        var Id = $("#SlotMasterId").val();
+        $.ajax({
+            url: '/Slot/ShowFreezeData?Id=' + Id,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+
+
+                /*  ShowinnerData(Id);*/
+
+                $("#Freezetbody").html(response);
+
+            }
+        });
+        return false;
+    }
+    function deletefreezedata(Id) {
+        $.confirm({
+            title: 'Remove Confirmation',
+            content: 'Are you sure to remove record',
+            type: 'red',
+            typeAnimated: true,
+            animation: 'rotate',
+            closeAnimation: 'scale',
+            buttons: {
+                Confirm: {
+                    text: 'YES',
+                    btnClass: 'btn-red',
+                    action: function () {
+
+
+
+                        var Params = JSON.stringify({
+                            Id: Id
+
+                        });
+
+                        $.ajax({
+                            url: "/Slot/DeleteFreezeDate",
+                            type: 'POST',
+                            dataType: "json",
+                            data: Params,
+                            contentType: "application/json",
+                            success: function (response) {
+
+                                ShowFreezeData();
+                                /*  ShowinnerData($("#innerslotid").val());*/
+
+
+                            }
+                        });
+
+                    }
+                },
+                close: {
+                    text: 'NO',
+                    action: function () { }
+                }
+            }
+        });
+    }
+
+</script>
+

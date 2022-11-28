@@ -1,0 +1,60 @@
+﻿@using NewZapures_V2.Models
+@model List<SLBMST>
+@{
+    ViewBag.Title = "GenerateSlabData";
+    Layout = null;
+    var i = 1;
+}
+
+@foreach (var item in Model)
+{<tr id="tr_@item.iPk_SlbMst">
+        <td>
+            @i
+        </td>
+        <td>
+            @item.iTxnAmtFm
+        </td>
+        <td>
+            @item.iTxnAmtTo
+        </td>
+        <td>
+            <div class="form-check form-switch">
+                @{if (item.iSts == 1)
+                    {
+                        <input id="SLBMST-@item.iPk_SlbMst" class="form-check-input ChangeStatus" type="checkbox" data-id="SLBMST-@item.iPk_SlbMst-@item.iSts" onclick="StatusChange('Status',@item.iPk_SlbMst,0)" name="@item.iPk_SlbMst" value="@item.iSts" checked>
+                    }
+                    else
+                    {
+                        <input id="SLBMST-@item.iPk_SlbMst" class="form-check-input ChangeStatus" type="checkbox" data-id="SLBMST-@item.iPk_SlbMst-@item.iSts" onclick="StatusChange('Status',@item.iPk_SlbMst,1)" name="@item.iPk_SlbMst" value="@item.iSts">
+
+                    }
+                }
+
+            </div>
+        </td>
+        <td>
+            <div class="form-check form-switch">
+                @{if (item.bRngSet == true)
+                    {
+                        <input id="SLBMST-@item.iPk_SlbMst" class="form-check-input ChangeStatus" type="checkbox" onclick="StatusChange('RangSet',@item.iPk_SlbMst,0)" data-id="SLBMST-@item.iPk_SlbMst-@item.iSts" name="@item.iPk_SlbMst" value="@item.bRngSet" checked>
+                    }
+                    else
+                    {
+                        <input id="SLBMST-@item.iPk_SlbMst" class="form-check-input ChangeStatus" type="checkbox"  onclick="StatusChange('RangSet',@item.iPk_SlbMst,1)" data-id="SLBMST-@item.iPk_SlbMst-@item.iSts" name="@item.iPk_SlbMst" value="@item.bRngSet">
+
+                    }
+                }
+
+            </div>
+        </td>
+        <td>
+            <a id="btnDeactive_@item.iPk_SlbMst" class="Deleteclass" name="2" data-id="@item.iPk_SlbMst" onclick="DeleteData('Delete',@item.iPk_SlbMst,2)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+
+        </td>
+    </tr>
+                        i = i + 1;
+                    }
+
+
+
+

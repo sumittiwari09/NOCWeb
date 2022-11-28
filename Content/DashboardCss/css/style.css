@@ -1,0 +1,245 @@
+body {
+	font-family: "Open Sans", sans-serif;
+	background: #f6f9ff;
+	color: #444444;
+}
+
+a {
+	color: #4154f1;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #717ff5;
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Nunito", sans-serif;
+}
+
+#main {
+	margin-top: 60px;
+	padding: 20px 30px;
+	transition: all 0.3s;
+}
+
+/* Light Backgrounds */
+.bg-primary-light {
+	background-color: #cfe2ff;
+	border-color: #cfe2ff;
+}
+
+.bg-secondary-light {
+	background-color: #e2e3e5;
+	border-color: #e2e3e5;
+}
+
+.bg-success-light {
+	background-color: #d1e7dd;
+	border-color: #d1e7dd;
+}
+
+.bg-danger-light {
+	background-color: #f8d7da;
+	border-color: #f8d7da;
+}
+
+.bg-warning-light {
+	background-color: #fff3cd;
+	border-color: #fff3cd;
+}
+
+.bg-info-light {
+	background-color: #cff4fc;
+	border-color: #cff4fc;
+}
+
+.bg-dark-light {
+	background-color: #d3d3d4;
+	border-color: #d3d3d4;
+}
+
+
+@media (min-width: 1200px) {
+
+	#main {
+		margin-left: initial;
+	}
+}
+
+.dashboard .info-card {
+	padding-bottom: 10px;
+}
+
+.dashboard .info-card h6 {
+	font-size: 22px;
+	color: #0f2a37;
+	font-weight: 500;
+	margin: 0;
+	padding: 0;
+}
+
+.dashboard .card-icon {
+	font-size: 32px;
+	line-height: 0;
+	width: 34px;
+	height: 34px;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.dashboard .sales-card .card-icon {
+	color: #0f2a37;
+	background: #f6f6fe;
+}
+
+.dashboard .revenue-card .card-icon {
+	color: #2eca6a;
+	background: #e0f8e9;
+}
+
+.dashboard .customers-card .card-icon {
+	color: #ff771d;
+	background: #ffecdf;
+}
+
+.recharge-crd {
+	background-color: rgb(237 102 102);
+}
+
+.recharge-title {
+	padding: 10px 0 0 0;
+	font-size: 18px;
+	font-weight: 500;
+	color: #fff;
+	font-family: "Poppins", sans-serif;
+}
+
+.network-data {
+	display: inline-block;
+	float: right;
+}
+
+.network-name {
+	display: inline-block;
+
+}
+
+.network-name h3 {
+	font-size: 18px;
+}
+
+.network-card {
+	color: #fff;
+	padding: 6px 15px 0px 15px;
+	border-top: 1px solid #faf8f8;
+}
+
+.card-body.sub-card {
+	padding: 12px 15px;
+}
+
+
+table td,
+table th {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+thead th {
+	color: #fff;
+}
+
+.card {
+	border-radius: .5rem;
+}
+
+.table-scroll {
+	border-radius: .5rem;
+}
+
+.table-scroll table thead th {
+	font-size: 1.25rem;
+}
+
+thead {
+	top: 0;
+	position: sticky;
+}
+
+span.text-muted.vw-detail input {
+	border: none;
+	background: none;
+	text-decoration: underline;
+	font-size: 14px;
+}
+
+.card-body.sub-card {	
+	background: #d33737;
+}
+
+.same-gap {
+	margin: 30px 0px;
+}
+
+.graph-gap {
+	margin: 50px 0px;
+}
+
+.graph-text h2 {
+	font-size: 22px;
+	margin-top: 20px;
+	font-weight: 500;
+	background: #0f2a37;
+	color: #fff;
+	padding: 5px 0px 5px 10px;
+}
+
+.card-body.sub-card.regist-partner {
+	background: #0f2a37;
+}
+
+.partner .table-scroll {
+	border-radius: 0px;
+}
+
+.table-card.partner tr td {
+	color: #fff;
+}
+
+.morris-hover {
+	position: absolute;
+	z-index: 1000;
+}
+
+.morris-hover.morris-default-style {
+	border-radius: 10px;
+	padding: 6px;
+	color: #666;
+	background: rgba(255, 255, 255, 0.8);
+	border: solid 2px rgba(230, 230, 230, 0.8);
+	font-family: sans-serif;
+	font-size: 12px;
+	text-align: center;
+}
+
+.morris-hover.morris-default-style .morris-hover-row-label {
+	font-weight: bold;
+	margin: 0.25em 0;
+}
+
+.morris-hover.morris-default-style .morris-hover-point {
+	white-space: nowrap;
+	margin: 0.1em 0;
+}
+
+svg {
+	width: 100%;
+}

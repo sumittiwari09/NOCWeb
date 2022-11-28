@@ -1,0 +1,260 @@
+﻿
+@using NewZapures_V2.Models
+
+@model List<UserCommission>
+
+@{
+    ViewBag.Title = "Recharge Commission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CustomMaster> ServiceType = new List<CustomMaster>();
+    if (ViewBag.ServiceType != null)
+    {
+        ServiceType = (List<CustomMaster>)ViewBag.ServiceType;
+    }
+    List<CustomMaster> UserType = new List<CustomMaster>();
+    if (ViewBag.UserType != null)
+    {
+        UserType = (List<CustomMaster>)ViewBag.UserType;
+    }
+    int Typeid = (int)ViewBag.Type;
+    var PartyId = ViewBag.PartyId;
+
+}
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .removehidden {
+        display: none;
+    }
+</style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Recharge Commission</li>
+
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-parsley" action="#" autocomplete="off">
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th>NO</th>
+                                <th>Service Provider</th>
+                                <th>Operater Name</th>
+                                <th>Commission</th>
+
+                            </tr>
+
+                        </thead>
+                        @{
+                            var i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.ServiceProviderName</td>
+                                    <td>@item.OperatorName</td>
+                                    @*<td>
+
+                                            @{ if (item.ChargeType == 1)
+                                                {
+                                                    <p> @item.CommissionPercentage (%)</p>
+                                                }
+
+                                                else
+                                                {
+                                                    <p> @item.CommissionPercentage (Amount)</p>
+                                                }
+                                            }
+                                        </td>*@
+                                    <td>@item.CommissionAmount</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        @using (Html.BeginForm("RechargeCommissionMaster", "Commission", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+
+            <input name="CommissionMasterId" id="CommissionMasterId" type="hidden" value="0">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group  is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">User Type</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" id="UserType" name="UserType" required>
+                                <option value="">Select User Type</option>
+                                @{
+                                    foreach (var item in UserType)
+                                    {
+                                        if (item.Id != 5 && Typeid < item.Id)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+                                        }
+                                    }
+                                }
+
+                            </select>
+                            @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                        </div>
+                    </div>
+                    <div class="form-group  is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">Service Type</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" id="ServiceTypeId" name="ServiceTypeId" required>
+                                <option value="">Select Service Type</option>
+                                @{
+                                    foreach (var item in ServiceType)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+                            @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                        </div>
+                    </div>
+                    <div class="form-group  is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">What is your Charge Type?</label>
+                        <div class="col-sm-6">
+                            <input type="radio" id="Percentage" name="ChargeType" value="1" required>
+                            <label for="html" class="customlabel">Percentage</label>
+                            <input type="radio" id="Rate" name="ChargeType" value="2" required>
+                            <label for="css" class="customlabel">Amount</label>
+                            @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                        </div>
+                    </div>
+
+                    <div class="form-group  is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">Commission Based on</label>
+                        <div class="col-sm-6">
+                            <input type="radio" id="Slab" name="Commissionrang" value="1" required>
+                            <label for="html" class="customlabel">Slab</label>
+                            <input type="radio" id="singlevalue" name="Commissionrang" value="2" required>
+                            <label for="css" class="customlabel">Single value</label>
+                            @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row " id="Chargesvalue">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">Charges value</label>
+                        <div class="col-sm-6">
+                            <input name="ChargeValue" id="ChargeValue" type="number" value="" class="form-control" placeholder="Enter Charges value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="Isdefault" name="isdefault" checked value="1">
+                        <label for="isdefault">Is Default</label><br>
+                    </div>
+                    <div class="form-group  is-empty row removehidden" id="usertypedata">
+                        <label for="nameInput" class="col-sm-3 control-label customlabel">Service Type</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" id="IsdefaultPartyId" name="IsdefaultPartyId">
+                                <option value="">Select User</option>
+
+                            </select>
+                            @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                        </div>
+                    </div>
+                    <div class="form-group is-empty">
+                        <a href="@Url.Action("RechargeCommissionIndex", "Commission")" class="btn btn-default">DISCARD</a>
+
+                        <button class="btn btn-primary" type="submit"> Save </button>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(".singleselect").select2();
+        $("#Isdefault").change(function () {
+            var data = $(this).val();
+            var Usertypeid = $("#UserType").val();
+            if (data == 0) {
+
+                $("#Isdefault").val(1);
+                $("#UserDefault").select2("destroy");
+                $("#UserDefault").html('');
+
+            }
+            else {
+
+                $("#Isdefault").val(0);
+
+                AddUserList(Usertypeid);
+            }
+
+        });
+
+        function AddUserList(Type) {
+            var strHtml = "";
+            strHtml += "<option value=''>Select User</option>";
+            if (Type == "") {
+
+                alert('Please Select UserType');
+                $("#usertypedata").addClass('removehidden');
+                return false;
+            }
+            var Params = JSON.stringify(
+                {
+                    Type: Type,
+                    PartyId:'@PartyId'
+
+                });
+            $.ajax({
+                url: GetglobalDomain() + "/AdminAjaxRequestPage/GetUserList",
+                type: 'POST',
+                data: Params,
+                dataType: "json",
+                contentType: "application/json",
+
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+
+                        strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+
+
+                    }
+
+                   // $("#IsdefaultPartyId").select2("destroy");
+
+                    $("#IsdefaultPartyId").html(strHtml);
+
+                    $("#usertypedata").removeClass('removehidden');
+
+                }
+            });
+        }
+    </script>
+}
+

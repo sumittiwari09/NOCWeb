@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closetask"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel2">ADD NEW PRICE</h4>
+
+        </div>
+        <div class="modal-body">
+          
+            <div class="form-horizontal ">
+                <div class="form-group is-empty borderbottom">
+                    <button type="button" id="Addprice" class="btn btn-primary pull-right">Add Price</button>
+                </div>
+            </div>
+          
+            <div class="form-horizontal " id="Addinfo" style="display:none;">
+                <form id="frmAddPrice">
+                    <div class="form-group is-empty borderbottom">
+                        <label for="nameInput" class="col-sm-12 control-label">Price Header</label>
+                        <div class="col-sm-12">
+                            <input type="text" id="PriceHeader" class="form-control" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group is-empty borderbottom">
+                        <label for="nameInput" class="col-sm-12 control-label">Price</label>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-5 norightpadding">
+                                    <select class="singleselect " name="ddlCurrency" id="ddlCurrency">
+                                       
+                                    </select>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input type="text" id="Price" class="form-control" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty borderbottom">
+                        <label for="nameInput" class="col-sm-12 control-label">Price SubHeader</label>
+                        <div class="col-sm-12">
+                            <input type="text" id="PriceSubHeader" class="form-control" value="" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer" id="footer" style="display:none;">
+            <div class="pull-right">
+                <button id="btnprice" class="btn btn-primary">SUBMIT</button>
+                <button id="btncancel" class="btn btn-primary">CANCEL</button>
+            </div>
+        </div>
+        <div id="LoaderBASinup" class="BAAnimatedloader hidebaloader" style="display: none">
+            <img src="~/Content/ThemeAus/images/baloader.gif" />
+        </div>
+    </div>
+</div>

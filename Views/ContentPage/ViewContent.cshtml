@@ -1,0 +1,40 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "ViewContent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Data = ViewBag.Data as ContentPage;
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item"><a href=@Url.Action("List","ContentPage")>Content Page List</a></li>
+                    <li class="breadcrumb-item active">View</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@Data.PageTitle</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card" style="height:auto">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 row">
+                            @Html.Raw(@Data.PageContent)
+                        </div>
+                    </div>
+
+                </form>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->

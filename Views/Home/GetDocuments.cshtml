@@ -1,0 +1,190 @@
+﻿@using NewZapures_V2.Models
+@model List<DocumentLibraryMaster>
+@{
+    Layout = null;
+
+    var userId = (UserModelSession)Session["UserDetails"];
+
+    var uploadedDocument = System.Configuration.ConfigurationManager.AppSettings["URL"];
+
+    var imgsrc = "";
+}
+<style type="text/css">
+    .red {
+        color: red;
+        font-size: 15px;
+    }
+
+    .docImage {
+        height: 85px;
+        width: 85px;
+        text-align: center;
+        border: 1px solid gainsboro;
+        border-radius: 50%;
+        -webkit-box-shadow: inset 2px 0px 21px -6px rgba(0,0,0,0.40);
+        -moz-box-shadow: inset 2px 0px 21px -6px rgba(0,0,0,0.40);
+        box-shadow: inset 2px 0px 21px -6px rgb(0 0 0 / 40%);
+    }
+</style>
+@{
+    <hr />
+    if (Model != null)
+    {
+        <div class="col-lg-8">
+            <table class="table table-borderless">
+                @{
+                    foreach (var item in Model)
+                    {
+                        string id = @item.DocumentName.Replace(" ", "_").ToString();
+                        var checkboxId = "fup_" + @id.Replace("_", "");
+                        var btnId = "upbtn" + @id.Replace("_", "");
+                        var hiddenField = "hdd" + @id.Replace("_", "");
+                        var documentID = "doc-" + @id.Replace("_", "");
+                        var divDocId = "divimg_" + @id.Replace("_", "");
+                        <tr>
+                            <td colspan="3">
+                                @*<label for="example-email-input" class="col-sm-7" style="text-decoration:underline;font-size: 14px;color: @(item.isMandatory==1? "Red":"Green");font-weight: 500;">@item.DocumentName @(item.isMandatory==1? "(Mandatory)":"(Not Mandatory)") </label>*@
+                                <label for="example-email-input" class="col-sm-7" style="text-decoration:underline;font-size: 14px;font-weight: 500;">@item.DocumentName<span class="red">@(item.isMandatory==1? "*":"")</span></label>
+                                <label id="@documentID" hidden>@item.Id</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id=@checkboxId @(item.isMandatory == 1 ? "required" : "") onchange="return encodeImageFileAsURL(this,'@hiddenField','@id',@item.isMandatory)">
+                                    <input hidden id=@hiddenField />
+                                    <label class="custom-file-label" for=@checkboxId>Choose file</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="@divDocId" class="docImage" style="height: 85px; width: 85px;">
+
+                                   
+                                    <div id="loadingDiv" style="display: none;position: relative;width: 50%;height: 1%;background: white;text-align: center;margin-left: 27%;top: 28.5%;z-index: 0;">
+                                        <img src="~/images/MobileOperators/loader.gif" width="40" height="40" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <hr class="mt-3" />
+        <div class="col-lg-12">
+            No Documents Data Available
+        </div>
+    }
+}
+<script src="~/Content/globalDomain.js"></script>
+<script>
+    var imagebase64 = "";
+    var partyID = "";
+    if ('@userId' != null) {
+        partyID = '@userId.PartyId';
+    }
+    function encodeImageFileAsURL(element, hiddenItemField, documentName,isrequired) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            //console.log(imagebase64)
+            //console.log(hiddenItemField)
+            var fileuploadItem = hiddenItemField.replace("hdd", "fup_");
+            $('#' + hiddenItemField).val(imagebase64);
+            var docmentID = hiddenItemField.replace("hdd", "doc-");
+            docmentID = $('#' + docmentID).text();
+            $('#loadingDiv').css('display', 'block');
+            SaveuploadedDocinDB(partyID, imagebase64, docmentID, documentName, fileuploadItem, isrequired);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+
+    function SaveuploadedDocinDB(partyID, ImageName, DocumentID, DocumentName, fileuploadItem, isrequired) {
+
+        var d = ImageName.split(',');
+
+        //console.log(partyID);
+        //console.log(d[1]);
+        //console.log(DocumentID);
+        //console.log(DocumentName);
+        //console.log(fileuploadItem);
+
+        var divimageId = fileuploadItem.replace('fup_', '#divimg_');
+       
+      
+        console.log(divimageId)
+
+        var model = {
+            PartyId: partyID,
+            Image: d[1],
+            DocumentID: DocumentID,
+            DocumentName: DocumentName,
+            ImageURL:""
+        }
+
+        $.ajax({
+            url: GetglobalDomain() + "/AdminAjaxRequestPage/UploadRequiredDocuments",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(model),
+            success: function (response) {
+                //console.log(response.Data.ImageURL);
+
+                if (response.StatusCode == 1) {
+
+                    //Swal.fire({
+                    //    position: 'center',
+                    //    icon: 'success',
+                    //    title: 'Document Uploaded...!',
+                    //    allowOutsideClick: false,
+                    //    showCloseButton: false,
+                    //    showConfirmButton: false,
+                    //    timer: 2000,
+                    //})
+                    var fullPathServer = "";
+                    //$(divimageId).css('background-image', 'url(' + fullPathServer + ')');
+
+                     fullPathServer = '@uploadedDocument'+response.Data.ImageURL
+
+                    console.log(fullPathServer);
+                 
+                    $(divimageId).css('background-image', 'url(' + fullPathServer + ')');
+                    $(divimageId).css('background-size', 'contain');
+                   
+                    if (isrequired == 1) {
+                        $('#' + fileuploadItem).removeAttr('required');
+                    }
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Document Not Uploaded...!',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    })
+                }
+                $('#loadingDiv').css('display', 'none');
+            }
+        });
+
+
+        //setTimeout(function () {
+        //    $('#loadingDiv').css('display', 'none');
+        //    console.log("File Uploaded");
+
+        //    $(divimageId).attr("src","https://localhost:44396//images/A000001_Profileimage.jpg")
+        //}, 3000);
+    }
+</script>

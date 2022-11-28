@@ -1,0 +1,472 @@
+﻿@using NewZapures_V2.Models
+@model RateMaster
+@{
+
+    ViewBag.Title = "Rate Master";
+    ViewBag.Create = "Create New Rate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CustomMaster> Chargetype = new List<CustomMaster>();
+    if (ViewBag.Chargetype != null)
+    {
+        Chargetype = (List<CustomMaster>)ViewBag.Chargetype;
+    }
+    List<CustomMaster> UnitType = new List<CustomMaster>();
+    if (ViewBag.UnitType != null)
+    {
+        UnitType = (List<CustomMaster>)ViewBag.UnitType;
+    }
+    List<CustomMaster> PaymentRange = new List<CustomMaster>();
+    if (ViewBag.PaymentRange != null)
+    {
+        PaymentRange = (List<CustomMaster>)ViewBag.PaymentRange;
+    }
+    List<ShowRateMaster> servicelist = new List<ShowRateMaster>();
+    if (ViewBag.Servicelist != null)
+    {
+        servicelist = (List<ShowRateMaster>)ViewBag.Servicelist;
+    }
+}
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">CMS</li>
+                    <li class="breadcrumb-item">RateMaster</li>
+                    <li class="breadcrumb-item active">Details</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Services Details</h4>
+                @*<button href="@Url.Action("RateCreate","AdminAjaxRequestPage",new { Id =0 })" type="button" data-preloaderid="#addmodalpopup" class="btn btn-primary btn-sm nomargin btn ajaxmodal" data-toggle="modal" data-target="#modaladdpricing">
+                        <i class="fa fa-plus"></i> Pricing
+                    </button>*@
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("RateCreate", "Admin", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group is-empty row openclass">
+
+
+                        <div class="col-md12">
+                            <input type="hidden" name="TypeId" id="TypeId" value="" />
+                            <div class="checkbox checkbox-success checkbox-circle">
+                                <input id="HardwareId" class="type" data-id="HardwareId" type="checkbox">
+                                <label for="HardwareId">
+                                    Hardware
+                                </label>
+                                <input id="ServiceId" class="type" data-id="ServiceId" style="margin-left: 15px;" type="checkbox">
+                                <label for="ServiceId">
+                                    Services
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+
+
+                        <div class="col-md-4">
+                            <select class="singleselect" name="HardWareServicesId" id="HardwareList">
+                                <option value="">Select Hardware</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <select class="singleselect" name="ChargeType" id="ChargeType">
+
+                                <option value="">Select Charge Type</option>
+                                @{
+                                    foreach (var item in Chargetype)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <select class="singleselect" name="UnitType" id="UnitType" required>
+
+                                <option value="">Select Unit</option>
+                                @{
+                                    foreach (var item in UnitType)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+
+
+                        <div class="col-md-4">
+                            <select class="singleselect" name="PaymentType" id="PaymentRange" required>
+
+                                <option value="">Payment Range</option>
+                                @{
+                                    foreach (var item in PaymentRange)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+
+                            <input type="number" id="txtAmount" name="Amount" placeholder="Enter Amount" value="" class="form-control">
+
+
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" type="button" id="Reset"> Reset </button>
+                            <button class="btn btn-primary" type="submit"> Save </button>
+
+                        </div>
+                    </div>
+                }
+                <form class="form-parsley" action="#" autocomplete="off">
+                    @*<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">*@
+
+                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Charge Type</th>
+                                <th>Unit</th>
+                                <th>Rate</th>
+                                <th>Payment Range</th>
+                                <th>Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ foreach (var item in servicelist)
+                                {
+                                    <tr id="tr_@item.RateMasterId">
+                                        <td>@item.ServiceName</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.ChargeType</td>
+                                        <td>@item.UnitType</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.PaymentType</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.Isactive == 1)
+                                                    {
+                                                        <input class="form-check-input ChangeStatus" type="checkbox" id="RateMaster_@item.RateMasterId" name="@item.RateMasterId" data-id="RateMaster-@item.Isactive-@item.RateMasterId" value="@item.Isactive" checked>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="form-check-input ChangeStatus" type="checkbox" id="RateMaster_@item.RateMasterId" name="@item.RateMasterId" data-id="RateMaster-@item.Isactive-@item.RateMasterId" value="@item.Isactive">
+
+                                                    }
+                                                }
+
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                            <a id="RateMaster_Delete_@item.RateMasterId" class="Deleteclass" name="@item.RateMasterId" data-id="RateMaster-2-@item.RateMasterId" title="Delete" onclick="DeleteData(@item.RateMasterId)" style="display:@(item.Isactive==1?"none":"")"><i class="fas fa-times text-danger font-16"></i></a>
+
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal right fade custommodal fixheaderfooter" id="modaladdpricing" role="dialog">
+
+
+</div>
+@*<link href="~/Content/scss/css/styles.css" rel="stylesheet" />*@
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    <script src="~/scripts/pages/jquery.sweet-alert.init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script type="text/javascript">
+        $(".ajaxmodal").unbind("click");
+        $(".ajaxmodal").each(function () {
+
+            $(this).unbind("click");
+            $(this).click(function () {
+
+                var targetmodal = $(this).data("target");
+                var ajaxurl = $(this).attr("href");
+
+                $(targetmodal).html($($(this).data("preloaderid")).html());
+
+                $(targetmodal).load(ajaxurl).modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false,
+                });
+
+                return false;
+            });
+
+        });
+
+
+        $('#modal').modal('hide');
+        $("#ddltype").select2();
+
+    </script>
+    @*<script src="~/Content/scss/select2/js/select2.js"></script>
+        <script src="~/Content/jquery/jquery.js"></script>
+        <script src="~/Content/select2/js/select2.js"></script>*@
+    <script type="text/javascript">
+        $(".type").click(function () {
+            var id = $(this).data("id");
+            $(".type").prop('checked', false);
+            $("#" + id).prop('checked', true);
+            if (id == 'HardwareId') {
+                BindHardwarelist(2);
+                $("#TypeId").val(2);
+            }
+            if (id == 'ServiceId') {
+                BindHardwarelist(0);
+                $("#TypeId").val(1);
+            }
+        });
+    function DeleteData(Id) {
+        var Id = Id;
+
+        /*  var TypeId = $(this).attr("name");*/
+        $.confirm({
+
+            title: 'Remove Confirmation',
+            content: 'Are you sure to remove record',
+            type: 'red',
+            typeAnimated: true,
+            animation: 'rotate',
+            closeAnimation: 'scale',
+            buttons: {
+                Confirm: {
+                    text: 'YES',
+                    btnClass: 'btn-red',
+                    action: function () {
+
+
+
+                        var Params = JSON.stringify({
+                            TableId:'RateMaster',
+                            Id: Id,
+                            type:2
+
+
+                        });
+                       /* ShowBALoader("LoaderBASinup1");*/
+                        $.ajax({
+                            url: "@Url.Action("ChangeStatus", "Admin")"  ,//globaUserProperties.domain +
+                            type: 'POST',
+                            dataType: "json",
+                            data: Params,
+                            contentType: "application/json",
+                            success: function (response) {
+
+
+                                debugger;
+                                if (response.IsValid = 1) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Delete Successfully',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    })
+                                  $("#tr_"+Id).remove();
+                                }
+
+                            },
+
+                        });
+
+                    }
+                },
+                close: {
+                    text: 'NO',
+                    action: function () { }
+                }
+            }
+        });
+    }
+
+        $(".ChangeStatus").change(function () {
+
+            var id = $(this).data("id");
+            var item = id.split('-');
+            var type = parseInt($(this).val());
+            var trid = item[2];
+            //if (type==0) {
+            //    type = 1;
+            //}
+            //else {
+            //    type = 0;
+            //}
+            var Params = JSON.stringify(
+                {
+                    TableId: item[0],
+                    type: item[1],
+                    Id: item[2]
+                });
+
+            $.ajax({
+                url: "@Url.Action("ChangeStatus", "Admin")" ,//globaUserProperties.domain +
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response)
+                {
+                    if (response.isvalid == 1) {
+                        debugger;
+                        if (type == 1) {
+                            $("#RateMaster_" + trid).val('0');
+                            $("#RateMaster_Delete_" + trid).css('display', 'block');
+                        }
+                        else {
+                            $("#RateMaster_" + trid).attr('value', '1');;
+                            $("#RateMaster_Delete_" + trid).css('display', 'none');
+                        }
+                        }
+
+
+                    var status = $('#RateMaster_' + trid).is(':checked');
+                    if (status) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Rate Activated Successfully!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Rate Deactivated Successfully!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+
+                    }
+/*                    }*/
+                });
+
+        });
+    $("#Reset").click(function () {
+        var strHTML = "";
+        strHTML += "<option value=''>Select Services Name</option>"
+            $(".type").prop('checked', false);
+            $("#HardwareList").select2("destroy");
+            $("#HardwareList").html(strHTML);
+            $("#HardwareList").select2();
+        });
+        function BindHardwarelist(Id) {
+
+            var strHTML = "";
+            if (Id == 2) {
+                strHTML += "<option value=''>Select Hardware Name</option>"
+            }
+            else {
+                strHTML += "<option value=''>Select Services Name</option>"
+            }
+            var Params = JSON.stringify(
+                {
+                    Enum: Id
+                });
+
+            $("#HardwareList").select2("destroy");
+            $("#HardwareList").html(strHTML);
+            $("#HardwareList").select2();
+
+                //$("#ChildCateId").select2("destroy");
+                //$("#ChildCateId").html(strHTML);
+                //$("#ChildCateId").select2();
+
+
+
+            $.ajax({
+                url: "@Url.Action("FillListServices", "Admin")" ,//globaUserProperties.domain +
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        @*if ('@service' == response.Data[i].MstCategoryID) {
+                            strHTML += "<option selected value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+                        else {*@
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
+                      /*  }*/
+                    }
+
+                    $("#HardwareList").select2("destroy");
+                    $("#HardwareList").html(strHTML);
+                    $("#HardwareList").select2();
+
+                    //$("#ChildCateId").select2("destroy");
+                    //$("#ChildCateId").html("<option value=''>Select</option>");
+                    //$("#ChildCateId").select2();
+
+
+                }
+            });
+
+
+
+        }
+        $(".singleselect").select2();
+    </script>
+}

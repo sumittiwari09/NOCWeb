@@ -1,0 +1,405 @@
+﻿@model NewZapures_V2.Models.WalletRechargeHistory
+@{
+    ViewBag.Title = "Wallet Refill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    IEnumerable<NewZapures_V2.Models.ClientWalletRechage> Ven = ViewData["ClientRechargeRequest"] as IEnumerable<NewZapures_V2.Models.ClientWalletRechage>;
+}
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@
+@*<link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Wallet</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Client Wallet ReFill Request</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Wallet Recharge Notifications</h4>
+                @*<button href="@Url.Action("RateCreate","AdminAjaxRequestPage",new { Id =0 })" type="button" data-preloaderid="#addmodalpopup" class="btn btn-primary btn-sm nomargin btn ajaxmodal" data-toggle="modal" data-target="#modaladdpricing">
+                        <i class="fa fa-plus"></i> Pricing
+                    </button>*@
+            </div>
+
+            <div class="card-body">
+                @using (Html.BeginForm("ClientWalletRechargeRequets", "Support", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group is-empty row">
+                        <div class="col-md-3">
+                            <label>From Date</label>
+                            <span style="color:red;">*</span>
+                            <div id="From" class="input-group">
+                                @if (ViewData["FromDate"] != null && ViewData["FromDate"] != "")
+                                {
+                                    <input type="date" class="form-control customreadonly" required="required" name="FromDate" id="FromDate" value="@ViewData["FromDate"]" />
+                                }
+                                else
+                                {
+                                    <input type="date" class="form-control allow_numeric customreadonly" name="FromDate" id="FromDate" required="required" />
+
+                                }
+                            </div>
+
+                        </div>
+                        @*<div class="col-md-3">
+                                <label>From Date</label>
+                                <span style="color:red;">*</span>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar">
+                                        </i>
+                                    </div>
+                                    <input class="form-control" id="date" name="date" placeholder="YYYY-MM-DD" type="text" />
+                                </div>
+                            </div>*@
+                        <div class="col-md-3" id="typedata">
+                            <label>To Date</label>
+                            <span style="color:red;">*</span>
+                            <div id="To" class="input-group">
+                                @if (ViewData["ToDate"] != null && ViewData["ToDate"] != "")
+                                {
+                                    <input type="date" class="form-control customreadonly" required="required" name="ToDate" id="ToDate" value="@ViewData["ToDate"]" />
+
+                                }
+                                else
+                                {
+                                    <input type="date" class="form-control allow_numeric customreadonly" name="ToDate" id="ToDate" required="required" placeholder="DD-MM-YYYY" />
+
+                                }
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <label style="color:#fff">To Date</label>
+                            <div class="input-group">
+                                <button class="btn btn-primary" type="submit" style="margin-right:10px"> Search </button>
+                                <button class="btn btn-primary" type="button" id="Reset"> Reset </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group is-empty">
+                            <button class="btn btn-primary" type="button" id="Reset"> Reset </button>
+                            <button class="btn btn-primary" type="submit"> Search </button>
+                        </div>*@
+                }
+                <form class="form-parsley" action="#" autocomplete="off">
+                    @*<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">*@
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Party Name</th>
+                                <th>State Name</th>
+                                <th>Transaction Type</th>
+                                <th>Bank Name</th>
+                                <th>UTR No. / Ref No.</th>
+                                <th>Amount</th>
+                                @*<th>IN Word</th>*@
+                                <th>Created Date</th>
+                                <th>Status</th>
+                                <th>Recipt File</th>
+                                <th> Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (NewZapures_V2.Models.ClientWalletRechage Vendor in Ven)
+                            {
+                                <tr>
+
+                                    <td>@Vendor.PartyName</td>
+                                    <td>@Vendor.State</td>
+                                    <td>@Vendor.Mode</td>
+                                    <td>@Vendor.BankName</td>
+                                    <td>@Vendor.UTRNo</td>
+                                    <td>@Vendor.Amount</td>
+                                    @*<td>@Vendor.AmountWord</td>*@
+                                    <td>@Vendor.EntryDate</td>
+                                    <td>@Vendor.Status</td>
+                                    @*@if (Vendor.FileType != "NA" && Vendor.FileType != "" && Vendor.FileType != null)
+                                        {*@
+
+                                    <td>
+                                        @*<a href="@Vendor.DocumentURL" class="fas fa-arrow-circle-down" target="_blank">DownLoad</a>*@
+                                        @Html.ActionLink("Download", "DownloadReceipt", "Support", new { WalletRechargeId = @Vendor.WalletRechargeId }, new { @class = "fas fa-arrow-circle-down", title = "Download File" })
+                                    </td>
+                                    @*}
+                                        else
+                                        {
+                                            <td></td>
+                                        }*@
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#AcceptReject" class="btn btn-sm btn-info" fullname="@Vendor.PartyName" clientrechargeid="@Vendor.WalletRechargeId" partyid="@Vendor.PartyId" onclick="Action($(this))">
+                                            Accept/Reject
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="AcceptReject" tabindex="-1" role="dialog" aria-labelledby="AcceptRejectModalLabel" aria-hidden="true" style="display:none;">
+    @*<div id="AcceptReject" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="AcceptRejectModalLabel" class="modal fade">*@
+    <div class="modal-dialog modal-lg-6">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+                <h4 id="AcceptRejectModalLabel" class="modal-title">Write a Message</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @*<div class="col-lg-3"></div>*@
+                    <input type="text" id="retailerid" name="retailerid" hidden>
+                    <input type="text" id="clientrechargeid" name="clientrechargeid" hidden>
+                    <input type="text" id="fullname" name="fullname" hidden>
+                    <div class="col-lg-12">
+                        <label class="text-bold">Enter Remark</label>
+                        @Html.TextArea("Note", "", new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+
+                <div class="form-group is-empty row" id="AcceptRejectbtn">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <button id="Accept" class="btn btn-default btn-success" style="margin-right:10px">Accept</button>
+                            <button id="Reject" class="btn btn-default btn-danger">Reject</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Loding" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSmall" aria-hidden="true" class="modal fade" style="margin-top:25%;">
+    <div class="modal-dialog modal-sm whirl traditional">
+    </div>
+</div>
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    @*<script src="~/plugins/moment/moment.js"></script>
+        <script src="~/plugins/daterangepicker/daterangepicker.js"></script>*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+
+    function Action(ctrl) {
+    debugger;
+    $("#Message").val("");
+    var partyid = $(ctrl).attr("partyid");
+    var clientrechargeid = $(ctrl).attr("clientrechargeid");
+    var fullname = $(ctrl).attr("fullname");
+    $('#retailerid').val(partyid);
+    $('#clientrechargeid').val(clientrechargeid);
+    $('#fullname').val(fullname);
+    }
+
+    $('#Accept').on("click", function () {
+    debugger;
+    var type = {};
+    type.PartyId = $('#retailerid').val();
+    type.Note = $('#Note').val();
+    type.WalletRechargeId = $('#clientrechargeid').val();
+    type.Status = "Accepted";
+    type.Expirydate = " ";
+    $('#AcceptReject').modal('hide');
+    swal.fire({
+    title: "Are you sure?",
+    text: "You want To Accept Request of User" + " " + $('#fullname').val(),
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, I am Sure!",
+    cancelButtonText: "No, Cancel please!",
+    closeOnConfirm: false,
+    closeOnCancel: false
+    }).then((result) => {
+    var newUrl = '@Url.Action("ClientWalletRechargeRequets", "Support")';
+
+    if (result.isConfirmed) {
+    //swal.close();
+    //$("#Loding").modal({ backdrop: "static" });
+    debugger;
+    $.ajax({
+    url: '@Url.Action("AcceptRejectRequestWallet", "Support")',
+    type: "POST",
+    dataType: "JSON",
+    data: '{NType: ' + JSON.stringify(type) + '}',
+    contentType: "application/json; charset=utf-8",
+    success: function (Data) {
+    debugger;
+    if (Data.Lst.ResponseCode == 1) {
+    setTimeout(function () {
+    swal.fire({
+    title: "Done!",
+    text: Data.Lst.Messsage,
+    type: "success"
+    }).then((result) => {
+    //function (isConfirm) {
+    if (result.isConfirmed) {
+    window.location.href = newUrl;
+    }
+    //        }
+    }
+    );
+    }, 1000);
+    }
+    else if (Data.Lst.ResponseCode == -1) {
+    setTimeout(function () {
+    swal.fire({
+    title: "Error",
+    text: Data.Lst.Messsage,
+    type: "warning"
+    }).then((result) => {
+    if (result.isConfirmed) {
+    window.location.href = newUrl;
+    }
+    }
+    //function (isConfirm) {
+
+    //        }
+    );
+    }, 1000);
+    }
+    }
+    });
+    }
+    else {
+    $("#Loding").modal('hide');
+    //swal("Cancelled", "");
+    window.location.href = newUrl;
+
+    }
+    })
+    });
+
+    $('#Reject').on("click", function () {
+    debugger;
+    var type = {};
+    type.PartyId = $('#retailerid').val();
+    type.Note = $('#Note').val();
+    type.WalletRechargeId = $('#clientrechargeid').val();
+    type.Status = "Rejected";
+    type.Expirydate = " ";
+
+    if (type.Message == "") {
+    ValidationError('Please Add Reason of Rejection in Message Box');
+    }
+    else {
+    $('#AcceptReject').modal('hide');
+    debugger;
+    swal.fire({
+    title: "Are you sure?",
+    text: "You want To Reject Request of User" + " " + $('#fullname').val(),
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, I am Sure!",
+    cancelButtonText: "No, Cancel please!",
+    closeOnConfirm: false,
+    closeOnCancel: false
+    }).then((result) => {
+
+
+    var newUrl = '@Url.Action("ClientWalletRechargeRequets", "Support")';
+
+    if (result.isConfirmed) {
+    //swal.close();
+    //$("#Loding").modal({ backdrop: "static" });
+    debugger;
+    $.ajax({
+    url: '@Url.Action("AcceptRejectRequestWallet", "Support")',
+    type: "POST",
+    dataType: "JSON",
+    data: '{NType: ' + JSON.stringify(type) + '}',
+    contentType: "application/json; charset=utf-8",
+
+    success: function (Data) {
+    debugger;
+    if (Data.Lst.ResponseCode == 1) {
+    setTimeout(function () {
+    swal.fire({
+    title: "Done!",
+    text: Data.Lst.Messsage,
+    type: "success"
+    }).then((result) => {
+    //function (isConfirm) {
+    if (result.isConfirmed) {
+    window.location.href = newUrl;
+    }
+    //        }
+    }
+    );
+    }, 1000);
+    }
+    else if (Data.Lst.ResponseCode == -1) {
+    setTimeout(function () {
+    swal.fire({
+    title: "Error",
+    text: Data.Lst.Messsage,
+    type: "warning"
+    }).then((result) => {
+    if (result.isConfirmed) {
+    window.location.href = newUrl;
+    }
+    }
+    //function (isConfirm) {
+
+    //        }
+    );
+    }, 1000);
+    }
+    }
+    });
+    }
+    else {
+    $("#Loding").modal('hide');
+    //swal("Cancelled", "");
+    window.location.href = newUrl;
+
+    }
+    })
+    }
+    });
+    </script>
+}

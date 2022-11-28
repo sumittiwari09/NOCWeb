@@ -1,0 +1,278 @@
+﻿@using NewZapures_V2.Models
+
+@model List<UserPagingPermission>
+@{
+    ViewBag.Title = "Userpermission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int mappingid = (int)ViewBag.mapping;
+}
+
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">User Permissions</li>
+
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Role Mapping SubMenu Index</h4>
+                <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("RoleMappingDepartmentandGroupIndex", "Role")"><i class="fas fa-arrow-left"></i> Back to List</a>
+            </div>
+            <div class="card-body">
+                <form class="form-parsley" action="#" autocomplete="off">
+                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th>#No</th>
+
+                                <th>Menu Name</th>
+                                <th>SubMenu Name</th>
+                                <th>Insert</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                                <th>View</th>
+                                <th>Active</th>
+                                @*<th>Action</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr id="tr_@item.ID">
+                                        <td>@i</td>
+                                        <td>
+                                            @item.MenuName
+                                        </td>
+                                        <td>
+                                            @item.SubMenuName
+                                        </td>
+
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.perInsert == 1)
+                                                    {
+                                                        <input id="InsertOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="InsertOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perInsert" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="InsertOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="InsertOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perInsert">
+
+                                                    }
+                                                }
+
+                                            </div>
+
+
+
+
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.perEdit == 1)
+                                                    {
+                                                        <input id="UpdateOpertaion-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="UpdateOpertaion-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perEdit" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="UpdateOpertaion-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="UpdateOpertaion-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perEdit">
+
+                                                    }
+                                                }
+
+                                            </div>
+
+
+
+
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.perDelete == 1)
+                                                    {
+                                                        <input id="DeleteOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="DeleteOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perDelete" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="DeleteOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="DeleteOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perDelete">
+
+                                                    }
+                                                }
+
+                                            </div>
+
+
+
+
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.perView == 1)
+                                                    {
+                                                        <input id="ViewOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="ViewOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perView" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="ViewOperation-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="ViewOperation-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perView">
+
+                                                    }
+                                                }
+
+                                            </div>
+
+
+
+
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{if (item.perStatus == 1)
+                                                    {
+                                                        <input id="Status-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="Status-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perStatus" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="Status-@item.ID-@item.UserID" class="form-check-input InsertStatus" type="checkbox" data-id="Status-@item.ID-@item.UserID" name="@item.ID-@item.UserID" value="@item.perStatus">
+
+                                                    }
+                                                }
+
+                                            </div>
+
+
+
+
+                                        </td>
+                                        @*<td>
+
+                                                @{
+
+
+
+
+                                                    <a id="btnDeactive_@item.MenuMappingwithSubmenuId" class="Deleteclass" name="2" data-id="@item.MenuMappingwithSubmenuId" onclick="DeleteData(@item.MenuMappingwithSubmenuId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+
+
+                                                }
+
+                                            </td>*@
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script type="text/javascript">
+        $(".InsertStatus").change(function () {
+            debugger
+            var id = $(this).data("id");
+            var item = id.split('-');
+            var type = parseInt($(this).val())==1?0:1;
+            let msgstring;
+            if (item[0] == 'InsertOperation') {
+                msgstring = 'Insert';
+            }
+            if (item[0] == 'UpdateOpertaion') {
+                msgstring = 'Update';
+            }
+            if (item[0] == 'InsertOperation') {
+                msgstring = 'InsertOperation';
+            }
+            if (item[0] == 'DeleteOperation') {
+                msgstring = 'Delete';
+            }
+            if (item[0] == 'ViewOperation') {
+                msgstring = 'View';
+            }
+            if (item[0] == 'Status') {
+                msgstring = 'Status';
+            }
+            //else {
+            //    type = 0;
+            //}
+            var Params = JSON.stringify(
+                {
+                    Typedata: item[0],
+                    MappingId: @mappingid,
+                    PermissionId: item[2],
+                    MstGroupId: item[1],
+                    status: type
+                });
+
+            $.ajax({
+                url: "OperationStatus",//GetglobalDomain() +
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    debugger;
+                    if (response.isvalid == 1) {
+
+                        var msg = msgstring +' '+'Changes Successfully';
+                        if (type == 0) {
+                            $("#" + id).val(0);
+                            /* $(this).val('0');*/
+                            msg = msgstring + ' ' +'De-Active Successfully';
+                        }
+                        else {
+                            $("#" + id).val(1);
+                            /* $(this).val('1');*/
+                            msg = msgstring + ' ' +'Active Successfully';
+                        }
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: msg,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+            });
+
+        });
+    </script>
+}
+

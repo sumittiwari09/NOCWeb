@@ -1,0 +1,1423 @@
+﻿@using NewZapures_V2.Models;
+@{
+    ViewBag.Title = "Mobile Recharge";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var circle = ZapurseCommonlist.GetCircle();
+    var MobileOperator = ZapurseCommonlist.GetMobileOperator();
+    var DTHOperator = ZapurseCommonlist.GetDTHOperator();
+
+    var wallet = ViewBag.wallet as List<WalletLeft>;
+    var serviceavailable = (int)ViewBag.serviceAvailable;
+
+    var partyID = (string)ViewBag.partyId;
+    var partyType = (string)ViewBag.partyType;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<style type="text/css">
+    .walletLeft, .cashOutAMT {
+        background: #edf0f5;
+        padding: 20px;
+        font-size: 25px;
+        border-radius: 20px;
+        color: black;
+        text-align: center;
+        width: 466px;
+        margin: 0px 20px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -40px inset;
+    }
+
+    .selectedOperator {
+        background: #506ee4;
+        color: white;
+    }
+
+    .selectedPlan {
+        background: #506ee4;
+        color: white;
+    }
+
+        .selectedPlan h5 {
+            color: white;
+        }
+
+
+    .divContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 100px;
+        gap: 34px 24px;
+    }
+
+    .PlansShow {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+        grid-row-gap: 10px;
+        margin-top: 15px;
+    }
+
+    .PlanContainer {
+        height: 10em;
+        display: flex;
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+    }
+
+    .DTHPlanContainer {
+        height: 12em;
+        display: grid;
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        margin-bottom: 17px;
+    }
+
+    .operatorContainer {
+        height: 8em;
+        display: flex;
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        cursor: pointer;
+    }
+
+    #operatorImage {
+        width: 20%;
+        height: 100%;
+        border-right: 1px solid #e3d9d9;
+        border-radius: 50%;
+        -webkit-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+    }
+
+    #PlanAmount {
+        width: 180px;
+        height: 100%;
+        border-right: 1px solid #e3d9d9;
+        border-radius: 50%;
+        display: flex;
+        place-content: center;
+        align-items: center;
+        font-size: 3em;
+        font-family: Arial;
+        -webkit-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+    }
+
+    .OperatorName {
+        width: 70%;
+        height: 100%;
+        display: flex;
+        place-content: center;
+        align-items: center;
+        font-size: 2em;
+    }
+
+    .PlanDesc {
+        width: 90%;
+        height: 100%;
+        display: grid;
+        place-content: start;
+        align-items: center;
+        font-size: 13px;
+        margin-left: 40px;
+        grid-row-gap: 0px;
+        grid-auto-flow: row;
+        margin-top: 24px;
+    }
+
+
+
+    #rbBSNLTopup, #rbBSNLSpecial {
+        display: block
+    }
+
+    input[type=radio] {
+        display: none
+    }
+
+    .DTHMonthPlan {
+        padding: 14px;
+        color: white;
+        border-radius: 43px;
+        font-size: 17px !important;
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    .selectedDTHPlan {
+        background: green !important
+    }
+
+    .DTHPlanDesc {
+        margin-left: 17px;
+        margin-bottom: 35px;
+    }
+
+    .DTHPlanName {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .DTHPlanDescName {
+        font-size: 18px;
+    }
+</style>
+
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Mobile Recharge</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+@if (serviceavailable == 1)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" style="margin-bottom:20px;display:flex;place-content:space-between">
+                        <div class="walletLeft">
+                            Wallet Balance : <span id="WalletAmout"></span> INR
+                            <div id="userwallet">User`s wallet : <span id="Spanuserwallet">@wallet[0].MainWalletBalance</span> INR</div>
+                        </div>
+                        <div class="cashOutAMT">
+                            CashOut Amount : <span id="CashoutAmt"></span> 0.00 INR
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="step1Operator" style="display:block">
+                        <div style="display: flex;place-content: space-between;">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left: -10px; font-weight: 500;">Choose Mobile Operator</label>
+                            <span style="color:red">Note :- Please Click On Any Operator To Select</span>
+                        </div>
+                        <div class="divContainer">
+                            @{
+                                if (MobileOperator != null)
+                                {
+                                    foreach (var item in MobileOperator)
+                                    {
+
+                                        var imageURL = "../images/MobileOperators/" + @item.OperatorImage;
+                                        <div id="operatorContainer_@item.OperatorName" class="operatorContainer" onclick="selectOperator('rb_@item.OperatorName','Mobile',@item.OperatorId)">
+
+                                            <input type="radio" name="operator" id="rb_@item.OperatorName" value="@item.OperatorName" style="display:none" />
+                                            <div id="operatorImage" style="background: url( @imageURL );background-size: contain;background-repeat: no-repeat;background-position: center"></div>
+                                            <div class="OperatorName">
+                                                @item.OperatorName
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+
+
+                        <label for="example-text-input" class="col-sm-8" style="margin-left: -10px; font-weight: 500; margin-top: 36px;">Choose DTH Operator</label>
+
+                        <div class="divContainer">
+                            @{
+                                if (DTHOperator != null)
+                                {
+                                    foreach (var item in DTHOperator)
+                                    {
+
+                                        var imageURL = "../images/MobileOperators/" + @item.OperatorImage;
+
+                                        var Name = @item.OperatorName.ToString();
+
+                                        Name = Name.Replace(" ", string.Empty);
+                                        <div id="operatorContainer_@Name" class="operatorContainer" onclick="selectOperator('rb_@Name','DTH',@item.OperatorId)">
+
+                                            <input type="radio" name="operator" id="rb_@Name" value="@item.OperatorName" style="display:none" />
+                                            <div id="operatorImage" style="background: url( @imageURL );background-size: contain;background-repeat: no-repeat;background-position: center"></div>
+                                            <div class="OperatorName">
+                                                @item.OperatorName
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+
+
+                        <div style="display: flex;place-content: end;">
+                            <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnNextToPlans" onclick="ChangeFormWitoutVelidation('step2Plans');" style="color: white; font-size: 20px;">Next  <i class="fas fa-angle-double-right fa-shake"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="step2Plans" style="display:none">
+                        <div id="divPlansForMobile">
+
+                            <div class="row">
+                                <div class="col-lg-12 row" style="margin-left: -12px;">
+                                    <div class="form-group col-lg-3">
+                                        <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Operator</label>
+                                        <div>
+                                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Operator" id="txtselectedOperator" name="Operator" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <div id="divCircle">
+                                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Circle</label>
+                                            <div>
+                                                <select class="form-control" id="ddlCircle">
+                                                    <option value="0">Select Circle</option>
+                                                    @{
+                                                        if (circle != null)
+                                                        {
+                                                            foreach (var item in circle)
+                                                            {
+                                                                <option value='@item.Text'>@item.Text</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-3" id="divbsnlRechargeType" style="display:none">
+                                        <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Choose Recharge Type</label>
+                                        <div style="display:flex;gap: 18px;align-items: baseline;margin-top: 8px;">
+                                            <input id="rbBSNLTopup" type="radio" value="3" name="bsnlRechargeType" text="Topup">
+                                            <label for="rbBSNLTopup">Topup</label>
+                                            <input id="rbBSNLSpecial" type="radio" value="4" name="bsnlRechargeType" text="Special">
+                                            <label for="rbBSNLSpecial">Special</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div id="loadingDiv" style="display:none;position: absolute;width: 100%;height: 100%;background: white;text-align: center;margin-left: -20px;z-index: 9;">
+                                <img src="~/images/MobileOperators/loader.gif" width="45" height="45" />
+                            </div>
+
+                            <div class="row col-12" id="PlansDiv" style="display:none;height:40vh;overflow-y:scroll">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#COMBO" role="tab">Combo</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#FULLTT" role="tab">Full Talk Time</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#RATECUTTER" role="tab">Rate Cutter</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#Romaing" role="tab">Romaing</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#SMS" role="tab">SMS</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#TOPUP" role="tab">Top Up</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#FRC" role="tab">FRC</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#_3G4G" role="tab">3G 4G</a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane active p-3" id="COMBO" role="tabpanel">
+
+                                                <div class="PlansShow" id="PlanCombo">
+                                                    <div id="PlanCombo_11" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane p-3" id="FULLTT" role="tabpanel">
+
+                                                <div class="PlansShow" id="PlanFullTT">
+                                                    <div id="PlanFullTT" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+                                            <div class="tab-pane p-3" id="RATECUTTER" role="tabpanel">
+
+                                                <div class="PlansShow" id="PlanRateCutter">
+                                                    <div id="PlanRateCutter" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane p-3" id="Romaing" role="tabpanel">
+
+                                                <div class="PlansShow" id="PlanRoaming">
+                                                    <div id="PlanRoaming" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane p-3" id="SMS" role="tabpanel">
+                                                <div class="PlansShow" id="PlanSMS">
+                                                    <div id="PlanSMS" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane p-3" id="TOPUP" role="tabpanel">
+                                                <div class="PlansShow" id="PlanTopUp">
+                                                    <div id="PlanTopUp" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane p-3" id="FRC" role="tabpanel">
+                                                <div class="PlansShow" id="PlanFRC">
+                                                    <div id="PlanFRC" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane p-3" id="_3G4G" role="tabpanel">
+                                                <div class="PlansShow" id="Plan3G4G">
+                                                    <div id="Plan3G4G" class="PlanContainer" onclick="selectPlan(11)">
+                                                        <input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />
+                                                        <div id="PlanAmount">11</div>
+                                                        <div class="PlanDesc">
+                                                            <div>item.ListName</div>
+                                                            <h5>validity</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--end card-body-->
+                                </div><!--end card-->
+                            </div><!--end col-->
+                        </div>
+                        <div id="divPlansForDTH" style="display:none">
+
+                            <div class="row">
+                                <div class="col-lg-12 row" style="margin-left: -12px;">
+                                    <div class="form-group col-lg-3">
+                                        <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Operator</label>
+                                        <div>
+                                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Operator" id="txtselectedOperatorDTH" name="Operator" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div id="loadingDivnew" style="display:none;position: absolute;width: 100%;height: 100%;background: white;text-align: center;margin-left: -20px;z-index: 9;">
+                                <img src="~/images/MobileOperators/loader.gif" width="45" height="45" />
+                            </div>
+                            <div id="PlansDivForDTH" style="display:none;height:40vh;overflow-y:scroll">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Nav tabs -->
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-toggle="tab" href="#PlanForDTH" role="tab">Plans</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-toggle="tab" href="#AddonPack" role="tab">Add-on Pack</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-4 text-right" style="color:red">
+                                                <span>Note :- Please Click On Monthly Price To Select</span>
+                                            </div>
+                                        </div>
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane active p-3" id="PlanForDTH" role="tabpanel">
+
+                                                <div class="PlansShowDTH" id="ShowPlanForDTH">
+
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane p-3" id="AddonPack" role="tabpanel">
+                                                <div class="PlansShowDTH" id="ShowAddonPackDTH">
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div><!--end card-body-->
+                                </div><!--end card-->
+                            </div><!--end col-->
+
+                        </div>
+
+                        <div style="display: flex;place-content: end;margin-top:20px">
+                            <button type="button" class="btn btn-gradient-primary waves-effect waves-light" style="color: white; font-size: 20px;" onclick="ChangeFormWitoutVelidation('step1Operator')"><i class="fas fa-angle-double-left fa-shake"></i> Previous</button>&nbsp; &nbsp;
+                            <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnNextToRecharge" style="color: white; font-size: 20px;" onclick="ChangeFormWitoutVelidation('step3Recharge')">Next  <i class="fas fa-angle-double-right fa-shake"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="step3Recharge" style="display:none">
+
+                        <div class="row">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Recharge Amount</label>
+                                <div>
+                                    <span style="position: absolute;z-index: 10;top: 30px;margin-left: 6px;border-right: 1px solid #b6b4b4;font-family: arial sans-serif;font-size: 20px;padding-right: 7px;">&#8377;</span><input class="form-control col-sm-11" type="text" autocomplete="off" maxlength="10" id="txtRechargeAmount" style="text-align:center" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Operator</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtRechargeOperator" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Circle</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtOperatorCircle" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Recharge Type</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtRechargeType" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px" id="lblmobile">Enter Mobile Number</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" placeholder="Enter Mobile Number/SubscriberId" id="txtMobileNumer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-lg-12">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Plan Description</label>
+                                <div>
+                                    <textarea class="form-control col-lg-12" type="text" rows="5" autocomplete="off" placeholder="" id="txtplanDescription" style=" resize: none;font-size:20px" readonly></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div style="display: flex;place-content:end;">
+                            <button type="button" class="btn btn-gradient-primary waves-effect waves-light" style="color: white; font-size: 20px;" onclick="ChangeFormWitoutVelidation('step2Plans')"><i class="fas fa-angle-double-left fa-shake"></i> Previous</button> &nbsp; &nbsp;
+                            <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnRecharge" style="color: white; font-size: 20px;">Recharge <i class="fas fa-coins fa-shake"></i></button>
+                        </div>
+                        <input type="hidden" id="hdfwalletLeft" />
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="display: grid;color:red;place-content: center;height: 100vh;font-size: 35px;">You haven`t puchase the service</div>
+}
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script>
+    var Details = [];
+    var BSNLRechrageType = "";
+    var BSNLRechrageTypeValue = 0;
+    var OperatorType = "";
+    var OperatorId = 0;
+
+    $(document).ready(function () {
+        //$('#txtMobileNumer').val("9039737635");
+        $("#ddlCircle").select2();
+        checkBalance();
+        var validate_inputs = document.querySelectorAll('[id^=rb_]:checked');
+        var validate_inputsPlans = document.querySelectorAll('[id^=rb_Plans_]:checked');
+        if (validate_inputs.length == 0) {
+            $('#btnNextToPlans').css('display', 'none');
+        }
+
+        if (validate_inputsPlans.length == 0) {
+            $('#btnNextToRecharge').css('display', 'none');
+        }
+
+        $('#ddlCircle').change(function () {
+            var operator = $('#txtselectedOperator').val();
+            var circle = $(this).val();
+
+            $('#loadingDiv').css('display', 'block');
+            $('#PlansDiv').css('display', 'none');
+            getPlans(operator, circle);
+        });
+
+
+        $('#txtMobileNumer').blur(function () {
+            var mobile = $('#txtMobileNumer').val();
+
+            if (mobile.length > 0) {
+                if (mobile.substr(0, 1) == 0 || mobile.length < 10) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Mobile Number Is Not Valid, Must Be 10 Digits Long',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+            }
+        });
+
+
+        $('input[name="bsnlRechargeType"]').change(function () {
+            var ChargeType = $('input[name="bsnlRechargeType"]:checked').val();
+            if (ChargeType == 4) {
+                BSNLRechrageType = "Special"
+                BSNLRechrageTypeValue = ChargeType
+
+            }
+            if (ChargeType == 3) {
+                BSNLRechrageType = "Topup"
+                BSNLRechrageTypeValue = ChargeType
+            }
+
+            if (Details.length > 0) {
+
+                Details = Details.map(function (data) {
+                    data.RechargeTypeVal = ChargeType;
+                    data.RechargeType = BSNLRechrageType;
+                })
+            }
+            $('#btnNextToRecharge').css('display', 'block');
+
+            //console.table(Details);
+        });
+        $('#btnNextToRecharge').click(function () {
+
+            if (Details.length > 0) {
+                $('#txtRechargeAmount').val(Details[0].Price);
+                $('#txtRechargeOperator').val(Details[0].Operator);
+                $('#txtOperatorCircle').val(Details[0].Circle);
+                $('#txtRechargeType').val(Details[0].Type);
+                $('#txtplanDescription').val(Details[0].Description.trim());
+
+                //alert(Details[0].Type)
+                if (Details[0].Type == 'DTH') {
+                    $('#txtRechargeAmount').removeAttr('readonly');
+                    $('#lblmobile').html('Enter Subscriber ID');
+                    $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
+                }
+                else {
+                    $('#txtRechargeAmount').attr('readonly', 'true');
+                    $('#lblmobile').html('Enter Mobile Number');
+                    $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
+                }
+            }
+        });
+
+        $('#btnRecharge').click(function () {
+
+            var mobile = $('#txtMobileNumer').val();
+            if (mobile.length <= 0) {
+
+                if (Details[0].Type == 'DTH') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Please Enter Subscriber ID',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Please Enter Mobile Number',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+
+
+
+            } else {
+                doRecharge();
+            }
+        });
+
+        $(".swal2-close").click(function () {
+            location.reload();
+        });
+
+    });
+
+    function selectOperator(item, Type, operatorID) {
+
+        var validate_inputs = document.querySelectorAll('[id^=rb_]');
+
+        validate_inputs.forEach(function (input_valid) {
+
+            var containerID = input_valid.id.replace('rb_', 'operatorContainer_');
+            $("#" + input_valid.id).removeAttr('checked');
+            $('#' + containerID).removeClass('selectedOperator');
+        });
+        $('#' + item).attr('checked', 'true');
+
+        var item = item.replace('rb_', 'operatorContainer_');
+
+        $('#' + item).addClass('selectedOperator');
+        $('#btnNextToPlans').css('display', 'block');
+
+        OperatorType = Type;
+        OperatorId = operatorID;
+
+        getCommissions(OperatorId)
+
+    }
+
+    function selectPlan(item, divID) {
+        var validate_inputs = document.querySelectorAll('[id^=rb_Plans_]');
+
+        validate_inputs.forEach(function (input_valid) {
+            var containerID = input_valid.id.replace('rb_Plans_', divID);
+            $("#" + input_valid.id).removeAttr('checked');
+            $('#' + containerID).removeClass('selectedPlan');
+        });
+        $('#rb_Plans_' + item).attr('checked', 'true');
+        $("#" + divID + item).addClass('selectedPlan');
+
+        var desc = $('#divPlandesc_' + item).text();
+        Details = [];
+
+        var operatorName = $('#txtselectedOperator').val();
+
+        if (item > $('#hdfwalletLeft').val()) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Insuficiant Account Balance`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+
+
+
+        if (operatorName == "BSNL") {
+
+            var rechargeType = $('input[name="bsnlRechargeType"]:checked').val();
+
+            if (typeof rechargeType === "undefined") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Recharge Type',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+
+                Details.push({
+                    Price: parseInt(item),
+                    Description: desc,
+                    Operator: operatorName,
+                    Circle: $('#ddlCircle option:selected').text(),
+                    RechargeType: rechargeType == "3" ? "Topup" : "Special",
+                    RechargeTypeVal: rechargeType,
+                    Type: "Mobile"
+                });
+            }
+            else {
+                Details.push({
+                    Price: parseInt(item),
+                    Description: desc,
+                    Operator: operatorName + (rechargeType == "3" ? "(Topup)" : "(Special)"),
+                    OperatorID: rechargeType,
+                    Circle: $('#ddlCircle option:selected').text(),
+                    RechargeType: rechargeType == "3" ? "Topup" : "Special",
+                    RechargeTypeVal: rechargeType,
+                    Type: OperatorType
+                });
+                $('#btnNextToRecharge').css('display', 'block');
+            }
+        }
+        else {
+            Details.push({
+                Price: parseInt(item),
+                Description: desc,
+                Operator: operatorName,
+                OperatorID: OperatorId,
+                Circle: $('#ddlCircle option:selected').text(),
+                RechargeType: "",
+                RechargeTypeVal: 0,
+                Type: OperatorType
+            });
+
+            $('#btnNextToRecharge').css('display', 'block');
+        }
+
+
+    }
+
+    function SelectDTHPlan(item, tableId) {
+        //alert(item.id);
+        var PlanPrice = item.id.split('_')[1];
+        //alert(PlanPrice);
+        var validate_inputs = document.querySelectorAll('[id^=DTHPlan_]');
+
+        validate_inputs.forEach(function (input_valid) {
+            var containerID = input_valid.id.replace('DTHPlan_', 'DivDTHPlan_');
+            $("#" + input_valid.id).removeAttr('checked');
+            $('#' + containerID).removeClass('selectedDTHPlan', 'Selected');
+        });
+
+
+        var divID = item.id;
+        divID = divID.replace('DTHPlan_', 'DivDTHPlan_');
+        //alert(divID);
+        $('#' + item.id).attr('checked', 'true');
+        $('#' + divID).addClass('selectedDTHPlan', 'Selected');
+
+        var desc = $('#' + tableId.id).text();
+        //alert(desc);
+        Details = [];
+
+        var operatorName = $('#txtselectedOperatorDTH').val();
+
+        //if (item > $('#hdfwalletLeft').val()) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: `Insuficiant Account Balance`,
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //        showConfirmButton: false,
+        //    });
+        //}
+        //alert(OperatorType);
+
+        Details.push({
+            Price: parseInt(PlanPrice),
+            Description: desc,
+            Operator: operatorName,
+            OperatorID: OperatorId,
+            Circle: "NA",
+            RechargeType: "",
+            RechargeTypeVal: 0,
+            Type: OperatorType
+        });
+
+        $('#btnNextToRecharge').css('display', 'block');
+    }
+
+    function ChangeFormWitoutVelidation(item) {
+
+        var yetToMove = true;
+
+        if (yetToMove == true) {
+            //console.log('inside change');
+            var validate_inputs = document.querySelectorAll('[id^=step]');
+
+            validate_inputs.forEach(function (input_valid) {
+                $('#' + input_valid.id).css('display', 'none');
+            });
+            $('#' + item).css('display', 'block');
+            var validate_inputs = document.querySelectorAll('[id^=rb_]:checked');
+            var id = validate_inputs[0].id;
+            var operator = $('#' + id).val();
+
+            if (OperatorType == "Mobile") {
+                $('#divPlansForDTH').hide();
+                $('#divPlansForMobile').show();
+                if (operator == "BSNL") {
+                    $('#txtselectedOperator').val(operator);
+                    $('#divbsnlRechargeType').css('display', 'block');
+                }
+                else {
+                    $('#txtselectedOperator').val(operator);
+                    $('#divbsnlRechargeType').css('display', 'none');
+                }
+            }
+            if (OperatorType == "DTH") {
+                $('#loadingDivnew').css('display', 'block');
+                $('#divPlansForDTH').show();
+                $('#divPlansForMobile').hide();
+                $('#PlansDivForDTH').show();
+                $('#txtselectedOperatorDTH').val(operator);
+
+                getPlansForDTH(operator);
+
+            }
+
+        }
+    }
+
+    function getPlans(operatorName, Circle) {
+        var PlansModel = {
+            CircleName: Circle,
+            OperatorName: operatorName
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/MobileRecharge/GetPlans",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(PlansModel),
+            success: function (data) {
+                var comboOffers = "";
+                var fullTTOffers = "";
+                var RateCutterOffers = "";
+                var RoamingOffers = "";
+                var SMSOffers = "";
+                var TopupOffers = "";
+                var FRCOffers = "";
+                var ThreeGFourGOffers = "";
+
+                if (data.StatusCode == "1" && data.Message == "Records Fetched...!") {
+                    if (data.Data != null) {
+
+                        var ComboOffer = data.Data.COMBO;
+                        var FullTTOffer = data.Data.FULLTT;
+                        var RateCutterOffer = data.Data.RATECUTTER;
+                        var RoamingOffer = data.Data.Romaing;
+                        var SMSOffer = data.Data.SMS;
+                        var TopupOffer = data.Data.TOPUP;
+                        var FRCOffer = data.Data.FRC;
+                        var ThreeGFourGOffer = data.Data._3G4G;
+
+                        if (ComboOffer != null) {
+
+                            ComboOffer.forEach(function (service) {
+                                //console.log(service);
+
+                                comboOffers += `<div id="PlanCombo_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanCombo_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanCombo').html('');
+                            $('#PlanCombo').html(comboOffers);
+
+                        }
+                        else {
+                            $('#PlanCombo').html('');
+                            $('#PlanCombo').html('<center><div>No Data Available</div></center>');
+                        }
+                        if (FullTTOffer != null) {
+
+                            FullTTOffer.forEach(function (service) {
+                                //console.log(service);
+
+                                fullTTOffers += `<div id="PlanFullTT_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanFullTT_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanFullTT').html('');
+                            $('#PlanFullTT').html(fullTTOffers);
+                        }
+                        else {
+                            $('#PlanFullTT').html('');
+                            $('#PlanFullTT').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (RateCutterOffer != null) {
+
+                            RateCutterOffer.forEach(function (service) {
+                                //console.log(service);
+
+                                RateCutterOffers += `<div id="PlanRateCutter_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanRateCutter_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanRateCutter').html('');
+                            $('#PlanRateCutter').html(RateCutterOffers);
+                        }
+                        else {
+                            $('#PlanRateCutter').html('');
+                            $('#PlanRateCutter').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (RoamingOffer != null) {
+                            RoamingOffer.forEach(function (service) {
+                                RoamingOffers += `<div id="PlanRoaming_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanRoaming_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanRoaming').html('');
+                            $('#PlanRoaming').html(RoamingOffers);
+                        }
+                        else {
+                            $('#PlanRoaming').html('');
+                            $('#PlanRoaming').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (SMSOffer != null) {
+
+                            SMSOffer.forEach(function (service) {
+                                //console.log(service);
+
+                                SMSOffers += `<div id="PlanSMS_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanSMS_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanSMS').html('');
+                            $('#PlanSMS').html(SMSOffers);
+                        }
+                        else {
+                            $('#PlanSMS').html('');
+                            $('#PlanSMS').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (TopupOffer != null) {
+                            TopupOffer.forEach(function (service) {
+                                TopupOffers += `<div id="PlanTopUp_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanTopUp_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanTopUp').html('');
+                            $('#PlanTopUp').html(TopupOffers);
+                        }
+                        else {
+                            $('#PlanTopUp').html('');
+                            $('#PlanTopUp').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (FRCOffer != null) {
+                            FRCOffer.forEach(function (service) {
+                                FRCOffers += `<div id="PlanFRC_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'PlanFRC_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#PlanFRC').html('');
+                            $('#PlanFRC').html(FRCOffers);
+                        }
+                        else {
+                            $('#PlanFRC').html('');
+                            $('#PlanFRC').html('<center><div>No Data Available</div></center>');
+                        }
+
+                        if (ThreeGFourGOffer != null) {
+                            ThreeGFourGOffer.forEach(function (service) {
+                                ThreeGFourGOffers += `<div id="Plan3G4G_${service.rs}" class="PlanContainer" onclick="selectPlan(${service.rs},'Plan3G4G_')">
+                                                        <input type="radio" name="Plan" id="rb_Plans_${service.rs}" value="${service.rs}" style="display:none" />
+                                                        <div id="PlanAmount">&#8377; ${service.rs}</div>
+                                                        <div class="PlanDesc"  id="divPlandesc_${service.rs}">
+                                                        <div>${service.desc}</div>
+                                                        <h5>validity : ${service.validity}</h5>
+                                                        </div>
+                                                        </div>`
+                            });
+                            $('#Plan3G4G').html('');
+                            $('#Plan3G4G').html(ThreeGFourGOffers);
+                        }
+                        else {
+                            $('#Plan3G4G').html('');
+                            $('#Plan3G4G').html('<center><div>No Data Available</div></center>');
+                        }
+
+                    }
+                }
+
+                $('#loadingDiv').css('display', 'none');
+                $('#PlansDiv').css('display', 'block');
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+
+
+    }
+
+    function getPlansForDTH(operatorName) {
+        var PlansModel = {
+            OperatorName: operatorName
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/MobileRecharge/GetPlansDTH",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(PlansModel),
+            success: function (data) {
+
+                if (data.StatusCode == "1" && data.Message == "Records Fetched...!") {
+                    var DTHPlanoffers = "";
+                    var DTHAddOnoffers = "";
+                    var AddOnPack = data.Data.AddOnPack;
+                    var DTHPlan = data.Data.Plan;
+
+
+
+                    if (DTHPlan != null) {
+                        DTHPlan.forEach(function (service) {
+                            DTHPlanoffers += `<div class="DTHPlanContainer">`
+                            var oneMONTHS = service.rs._1MONTHS;
+                            var threeMONTHS = service.rs._3MONTHS;
+                            var sixMONTHS = service.rs._6MONTHS;
+                            var oneYEAR = service.rs._1YEAR;
+                            var planName = service.plan_name.trim().replace(/ /g, "_");
+                            //console.log(planName);
+                            DTHPlanoffers += `<table><tr><td><div style="font-family: arial,sans-serif;">`
+
+                            if (oneMONTHS != null) {
+                                DTHPlanoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${oneMONTHS}" value="DTHPlan_${oneMONTHS}"/><div class="badge badge-primary DTHMonthPlan"  id="DivDTHPlan_${oneMONTHS}" onclick="SelectDTHPlan(DTHPlan_${oneMONTHS},tbl_${planName})">1 MONTH - &#8377;${oneMONTHS}</div>`;
+                            }
+                            if (threeMONTHS != null) {
+                                DTHPlanoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${threeMONTHS}" value="DTHPlan_${threeMONTHS}"/><div class="badge badge-success DTHMonthPlan"  id="DivDTHPlan_${threeMONTHS}" onclick="SelectDTHPlan(DTHPlan_${threeMONTHS},tbl_${planName})">3 MONTH - &#8377;${threeMONTHS}</div>`;
+                            }
+                            if (sixMONTHS != null) {
+                                DTHPlanoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${sixMONTHS}" value="DTHPlan_${sixMONTHS}"/><div class="badge badge-danger DTHMonthPlan" id="DivDTHPlan_${sixMONTHS}" onclick="SelectDTHPlan(DTHPlan_${sixMONTHS},tbl_${planName})">6 MONTH - &#8377;${sixMONTHS}</div>`;
+                            }
+                            if (oneYEAR != null) {
+                                DTHPlanoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${oneYEAR}" value="DTHPlan_${oneYEAR}"/><div class="badge badge-warning DTHMonthPlan"  id="DivDTHPlan_${oneYEAR}" onclick="SelectDTHPlan(DTHPlan_${oneYEAR},tbl_${planName})">1 YEAR - &#8377;${oneYEAR}</div>`;
+                            }
+                            DTHPlanoffers += `</div></td><tr/></table>
+                                                            <table class="DTHPlanDesc" id="tbl_${planName}">
+                                                            <tr><td><span class="DTHPlanName">${service.plan_name}</span></td></tr>
+                                                            <tr><td><span class="DTHPlanDescName">${service.desc}</span></td></tr>
+                                                            </table></div>`
+                            DTHPlanoffers += `</div>`
+
+                        });
+                        $('#ShowPlanForDTH').html('');
+                        $('#ShowPlanForDTH').html(DTHPlanoffers);
+                    }
+                    else {
+                        $('#ShowPlanForDTH').html('');
+                        $('#ShowPlanForDTH').html('<center><div>No Data Available</div></center>');
+                    }
+
+                    if (AddOnPack != null) {
+                        AddOnPack.forEach(function (service) {
+                            DTHAddOnoffers += `<div class="DTHPlanContainer">`
+                            var oneMONTHS = service.rs._1MONTHS;
+                            var threeMONTHS = service.rs._3MONTHS;
+                            var sixMONTHS = service.rs._6MONTHS;
+                            var oneYEAR = service.rs._1YEAR;
+                            var AddOnplanName = service.plan_name.trim().replace(/ /g, "_");
+
+                            DTHAddOnoffers += `<table><tr><td><div style="font-family: arial,sans-serif;">`
+
+                            if (oneMONTHS != null) {
+                                DTHAddOnoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${oneMONTHS}" value="DTHPlan_${oneMONTHS}" /><div class="badge badge-primary DTHMonthPlan"  id="DivDTHPlan_${oneMONTHS}" onclick="SelectDTHPlan(DTHPlan_${oneMONTHS},tbl_${AddOnplanName})">1 MONTH - &#8377;${oneMONTHS}</div>`;
+                            }
+                            if (threeMONTHS != null) {
+                                DTHAddOnoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${threeMONTHS}" value="DTHPlan_${threeMONTHS}"/><div class="badge badge-success DTHMonthPlan"  id="DivDTHPlan_${threeMONTHS}" onclick="SelectDTHPlan(DTHPlan_${threeMONTHS},tbl_${AddOnplanName})">3 MONTH - &#8377;${threeMONTHS}</div>`;
+                            }
+                            if (sixMONTHS != null) {
+                                DTHAddOnoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${sixMONTHS}" value="DTHPlan_${sixMONTHS}"/><div class="badge badge-danger DTHMonthPlan"  id="DivDTHPlan_${sixMONTHS}" onclick="SelectDTHPlan(DTHPlan_${sixMONTHS},tbl_${AddOnplanName})">6 MONTH - &#8377;${sixMONTHS}</div>`;
+                            }
+                            if (oneYEAR != null) {
+                                DTHAddOnoffers += `<input type="radio" name="DTH_Plans" id="DTHPlan_${oneYEAR}" value="DTHPlan_${oneYEAR}"/><div class="badge badge-warning DTHMonthPlan"  id="DivDTHPlan_${oneYEAR}" onclick="SelectDTHPlan(DTHPlan_${oneYEAR},tbl_${AddOnplanName})">1 YEAR - &#8377;${oneYEAR}</div>`;
+                            }
+                            DTHAddOnoffers += `</div></td><tr/></table>
+                                                            <table class="DTHPlanDesc"  id="tbl_${AddOnplanName}">
+                                                            <tr><td><span class="DTHPlanName">${service.plan_name}</span></td></tr>
+                                                            <tr><td><span class="DTHPlanDescName">${service.desc}</span></td></tr>
+                                                            </table></div>`
+                            DTHAddOnoffers += `</div>`
+
+                        });
+                        $('#ShowAddonPackDTH').html('');
+                        $('#ShowAddonPackDTH').html(DTHAddOnoffers);
+                    }
+                    else {
+                        $('#ShowAddonPackDTH').html('');
+                        $('#ShowAddonPackDTH').html('<center><div>No Data Available</div></center>');
+                    }
+                    $('#loadingDivnew').css('display', 'none');
+                }
+
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+    }
+
+    function doRecharge() {
+        if (checkValidate()) {
+
+            console.log(Details[0].OperatorID);
+            var mobile = $('#txtMobileNumer').val();
+
+            var RechargeModel = {
+                operatorCode: parseInt(Details[0].OperatorID),
+                rechargeAmount: parseInt(Details[0].Price),
+                mobileNo: mobile
+            }
+
+            console.log(JSON.stringify(RechargeModel))
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/MobileRecharge/Recharge",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(RechargeModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.STATUS == 1 && data.MESSAGE == "Request is successfull!" && data.HTTPCODE == 200) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            html: `<table class="table table-bordered" style="font-size:13px"><tr><td><b>REQUEST ID</b>:</td><td>${data.REQUESTTXNID}</td></tr><tr><td><b>TRANSACTION ID</b>:</td><td>${data.TXNNO}</td></tr><tr><td><b>Account Number</b>:</td> <td>${mobile}</td></tr><tr><td><b>Recharge Amount</b>:</td> <td>${Details[0].Price}</td></tr><tr><td><b>Status</b>:</td> <td>Success</td></tr></table>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                    }
+
+                    //setTimeout(function () {
+                    //    location.reload();
+                    //}, 2000)
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+                }
+            });
+        }
+    }
+
+    function checkValidate() {
+        var status = true;
+
+
+        var mobile = $('#txtMobileNumer').val()
+
+        if (mobile == 0 || mobile.length < 10) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Enter Valid Mobile Number...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtMobileNumer').focus();
+            status = false;
+        }
+        return status;
+    }
+
+    function checkBalance() {
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/MobileRecharge/CheckBalance",
+            dataType: 'json',
+            type: 'Get',
+            cache: false,
+            data: "",
+            success: function (data) {
+                console.log(data);
+                var walletAMT = data.BALANCE;
+
+                $('#WalletAmout').html(walletAMT);
+                $('#hdfwalletLeft').val(walletAMT);
+
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+
+    }
+
+    function numberOnly(id) {
+        var element = document.getElementById(id);
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    function getCommissions(operatorID) {
+
+        var commissionReqModal = {
+            partyID: '@partyID',
+            PartyType: parseInt('@partyType'),
+            operatorId: parseInt(operatorID),
+            serviceId: 5,
+            serviceProviderId: 1000
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/MobileRecharge/GetCommissionRatesForUser",
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(commissionReqModal),
+            success: function (data) {
+                console.log(data);
+                console.log(data.Data);
+                console.log(data.Data.length);
+
+                var commissionForAll = data.Data;
+                if (commissionForAll.length <= 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Unable to process your request',
+                        text: `We are unable to find any commission against this operator, Please connect to your parent....!`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    $('#btnNextToPlans').css('display', 'none');
+                }
+                else {
+                    $('#btnNextToPlans').css('display', 'block');
+                }
+                
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+    }
+
+
+</script>

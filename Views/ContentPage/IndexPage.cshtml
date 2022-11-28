@@ -1,0 +1,493 @@
+﻿@using NewZapures_V2.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var TemplatesType = ViewBag.templatesTypeList as List<Dropdown>;
+
+    var templateId = (int)ViewBag.TemplateId;
+    var rowId = (string)ViewBag.rowId;
+    var htmlContent = (string)ViewBag.HTMLContent;
+    var pageTitle = (string)ViewBag.PageTitle;
+
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item active">Content Page</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Content Page</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+               
+                <button onclick="location.href='@Url.Action("Index", "ContentPage")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            </div>
+            <div class="card-body">
+
+
+
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 row" style="margin-left: -12px;">
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Template Type</label>
+                                <div>
+                                    <select class="select2" id="ddlTemplateId">
+                                        <option value="0">Select Any Template</option>
+                                        @{
+                                            if (TemplatesType != null)
+                                            {
+                                                foreach (var item in TemplatesType)
+                                                {
+                                                    if (item.Id == templateId.ToString())
+                                                    {
+                                                        <option value="@item.Id" selected>@item.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.Id">@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Page Title</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle" value='@pageTitle' )>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Meta Description</label>
+                                <div>
+                                    <input class="form-control col-sm-12" id="description" autocomplete="off" type="text" placeholder="Description" name="MetaDescription" />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Page Keywords</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Keywords" name="PageKeywords" id="Keywords">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Page URL</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="PageURL" name="PageURL" id="pageURL">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Page Image</label>
+                            <div>
+                                <input class="col-sm-12 mt-1 mr-5" type="file" onchange="return encodeImageFileAsURL(this)">
+                                <input type="hidden" id="UploadedPageImage" name="PageImage" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-offset-6 col-lg-3">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">&nbsp;</label>
+                            <div>
+
+                                @{
+                                    if (templateId != 0)
+                                    {
+                                        <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateContent()">Update Template</button>
+                                    }
+                                    else
+                                    { <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="SaveContent()">Save Template</button>
+                                    }
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">Page Content</label>
+                                <input id="elm1" type="text" name="PageContent" value="@htmlContent.Trim()" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+<script src="~/plugins/tinymce/tinymce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var imagebase64 = "";
+    $(document).ready(function () {
+        $('.select2').select2();
+        tinymce.init({
+            selector: "input#elm1",
+            theme: "modern",
+            menubar: false,
+            statusbar: false,
+            height: 450,
+            content_style:
+                "body { background: #ffffff; color: #000000; font-size: 14pt; font-family: Arial,sans-serif; }",
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: 'undo redo | fontselect | styleselect fontsizeselect | code | preview | advlist | paste | image | bold italic underline strikethrough superscript subscript removeformat | searchreplace | forecolor backcolor | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | checklist link | print',
+
+            setup: function (editor) {
+                editor.on('paste', pasteHandler)
+            },
+        });
+    });
+
+
+    function pasteHandler(e) {
+        var cbData;
+        if (e.clipboardData) {
+            cbData = e.clipboardData;
+        } else if (window.clipboardData) {
+            cbData = window.clipboardData;
+        }
+
+        if (e.msConvertURL) {
+            var fileList = cbData.files;
+            if (fileList.length > 0) {
+                for (var i = 0; i < fileList.length - 1; i++) {
+                    var blob = fileList[i];
+                    console.log("Image blob: " + blob);
+                    readPastedBlob(blob);
+                }
+            }
+        }
+        if (cbData && cbData.items) {
+            if ((text = cbData.getData("text/plain"))) {
+                // Text pasting is already handled
+                return;
+            }
+            for (var i = 0; i < cbData.items.length - 1; i++) {
+                if (cbData.items[i].type.indexOf('image') !== -1) {
+                    var blob = cbData.items[i].getAsFile();
+                    readPastedBlob(blob);
+                }
+            }
+        }
+
+        function readPastedBlob(blob) {
+            if (blob) {
+                reader = new FileReader();
+                reader.onload = function (evt) {
+                    pasteImage(evt.target.result);
+                };
+                reader.readAsDataURL(blob);
+            }
+        }
+
+        function pasteImage(source) {
+            var image = "<img src='" + source + "' data-mce-selected='1'></img>";
+            window.tinyMCE.execCommand('mceInsertContent', false, image);
+        }
+    }
+
+    function encodeImageFileAsURL(element) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file);
+        console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            /*console.log(imagebase64);*/
+            $('#UploadedPageImage').val(imagebase64);
+            //var c = $('#UploadedImage').val();
+            // console.log("Converted "+ c)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function SaveContent() {
+
+        var description = $('#description').val();
+        var keywords = $('#Keywords').val();
+        var image = $('#UploadedPageImage').val();
+
+        var metaContent = "<meta charset='UTF-8'>"
+            + "<meta name='description' content='" + description + "'>"
+            + "<meta name='keywords' content='" + keywords + "'>"
+            + "<meta name='author' content='Atishay Limited'>"
+            + "<meta name='viewport' content='width=device-width, initial-scale=1.0'> ";
+
+        var pageContent = "<!DOCTYPE html><html><head>"
+            + metaContent
+            + "</head><body>"
+            + tinymce.get("elm1").getContent()
+            + "</body></html>";
+
+        var Content = {
+            EnumId: $('#ddlTemplateId').val(),
+            PageTitle: $('#pageTitle').val(),
+            PageImage: $('#UploadedPageImage').val(),
+            PageKeywords: keywords,
+            MetaDescription: $('#description').val(),
+            PageContent: pageContent,
+            PageURL: $('#pageURL').val()
+        }
+
+        var d = checkValidate();
+        console.log(d);
+        //var d = JSON.stringify(Content);
+        //console.log(d);
+     
+        if (d) {
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/ContentPage/SaveContent",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Content),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Content Saved Successfully...!',
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: false,
+                            //timer: 2000,
+                        })
+
+                        $('#description').val('');
+                        $('#Keywords').val('');
+                        $('#UploadedPageImage').val('');
+                        $('#pageTitle').val('');
+                        $('#pageURL').val('');
+                        $('#ddlTemplateId').val(0);
+                        tinymce.get("elm1").setContent('');
+                    }
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000)
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+
+    function UpdateContent() {
+
+        var description = $('#description').val();
+        var keywords = $('#Keywords').val();
+        var image = $('#UploadedPageImage').val();
+
+        var metaContent = "<meta charset='UTF-8'>"
+            + "<meta name='description' content='" + description + "'>"
+            + "<meta name='keywords' content='" + keywords + "'>"
+            + "<meta name='author' content='Atishay Limited'>"
+            + "<meta name='viewport' content='width=device-width, initial-scale=1.0'> ";
+
+        var pageContent = "<!DOCTYPE html><html><head>"
+            + metaContent
+            + "</head><body>"
+            + tinymce.get("elm1").getContent()
+            + "</body></html>";
+
+        var Content = {
+            Id: parseInt('@rowId'),
+            EnumId: $('#ddlTemplateId').val(),
+            PageContent: pageContent,
+            Type: "Update"
+        }
+
+        var d = checkValidate();
+        console.log(d);
+        //var d = JSON.stringify(Content);
+        //console.log(d);
+     
+        if (d) {
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/ContentPage/UpdateContent",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Content),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Content Updated Successfully...!',
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: false,
+                            timer: 2000,
+                        });
+
+                        //    $('#description').val('');
+                        //    $('#Keywords').val('');
+                        //    $('#UploadedPageImage').val('');
+                        //    $('#pageTitle').val('');
+                        //    $('#pageURL').val('');
+                        //    $('#ddlTemplateId').val(0);
+                        //    tinymce.get("elm1").setContent('');
+                        //}
+
+                        setTimeout(function () {
+                            window.location = GetglobalDomain() + "/ContentPage/IndexPage";
+                        }, 3000)
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+
+    function checkValidate() {
+        var status = true;
+
+        var templateId = $('#ddlTemplateId').val();
+        var pageTitle = $('#pageTitle').val();
+        var discription = $('#description').val();
+        var keyword = $('#Keywords').val();
+        var pageURL = $('#pageURL').val();
+        var editor = tinymce.get("elm1").getContent();
+
+        if (templateId == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please select a template...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#templateId').focus();
+            status = false;
+        }
+        else if (pageTitle.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Page Title Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#pageTitle').focus();
+            status = false;
+        }
+
+        //else if (discription.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Discription Required...!',
+        //        allowOutsideClick: false,
+        //        showCloseButton: false,
+        //        showConfirmButton: false,
+        //        timer: 2000,
+        //    })
+        //    $('#description').focus();
+        //    status = false;
+        //}
+        //else if (keyword.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Keywords Required...!',
+        //        allowOutsideClick: false,
+        //        showCloseButton: false,
+        //        showConfirmButton: false,
+        //        timer: 2000,
+        //    })
+        //    $('#Keywords').focus();
+        //    status = false;
+        //}
+        //else if (pageURL.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Page URL Required...!',
+        //        allowOutsideClick: false,
+        //        showCloseButton: false,
+        //        showConfirmButton: false,
+        //        timer: 2000,
+        //    })
+        //    $('#pageURL').focus();
+        //    status = false;
+        //}
+        else if (editor.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Content Can`t Be Blank...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#elm1').focus();
+            status = false;
+        }
+
+        return status;
+    }
+
+</script>

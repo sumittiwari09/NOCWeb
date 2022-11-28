@@ -1,0 +1,710 @@
+﻿@using NewZapures_V2.Models
+@model PartyMaster
+@{
+    ViewBag.Create = "Profile";
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var GetTypelist = ZapurseCommonlist.GetTypelist();
+    List<Partial.Documentlist> documentlists = new List<Partial.Documentlist>();
+    var status = (int)ViewBag.status;
+    if (ViewBag.Documentlist != null)
+    {
+        documentlists = (List<Partial.Documentlist>)ViewBag.Documentlist;
+    }
+
+    var partyID = Model.PartyId;
+
+
+    var AadhaarDetails = ZapurseCommonlist.GetAadhaarDetails(partyID);
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+
+}
+@section styles {
+    @*<link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+        <link href="~/plugins/filter/magnific-popup.css" rel="stylesheet" type="text/css" />
+        <link href="~/plugins/lightpick/lightpick.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" />
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="~/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <style>
+        fieldset.scheduler-border {
+            border: 1px groove #ddd !important;
+            padding: 0 1.4em 1.4em 1.4em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow: 0px 0px 0px 0px #000;
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        .documentImageContainer {
+            width: auto;
+            height: 150px;
+            border-radius: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .ItemDownload {
+            position: absolute;
+            top: 150px;
+            left: -10px;
+        }
+
+        .filedownload {
+            color: #ffffff;
+            font-size: 20px;
+            margin-left: 214px;
+            margin-top: -10px;
+            background: #506ee4;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        legend.scheduler-header {
+            font-size: 1.2em !important;
+            /*  font-weight: bold !important;*/
+            text-align: center !important;
+            width: auto;
+            padding: 0 10px;
+            border-bottom: none;
+            background: #fff none repeat scroll 0 0;
+            border: 1px solid #337ab7;
+            border-radius: 8px;
+            background-color: bisque;
+        }
+
+        legend.scheduler-border {
+            font-size: 1.2em !important;
+            /*  font-weight: bold !important;*/
+            text-align: left !important;
+            width: auto;
+            padding: 0 10px;
+            border-bottom: none;
+            background: #fff none repeat scroll 0 0;
+            border: 1px solid #337ab7;
+            border-radius: 8px;
+            background-color: bisque;
+        }
+
+        .card-body {
+            margin-bottom: -44px !important;
+        }
+        /*.text-on-pannel {
+          background: #fff none repeat scroll 0 0;
+          height: auto;
+          margin-left: 20px;
+          padding: 3px 5px;
+          position: absolute;
+          margin-top: -47px;
+          border: 1px solid #337ab7;
+          border-radius: 8px;
+        }
+
+        .panel {*/
+        /* for text on pannel */
+        /*margin-top: 27px !important;
+        }
+
+        .panel-body {
+          padding-top: 30px !important;
+        }*/
+    </style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapures</a></li>
+                    <li class="breadcrumb-item active">Profile View</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Profile</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+
+        @{
+            if (status == 1)
+            {
+                <a href="@Url.Action("RegistratedUser", "Home")" class="btn btn-gradient-primary waves-effect waves-light" style="float:right;color:white">Back To List</a>
+            }
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+
+
+
+
+        <div class="card">
+            @*<fieldset class="scheduler-border">
+                <legend class="scheduler-header">Profile View</legend>*@
+            <div class="card-body">
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">General Details</legend>
+                    @*<h4 class="mt-0 header-title" style="background-color: gainsboro;">General Details</h4>*@
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" maxlength="250" value="@(Model != null ? Model.FirstName : "")" readonly>
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="MiddleName" name="MiddleName" placeholder="Middle Name" value="@(Model != null ? Model.MiddleName : "")" readonly maxlength="250">
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6">
+                                        @*<label for="pro-rate">Last Name</label>*@
+                                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name" value="@(Model != null ? Model.LastName : "")" readonly maxlength="250">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" placeholder="Mobile Number" data-parsley-type="digits" maxlength="10" value="@(Model != null ? Model.MobileNumber : "")" readonly required>
+                                    </div><!--end col-->
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="EmailId" name="EmailId" placeholder="Email" value="@(Model != null ? Model.EmailId : "")" parsley-type="email" readonly>
+                                    </div><!--end col-->
+
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+
+                            <div class="form-group">
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <div class="input-group">
+
+                                            <input type="date" class="form-control" name="DateofBirth" value="@(Model != null ? Model.DOB : "")" id="ToDate" readonly />
+                                            @*<input type="text" class="form-control" name="birthday" id="birthday" placeholder="Date of Birth" value="" />*@
+                                            @*<input type="date" class="form-control" id="Dob" placeholder="Date of Birth" value="@(Model != null ?Model.DOB : "")">*@
+                                            @*<div class="input-group-append">
+                                                    <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                                                </div>*@
+                                            @*<label for="pro-start-date">First Name</label>*@
+
+                                            @*<input type="text" class="form-control" id="Dob" placeholder="Date of Birth">*@
+                                        </div>
+                                    </div><!--end col-->
+
+
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+
+
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                </fieldset>
+            </div>
+            <div class="card-body">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Official Details</legend>
+                    @*<h4 class="mt-0 header-title" style="background-color: gainsboro;">Official Details</h4>*@
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                <label for="pro-start-date">User Type</label>
+                                @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type">*@
+                                <select class="singleselect" name="Type1" id="Type" disabled required>
+
+                                    @{ foreach (var item in GetTypelist)
+                                        {
+
+                                            <option @(Model != null && Model.Type == item.Id ? "selected" : "") value="@item.Id">@item.Text</option>
+
+                                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                                        }
+                                    }
+                                </select>
+
+                            </div><!--end col-->
+                            <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                <label for="pro-end-date">User Role</label>
+                                <input type="text" class="form-control" name="RoleId" value="Admin" id="pro-end-date" placeholder="User Role" readonly>
+                            </div><!--end col-->
+
+                        </div><!--end row-->
+                    </div><!--end form-group-->
+                </fieldset>
+            </div>
+            <div class="card-body">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Contact Details</legend>
+                    @*<h4 class="mt-0 header-title" style="background-color: gainsboro;">Contact Details</h4>*@
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">Country</label>
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.CountryName" placeholder="">
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">State</label>
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.StateName" placeholder="">
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">District</label>
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.DistrictName" placeholder="">
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">City</label>
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.CityName" placeholder="">
+                                    </div>
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-end-date">Area</label>
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.AreaName" placeholder="">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+                            <!--end form-->
+                        </div><!--end col-->
+
+                    </div>
+                </fieldset>
+            </div>
+            <div class="card-body">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Address Information</legend>
+
+                    <div class="row" style="padding-top: 15px;">
+
+                        <div class="col-lg-6">
+                            <h4 class="mt-0 header-title">Currant Address</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD" name="CUAdd1" value="@Model.CUAdd1" placeholder="Flat House No Building Company Appartment" readonly>
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD2" name="CUAdd2" value="@Model.CUAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD3" name="CUAdd3" value="@Model.CUAdd3" placeholder="Addresss line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startCULandMark" name="CULandMark" value="@Model.CULandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode" value="@Model.CUPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+
+
+                        </div><!--end col-->
+
+                        <div class="col-lg-6">
+
+                            @*<div class="form-check-inline my-2">*@
+                            <h4 class="mt-0 header-title">
+                                Parmanent Address
+
+                            </h4>
+                            @*<div class="custom-control custom-checkbox" style="padding-left: 2.5rem;">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck6" data-parsley-multiple="groups" data-parsley-mincheck="2" value="0">
+                                    <label class="custom-control-label" for="customCheck6">Same as Current Address</label>
+                                </div>*@
+                            @*</div>*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd1" name="PAAdd1" value="@Model.PAAdd1" placeholder="Flat House No Building Company Appartment">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd2" name="PAAdd2" value="@Model.PAAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd3" name="PAAdd3" value="@Model.PAAdd3" placeholder="Address Line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startPALandMark" name="PALandMark" value="@Model.PALandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startPAPinCode" name="PAPinCode" value="@Model.PAPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div><!--end row-->
+                </fieldset>
+            </div>
+            <div class="card-body">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Company Details</legend>
+                    @*<h4 class="mt-0 header-title" style="background-color: gainsboro;">Company Details</h4>*@
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4 class="mt-0 header-title">Company Details</h4>
+                            <form>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" id="pro-start-date" name="CompanyContactNo" value="@(Model.CompanyContactNo != 0 ? Model.CompanyContactNo.ToString() : "")" placeholder="Company Contact Number">
+                                        </div><!--end col-->
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" id="pro-end-date" name="CompanyEmailId" value="@Model.CompanyEmailId" placeholder="Comapny Email">
+                                        </div><!--end col-->
+
+                                    </div><!--end row-->
+                                </div><!--end form-group-->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" id="pro-start-date" name="GST" value="@Model.GST" placeholder="GST No.">
+                                        </div><!--end col-->
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" name="TANNo" id="pro-end-date" placeholder="TAN No.">
+                                        </div><!--end col-->
+
+
+                                    </div><!--end row-->
+                                </div><!--end form-group-->
+                            </form>  <!--end form-->
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+
+                            <h4 class="mt-0 header-title">
+                                Company Address
+
+                            </h4>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd1" name="COAdd1" value="@Model.COAdd1" placeholder="Flat House No Building Company Appartment">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd2" name="COAdd2" value="@Model.COAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd3" name="COAdd3" value="@Model.COAdd3" placeholder="Address Line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="COLandMark" name="COLandMark" value="@Model.COLandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="COPinCode" name="COPinCode" value="@Model.COPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="card-body row" style="margin-left: unset !important; margin-right: unset !important; ">
+
+                <fieldset class="scheduler-border col-lg-5">
+                    <legend class="scheduler-border">Verification Details</legend>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Pan Card</th>
+                                <td>@Model.PanStatus</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">Aadhaar Card</th>
+                                <td>@Model.AdhaarCardStatus</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">Mobile No</th>
+                                <td>@Model.MobileStatus</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">Email id</th>
+                                <td>@Model.EmailStatus</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset class="col-lg-1">
+                </fieldset>
+
+                <fieldset class="scheduler-border col-lg-6">
+                    <legend class="scheduler-border">Adhaar Details</legend>
+
+                    @{
+                        if (AadhaarDetails != null)
+                        {
+                            foreach (var item in AadhaarDetails)
+                            {
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Name</th>
+                                            <td>@item.AadhaarName</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Care Of</th>
+                                            <td>@item.AadhaarCareOf</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Date Of Birth</th>
+                                            <td>@item.AadhaarDOB</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row">House No</th>
+                                            <td>@item.Aadhaarhouse</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Location</th>
+                                            <td>@item.AadhaarLoc - @item.AadhaarVtc @item.AadhaarPO - @item.AadhaarPincode</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        }
+
+                    }
+                </fieldset>
+
+            </div>
+
+            <div class="card-body">
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Upload Document</legend>
+                    <div class="form-group">
+                        <div class="d-inline-flex">
+                            @{ foreach (var item in documentlists.Where(wh => wh.DocumentName != "Profile Image").ToList())
+                                {
+                                    string id = @item.DocumentName.Replace(" ", "").ToString();
+                                    var url = @BaseURL + @item.UploadDocumentUrl;
+
+                                                        <div class="col-lg-8" style="margin-right:20px;">
+                                                            @{
+                                                                if (@item.DocumentName.Contains("Aadhar") || @item.DocumentName.Contains("Pan"))
+                                                                {
+                                                                    <span><b>@item.DocumentName Card : -</b></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span><b>@item.DocumentName : -</b></span>
+                                                                }
+                                                            }
+
+
+
+                                                            <div id="DocFileDiv_@id">
+                                                                <div class="documentImageContainer" style="background-image: url(@url);width:inherit;margin-top: 12px;" onclick="updateVerificationStatus(1,'@item.DocumentName')">
+                                                                    <span style="display:none" id='Doc_@item.DocumentName'><i class="fa-solid fa-circle-check" style="color:#54bc54;font-size: 29px;margin-left: 214px;margin-top: -10px;"></i></span>
+                                                                </div>
+                                                                <div><a class="button" href="@url" download="@id" target="_blank"><span id='DocFile_@id' class="ItemDownload" style="display:none"><i class="mdi mdi-arrow-expand filedownload"></i></span></a></div>
+                                                            </div>
+                                                        </div>
+                                }
+                            }
+                        </div><!--end row-->
+                    </div>
+                </fieldset>
+
+
+            </div>
+            @*</fieldset>*@
+        </div>
+
+    </div>
+</div>
+@section scripts {
+
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/filter/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/filter/masonry.pkgd.min.js"></script>
+    <script src="~/plugins/filter/jquery.magnific-popup.min.js"></script>
+    <script src="~/plugins/chartjs/chart.min.js"></script>
+    <script src="~/plugins/chartjs/roundedBar.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    @*<script src="~/plugins/lightpick/lightpick.js"></script>*@
+    @*<script src="~/scripts/pages/jquery.profile.init.js"></script>*@
+
+
+    <script type="text/javascript">
+
+        $('.singleselect').select2();
+        $('Input').prop('readonly', true);
+
+        $(document).ready(function () {
+
+            var validate_inputs = document.querySelectorAll('[id^=DocFileDiv_]');
+              validate_inputs.forEach(function (input_valid) {
+
+
+        var id = input_valid.id;
+        var fileDownloadIcon = id.replace('Div', '');
+
+        $("#" + id).on('mouseover', () => {
+            $("#" + fileDownloadIcon).css('display', 'block');
+                  });
+
+        $("#" + id).on('mouseout', () => {
+            $("#" + fileDownloadIcon).css('display', 'none');
+
+        });
+
+    });
+
+        });
+
+
+
+
+
+        function updateVerificationStatus(status, ColNam) {
+
+            var UpdateUserDetailsModel = {
+                Status: status,
+                PartyId: '@partyID',
+                ColName: ColNam,
+                ColValue: ""
+            }
+
+            //$.ajax({
+            //    headers: {
+            //        'Accept': 'application/json',
+            //        'Content-Type': 'application/json'
+            //    },
+            //    url: GetglobalDomain() + "/LoginSignup/UpdateVerificationStatus",
+            //    dataType: 'json',
+            //    type: 'Post',
+            //    cache: false,
+            //    data: JSON.stringify(UpdateUserDetailsModel),
+            //    success: function (data) {
+            //        console.log('ajax');
+            //        console.log(data);
+
+            //        $('#Doc_' + ColNam).css('display', 'block');
+            //        //if (data.StatusCode == 1) {
+            //        //    if (ColNam !== 'Aadhar') {
+            //        //        var url = '/LoginSignup/LoginSecurity';
+            //        //        window.location.href = url;
+            //        //    }
+            //        //};
+            //    },
+            //    error: function (d) {
+            //        console.log(d);
+            //    }
+            //});
+        }
+
+    </script>
+}

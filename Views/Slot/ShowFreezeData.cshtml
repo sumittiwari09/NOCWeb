@@ -1,0 +1,21 @@
+﻿@using NewZapures_V2.Models
+@model List<FreezeSlot>
+@{
+    Layout = null;
+}
+@{
+    foreach (var item in Model)
+    {
+
+        <tr id="tr_@item.SlotFreezeDateId">
+            <td>@item.FreezeDate</td>
+            <td>@item.Remark</td>
+            <td>
+
+                <button class='btn btn-danger btn-xs btn-delete' type="button" onclick='deletefreezedata(@item.SlotFreezeDateId)'>Delete</button>
+
+            </td>
+        </tr>
+    }
+}
+

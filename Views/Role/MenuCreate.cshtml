@@ -1,0 +1,107 @@
+﻿@using NewZapures_V2.Models
+@model MenuMasters
+@{
+    ViewBag.Title = "Menu Master";
+    ViewBag.Create = "Add New Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("MenuCreate", "Role", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <input name="MenuId" id="MenuId" type="hidden" value="@(Model != null ? Model.MenuId.ToString() : "0")">
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Menu Master</h4>
+                    <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("MenuIndex", "Role")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Menu Name</label>
+                        <div class="col-sm-6">
+                            <input name="MenuName" id="MenuName" type="text" value="@(Model != null ? Model.MenuName : "")" class="form-control" placeholder="Enter Menu Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Controller Name</label>
+                        <div class="col-sm-6">
+                            <input name="ControllerName" id="ControllerName" type="text" value="@(Model != null ? Model.ControllerName : "")" class="form-control" placeholder="Enter Controller Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Action Name</label>
+                        <div class="col-sm-6">
+                            <input name="ActionMethod" id="ActionMethod" type="text" value="@(Model != null ? Model.ActionMethod : "")" class="form-control" placeholder="Enter Action Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+
+                        <label for="nameInput" class="col-sm-4 control-label">Active</label>
+                        <div class="col-sm-2 custom-control custom-switch switch-success">
+                            <input type="checkbox" class="custom-control-input" id="Status" name="Status" value="@(Model != null? Model.Status.ToString() : "0")" @(Model != null && Model.Status == 1 ? "checked" : "")>
+                            <label class="custom-control-label" for="Status"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    <a href="@Url.Action("MenuIndex", "Role")" class="btn btn-default">DISCARD</a>
+                    <button class="btn btn-primary"> Save </button>
+                </div>
+            </footer>
+        }
+    </div>
+</div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    <script src="~/scripts/pages/jquery.sweet-alert.init.js"></script>
+    <script type="text/javascript">
+        $('input[type="checkbox"]').change(function () {
+            var id = $(this).val() == 0 ? 1 : 0;
+            $(this).val(id)
+
+        })
+    </script>
+}

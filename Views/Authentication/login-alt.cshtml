@@ -1,0 +1,173 @@
+﻿@{ Layout = null;}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>NOC- Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/images/logo-dark.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        .heder {
+            font-size: 33px;
+            font-weight: 600;
+            background: linear-gradient(to left, #acb481, #2d5a74, #b4cb74, #2d5a74);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+        }
+    </style>
+    <!-- App css -->
+    @Styles.Render("~/content/css")
+</head>
+
+<body class="bg-card">
+    <div class="container-fluid">
+        <!-- Log In page -->
+        <div class="row vh-100">
+            <div class="col-lg-3 pr-0">
+                <div class="auth-page">
+                    <div class="card mb-0 shadow-none h-100">
+                        <div class="card-body">
+
+                            <div class="mb-5">
+                                <a href="/" class="logo logo-admin">
+                                    <span><img src="~/images/atishay.png" height="20" alt="logo" class="logo-lg logo-dark my-3"></span>
+
+                                </a>
+                            </div>
+
+                            <div class="px-3">
+                                <h2 class="font-weight-semibold mb-2">Welcome  to <span class="heder">NOC</span></h2>
+
+                                <ul class="nav-border nav nav-pills  mt-5" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active font-weight-semibold" data-toggle="tab" href="#LogIn_Tab" role="tab">Log In</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active p-3" id="LogIn_Tab" role="tabpanel">
+                                        <form class="form-horizontal auth-form my-4" action="@Url.Action("Login","LoginSignup")" method="post">
+
+                                            <div class="form-group">
+                                                <label for="username">Username</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="auth-form-icon">
+                                                        <i data-feather="user" class="icon-xs"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Email" id="username" placeholder="Enter username" autocomplete="off" required>
+                                                </div>
+                                            </div><!--end form-group-->
+
+                                            <div class="form-group">
+                                                <label for="userpassword">Password</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="auth-form-icon">
+                                                        <i data-feather="key" class="icon-xs"></i>
+                                                    </span>
+                                                    <input type="password" class="form-control" name="Password" id="userpassword" placeholder="Enter password" required oncopy="return false" onpaste="return false">
+                                                </div>
+                                            </div><!--end form-group-->
+
+                                            <div class="form-group row mt-4">
+                                                <div class="col-sm-6">
+                                                    @*<div class="custom-control custom-switch switch-success">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitchSuccess">
+                                                            <label class="custom-control-label text-muted" for="customSwitchSuccess">Remember me</label>
+                                                        </div>*@
+                                                </div><!--end col-->
+                                                <div class="col-sm-6 text-right">
+                                                    <a href="@Url.Action("recover-pw", "authentication")" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>
+                                                </div><!--end col-->
+                                            </div><!--end form-group-->
+
+                                            <div class="form-group mb-0 row">
+                                                <div class="col-6 mt-2">
+                                                    <button class="btn btn-gradient-primary btn-round btn-block waves-effect waves-light" type="submit" id="btnlogin">Log In <i class="fas fa-sign-in-alt ml-1"></i></button>
+                                                </div><!--end col-->
+                                                <div class="col-6 mt-2">
+                                                    <a href="@Url.Action("Index","LoginSignup")"><button class="btn btn-gradient-primary btn-round btn-block waves-effect waves-light" type="button">Register <i class="fas fa-user-plus ml-1"></i></button></a>
+                                                </div><!--end col-->
+                                            </div> <!--end form-group-->
+                                        </form><!--end form-->
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 p-0 h-100vh d-flex justify-content-center auth-bg">
+                <div class="accountbg d-flex align-items-center">
+                    <div class="account-title text-center text-white">
+                        <img src="~/images/atishay.png" height="75" width="75" alt="">
+                        <h4 class="mt-3 text-white">Welcome To <span class="">NOC</span> </h4>
+                        <h1 class="text-white">Let's Get Started</h1>
+                        @*<p class="font-18 mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam laoreet tellus ut tincidunt euismod.</p>*@
+                        <div class="border w-25 mx-auto border-warning"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- jQuery  -->
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/jquery-ui.min.js"></script>
+    <script src="~/scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/scripts/metismenu.min.js"></script>
+    <script src="~/scripts/waves.js"></script>
+    <script src="~/scripts/feather.min.js"></script>
+    <script src="~/scripts/jquery.slimscroll.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script>
+        feather.replace()
+        $(document).ready(function () {
+            $('#username').val('');
+            $('#username').focus();
+            var isuserExists = '@TempData["IsUserDetailsExists"]'
+            var message = '@TempData["msg"]'
+            if (isuserExists == 1) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+            }
+
+            var htmlData = "";
+            $('#btnlogin').click(function () {
+
+                var username = $('#username').val();
+                var password = $('#userpassword').val();
+                if (username != "" && password != "") {
+                    htmlData = `Log In <i class="fas fa fa-spinner fa-pulse ml-1"></i>`;
+                    $(this).html('');
+                    $(this).html(htmlData);
+                }
+            })
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+﻿@using NewZapures_V2.Models;
+@{
+    Layout = null;
+
+    var mobileVerified = "";
+    var PanVerified = "";
+    var AadharVerified = "";
+    var EmailVerified = "";
+
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    var data = ViewBag.AllData as Data;
+    var id = (string)ViewBag.id;
+    var Username = (string)ViewBag.UserName;
+    var UserType = (string)ViewBag.UserType;
+    if (data != null)
+    {
+
+        var details = data.userDetails;
+
+        mobileVerified = details.mobileVerified == 0 ? "Pending" : "Done";
+
+        PanVerified = details.panVerified == 0 ? "Pending" : "Done";
+
+        AadharVerified = details.adhaarVerified == 0 ? "Pending" : "Done";
+
+        EmailVerified = details.emailVerified == 0 ? "Pending" : "Done";
+    }
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
+    <style>
+        .welcm-txt h2 {
+            color: #0000ff;
+        }
+
+        .welcm-txt {
+            border-bottom: 16px solid blue;
+            margin-bottom: 20px;
+        }
+
+        span.red {
+            color: #ef0808 !important;
+        }
+
+        .sub-form {
+            border: 2px solid #615f5f;
+            padding: 20px 10px;
+        }
+
+        .sub-inrhead h5 {
+            color: #ef0b0b;
+            font-weight: 500;
+            font-size: 17px;
+        }
+
+        .left-subfrm input, .rght-subfrm input {
+            border: none;
+            padding: 5px 16px;
+            margin: 0px 5px;
+            background: #6079df;
+            color: #fff;
+            margin: 10px 0px;
+        }
+
+        input.green {
+            background: #0cc60c !important;
+        }
+
+        input.red {
+            background: #ef0808 !important;
+        }
+
+        .inner-form {
+            border-bottom: 2px solid #797777;
+            padding-bottom: 20px;
+        }
+
+        .disclmr {
+            margin: 10px 0px;
+            border-top: 2px solid #797777;
+            padding: 10px 0px;
+            border-bottom: 2px solid #797777;
+        }
+
+        .verify-box {
+            padding-top: 20px;
+        }
+
+        .two-servctxt span {
+            display: block;
+            margin: 5px 0px;
+            font-weight: 600;
+        }
+
+        span.upld-doc {
+            color: #0e12d1;
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .disclmr h4 {
+            font-size: 16px;
+            color: red;
+        }
+
+        .contn-btn input {
+            border: none;
+            padding: 7px 35px;
+            background: #248a0c;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .documentImageContainer {
+            width: auto;
+            height: 150px;
+            border-radius: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        @@media only screen and (max-width:576px) {
+            .table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-form">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-10 col-md-8 col">
+                    <div class="sub-form">
+                        <div class="welcm-txt">
+                            <h2>Welcome, <span class="red">@Username (@UserType)</span></h2>
+                            <p>You are successfully logged in to the system. Enjoy zapurse functionality</p>
+                        </div>
+                        <div class="inner-form">
+                            <div class="row">
+                                <div class="col-lg-7 col-md-6">
+                                    <div class="left-subfrm">
+                                        <div class="sub-inrhead">
+                                            <h5>Your Selected Services</h5>
+                                        </div>
+                                        @if (data != null)
+                                        {
+                                            string str = "";
+                                            foreach (var item in data.serviceName)
+                                            {
+                                                str = str + "," + item.serviceName;
+                                                <input type="button" id="service" value='@item.serviceName'>
+                                            }
+                                            <input type="hidden" id="serviceNames" value='@str' />
+                                        }
+
+
+                                    </div>
+                                    <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Services</a>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="rght-subfrm">
+                                        <div class="sub-inrhead">
+                                            <h5>Your Selected Devices</h5>
+                                        </div>
+                                        @if (data != null)
+                                        {
+                                            foreach (var item in data.harwareName)
+                                            {
+                                                <input type="button" value='@item.hardwareName' class="red">
+                                            }
+                                        }
+                                    </div>
+
+                                    <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Devices</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-6">
+                                <div class="verify-box">
+                                    <h2>Verification Process</h2>
+                                    <div class="table-in">
+                                        <table class="table table-bordered" id="tblverify">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Item</th>
+                                                    <th scope="col">Verification Status</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Mobile</td>
+                                                    <td>@mobileVerified</td>
+                                                    @if (@mobileVerified == "Done")
+                                                    {
+                                                        <td> <i class="fa-solid fa-circle-check" style="color:#54bc54;font-size:19px"></i></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> <i class="fa-solid fa-times-circle" style="color:red;font-size:19px"></i></td>
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Pancard</td>
+                                                    <td>@PanVerified</td>
+                                                    @if (@PanVerified == "Done")
+                                                    {
+                                                        <td> <i class="fa-solid fa-circle-check" style="color:#54bc54;font-size:19px"></i></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> <i class="fa-solid fa-times-circle" style="color:red;font-size:19px"></i></td>
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Aadhaar Card</td>
+                                                    <td>@AadharVerified</td>
+                                                    @if (@AadharVerified == "Done")
+                                                    {
+                                                        <td> <i class="fa-solid fa-circle-check" style="color:#54bc54;font-size:19px"></i></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> <i class="fa-solid fa-times-circle" style="color:red;font-size:19px"></i></td>
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>E-Mail</td>
+                                                    <td>@EmailVerified</td>
+                                                    @if (EmailVerified == "Done")
+                                                    {
+                                                        <td> <i class="fa-solid fa-circle-check" style="color:#54bc54;font-size:19px"></i></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> <i class="fa-solid fa-times-circle" style="color:red;font-size:19px"></i></td>
+                                                    }
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                        <div class="third-txt">
+                                            <span class="upld-doc">Uploaded Document [ Only For Manual Verification ]</span>
+                                        </div>
+                                        <div class="two-servctxt">
+                                            <div class="row col-lg-12 mt-4">
+                                                @if (data != null)
+                                                {
+                                                    foreach (var item in data.Documents.Where(wh => wh.Name == "Aadhar" || wh.Name == "Pan").ToList())
+                                                    {
+                                                        var url = @BaseURL + @item.UploadDocumentUrl;
+                                                        <div class="col-lg-6">
+                                                            <span>@item.Name Card : - </span>
+                                                            <div class="documentImageContainer" style="background-image: url(@url)">
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="disclmr">
+                            <h4>Disclaimer: <span class="dis-txt">If verification is not completed you can't get access to the system</span></h4>
+                        </div>
+                        <div class="contn-btn">
+
+                            @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
+
+                            <input type="submit" value="Continue" id="continue" style="display:none" onclick="Countinue();">
+                            <input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+
+        var EmailAddress = "";
+        $(document).ready(function () {
+            getverificationStatus();
+        });
+
+        //tblverify
+        function getverificationStatus() {
+
+            var PendingNames = "";
+            $('#tblverify > tbody  > tr ').each(function () {
+
+                var itemName = $(this).find('td:eq(0)').html();
+
+                var status = $(this).find('td:eq(1)').html()
+
+                if (status == 'Pending') {
+                    if (PendingNames == "") {
+                        PendingNames = itemName;
+                    }
+                    else {
+                        PendingNames += ", " + itemName;
+                    }
+                }
+            });
+
+            if (PendingNames !== "") {
+                var dic = '<div><h4>Your <b>' + PendingNames + '</b> Are Not Verified Please Process Them Before Continue</h4></div>';
+                sweetAlert(dic, 'center', 'warning', 0);
+                $('#verification').css('display', 'block');
+                $('#continue').css('display', 'none');
+            }
+            else {
+
+                $('#verification').css('display', 'none');
+                $('#continue').css('display', 'block');
+            }
+
+        }
+
+        function Countinue() {
+            var s = $('#serviceNames').val();
+            var url = GetglobalDomain() +"/Home/MyProfile?Id=" + '@id';//
+            window.location.href = url;
+
+        }
+
+        function RedirectToVerfication() {
+            var url = GetglobalDomain() +"/LoginSignup/LoginSecurity";
+
+            window.location.href = url;
+        }
+
+        function sweetAlert(msg, position, icon, timer) {
+            Swal.fire({
+                position: position,
+                icon: icon,
+                title: msg,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                timer: timer,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+                //html: 'I will close in <b></b> milliseconds.',
+                //timer: 2000,
+                //timerProgressBar: true,
+                //background: '#fff url(/Content/LoginSignUp/img/midiumlogo.png)',
+                //backdrop: `rgba(0,0,123,0.4)
+                //        url("/Content/LoginSignUp/img/image1.gif")
+                //        left top
+                //        no-repeat`
+            })
+        }
+
+    </script>
+</body>
+</html>

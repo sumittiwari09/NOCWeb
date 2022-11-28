@@ -1,0 +1,326 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Notification Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Menus = ViewBag.Menus as List<Dropdown>;
+    var NotificationForList = ViewBag.NotificationForList as List<Dropdown>;
+    var NotificationDirectionFlow = ViewBag.NotificationDirectionFlow as List<Dropdown>;
+    var ModalData = Model;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Role</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+
+                <button onclick="location.href='@Url.Action("NotificationIndex", "Role")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            </div>
+            <div class="card-body">
+                <div class="form-group is-empty row" style="display: flex;align-items: center;">
+                    <label for="nameInput" class="col-sm-3 control-label">Select Menu</label>
+                    <div class="col-sm-6">
+                        <select class="singleselect" name="MenuId" id="ddlMenu" required>
+                            @{
+                                if (Menus != null)
+                                {
+                                    foreach (var item in Menus)
+                                    {
+                                        <option value=@item.Id>@item.Text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group is-empty row" style="display: flex;align-items: center;">
+                    <label for="nameInput" class="col-sm-3 control-label">Select Submenu</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="ddlSubMenus"><option value=0>Select Submenus</option></select>
+                    </div>
+                </div>
+
+                <div class="form-group is-empty row" style="display: flex;align-items: center;">
+                    <label for="nameInput" class="col-sm-3 control-label">Select Event</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="ddlEvent">
+                            <option value=0>Select Event</option>
+
+                            @{
+                                if (NotificationForList != null)
+                                {
+                                    foreach (var item in NotificationForList)
+                                    {
+                                        <option value="@item.Id">@item.Text</option>
+                                    }
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group is-empty row" style="display: flex;align-items: center;">
+                    <label for="nameInput" class="col-sm-3 control-label">Notification Flow Direction</label>
+                    <div class="col-sm-6" style="display:flex;gap:30px">
+
+                        @{
+                            if (NotificationDirectionFlow != null)
+                            {
+                                foreach (var item in NotificationDirectionFlow)
+                                {
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="rdb_@item.Id" name="customRadio" class="custom-control-input notificationFlowDirection" value="@item.Id">
+                                        <label class="custom-control-label" for="rdb_@item.Id">@item.Text</label>
+                                    </div>
+                                }
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group is-empty row" style="display: flex;align-items: center;">
+                    <label for="nameInput" class="col-sm-3 control-label">Enter Message</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="txtMessage" style="resize:none" cols="10" rows="5" placeholder="Enter Message Here"></textarea>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <footer class="form-footer">
+            <div class="pull-right" style="text-align: end;">
+                <a href="#" class="btn btn-default">DISCARD</a>
+                <button class="btn btn-primary" id="btnSaveNotificationModule"> Save </button>
+            </div>
+        </footer>
+
+    </div> <!-- end row -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#ddlMenu").select2();
+        $('#ddlSubMenus').select2();
+        $('#ddlEvent').select2();
+        $("#ddlMenu").change(function () {
+            var menuID = $(this).val();
+            BindSubmenus(menuID, 0);
+            $('#ddlSubMenus').select2();
+
+        });
+
+        $(".notificationFlowDirection").change(function () {
+            var radiobtnVal = $(this).val();
+        });
+
+        $('#btnSaveNotificationModule').click(function () {
+
+            var menuID = parseInt($('#ddlMenu').val());
+            var submenuID = parseInt($('#ddlSubMenus').val());
+            var selectedEvent = $('#ddlEvent').val();
+            var selectedFlow = $("input[type='radio']:checked").val();
+            var message = $('#txtMessage').val();
+
+
+            console.table(menuID, submenuID, selectedEvent, selectedFlow, message);
+
+            SaveNotificationModule(menuID, submenuID, selectedEvent, selectedFlow, message);
+        });
+    });
+
+    function BindSubmenus(MenuId, selectedValue) {
+
+        var Model = {
+            MenuId: MenuId
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/ManageMenuOrder/GetSubmenus",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+
+                var submenuList = data.Data;
+                //console.table(submenuList)
+                var selectBody = `<option value=0>Select Submenus</option>`;
+
+                submenuList.forEach(item => {
+                    if (item.ID1 == selectedValue) {
+                        selectBody += `<option value=${item.ID1} selected>${item.Text}</option>`
+                    }
+                    else {
+
+                        selectBody += `<option value=${item.ID1}>${item.Text}</option>`
+                    }
+                    //console.log(item);
+                });
+
+                $('#ddlSubMenus').html('')
+                $('#ddlSubMenus').append(selectBody);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+    }
+
+    function SaveNotificationModule(MenuID, SubmenuID, SelectedEvent, SelectedFlow, NotificationMessage) {
+
+        if (checkValidate()) {
+            var Model = {
+                "MenuId": parseInt(MenuID),
+                "SubmenuId": parseInt(SubmenuID),
+                "Event": parseInt(SelectedEvent),
+                "SendtoFlow": parseInt(SelectedFlow),
+                "Message": NotificationMessage
+            }
+
+            console.log(JSON.stringify(Model));
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Role/SaveNotificationMaster",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+                    console.log(data);
+
+                    if (data.StatusCode == 1 && data.Message == "Details saved successfully!") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Notification Details Saved Successfully...!',
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: true,
+                        })
+                    }
+                    else if (data.StatusCode == 1 && data.Message == "Details are already exists!") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Details Already Exists..., Not Saved..!',
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: true,
+                        })
+                    }
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000)
+
+                },
+                error: function (d) {
+                }
+            });
+        }
+    }
+
+    function checkValidate() {
+        var status = true;
+        var menuID = parseInt($('#ddlMenu').val());
+        var submenuID = parseInt($('#ddlSubMenus').val());
+        var eventID = parseInt($('#ddlEvent').val());
+        var Message = $('#txtMessage').val();
+        var selectedFlow = $("input[type='radio']:checked");
+       
+        if (menuID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Menu...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: true,
+            })
+            $('#ddlMenu').focus();
+            status = false;
+        }
+        else if (submenuID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Submenu...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: true,
+            })
+            $('#ddlSubMenus').focus();
+            status = false;
+        }
+        else if (eventID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Any Event...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: true,
+            })
+            $('#ddlEvent').focus();
+            status = false;
+        }
+        else if (selectedFlow.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Notification Flow Direction...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: true,
+            })
+            status = false;
+        }
+        else if (Message.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Enter Message...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: true,
+            })
+            status = false;
+        }
+
+        return status;
+    }
+</script>

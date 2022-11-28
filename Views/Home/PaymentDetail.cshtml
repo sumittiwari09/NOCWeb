@@ -1,0 +1,127 @@
+﻿@using NewZapures_V2.Models
+@model List<Partial.ACtivedServicesHardwarelist>
+@{
+    Layout = null;
+    List<PayTracking> paylist = new List<PayTracking>();
+    if (ViewBag.payslist != null)
+    {
+        paylist = (List<PayTracking>)ViewBag.payslist;
+    }
+}
+@*<style>
+        small {
+            font-size: xx-small;
+            color: red;
+
+        }
+    </style>*@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="width: fit-content;">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel2">Payment Details</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closetask"><span aria-hidden="true">&times;</span></button>
+
+        </div>
+        <div class="modal-body">
+
+            @*<div class="col-md-12 col-lg-12 col-xl-12">
+                <div class="card">
+                    <div class="card-body">*@
+            <div class="accordion" id="accordionExample">
+                @{
+                    foreach (var item in Model)
+                    {
+                        var Id = item.OrderId.Split('/');
+                        var tempid = "aa" + Id[2];
+                        <div class="card border mb-1 shadow-none">
+                            <div class="card-header" id="headingOne">
+
+                                <a href="" class="text-dark" data-toggle="collapse" data-target="#tempid" aria-expanded="true" aria-controls="collapseOne">
+                                    Order Id:@item.OrderId | Services :@item.Servicecollection | Hardware :@item.Hardwarecollection | Status :@item.OrderStatus
+                                </a>
+                            </div>
+                            <div id="tempid" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Payable Amount</th>
+                                                    <th>Transaction Date</th>
+                                                    <th>Transaction Amt</th>
+                                                    <th>Balance Amt</th>
+                                                    <th>Mode</th>
+                                                    <th>BanK UTR</th>
+                                                    <th>Bank</th>
+                                                    <th>Account</th>
+                                                    <th>UPI</th>
+                                                    <th>Cheque No</th>
+                                                    <th>Status</th>
+                                                    <th>Payment Status</th>
+
+                                                    @*<th>Mode Type</th>*@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    foreach (var inneritem in paylist.Where(p => p.OrderId == item.OrderId).ToList())
+
+                                                    {
+                                                        <tr>
+                                                            <td>@inneritem.PayableAmount</td>
+                                                            <td><small>@inneritem.TransactionDate</small></td>
+                                                            <td>@inneritem.TransactionAmt</td>
+                                                            <td>@inneritem.BalancaAmt</td>
+                                                            <td>@inneritem.ModeType</td>
+                                                            <td><small>@inneritem.BankUTR</small></td>
+                                                            <td>@inneritem.Bank</td>
+                                                            <td>@inneritem.Account</td>
+                                                            <td>@inneritem.UPI</td>
+                                                            <td>@inneritem.ChequeNo</td>
+                                                            <td><small>@inneritem.CurrentStatus</small></td>
+                                                            <td>@inneritem.PaymentStatusName</td>
+
+                                                            @*<td>@inneritem.</td>
+                                                                <td>@inneritem.TransactionDate</td>*@
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div><!--end card-body-->
+        <!--</div>--><!--end card-->
+        <!--</div>--><!--end col-->
+        <!--</div>--><!--end row-->
+
+        <div class="form-horizontal " id="tableinfo">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    @*<thead>
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Remark</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Freezetbody">
+                        </tbody>*@
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@*</div>*@

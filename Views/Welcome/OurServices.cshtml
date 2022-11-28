@@ -1,0 +1,544 @@
+﻿@using NewZapures_V2.Models;
+
+@{
+    ViewBag.Title = "Our Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var serviceImags = System.Configuration.ConfigurationManager.AppSettings["ServiceImages"];
+    var service = ViewBag.serviceDetailsList as List<GetservicesetailsAndroidNew>;
+    var userDetails = Session["UserDetails"] as UserModelSession;
+    var hardware = ViewBag.HardwareDetailsList as List<GetservicesetailsAndroidNew>;
+}
+
+<link href="~/Content/LoginSignUp/css/fontawesome.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="~/Content/LoginSignUp/js/jquery.js"></script>
+<script src="~/Content/LoginSignUp/js/bootstrap.min.js"></script>
+<style>
+    svg.svg-inline--fa.fa-chevron-left.left.btn {
+        position: absolute;
+        left: -34px;
+        top: 146px;
+    }
+
+    svg.svg-inline--fa.fa-chevron-right.right.btn {
+        position: absolute;
+        right: -929px;
+        z-index: 99;
+        top: 146px;
+        margin-right: -272px;
+    }
+
+    span.price {
+        float: right;
+        padding-right: 25px;
+    }
+
+    .price.col-md-12 input {
+        margin: 15px 0px 0px 15px;
+        width: 18px;
+        height: 18px;
+    }
+
+    #ctaAddtoCart {
+        background: #506ee4;
+        margin-top: 118px;
+        overflow: hidden !important;
+        width: 100.5%;
+        height: 48px;
+        border-bottom-left-radius: 11px;
+        border-bottom-right-radius: 10px;
+        text-align: center;
+        margin-left: -1px;
+    }
+
+    .main-price {
+        display: flex;
+        place-content: center;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .rupeeIcon {
+        font-size: 30px;
+    }
+
+    .rupeeIconsmall {
+        font-size: 15px;
+    }
+
+    .photo h5 {
+        font-size: 17px;
+        font-weight: 600;
+        padding: 0px 0px 0px 12px;
+        text-align: center
+    }
+
+    .photo {
+        display: flex;
+        place-content: center;
+        align-items: center;
+        padding: 10px;
+        margin-top: 38px;
+    }
+
+    .info h3 {
+        font-size: 15px;
+        padding-left: 20px;
+    }
+
+    .info {
+        height: 30px !important;
+    }
+
+    .col-item {
+        border: 1.5px solid #506ee4;
+        border-radius: 15px;
+        background: #FFF;
+        padding: 15px 0px;
+        height: 22rem;
+    }
+
+    .controls {
+        margin-top: 20px;
+    }
+
+    [data-slide="prev"] {
+        margin-right: 10px;
+    }
+
+    #sptxtRechargeAmount {
+        font-size: 20px;
+        font-family: sans-serif;
+    }
+
+    #txtRechargeAmount {
+        font-size: 14px;
+        text-align: center;
+        font-weight: 600;
+        font-family: cursive;
+    }
+
+    #tabs {
+        justify-content: space-between;
+        position: fixed;
+        margin-top: -34px;
+        background: white;
+        width: 75%;
+        display: inline-flex;
+    }
+
+    #tabsDTH {
+        justify-content: center;
+        position: fixed;
+        margin-top: -34px;
+        background: white;
+        width: 75%;
+        display: inline-flex;
+    }
+
+    .walletLeft {
+        background: #edf0f5;
+        padding: 20px;
+        font-size: 25px;
+        border-radius: 20px;
+        color: black;
+        text-align: center;
+        width: 466px;
+        margin: 0px 20px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -40px inset;
+    }
+
+    .selectedOperator {
+        background: #506ee4;
+        color: white;
+    }
+
+    .selectedPlan {
+        background: #506ee4;
+        color: white;
+    }
+
+        .selectedPlan table {
+            color: white;
+        }
+
+        .selectedPlan h5 {
+            color: white;
+        }
+
+
+    .divContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 100px;
+        gap: 34px 24px;
+    }
+
+    .PlansShow {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, .5fr);
+        grid-auto-rows: 280px;
+    }
+
+    .PlansShowDTH {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, .5fr);
+        grid-auto-rows: 235px;
+    }
+
+    .PlanContainer {
+        height: 20.5em;
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        position: relative;
+    }
+
+    .DTHPlanContainer {
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        margin-bottom: 17px;
+    }
+
+    .operatorContainer {
+        height: 8em;
+        display: flex;
+        border: 1px solid #c8c8c8;
+        border-radius: 7px;
+        -webkit-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        box-shadow: inset 17px 9px 36px -24px rgba(0,0,0,0.75);
+        cursor: pointer;
+    }
+
+    #operatorImage {
+        width: 20%;
+        height: 100%;
+        border-right: 1px solid #e3d9d9;
+        border-radius: 50%;
+        -webkit-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+    }
+
+    #PlanAmount {
+        width: 100px;
+        height: 35%;
+        border-right: 1px solid #e3d9d9;
+        border-radius: 50%;
+        display: flex;
+        place-content: center;
+        align-items: center;
+        font-size: 25px;
+        font-family: Arial;
+        background-size: 45px !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        -webkit-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        -moz-box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+        box-shadow: 17px 9px 23px -24px rgba(0,0,0,0.75);
+    }
+
+    .OperatorName {
+        width: 70%;
+        height: 100%;
+        display: flex;
+        place-content: center;
+        align-items: center;
+        font-size: 2em;
+    }
+
+    .PlanDesc {
+        height: 45%;
+        padding: 4px;
+        /* width: 90%;
+        height: 100%;
+        display: grid;
+        place-content: start;
+        align-items: center;
+        font-size: 13px;
+        margin-left: -95px;
+        grid-row-gap: 0px;
+        grid-auto-flow: row;
+        margin-top: 80px;*/
+    }
+
+
+
+    #rbBSNLTopup, #rbBSNLSpecial {
+        display: block
+    }
+
+    input[type=radio] {
+        display: none
+    }
+
+    .DTHMonthPlan {
+        padding: 14px;
+        color: white;
+        border-radius: 43px;
+        font-size: 17px !important;
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    .selectedDTHPlan {
+        background: green !important
+    }
+
+    .DTHPlanDesc {
+        margin-left: 17px;
+        margin-bottom: 35px;
+    }
+
+    .DTHPlanName {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .DTHPlanDescName {
+        font-size: 15px;
+    }
+
+    .activatedService {
+        background: #506ee4;
+        color: white;
+    }
+
+    .activatedDesc {
+        color: white;
+    }
+</style>
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item active">Our Services</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Our Services</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <p>Services</p>
+                <div class="PlansShow" id="PlanCombo">
+                    @{
+                        if (service != null)
+                        {
+                            foreach (var serviceItem in service)
+                            {
+                                var AllpriceDetails = service.Where(wh => wh.CategoryId == serviceItem.CategoryId).Select(s => s.services).FirstOrDefault();
+
+                                var prices = AllpriceDetails.Trim().Split(';');
+
+                                if (userDetails.ServicesCollection.Contains(serviceItem.CategoryId))
+                                {
+                                    <div id="service_@serviceItem.CategoryId" class="PlanContainer activatedService">
+                                        @*<input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />*@
+
+                                        <div id="PlanAmount" style="background:url('@serviceItem.ServiceIcon')"></div>
+                                        <span id="spn_@serviceItem.CategoryName" style="padding: 10px;font-size: 20px;position: relative;top: -75px;right: -100px;"> @serviceItem.CategoryName</span><br />
+                                        <span id="Finalprice_@serviceItem.CategoryId" style="padding: 10px;font-size: 20px;position: relative;top: -65px;right: -100px;">@@ <i class="fas fa-rupee-sign"></i> @serviceItem.TotalAmount</span>
+                                        <hr style="margin-top: -54px !important;" />
+                                        <div class="PlanDesc">
+                                            @{
+                                                if (prices != null)
+                                                {
+                                                    foreach (var pricess in prices)
+                                                    {
+                                                        if (!string.IsNullOrEmpty(pricess))
+                                                        {
+
+                                                            var charges = pricess.Split(':');
+
+                                                            <div class="info">
+                                                                <h3 class="activatedDesc">@charges[0] <span class="price" id="@charges[0]"> <b> <i class="fas fa-rupee-sign rupeeIconsmall"></i> @charges[1]</b></span></h3>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="service_@serviceItem.CategoryId" class="PlanContainer">
+                                        @*<input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />*@
+
+                                        <div id="PlanAmount" style="background:url('@serviceItem.ServiceIcon')"></div>
+                                        <span id="spn_@serviceItem.CategoryName" style="padding: 10px;font-size: 20px;position: relative;top: -75px;right: -100px;"> @serviceItem.CategoryName</span><br />
+                                        <span id="Finalprice_@serviceItem.CategoryId" style="padding: 10px;font-size: 20px;position: relative;top: -65px;right: -100px;">@@ <i class="fas fa-rupee-sign"></i> @serviceItem.TotalAmount</span>
+                                        <hr style="margin-top: -54px !important;" />
+                                        <div class="PlanDesc">
+                                            @{
+                                                if (prices != null)
+                                                {
+                                                    foreach (var pricess in prices)
+                                                    {
+                                                        if (!string.IsNullOrEmpty(pricess))
+                                                        {
+
+                                                            var charges = pricess.Split(':');
+
+                                                            <div class="info">
+                                                                <h3>@charges[0] <span class="price" id="@charges[0]"> <b> <i class="fas fa-rupee-sign rupeeIconsmall"></i> @charges[1]</b></span></h3>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+
+
+                                        <div id="divbtnContainer" style="text-align: center;background: #506ee4;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;overflow: hidden;">
+                                            <button class="btn btn-primary" id="btnAdd_@serviceItem.CategoryId" onclick="addToCart('@serviceItem.CategoryId', '@serviceItem.CategoryName', '@serviceItem.TotalAmount', '@serviceItem.ServiceIcon')" style="width: 100%"><i class="fas fa-shopping-cart rupeeIconsmall"></i> Add to cart</button>
+                                            <button class="btn btn-dark" id="btnRemove_@serviceItem.CategoryId" onclick="RemoveFromCart('@serviceItem.CategoryId')" style="display: none;width:100%"><i class="fas fa-luggage-cart rupeeIconsmall"></i> Remove from cart</button>
+                                        </div>
+
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <br />
+
+
+                <p>Hardwares</p>
+                <div class="PlansShow" id="PlanCombo">
+                    @{
+                        if (hardware != null)
+                        {
+                            foreach (var hardwareItems in hardware)
+                            {
+
+                                <div id="hardware_@hardwareItems.CategoryId" class="PlanContainer">
+                                    @*<input type="radio" name="Plan" id="rb_Plans" value="rs" style="display:none" />*@
+
+                                    <div id="PlanAmount">
+                                        <img src="~/images/Machineimages/ThumbMachine.png" height="100" />
+                                    </div>
+                                    <span id="spn_@hardwareItems.CategoryName" style="padding: 10px;font-size: 20px;position: relative;top: -75px;right: -100px;"> @hardwareItems.CategoryName</span><br />
+                                    <span id="price_@hardwareItems.CategoryId _@hardwareItems.CategoryName" style="padding: 10px;font-size: 20px;position: relative;top: -65px;right: -100px;">@@ <i class="fas fa-rupee-sign"></i> @hardwareItems.TotalAmount</span>
+                                    <hr style="margin-top: -54px !important;" />
+                                    <div class="PlanDesc">
+                                        <div class="info">
+                                            <h3>GST <span class="price"> <b> <i class="fas fa-rupee-sign rupeeIconsmall"></i> @hardwareItems.GstAmount</b></span></h3>
+                                        </div>
+                                    </div>
+
+                                    <div style="    text-align: center;    background: #506ee4;    border-bottom-left-radius: 10px;    border-bottom-right-radius: 10px;   overflow: hidden;">
+                                        <button class="btn btn-primary" id="btnAdd_@hardwareItems.CategoryId" onclick="addToCart('@hardwareItems.CategoryId', '@hardwareItems.CategoryName', '@hardwareItems.TotalAmount', '~/images/Machineimages/ThumbMachine.png')" style="width:100%">Add to cart</button>
+                                        <button class="btn btn-dark" id="btnRemove_@hardwareItems.CategoryId" onclick="RemoveFromCart('@hardwareItems.CategoryId')" style="display: none; width: 100%"><i class="fas fa-luggage-cart rupeeIconsmall"></i> Remove from cart</button>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div><!--end card-body-->
+</div><!--end card-->
+
+<script type="text/javascript">
+
+    var CartItems = [];
+
+    function addToCart(catId, catName, totalPrice, iconURL) {
+
+        $('#btnAdd_' + catId).css('display', 'none');
+        $('#btnRemove_' + catId).css('display', 'block');
+
+        CartItems.push({
+            Service_HardwareId: parseInt(catId),
+            Service_HardwareName: catName,
+            Service_HardwarePrice: parseFloat(totalPrice),
+            Service_HardwareIcon: iconURL
+        });
+
+        var CartItemCount = CartItems.length;
+        if (CartItemCount > 0) {
+            $('#CartItemCount').css('display', 'inline');
+            $('#CartItemCount').html(CartItemCount);
+            $('#linkCartIcon').css('margin-right', '-25px !important;');
+
+        }
+        else {
+            $('#CartItemCount').css('display', 'none');
+            $('#CartItemCount').html(CartItemCount);
+            $('#linkCartIcon').css('margin-right', '0px !important;');
+            $('#divCartItems').html('<p>No Items available</p>');
+        }
+
+        var CartitemHTML = `<table class='table table-striped' style="font-family:'Poppins', sans-serif;">`;
+
+        CartItems.forEach(function (item) {
+            item.Service_HardwareIcon = item.Service_HardwareIcon.replace("~", "..");
+            CartitemHTML += `<tr><td><img src="${item.Service_HardwareIcon}" height="20" /></td><td>${item.Service_HardwareName}</td><td> &#8377; ${item.Service_HardwarePrice}</td><td><span onclick="RemoveFromCart('${item.Service_HardwareId}')"><i class="fas fa-times-circle" style="font-size:20px;color:red"></i></span></td></tr>`;
+        });
+        CartitemHTML += "</table><div  style='padding:10px;text-align:right;width:100%;'><button class='btn btn-primary'>Go To Checkout</div>";
+        $('#divCartItems').html(CartitemHTML);
+
+
+    }
+    function RemoveFromCart(catId) {
+
+        $('#btnRemove_' + catId).css('display', 'none');
+        $('#btnAdd_' + catId).css('display', 'block');
+
+        CartItems = CartItems.filter(function (item) {
+            return item.Service_HardwareId != catId
+        })
+        var CartItemCount = CartItems.length;
+
+        if (CartItemCount > 0) {
+            $('#CartItemCount').css('display', 'inline');
+            $('#CartItemCount').html(CartItemCount);
+            $('#linkCartIcon').css('margin-right', '-25px !important;');
+
+
+        }
+        else {
+            $('#CartItemCount').css('display', 'none');
+            $('#CartItemCount').html(CartItemCount);
+            $('#linkCartIcon').css('margin-right', '0px !important;');
+            $('#divCartItems').html('<p>No Items available</p>');
+        }
+
+        var CartitemHTML = `<table class='table table-striped' style="font-family:'Poppins', sans-serif;">`;
+
+        CartItems.forEach(function (item) {
+            CartitemHTML += `<tr><td><img src="${item.Service_HardwareIcon}" height="20" /></td><td>${item.Service_HardwareName}</td><td> &#8377; ${item.Service_HardwarePrice}</td><td><span onclick="RemoveFromCart('${item.Service_HardwareId}')"><i class="fas fa-times-circle" style="font-size:20px;color:red"></i></span></td></tr>`;
+        });
+        CartitemHTML += "</table><div  style='padding:10px;text-align:right;width:100%;'><button class='btn btn-primary'>Go To Checkout</div>";
+        $('#divCartItems').html(CartitemHTML);
+
+
+        console.table(CartItems);
+    }
+</script>

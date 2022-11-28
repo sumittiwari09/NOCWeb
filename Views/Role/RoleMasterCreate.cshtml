@@ -1,0 +1,91 @@
+﻿@using NewZapures_V2.Models
+@model RoleMastertable
+@{
+    ViewBag.Title = "Create Role";
+    ViewBag.Create = "Add New Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("RoleMasterCreate", "Role", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <input name="RoleId" id="RoleId" type="hidden" value="@(Model != null ? Model.RoleId.ToString() : "0")">
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Sub Role Master</h4>
+                    <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("RoleMasterIndex", "Role")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                    @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Role Name</label>
+                        <div class="col-sm-6">
+                            <input name="RoleName" id="RoleName" type="text" value="@(Model != null ? Model.RoleName : "")" class="form-control" placeholder="Enter Role Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group is-empty row">
+
+                        <label for="nameInput" class="col-sm-4 control-label">Active</label>
+                        <div class="col-sm-2 custom-control custom-switch switch-success">
+                            <input type="checkbox" class="custom-control-input" id="Status" name="Status" value="@(Model != null? Model.Status.ToString() : "0")" @(Model != null && Model.Status == 1 ? "checked" : "")>
+                            <label class="custom-control-label" for="Status"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    <a href="@Url.Action("RoleMasterIndex", "Role")" class="btn btn-default">DISCARD</a>
+                    <button class="btn btn-primary"> Save </button>
+                </div>
+            </footer>
+        }
+    </div>
+</div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    <script src="~/scripts/pages/jquery.sweet-alert.init.js"></script>
+    <script type="text/javascript">
+        $('input[type="checkbox"]').change(function () {
+            var id = $(this).val() == 0 ? 1 : 0;
+            $(this).val(id)
+
+        })
+    </script>
+}
+

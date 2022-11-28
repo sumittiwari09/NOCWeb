@@ -1,0 +1,46 @@
+﻿@using NewZapures_V2.Models
+@model List<UserCommission>
+@{
+    ViewBag.Title = "GenerateAepslist";
+    Layout = null;
+    var i = 1;
+}
+
+@foreach (var item in Model)
+{<tr id="tr_@item.UserCommissionId">
+    <td>
+        @i
+    </td>
+    <td>
+        @item.TransactionAmountFrom
+    </td>
+    <td>
+        @item.TransactionAmountTo
+    </td>
+    <td>
+        @item.CommissionAmount
+    </td>
+    <td>
+        <div class="form-check form-switch">
+            @{if (item.Status == 1)
+                {
+                    <input id="UserCommission-@item.UserCommissionId" class="form-check-input ChangeStatus" type="checkbox" data-id="UserCommission-@item.UserCommissionId-@item.Status" onclick="StatusChange('Status',@item.UserCommissionId,0)" name="@item.UserCommissionId" value="@item.Status" checked>
+                }
+                else
+                {
+                    <input id="UserCommission-@item.UserCommissionId" class="form-check-input ChangeStatus" type="checkbox" data-id="UserCommission-@item.UserCommissionId-@item.Status" onclick="StatusChange('Status',@item.UserCommissionId,1)" name="@item.UserCommissionId" value="@item.Status">
+
+                }
+            }
+
+        </div>
+    </td>
+
+    <td>
+        <a id="btnDeactive_@item.UserCommissionId" class="Deleteclass" name="2" data-id="@item.UserCommissionId" onclick="DeleteData('Delete',@item.UserCommissionId,2)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+
+    </td>
+</tr>
+    i = i + 1;
+}
+

@@ -1,0 +1,456 @@
+﻿@using NewZapures_V2.Models
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+
+    var Host = System.Configuration.ConfigurationManager.AppSettings["AdharTokenForVerification"];
+    var serviceImags = System.Configuration.ConfigurationManager.AppSettings["ServiceImages"];
+    var MobileOTPAPIKey = System.Configuration.ConfigurationManager.AppSettings["MobileOTPAPIKey"];
+    var MobileOTPSenderId = System.Configuration.ConfigurationManager.AppSettings["MobileOTPSenderId"];
+    var MobileOTPChennel = System.Configuration.ConfigurationManager.AppSettings["MobileOTPChennel"];
+
+
+
+    var service = ViewBag.serviceDetailsList as List<GetservicesetailsAndroidNew>;
+    var UserTypes = ViewBag.userTypesList as List<Dropdown>;
+    var ParentService = (string)TempData["ParentService"];
+
+    List<GetservicesetailsAndroidNew> onlyParentService = new List<GetservicesetailsAndroidNew>();
+
+    if (ParentService != null)
+    {
+        foreach (var item in ParentService.Split(',').ToList())
+        {
+            if (item != null || !string.IsNullOrEmpty(item))
+            {
+                onlyParentService.Add(service.Where(wh => wh.CategoryId == item).FirstOrDefault());
+            }
+        }
+    }
+
+    // var distinctService = ViewBag.DistinctServices;
+
+    var content = ViewBag.TandC as ContentPage;
+    var contentID = (string)ViewBag.TandCId;
+
+}
+<!-- FAVICON -->
+<link rel="shortcut icon" href="images/favicon.html">
+<!-- BOOTSTRAP -->
+<!-- ICONS -->
+<link href="~/Content/LoginSignUp/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Content/LoginSignUp/css/all.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/fontawesome.min.css" rel="stylesheet">
+<link href="~/Content/LoginSignUp/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<div class="form-header">
+    <input id="hostID" name="hostID" type="hidden" value=@Host />
+    <input id="mobileOTPAPIKey" name="mobileOTPAPIKey" type="hidden" value=@MobileOTPAPIKey />
+    <input id="mobileOTPSenderID" name="mobileOTPSenderID" type="hidden" value=@MobileOTPSenderId />
+    <input id="mobileOTPChennel" name="mobileOTPChennel" type="hidden" value=@MobileOTPChennel />
+    <input id="sendedOTP" name="sendedOTP" type="hidden" />
+    <input id="adharClientID" name="adharClientID" type="hidden" />
+    <input id="UserID" name="UserID" type="hidden" />
+    <input id="RegNo" name="RegNo" type="hidden" />
+    <input id="PartialorderId" name="PartialorderId" type="hidden" />
+    <input id="hdnTncId" type="hidden" value="@contentID" />
+
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-6 col-md-offset-2">
+                <div class="card">
+
+                    <div class="form">
+                        <div class="left-side">
+                            <div class="left-tophead">
+                                <img src="~/Content/LoginSignUp/img/midiumlogo.png" alt="logo">
+                            </div>
+                            <div class="progress-bar1" id="divmenus">
+                                <div class="bar-line" id="bar"></div>
+                                <ul class="progress-bar1">
+                                    <li class="active" id="step1">Services</li>
+                                    <li id="step2">Devices</li>
+                                    <li id="step3">Checkout</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="right-side" id="content">
+                            <div class="main active" id="main1">
+
+                                <div class="text sub-txt">
+                                    <h2>I am interested in the services</h2>
+                                </div>
+
+                                <div class="owl-carousel owl-theme owl-loaded">
+                                    <div class="owl-stage-outer">
+                                        <div class="owl-stage">
+
+                                            @{
+                                                if (ParentService == null)
+                                                {
+                                                    foreach (var item in service)
+                                                    {
+                                                        var id = "service" + item.CategoryId;
+                                                        var checkboxId = "check" + item.CategoryId;
+                                                        var boxId = "box" + item.CategoryId;
+
+                                                        var AllpriceDetails = service.Where(wh => wh.CategoryId == item.CategoryId).Select(s => s.services).FirstOrDefault();
+
+                                                        var prices = AllpriceDetails.Trim().Split(';');
+
+
+                                                        var imageName = @item.CategoryName.Trim().Replace(" ", "_");
+                                                        imageName = imageName.Replace("-", "_");
+
+                                                        var imgpath = @serviceImags + "Content/LoginSignUp/img/ServicesIcons/" + imageName + ".png";
+
+                                                        <div class="owl-item" id=@id onclick="clickDivtocheck(this);">
+                                                            <div class="box-main" id=@boxId>
+                                                                <div class="chkbx">
+                                                                    <input type="checkbox" id=@checkboxId>
+                                                                </div> <span class="price-one" id="TotalServicePrice">
+                                                                    @item.TotalAmount
+                                                                    <i class="fas fa-rupee-sign"></i>
+
+                                                                </span>
+                                                                <br />
+                                                                @*<span class="price-two" style="display:@(item.GstAmount==0 ? "none" : "block")">(GST Included)</span>*@
+                                                                <span class="card-icn">
+                                                                    <img src=@imgpath style="width: 40px;" />
+
+                                                                </span>
+                                                                @*<a href="#" class="card-icn" style="pointer-events: none"><i class=@item.ClassName style="color: #ffa72e"></i></a>*@
+                                                                <h3>@item.CategoryName</h3>
+                                                                <div class="pricing">
+                                                                    @{
+                                                                        if (prices != null)
+                                                                        {
+                                                                            foreach (var pricess in prices)
+                                                                            {
+                                                                                if (!string.IsNullOrEmpty(pricess))
+                                                                                {
+
+                                                                                    var charges = pricess.Split(':');
+
+                                                                                    <div class="txtt">
+                                                                                        <h4>@charges[0] <span class="price-two" id="@charges[0]"> <b>@charges[1]</b><i class="fas fa-rupee-sign"></i></span></h4>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+
+                                                                        }
+                                                                    }
+                                                                    <h4 style="display:none">GST Charges <span class="price-two" id="GSTVlaue"> <b>@item.GstAmount</b><i class="fas fa-rupee-sign"></i></span></h4>
+                                                                    @*<a href="#" class="btn">View Details <i class="fas fa-arrow-right"></i></a>*@
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (onlyParentService != null)
+                                                    {
+                                                        foreach (var item in onlyParentService)
+                                                        {
+                                                            if (item != null)
+                                                            {
+                                                                var id = "service" + item.CategoryId;
+                                                                var checkboxId = "check" + item.CategoryId;
+                                                                var boxId = "box" + item.CategoryId;
+
+                                                                var AllpriceDetails = service.Where(wh => wh.CategoryId == item.CategoryId).Select(s => s.services).FirstOrDefault();
+
+                                                                var prices = AllpriceDetails.Trim().Split(';');
+
+                                                                var imageName = @item.CategoryName.Trim().Replace(" ", "_");
+                                                                imageName = imageName.Replace("-", "_");
+
+                                                                var imgpath = item.ServiceIcon;//@serviceImags + "Content/LoginSignUp/img/ServicesIcons/" + imageName + ".png";
+
+                                                                <div class="owl-item" id=@id onclick="clickDivtocheck(this);">
+                                                                    <div class="box-main" id=@boxId>
+                                                                        <div class="chkbx">
+                                                                            <input type="checkbox" id=@checkboxId>
+                                                                        </div> <span class="price-one" id="TotalServicePrice">
+                                                                            @item.TotalAmount
+                                                                            <i class="fas fa-rupee-sign"></i>
+
+                                                                        </span>
+                                                                        <br />
+                                                                        @*<span class="price-two" style="display:@(item.GstAmount==0 ? "none" : "block")">(GST Included)</span>*@
+                                                                        <span class="card-icn">
+                                                                            <img src=@imgpath style="width: 40px;" />
+
+                                                                        </span>
+                                                                        @*<a href="#" class="card-icn" style="pointer-events: none"><i class=@item.ClassName style="color: #ffa72e"></i></a>*@
+                                                                        <h3>@item.CategoryName</h3>
+                                                                        <div class="pricing">
+                                                                            @{
+                                                                                if (prices != null)
+                                                                                {
+                                                                                    foreach (var pricess in prices)
+                                                                                    {
+                                                                                        if (!string.IsNullOrEmpty(pricess))
+                                                                                        {
+
+                                                                                            var charges = pricess.Split(':');
+
+                                                                                            <div class="txtt">
+                                                                                                <h4>@charges[0] <span class="price-two" id="@charges[0]"> <b>@charges[1]</b><i class="fas fa-rupee-sign"></i></span></h4>
+                                                                                            </div>
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                            }
+                                                                            <h4 style="display:none">GST Charges <span class="price-two" id="GSTVlaue"> <b>@item.GstAmount</b><i class="fas fa-rupee-sign"></i></span></h4>
+                                                                            @*<a href="#" class="btn">View Details <i class="fas fa-arrow-right"></i></a>*@
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                        <div class="buttons button_space">
+                                            <button class="next_button color-blue" onclick="SelectService();ChangeForm('main2', 'Next');GetHardewareList('main2');">Next Step &nbsp;<i class='fa fa-1x fa-angle-double-right'></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="main" id="main2" style="display:none;">
+
+                                <div class="text">
+                                    <h2>Your Service Device details</h2>
+                                    <div id="ServiceOnHardware"></div>
+                                    <div class="input-text">
+                                    </div>
+                                </div>
+                                <div class="buttons button_space">
+                                    <button class="back_button color-red" onclick="ChangeForm('main1','Prev');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>
+                                    <button class="next_button color-blue" id="btnSelectedService" onclick="ChangeForm('main3', 'Next'); GethardwareList(); BindCheckoutData();">Next Step &nbsp;<i class='fa fa-1x fa-angle-double-right'></i></button>
+                                </div>
+                            </div>
+
+                            <div class="main main3adjust" id="main3" style="display:none;">
+
+                                <div class="text">
+                                    <h2>Checkout</h2>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+                                        <h4 style="color: cornflowerblue;"><span>Service List</span></h4>
+                                        <div id="ServiceCheckout"></div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6" style="right: 10px;">
+                                            <h4 style="color: cornflowerblue;"><span>Hardware List</span></h4>
+                                        </div>
+
+                                        <div class="col-lg-6" style="left: 197px;">
+                                            <h4 style="color: cornflowerblue;cursor:pointer"><span onclick="ChangeForm('main1','Prev');Movebackword()"><i class="fa fa-plus"></i> ADD</span></h4>
+                                        </div>
+                                        <div id="hardwareCheckout"></div>
+                                    </div>
+
+
+                                    <div class="col-lg-offset-7 col-lg-4">
+                                        <div id="TotalCheckout" class="invoice"></div>
+                                    </div>
+
+                                </div>
+                                <div class="input-text tab-two">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio" checked>Offline Payment
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio">Online Payment
+                                    </label>
+                                </div>
+                                <div class="input-text tab-three">
+                                    <div class="input-div icn-color">
+                                        <input type="checkbox" id="chkTnc">
+
+                                        <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg">Terms and Condition</a>
+                                    </div>
+                                </div>
+                                <div class="buttons button_space">
+                                    @*<button class="back_button color-red" onclick="ChangeForm('main5','Prev');SaveDetails('No');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>*@
+                                    @*<button class="back_button color-red" onclick="ChangeForm('Login','Prev');"><i class='fa fa-1x fa-angle-double-left'></i> &nbsp; Previous</button>*@
+
+                                    <button class="next_button color-pay" onclick="SaveBookingData();">Pay now</button>
+                                    <button class="next_button color-pay" style="display:none" id="sayThanks" data-toggle="modal" data-target="#ThankYou">Pay now</button>
+                                </div>
+                            </div>
+
+                            @*Modal*@
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:none;">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Enter OTP</h5>
+                                            <button type="button" class="close" id="modalClose" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="input-text">
+                                                <div class="input-div">
+                                                    <input type="number" id="verifyAdharOTP" require>
+                                                    <label for="verifyAdhar">Enter OTP</label>
+                                                </div>
+
+                                                <div class="buttons button_space">
+                                                    <button id="verifyAdhar" style="display:none" onclick="VerifyAdharWithOTP()">Verify Aadhar</button>
+                                                    <button id="verifyMobileOTP" style="display:none" onclick="VerifyMobileWithOTP()">Verify Mobile</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Thankyou"></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <h2>Thank You</h2>
+
+                                            <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
+
+                                            <div style="margin-top: 20px;font-size:18px">
+                                                Thank you for using our service. <br />
+                                                Click OK to Process over you account. <br />
+                                                Cancle to finish journey.<br />
+                                                You can login later with your created credentials
+                                            </div>
+                                            <hr />
+                                            <div style="width: 90%;margin: auto;border: none;">
+                                                <table class="table table-responsive">
+                                                    <tr><th style="width: 46%;">Your Registration Number Is </th><td>:</td><td><span id="registraionNumber">Reg0012022</span></td></tr>
+                                                    <tr><th style="width: 46%;">Your OrderId Is </th><td>:</td><td><span id="OrderId">Inv/27042022/0001</span></td></tr>
+                                                </table>
+                                            </div>
+                                            <hr />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                                                <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+
+                                            <button type="button" class="btn btn-primary" onclick="clearAll(); gotoWelcome();" data-dismiss="modal">OK</button>
+                                            <button type="button" class="btn btn-secondary" onclick="clearAll(); gotoWelcome();" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade bd-example-modal-lg" id="TermsAndCondition" tabindex="-1" role="dialog" aria-labelledby="TermsAndCondition" data-backdrop="static" style="display:none;">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="TermsAndCondition">Terms and Condition</h3>
+                                            <button type="button" class="close" id="closeTNC" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" style="padding: 20px !important;">
+                                            @{
+                                                if (content != null)
+                                                {
+
+                                                    @Html.Raw(content.PageContent)
+                                                }
+                                                else
+                                                {
+                                                    <p>Unable to load data</p>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CheckTermsAndCondition()">I Accept</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/LoginSignUp/js/jquery.js"></script>
+<script src="~/Content/LoginSignUp/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Controllers/User/JS/ServicePurchase.js"></script>
+<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            responsiveClass: true,
+            mouseDrag: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: true
+                },
+                600: {
+                    items: 3,
+                    nav: false
+                },
+                1000: {
+                    items: 2,
+                    nav: true,
+                    loop: false
+                }
+            }
+        })
+
+        $('input[type=checkbox]').click(function (e) {
+            e.stopPropagation();
+            return true;
+        });
+
+        var IsServiceExists = '@TempData["IsServiceAvailable"]'
+
+        if (IsServiceExists == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Puchase Atleast one service...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+
+            });
+        }
+
+    });
+</script>

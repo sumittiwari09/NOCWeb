@@ -1,0 +1,1583 @@
+﻿@using NewZapures_V2.Models
+@model ServiceTypeDocument
+@{
+    ViewBag.Title = "Add Service Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<DepartmentTypeDocumentBO> lstUsers = ViewData["RequestList"] as IEnumerable<DepartmentTypeDocumentBO>;
+    var CollectList = CollectDropdown.GetCollectionList();
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <style>
+        .table_wrapper {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">E-Mitra@Home</li>
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item">Service Type & Service Document</li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-12 mx-auto">
+            @Html.AntiForgeryToken()
+            <div class="card dr-pro-pic">
+                <div class="card-header">
+                    <div class="row  col-lg-12">
+                        <div class="col-lg-9">
+                            <h3 class="mt-0 header-title">Service Type & Service Document Information</h3>
+                        </div>
+                        @*<div class="col-lg-3 float-right">
+                                <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("ServiceType", "Admin")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                @Html.DropDownList("AddService", new List<SelectListItem>
+                                {
+                                     new SelectListItem{ Text="Add Department", Value = "1" },
+                                     new SelectListItem{ Text="Add Service Type", Value = "2" },
+                                     new SelectListItem{ Text="Add Document", Value = "3" },
+                                     //new SelectListItem{ Text="Add Document", Value = "4" },
+                                     new SelectListItem{ Text="Department Service Mapping", Value = "5" },
+                                     new SelectListItem{ Text="Add Mapping Servies and Child", Value = "6" },
+                                     new SelectListItem{ Text="Add Mapping Document", Value = "7" },
+                                     new SelectListItem{Text="Add Mapping Color Zone",Value="8"}
+                                }, "Select Operation", new { @id = "DD_AddService", @class = "form-control m-b servicetype" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header" id="servicetypeheader" style="display:none;">
+                    <h4 class="mt-0 header-title">Add Service Type</h4>
+                </div>
+                <div class="card-body" id="servicetype" style="display:none;">
+                    @using (Html.BeginForm("SaveServiceType", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <select class="singleselect" name="SubServiceType" id="SubServiceType">
+                                        <option style="background: black;" value="Service">Main Service</option>
+                                        <option style="background: black;" value="ChildService">Child Service</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.ServiceName,
+                                     new
+                                     {
+                                         @minlength = "4",
+                                         @placeholder = "Service Name",
+                                         @class = "form-control",
+                                         @data_parsley_length = "[2,500]",
+                                         @data_parsley_length_message = "Text between 2 - 500 chars length",
+                                         @id = "ServiceName"
+                                     })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(model => model.ServiceTypeCode,
+                                    new
+                                    {
+                                        @maxlength = "3",
+                                        @minlength = "3",
+                                        @placeholder = "Service Type Code",
+                                        @class = "form-control",
+                                        @id = "ServiceTypeCode",
+                                        @onkeypress = "javascript:return isNumber(event)"
+                                    })
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="singleselect" name="CollectionID" id="CollectionID">
+                                        @{
+                                            <option value="">Select Collection</option>
+                                            foreach (var item in CollectList)
+                                            {
+                                                <option style="background: black;" value="@item.CollectionID">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input name="Type" type="hidden" value="1" />
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit">Submit</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+                <div class="card-header" id="Departmenttypeheader" style="display:none;">
+                    <h4 class="mt-0 header-title">Add Department</h4>
+                </div>
+                <div class="card-body" id="Departmenttype" style="display:none;">
+
+                    @using (Html.BeginForm("SaveServiceType", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+
+                        <div class="col-md-12">
+                            <div class="form-group row">
+
+                                <div class="col-md-6">
+
+                                    @Html.TextBoxFor(model => model.ServiceName,
+                                   new
+                                   {
+                                       @minlength = "4",
+                                       @placeholder = "Department Name",
+                                       @class = "form-control",
+                                       @data_parsley_length = "[2,500]",
+                                       @data_parsley_length_message = "Text between 2 - 500 chars length",
+                                       @id = "ServiceName"
+                                   })
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="singleselect" name="ID" id="DD_District">
+                                        @{
+                                            <option value="">Select District</option>
+                                            foreach (var items in (List<Mastersddl>)ViewBag.Districtlist)
+                                            {
+                                                <option style="background: black;" value="@items.ID">@items.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input name="Type" type="hidden" value="0" />
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit">Submit</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+
+                <div class="card-header" id="servicedocheader" style="display:none;">
+                    <h4 class="mt-0 header-title">Add Document</h4>
+                </div>
+                <div class="card-body" id="servicedoc" style="display:none;">
+
+                    @*<form class="form-horizontal form-material mb-0 form-parsley" role="form" id="form" autocomplete="off">*@
+
+                    <div class="form-group row">
+                        <!--<div class="col-md-4">
+                            <select class="singleselect" name="AddServiceDocument" id="SubServiceDocumentType">
+                                <option style="background: black;" value="ServiceType">Main Service</option>
+                                <option style="background: black;" value="SubServiceType">Child Service</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control m-b singleselect" name="ID" id="DD_ServiceDocument" required = "required">
+                                @* @{
+                                    <option value="">Select Service</option>
+                                    foreach (var items in (List<CustomList>)ViewData["Service"])
+                                    {
+                                        <option value="@items.Id">@items.Name</option>
+                                    }
+                                }*@
+                            </select>-->
+                        @*@Html.DropDownList("Service", ViewData["Service"] as List<CustomList>, "Request Service", new
+                            {
+                                @id = "DD_Service",
+                                @class = "form-control m-b",
+                                @required = "required"
+                            })*@
+                        <!--<span id="servicemesaage" style="color:red"> </span>
+                        </div>-->
+                        @*<div class="col-md-6">
+                                <select class="singleselect" name="MstCategoryID" id="CategoryMasterID">
+                                    @{
+                                        <option value="">Select Department</option>
+
+                                        foreach (var item in (List<DocumentBO>)ViewBag.Categorylist)
+                                        {
+                                            <option style="background: black;" value="@item.MstCategoryID">@item.Category</option>
+                                        }
+
+
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+
+                                <select class="singleselect" data-istag="1" data-tags="true" name="MultiServiceName" id="ServiceNameMasterId" required>
+                                </select>
+                            </div>*@
+                    </div>
+
+
+                    <div class="form-group row">
+                        @*<div class="col-md-6">
+
+                                <select class="singleselect" data-istag="1" data-tags="true" name="MultiChildServiceName" id="ChildServiceMasterId" multiple>
+                                </select>
+                            </div>*@
+                        <div class="col-md-6">
+                            @Html.TextAreaFor(model => model.DocumentName, new
+                       {
+                           @minlength = "4",
+                           @placeholder = "Document Name",
+                           @class = "form-control docname",
+                           @data_parsley_length = "[2,500]",
+                           @data_parsley_length_message = "Text between 2 - 500 chars length",
+                           @id = "DocumentName"
+
+                       })
+                            <span id="docnamemesaage" style="color:red"> </span>
+                        </div>
+                        <div class="col-md-6">
+
+                            @Html.TextAreaFor(model => model.DocumentName_Hindi, new
+                       {
+                           @minlength = "4",
+                           @placeholder = "दस्तावेज़ का नाम",
+                           @class = "form-control",
+                           @data_parsley_length = "[2,500]",
+                           @data_parsley_length_message = "Text between 2 - 500 chars length",
+                           @id = "DocumentName_Hindi"
+
+
+                       })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-4">
+
+                            @Html.TextBoxFor(model => model.Fromdays, new
+                       {
+                           @maxlength = "5",
+                           @minlength = "1",
+                           @placeholder = "From days",
+                           @class = "form-control fromd",
+                           @id = "Fromdays",
+                           @onkeypress = "javascript:return isNumber(event)"
+                       })
+                            <span id="frommesaage" style="color:red"> </span>
+                        </div>
+
+                        <div class="col-md-4">
+
+                            @Html.TextBoxFor(model => model.Todays, new
+                            {
+                                @maxlength = "5",
+                                @minlength = "1",
+                                @placeholder = "To days",
+                                @class = "form-control tod",
+                                @id = "Todays",
+                                @onkeypress = "javascript:return isNumber(event)"
+                            })
+                            <span id="tomesaage" style="color:red"> </span>
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.DropDownList("Required", new List<SelectListItem>
+                            {
+                               new SelectListItem{ Text="Required", Value = "Required" },
+                               new SelectListItem{ Text="Female Required", Value = "Female Required" },
+                               new SelectListItem{ Text="literate Only Required", Value = "literate Only Required" },
+                               new SelectListItem{ Text="Rent Only Required", Value = "Rent Only Required" },
+                               new SelectListItem{ Text="Female Married Required", Value = "Female Married Required" },
+                               new SelectListItem{ Text="Female Widow Required", Value = "Female Widow Required" },
+                               new SelectListItem{ Text="Female AbandonsMarried Required", Value = "Female AbandonsMarried Required" }
+
+                            }, "Select Required Type", new { @id = "DD_Required", @class = "form-control m-b" })
+                            <span id="reqmesaage" style="color:red"> </span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-lg-4" style="margin-top:10px; margin-left:20px;">
+                            <input type="checkbox" class="form-check-input" id="IsConvert">
+                            <label class="form-check-label" for="exampleCheck1">Convert English To Hindi</label>
+                        </div>
+
+                        <div class="col-lg-10" id="ConvertETOH" style="display: none; margin-top: 20px;">
+                            <label class="mb-3">Convert From English To Hindi and use in the document name in hindi Box</label>
+                            <input type='text' cols="40" rows="5" style="height:50px;" id="txtConvertETOH" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row m-0 mt-3">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-block btn-primary" id="btnAdd">Add</button>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-block btn-danger" id="Reset">Reset</button>
+
+                        </div>
+                    </div>
+
+                    <div class="card-header" id="documentlistheader">
+                        <h4 class="mt-0 header-title">Document List</h4>
+                    </div>
+                    <div class="card-body" id="documentlistbody">
+                        <div class="form-group row">
+                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <!-- Widget ID (each widget will need unique ID)-->
+                                <div class="jarviswidget jarviswidget-color-purple" id="wid-id-0" data-widget-editbutton="false">
+
+                                    <div>
+                                        <!-- widget edit box -->
+                                        <div class="jarviswidget-editbox">
+                                            <!-- This area used as dropdown edit box -->
+                                        </div>
+                                        <div class="widget-body whiteBg no-padding table_wrapper" style="border: 1px solid #ccc; padding: 0 !important; min-height: auto;">
+                                            <table id="tblDocument" class="table table-striped table-bordered table-hover table-responsive-sm text-wrap">
+                                                <thead>
+                                                    <tr>
+                                                        @*<th style='display:none;'></th>*@
+                                                        <th style='display:none;'></th>
+                                                        <th>Sr. No</th>
+                                                        <th>
+                                                            Document Type
+                                                        </th>
+                                                        <th>दस्तावेज़ का प्रकार</th>
+                                                        <th>From days</th>
+                                                        <th>To days</th>
+                                                        <th>Required</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="doctablebody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+
+
+                    @*</form>*@
+
+                    <div>&nbsp;</div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            &nbsp;
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="button" id="btnSubmit" disabled>Submit</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+
+                </div>
+                <!--Add Mapping Servies and Child -->
+                <div class="card-header" id="divMappingserviesChild" style="display:none;">
+                    <h4 class="mt-0 header-title" id="divMapping">Add Mapping Servies and Child</h4>
+                </div>
+                <div class="card-body" id="MappingserviesChild" style="display:none;">
+                    @using (Html.BeginForm("SaveMappingServicesandChild", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <select class="singleselect" name="MstCategoryID" id="CategoryMasterID" required>
+                                    @{
+                                        <option value="">Select Department</option>
+                                        foreach (var item in (List<CustomList>)ViewBag.Categorylist)
+                                        {
+                                            <option style="background: black;" value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ServiceName" id="ServiceNameMasterId" required>
+                                    <option value=''>Select Services Name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="Type" value="0" />
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <select class="singleselect" data-istag="1" data-tags="true" name="MultiChildServiceName" id="ChildServiceMasterId" multiple>
+                                </select>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit" id="btnSubmit1">Submit</button>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+                <!--Add Mapping Document-->
+                <div class="card-header" id="divDocmentMapping" style="display:none;">
+                    <h4 class="mt-0 header-title">Add Mapping Document</h4>
+                </div>
+                <div class="card-body" id="DocumentMappingserviesChild" style="display:none;">
+                    @using (Html.BeginForm("SaveMappingServicesandChild", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+                        <input type="text" style="display:none;" id="DocumentName" name="DocumentName" value="DocData" />
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <select class="singleselect" name="MstCategoryID" id="DocumentCategoryMasterID" required>
+                                    @{
+                                        <option value="">Select Department</option>
+
+                                        foreach (var item in (List<CustomList>)ViewBag.Categorylist)
+                                        {
+                                            <option style="background: black;" value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ServiceName" id="DocumentServiceNameMasterId">
+                                    <option value=''>Select Services Name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ChildSubCategory" id="DocumentChildServiceMasterId">
+                                    <option value=''>Select Child Services Name</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="singleselect" data-istag="1" data-tags="true" name="MultiChildServiceName" id="DocumentList" multiple required>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="Type" value="1" />
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit" id="btnSubmit1">Submit</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+                <!--Department2nd-->
+                @*<div class="card-header" id="divdepartmentheader" style="display:none;">
+                        <h4 class="mt-0 header-title">Add Department</h4>
+                    </div>*@
+                <div class="card-header" id="Mappingtypeheader" style="display:none;">
+                    <h4 class="mt-0 header-title">Mapping Department & Services</h4>
+                </div>
+                <div class="card-body" id="Mappingtype" style="display:none;">
+                    @using (Html.BeginForm("SaveMappingDepartment", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                @*@Html.DropDownList("Category", ViewData["Category"] as List<SelectListItem>, "Department Name", new
+                                    {
+                                        @id = "DD_Category",
+                                        @class = "form-control m-b",
+                                        @required = "required",
+                                        @placeholder = "Category Name"
+                                    })*@
+                                <select class="singleselect" name="MstCategoryID" id="Category">
+                                    @{
+                                        <option value="">Select Department</option>
+
+                                        foreach (var item in (List<CustomList>)ViewBag.Categorylist)
+                                        {
+                                            <option style="background: black;" value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <span id="servicemesaage" style="color:red"> </span>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="MultiServiceName" id="ServiceNameId" multiple required>
+                                    @*@{
+                                            if (ViewBag.Serviceslist != null)
+                                            {
+                                                foreach (var item in (List<DepartmentTypeDocumentBO>)ViewBag.Serviceslist)
+                                                {
+                                                    <option style="background: black;" value="@item.MstCategoryID">@item.Category</option>
+                                                }
+                                            }
+                                        }*@
+                                </select>
+                            </div>
+                            @*@Html.DropDownList("Services", ViewData["Services"] as List<SelectListItem>, "Services Name", new
+                                {
+                                    @id = "DD_Services1",
+                                    @class = "form-control m-b",
+                                    @required = "required",
+                                    @placeholder = "Services Name",
+                                    @multiple = "multiple",
+                                })*@
+                            <span id="servicemesaage" style="color:red"> </span>
+
+                        </div>
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit">Submit</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+                @*<div class="card-body" id="documenttype" style="display: none;">
+
+                        @using (Html.BeginForm("SaveDocumentType", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                        {
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        @Html.TextAreaFor(model => model.DocumentName, new
+                                     {
+                                         @minlength = "4",
+                                         @placeholder = "Document Name",
+                                         @class = "form-control docname",
+                                         @data_parsley_length = "[2,500]",
+                                         @data_parsley_length_message = "Text between 2 - 500 chars length",
+                                         @id = "DocumentName"
+                                     })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextAreaFor(model => model.DocumentName_Hindi, new
+                                        {
+                                            @minlength = "4",
+                                            @placeholder = "दस्तावेज़ का नाम",
+                                            @class = "form-control",
+                                            @data_parsley_length = "[2,500]",
+                                            @data_parsley_length_message = "Text between 2 - 500 chars length",
+                                            @id = "DocumentName_Hindi"
+                                        })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-4" style="margin-top:10px; margin-left:20px;">
+                                        <input type="checkbox" class="form-check-input" id="IsConvert">
+                                        <label class="form-check-label" for="exampleCheck1">Convert English To Hindi</label>
+                                    </div>
+
+                                    <div class="col-lg-10" id="ConvertETOH" style="display: none; margin-top: 20px;">
+                                        <label class="mb-3">Convert From English To Hindi and use in the document name in hindi Box</label>
+                                        <input type='text' cols="40" rows="5" style="height:50px;" id="txtConvertETOH" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>&nbsp;</div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-3">
+                                    <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit">Submit</button>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                        }
+                    </div>*@
+                @*</div>*@
+
+                <!--Color start-->
+                <div class="card-header" id="Colortypeheader" style="display:none;">
+                    <h4 class="mt-0 header-title">Mapping Color & Services</h4>
+                </div>
+                <div class="card-body" id="ColorMappingtype" style="display:none;">
+                    @using (Html.BeginForm("SaveMappingColor", "Admin", FormMethod.Post, new { @autocomplete = "off" }))
+                    {
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                @*@Html.DropDownList("Category", ViewData["Category"] as List<SelectListItem>, "Department Name", new
+                                    {
+                                        @id = "DD_Category",
+                                        @class = "form-control m-b",
+                                        @required = "required",
+                                        @placeholder = "Category Name"
+                                    })*@
+                                <select class="singleselect" name="Color" id="ColorId" required>
+                                    @{
+                                        <option value="">Select Color</option>
+                                        <option style="background: black;" value="Red">Red</option>
+                                        <option style="background: black;" value="Blue">Blue</option>
+                                        <option style="background: black;" value="Yellow">Yellow</option>
+                                        <option style="background: black;" value="Green">Green</option>
+                                    }
+                                </select>
+                                <span id="servicemesaage" style="color:red"> </span>
+                            </div>
+                            <div class="col-md-6">
+
+                                <select class="singleselect" name="ColorServiceName" id="ColorServiceNameId" multiple required>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" id="Buffer" name="Buffer" class="form-control" value="" placeholder="Enter in Hour" />
+                            </div>
+                            @*@Html.DropDownList("Services", ViewData["Services"] as List<SelectListItem>, "Services Name", new
+                                {
+                                    @id = "DD_Services1",
+                                    @class = "form-control m-b",
+                                    @required = "required",
+                                    @placeholder = "Services Name",
+                                    @multiple = "multiple",
+
+
+                                })*@
+                            <span id="servicemesaage" style="color:red"> </span>
+
+                        </div>
+                        <div>&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-3">
+                                <button class="btn btn-block btn-gradient-primary waves-effect waves-light" type="submit">Submit</button>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            &nbsp;
+                        </div>
+                    }
+                </div>
+                <!--color End-->
+            </div> <!--end col-->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/plugins/tinymce/tinymce.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-editor.init.js"></script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>*@
+    @*<script type="text/javascript" src="http://www.google.com/jsapi"></script>*@
+    <script src="~/Scripts/JSAPI.js"></script>
+    <script type="text/javascript">
+        //$("#ServiceNameId").select2();
+        //$("#Category").select2();
+        //$("#CategoryMasterID").select2();
+        //$("#ServiceNameMasterId").select2();
+        //$("#ChildServiceMasterId").select2();
+        $(".singleselect").select2();
+        google.load("elements", "1", {
+            packages: "transliteration"
+        });
+        function onLoad() {
+            var options = {
+                sourceLanguage: 'en',
+                destinationLanguage: [google.elements.transliteration.LanguageCode.HINDI],
+                shortcutKey: 'ctrl+g',
+                transliterationEnabled: true
+            };
+            var control =
+                new google.elements.transliteration.TransliterationControl(options);
+            var ids = ["txtConvertETOH"];
+            control.makeTransliteratable(ids);
+        }
+
+        google.setOnLoadCallback(onLoad);
+        $("#CategoryMasterID").change(function () {
+            var Id = $(this).val();
+            BindSubCategory(Id);
+        });
+        $("#DocumentCategoryMasterID").change(function () {
+            var Id = $(this).val();
+            BindSubCategory(Id);
+        });
+        $("#ServiceNameMasterId").change(function () {
+            var Id = $(this).val();
+            BindChildSubCategory(0, '1');
+
+        });
+        $("#DocumentServiceNameMasterId").change(function () {
+            var Id = $(this).val();
+            BindChildSubCategory(Id, '2')
+            BindDocumentList(Id, 0);
+        });
+        $("#DocumentChildServiceMasterId").change(function () {
+            var Id = $(this).val();
+            var ser = $("#DocumentServiceNameMasterId").val();
+            BindDocumentList(ser, Id);
+        });
+        $("#ColorId").change(function () {
+            var Id = $(this).val();
+            BindColorServices(Id);
+        });
+        $("#SubServiceType").change(function () {
+            var type = $(this).val();
+            var name = $(this).attr('name');
+            BindServices(type, name);
+        });
+        $("#SubServiceDocumentType").change(function () {
+            debugger;
+            var type = $(this).val();
+            var name = $(this).attr('name');
+            BindServices(type, name);
+        });
+        $("#Category").change(function () {
+            debugger;
+            var type = "AllServiceType";
+            BindServices(type, "Category");
+        });
+
+    </script>
+    <script type="text/javascript">
+        var myarea = 'txtConvertETOH';
+    </script>
+    <script type="text/javascript">
+        $('#IsConvert').click(function () {
+            if ($(this).is(":checked")) {
+                /* alert($('#EPassId').val());*/
+
+                $("#ConvertETOH").show();
+
+            } else {
+                $("#ConvertETOH").hide();
+            }
+
+        });
+    </script>
+    <script type="text/javascript">
+        function BindSubCategory(CategoryId) {
+            var strHTML = "";
+            strHTML += "<option value=''>Select Services Name</option>"
+            var Params = JSON.stringify(
+                {
+                    Id: CategoryId
+                });
+            if ($("#DD_AddService").val() == 6) {
+                $("#ServiceNameMasterId").select2("destroy");
+                $("#ServiceNameMasterId").html(strHTML);
+                $("#ServiceNameMasterId").select2();
+            }
+            if ($("#DD_AddService").val() == 7) {
+                $("#DocumentServiceNameMasterId").select2("destroy");
+                $("#DocumentServiceNameMasterId").html(strHTML);
+                $("#DocumentServiceNameMasterId").select2();
+            }
+
+
+            $.ajax({
+                url: "/Admin/FillSubCategory",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    console.log(response);
+
+                 /*   if (response.IsValid == 1) {*/
+                        for (var i = 0; i < response.Data.length; i++) {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Name + "</option>"
+                        }
+                 /*   }*/
+                    if ($("#DD_AddService").val() == 6) {
+                        $("#ServiceNameMasterId").select2("destroy");
+                        $("#ServiceNameMasterId").html(strHTML);
+                        $("#ServiceNameMasterId").select2();
+                    }
+                    if ($("#DD_AddService").val() == 7) {
+                        $("#DocumentServiceNameMasterId").select2("destroy");
+                        $("#DocumentServiceNameMasterId").html(strHTML);
+                        $("#DocumentServiceNameMasterId").select2();
+                    }
+                    //$("#ServiceNameMasterId").select2("destroy");
+                    //$("#ServiceNameMasterId").html(strHTML);
+                    //$("#ServiceNameMasterId").select2();
+                    //$("#ChildCategoryId").select2("destroy");
+                    //$("#ChildCategoryId").html("<option value=''>Select</option>");
+                    //$("#ChildCategoryId").select2();
+                }
+            });
+
+
+
+        }
+        function BindServices(ServiceType, CtrlName) {
+            var strHTML = "";
+            var Params = JSON.stringify(
+                {
+                    Type: ServiceType
+                });
+            $.ajax({
+                url: "/Admin/FillService",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    if (CtrlName != "Category") {
+                        strHTML += "<option value='' selected> Select Service </option>"
+                        }
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].MstCategoryID != 0) {
+                            //if (CtrlName == "AddServiceDocument") {
+
+                            //}
+                            //else if (CtrlName == "AddServiceType") {
+                            //    strHTML += "<option value='' selected> </option>"
+                            //}
+                            if (response.Data[i].Type == 1) {
+                                strHTML += "<option value='" + response.Data[i].Id + "' selected>" + response.Data[i].Name + "</option>"
+                            }
+                            else {
+                                strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Name + "</option>"
+                            }
+                        }
+                    }
+                    if (CtrlName == "AddServiceDocument")
+                    {
+                        $("#DD_ServiceDocument").select2("destroy");
+                        $("#DD_ServiceDocument").html(strHTML);
+                        $("#DD_ServiceDocument").select2();
+                    }
+                    else if (CtrlName == "AddServiceType")
+                    {
+                        $("#ServiceName").select2("destroy");
+                        $("#ServiceName").html(strHTML);
+                        $("#ServiceName").select2();
+                    }
+                    else if (CtrlName == "Category") {
+                        $("#ServiceNameId").select2("destroy");
+                        $("#ServiceNameId").html(strHTML);
+                        $("#ServiceNameId").select2();
+                    }
+                }
+            });
+        }
+        function BindColorServices(ColorId) {
+            var strHTML = "";
+            var Params = JSON.stringify(
+                {
+                    Id: ColorId
+                });
+            $.ajax({
+                url: "/Admin/FillColorService",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    $("#Buffer").val('');
+                    console.log(response);
+
+                    /*   if (response.IsValid == 1) {*/
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].MstCategoryID != 0) {
+                            if (response.Data[i].Type == 1) {
+                                strHTML += "<option value='" + response.Data[i].MstCategoryID + "' selected>" + response.Data[i].ServiceName + "</option>"
+                            }
+                            else {
+                                strHTML += "<option value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                            }
+                        }
+                        else {
+                            $("#Buffer").val(response.Data[i].Type);
+                        }
+
+                    }
+                    /*   }*/
+
+                    $("#ColorServiceNameId").select2("destroy");
+                    $("#ColorServiceNameId").html(strHTML);
+                    $("#ColorServiceNameId").select2();
+                    //$("#ChildCategoryId").select2("destroy");
+                    //$("#ChildCategoryId").html("<option value=''>Select</option>");
+                    //$("#ChildCategoryId").select2();
+                }
+            });
+        }
+        function BindChildSubCategory(ServicesId, type) {
+
+            var strHTML = "";
+            //$("#ChildServiceMasterId").html(strHTML);
+            //$("#ChildServiceMasterId").select2();
+            var Params = JSON.stringify(
+                {
+                    Id: ServicesId
+                });
+            $.ajax({
+                url: "/Admin/FillChildSubCategory",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    debugger;
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].Type == 1) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' selected>" + response.Data[i].Name + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Name + "</option>"
+                        }
+                    }
+                    if (type == "2") {
+                        $("#DocumentChildServiceMasterId").select2("destroy");
+                        $("#DocumentChildServiceMasterId").html( strHTML);
+                        $("#DocumentChildServiceMasterId").select2();
+                    }
+                    else {
+                        $("#ChildServiceMasterId").select2("destroy");
+                        $("#ChildServiceMasterId").html(strHTML);
+                        $("#ChildServiceMasterId").select2();
+                    }
+                }
+            });
+        }
+        function BindChildDocumentSubCategory(ServicesId) {
+            var strHTML = "";
+            strHTML += "<option value=''>Select Child Services Name</option>";
+            $("#DocumentChildServiceMasterId").select2("destroy");
+            $("#DocumentChildServiceMasterId").html(strHTML);
+            $("#DocumentChildServiceMasterId").select2();
+            var Params = JSON.stringify(
+                {
+                    Id: ServicesId
+                });
+            $.ajax({
+                url: "/Admin/FillChildSubCategory",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+                    /*   if (response.IsValid == 1) {*/
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].Type == 1) {
+                            strHTML += "<option value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+
+                    }
+                    /*   }*/
+
+                    $("#DocumentChildServiceMasterId").select2("destroy");
+                    $("#DocumentChildServiceMasterId").html(strHTML);
+                    $("#DocumentChildServiceMasterId").select2();
+                    //$("#ChildCategoryId").select2("destroy");
+                    //$("#ChildCategoryId").html("<option value=''>Select</option>");
+                    //$("#ChildCategoryId").select2();
+                }
+            });
+        }
+        function BindDocumentList(Id, ChildCategoryId) {
+            var strHTML = "";
+            //$("#ChildServiceMasterId").html(strHTML);
+            //$("#ChildServiceMasterId").select2();
+            var Params = JSON.stringify(
+                {
+                    Id: Id,
+                    ChildServiceId: ChildCategoryId
+                });
+            $.ajax({
+                url: "/Admin/FillDocumentList",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].Type == 1) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' selected>" + response.Data[i].Name + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Name + "</option>"
+                        }
+                    }
+                    $("#DocumentList").select2("destroy");
+                    $("#DocumentList").html(strHTML);
+                    $("#DocumentList").select2();
+                }
+            });
+        }
+        function blockSpecialChar(e) {
+            var k;
+            var keycode = (e.which) ? e.which : e.keyCode;
+
+            if (keycode == 32) {
+                return false;
+            }
+            document.all ? k = e.keyCode : k = e.which;
+            return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+        }
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+        $('.TxtChar').keyup(function (e) {
+            debugger;
+            $(this).removeClass('error');
+            $(this).next("span").remove();
+            var VAL = this.value;
+            var PanNum = /^[a-zA-Z ]+$/;
+            if (VAL == '') {
+                //alert("ok");
+                $(this).removeClass('error');
+                $(this).next("span").remove();
+                return true;
+            }
+            else if (VAL.length > 50) {
+                $(this).after('<span style="color:red">Only 50 characters allowed.</span>');
+                $(this).addClass('error');
+                e.preventDefault();
+                return false;
+            }
+        });
+
+
+        $(document).on("change", '.servicetype', function (e) {
+        e.preventDefault();
+            $("#servicetypeheader").hide();
+            $("#servicetype").hide();
+            $("#servicedocheader").hide();
+            $("#servicedoc").hide();
+            $("#divdepartmentheader").hide();
+            $("#documenttype").hide();
+            $("#Departmenttypeheader").hide();
+            $("#Departmenttype").hide();
+            $("#Mappingtypeheader").hide();
+            $("#Mappingtype").hide();
+            $("#divMappingserviesChild").hide();
+            $("#MappingserviesChild").hide();
+            $("#Colortypeheader").hide();
+            $("#ColorMappingtype").hide();
+            $("#divDocmentMapping").hide();
+            $("#DocumentMappingserviesChild").hide();
+
+            if ($("#DD_AddService").val() == 1) {
+                $("#Departmenttypeheader").show();
+                $("#Departmenttype").show();
+            }
+            if ($("#DD_AddService").val() == 2) {
+
+                $("#servicetypeheader").show();
+                $("#servicetype").show();
+                //$("#servicedocheader").hide();
+                //$("#servicedoc").hide();
+            }
+            else if ($("#DD_AddService").val() == 3) {
+                //$("#servicetypeheader").hide();
+                //$("#servicetype").hide();
+                $("#servicedocheader").show();
+                $("#servicedoc").show();
+            }
+            else if ($("#DD_AddService").val() == 4) {
+
+                $("#divdepartmentheader").show();
+                $("#documenttype").show();
+            }
+            else if ($("#DD_AddService").val() == 5) {
+                $("#Mappingtypeheader").show();
+                $("#Mappingtype").show();
+            }
+            else if ($("#DD_AddService").val() == 6) {
+
+
+                $("#divMapping").html("Add Mapping Servies and Child");
+                $("#divMappingserviesChild").show();
+                $("#MappingserviesChild").show();
+
+
+            }
+            else if ($("#DD_AddService").val() == 7) {
+
+
+
+                $("#divDocmentMapping").show();
+                $("#DocumentMappingserviesChild").show();
+
+
+            }
+            else if ($("#DD_AddService").val() == 8) {
+                $("#Colortypeheader").show();
+                $("#ColorMappingtype").show();
+            }
+            //else {
+            //    $("#servicetypeheader").hide();
+            //    $("#servicetype").hide();
+            //    $("#servicedocheader").hide();
+            //    $("#servicedoc").hide();
+            //}
+
+
+        return false;
+        });
+
+
+        $("#btnAdd").click(function () {
+            debugger;
+            var i = 0;
+           // var serviceId = document.getElementById("DD_ServiceDocument").value;
+            var documentname = document.getElementById("DocumentName").value;
+            var fromdays = document.getElementById("Fromdays").value;
+            var Todays = document.getElementById("Todays").value;
+            var documentnameHindi = $("#DocumentName_Hindi").val();
+            var req = $("#DD_Required").val();
+            //if (serviceId == "" || serviceId==null) {
+            //    document.getElementById("servicemesaage").innerHTML = "**Please select Service Type!";
+            //    i = 1;
+            //}
+            //else {
+            //    document.getElementById("servicemesaage").innerHTML = "";
+            //}
+            if (documentname == "" || documentname == null) {
+                document.getElementById("docnamemesaage").innerHTML = "**Fill the document name please!";
+                i = 1;
+            }
+            else {
+                document.getElementById("docnamemesaage").innerHTML = "";
+            }
+            if (fromdays == "" || fromdays == null) {
+                document.getElementById("frommesaage").innerHTML = "**Fill the from days please!";
+                i = 1;
+            }
+            else {
+                document.getElementById("frommesaage").innerHTML = "";
+            }
+            if (Todays == "" || Todays == null) {
+                document.getElementById("tomesaage").innerHTML = "**Fill the to days please!";
+                i = 1;
+            }
+            else {
+                document.getElementById("tomesaage").innerHTML = "";
+            }
+            if (req == "" || req == null) {
+                document.getElementById("reqmesaage").innerHTML = "**Please select Required Type!";
+                i = 1;
+            }
+            else {
+                document.getElementById("reqmesaage").innerHTML = "";
+            }
+            if (i == 1) {
+                return false;
+            }
+            if (parseInt(fromdays) > parseInt(Todays)) {
+                document.getElementById("frommesaage").innerHTML = "From days not allowed greater than todays";
+                document.getElementById("tomesaage").innerHTML = "Todays not allowed less than from days";
+                Swal.fire(
+                    'warning',
+                    'from days not allowed to greater than todays!',
+                    'warning'
+                )
+                return false;
+            }
+            else {
+                document.getElementById("frommesaage").innerHTML = "";
+                document.getElementById("tomesaage").innerHTML = "";
+            }
+            if (i == 1) {
+                return false;
+            }
+
+            var count = 0;
+
+            $("#tblDocument tbody tr").each(function () {
+                /*alert($(this).find("td:eq(2)").text());*/
+                if ($(this).find("td:eq(2)").text() == documentname) {
+                    if ((parseInt($(this).find("td:eq(4)").text()) <= parseInt(fromdays) && parseInt($(this).find("td:eq(5)").text()) >= parseInt(fromdays)) || (parseInt($(this).find("td:eq(4)").text()) <= parseInt(Todays) && parseInt($(this).find("td:eq(5)").text()) >= parseInt(Todays))) {
+
+                        count = 1;
+                        return false;
+                    }
+                    //else
+                    //{
+                    //  //  alert("1");
+                    //    count = 0;
+                    //}
+
+                }
+            });
+            if (count == 1) {
+
+                Swal.fire(
+                    'warning',
+                    'Document name already added!',
+                    'warning'
+                )
+                return false;
+            }
+
+            var num = 0;
+            //var serviceId = $("#DD_Service").val();
+            //if (serviceId == "") {
+
+            //    Swal.fire(
+            //        'warning',
+            //        'Please select Service!',
+            //        'warning'
+            //    )
+            //    return false;
+
+            //}
+            //var documentname = $("#DocumentName").val();
+            //var fromdays = $("#Fromdays").val();
+            //var todays = $("#Todays").val();
+            //if (documentname == "") {
+
+            //    Swal.fire(
+            //        'warning',
+            //        'Please enter document name!',
+            //        'warning'
+            //    )
+            //    return false;
+
+            //}
+            var documentname = $("#DocumentName").val();
+            if (documentname == "") {
+
+                Swal.fire(
+                    'warning',
+                    'Please enter document name!',
+                    'warning'
+                )
+                return false;
+
+            }
+
+            //var servicename = $("#DD_ServiceDocument option:selected").text();
+
+           // var documentname = $("#DocumentName option:selected").text();
+
+            var tbody = $("#tblDocument tbody");
+
+
+            if ($('#tblDocument tbody tr').length = 0) {
+                no = 1;
+            }
+            else {
+                no = 1 + parseInt($('#tblDocument tbody tr').length);
+            }
+            var sr = no;
+            if ($('#tblDocument tbody tr').length = 0) {
+                    no = 1;
+                }
+                else {
+                no = 1 + parseInt($('#tblDocument tbody tr').length);
+                }
+            debugger
+            //IndustryName = $(this).find('td').eq(0).text();
+            //value = $(this).find('td').eq(1).text();
+            var markup = "<tr><td id='sr'>" + sr + "</td><td id='DocumentName'>" + documentname + "</td><td id='DocumentName_Hindi'>" + documentnameHindi + "</td><td id='Fromdays'>" + fromdays + "</td><td id='Todays'>" + Todays + "</td><td id='Required'>" + req + "</td><td><span class='delete'><a href='#' id='a_Delete' class='text-danger font-16' title='delete'>Delete</a></span></td></tr>";
+
+                     $("#tblDocument tbody").append(markup);
+                     $("#btnSubmit").removeAttr("disabled");
+                        num = 1;
+                        sr = sr + 1;
+
+            Swal.fire(
+                'success',
+                'Document details added successfuly!',
+                'success'
+            )
+            $("#Fromdays").val("");
+            $("#Todays").val("");
+            $("#DocumentName").val("");
+            $("#DocumentName_Hindi").val("");
+            $("#DD_Required").val("");
+          //  return true;
+            //------------------------------------------------
+
+        });
+
+        //$('.docname').keyup(function (e) {
+        //    debugger;
+        //    var VAL = this.value;
+        //    if (VAL.length > 0) {
+        //        document.getElementById("docnamemesaage").innerHTML = "";
+        //        return true;
+        //    }
+
+        //});
+        $('.fromd').keyup(function (e) {
+            debugger;
+            var VAL = this.value;
+            var todays = document.getElementById("Todays").value;
+            if (VAL.length > 0) {
+                document.getElementById("frommesaage").innerHTML = "";
+
+            }
+            if (parseInt(VAL) > parseInt(todays)) {
+                document.getElementById("frommesaage").innerHTML = "From days not allowed greater than todays";
+               // $("#Fromdays").val("");
+                // $("#Todays").val("");
+                return false;
+            }
+            else {
+                document.getElementById("tomesaage").innerHTML = "";
+                return true;
+            }
+
+        });
+        $('.tod').keyup(function (e) {
+            debugger;
+            var VAL = this.value;
+            var from = document.getElementById("Fromdays").value;
+            if (VAL.length > 0) {
+                document.getElementById("tomesaage").innerHTML = "";
+
+            }
+            if (parseInt(VAL) < parseInt(from)) {
+                document.getElementById("tomesaage").innerHTML = "Todays not allowed less than from days";
+                //$("#Fromdays").val("");
+               // $("#Todays").val("");
+                return false;
+            }
+            else {
+                document.getElementById("frommesaage").innerHTML = "";
+                return true;
+            }
+
+        });
+
+        $(document).on("change", '#DD_Required', function (e) {
+            e.preventDefault();
+
+
+            if ($("#DD_Required").val()!= "") {
+
+                document.getElementById("reqmesaage").innerHTML = "";
+                return true;
+
+            }
+
+            return false;
+        });
+
+        $("#tblDocument").on('click', '#a_Delete', function () {
+            debugger;
+            event.preventDefault();
+            var table = 'tableItem';
+            var row = $(this).closest('tr');
+            var id = row.attr("id");
+            $(this).closest('tr').remove();
+
+            var i = 0;
+            $('#tblDocument tr').each(function () {
+                $(this).find("td:eq(1)").html(i);
+                i++;
+            });
+            //debugger;
+            //totamount = parseFloat($('#Amount').val()) - parseFloat(row.children("td:nth-child(7)").html());
+            //if ($('#tableItem tbody tr').length == 0) {
+            //    debugger;
+            //    $("#tablegency").hide();
+            //}
+        });
+
+        $("#Reset").click(function () {
+            IsConvert
+            $('#IsConvert').prop("checked", false);
+            $("#IsConvertDocument").prop("checked", false);
+            $("#doctablebody").empty();
+            $("#DD_Service").val("");
+            $("#DD_Required").val("");
+            $("#txtConvertETOH").val("");
+            $("#DocumentName").val("");
+            $("#DocumentName_Hindi").val("");
+            $("#Fromdays").val("");
+            $("#Todays").val("");
+            document.getElementById("servicemesaage").innerHTML = "";
+            document.getElementById("docnamemesaage").innerHTML = "";
+            document.getElementById("frommesaage").innerHTML = "";
+            document.getElementById("tomesaage").innerHTML = "";
+        });
+
+        $(document).on("change", '#DD_ServiceDocument', function (e) {
+        e.preventDefault();
+            debugger;
+            document.getElementById("servicemesaage").innerHTML = "";
+
+            if ($("#DD_ServiceDocument").val() != "") {
+                debugger;
+            $("#tblDocument tbody tr").remove();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Change_Service")',
+                dataType: 'json',
+                data: {
+                    Id: $("#DD_Service").val()
+                },
+                success: function (data) {
+                    debugger;
+                    var sr = 0;
+                    $("#tblDocument tbody tr").remove();
+                    $.each(data.Data, function (i, item) {
+                        sr = sr + 1
+                        debugger;
+                        var markup = "<tr><td style='display:none' id='MstServiceTypeID'>" + item.MstServiceTypeID + "</td><td id='sr'>" + sr + "</td><td id='DocumentName'>" + item.DocumentName + "</td><td id='DocumentName_Hindi'>" + item.DocumentName_Hindi + "</td><td id='Fromdays'>" + item.Fromdays + "</td><td id='Todays'>" + item.Todays + "</td><td id='Required'>" + item.Required + "</td><td><span class='delete'><a href='#' id='a_Delete' class='text-danger font-16' title='delete'>Delete</a></span></td></tr>";
+                        $("#tblDocument tbody").append(markup);
+                        $("#btnSubmit").removeAttr("disabled");
+                    });
+                },
+                error: function (ex) {
+                    window.location.href = '@Url.Action("SignOut", "Home")';
+                    //Swal.fire(
+                    //    'Failure Information!',
+                    //    ex.responseText,
+                    //    'error'
+                    //)
+                }
+            });
+
+        }
+        else {
+            $("#tblDocument tbody tr").remove();
+
+        }
+        return false;
+        });
+
+
+
+        $("#btnSubmit").click(function () {
+                debugger;
+
+
+               /* if ($("#txtNoOfP").val() == "" || $("#txtNoOfChild").val() == "") {*/
+            var tbody = $("#tblDocument tbody");
+
+                    if (tbody.children().length == 0) {
+
+                        Swal.fire(
+                            'warning',
+                            'Please  Add docuent in table!',
+                            'warning'
+                        )
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    else {
+                        /*$("#progressModel").modal('show');*/
+                        var stulist = new Array();
+
+                        //get all of the values except the header
+                        $("#tblDocument tr:not(:first)").each(function () {
+                            debugger;
+                            var tds = $(this).find("td");
+                            //you could use the Find method to find the texbox or the dropdownlist and get the value.
+                            var SStudent = {
+                                DocumentName: $(tds[1]).html(), DocumentName_Hindi: $(tds[2]).text(), Fromdays: $(tds[3]).text(), Todays: $(tds[4]).text(), Required: $(tds[5]).text()
+                            }
+                            stulist.push(SStudent);
+                        });
+                        stulist = JSON.stringify({ 'stulist': stulist});
+                        $.ajax({
+
+                            url: '@Url.Action("SaveServiceDocument", "Admin")',
+                            traditional: true,
+                            data: stulist,
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (Data) {
+                                debugger;
+                                $(".modal-backdrop").remove(); $("#progressModel").modal('hide'); $('.modal.in').modal('hide');
+                                if (Data.msg == 'success') {
+                                    //Swal.fire(
+                                    //    'success!',
+                                    //    Data.Errormsg,
+                                    //    'success'
+                                    //)
+
+                                      setTimeout(function () { location.href = '@Url.Action("AddServiceType", "Admin")'; }, 2000);
+                                }
+                                else if (Data.msg == 'warning') {
+                                    //Swal.fire(
+                                    //    'warning!',
+                                    //    Data.Errormsg,
+                                    //    'warning'
+                                    //)
+                                    $(".modal-backdrop").remove(); $("#progressModel").modal('hide'); $('.modal.in').modal('hide');
+
+                                }
+                                else {
+                                    $(".modal-backdrop").remove(); $("#progressModel").modal('hide'); $('.modal.in').modal('hide');
+
+                                    //Swal.fire(
+                                    //    'Failure Information!',
+                                    //    Data.Errormsg,
+                                    //    'error'
+                                    //)
+                                      window.location.href = '@Url.Action("SignOut", "Home")';
+                                    $(".modal-backdrop").remove(); $("#progressModel").modal('hide'); $('.modal.in').modal('hide');
+
+                                }
+                            },
+                            error: function (xhr) {
+                                $("#progressModel").modal('hide');
+                                //Swal.fire(
+                                //    'Failure Information!',
+                                //    'something wrong!',
+                                //    'error'
+                                //)
+                                window.location.href = '@Url.Action("SignOut", "Home")';
+                                $(".modal-backdrop").remove(); $("#progressModel").modal('hide'); $('.modal.in').modal('hide');
+                            }
+                        })
+                    }
+            });
+    </script>
+
+}

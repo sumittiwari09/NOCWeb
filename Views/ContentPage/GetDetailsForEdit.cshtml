@@ -1,0 +1,270 @@
+﻿@using NewZapures_V2.Models
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    var templates = ViewBag.Templates as List<Dropdown>;
+    var content = "";
+    var ID = "";
+
+    if (templates != null)
+    {
+        content = templates[0].Text;
+        ID = templates[0].Id;
+    }
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item"><a href=@Url.Action("Index","ContentPage")>Content Page</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Edit Templates</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 row" style="margin-left: -12px;">
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Choose Template</label>
+                                <div>
+
+                                    <select class="form-control" id="template" disabled>
+                                        @*<option value="0">Select</option>*@
+
+                                        @foreach (var item in templates)
+                                        {
+                                            <option value=@item.Id>@item.Text</option>
+                                        }
+                                    </select>
+                                    @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-offset-6 col-lg-3">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">&nbsp;</label>
+                                <div>
+                                    <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateTemplate()">Update Template</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">Page Content</label>
+                                <input id="elm1" name="PageContent" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+<script src="~/plugins/tinymce/tinymce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        tinymce.init({
+            selector: "input#elm1",
+            theme: "modern",
+            menubar: false,
+            statusbar: false,
+            height: 550,
+            content_style:
+                "body { background: #ffffff; color: #000000; font-size: 14pt; font-family: Arial,sans-serif; }",
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: 'undo redo | fontselect | styleselect fontsizeselect | code | preview | advlist | paste | image | bold italic underline strikethrough superscript subscript removeformat | searchreplace | forecolor backcolor | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | checklist link | print',
+
+            setup: function (editor) {
+                editor.on('paste', pasteHandler)
+            },
+        });
+
+        getData('@ID', 'Data');
+    });
+
+
+    function pasteHandler(e) {
+        var cbData;
+        if (e.clipboardData) {
+            cbData = e.clipboardData;
+        } else if (window.clipboardData) {
+            cbData = window.clipboardData;
+        }
+
+        if (e.msConvertURL) {
+            var fileList = cbData.files;
+            if (fileList.length > 0) {
+                for (var i = 0; i < fileList.length - 1; i++) {
+                    var blob = fileList[i];
+                    console.log("Image blob: " + blob);
+                    readPastedBlob(blob);
+                }
+            }
+        }
+        if (cbData && cbData.items) {
+            if ((text = cbData.getData("text/plain"))) {
+                // Text pasting is already handled
+                return;
+            }
+            for (var i = 0; i < cbData.items.length - 1; i++) {
+                if (cbData.items[i].type.indexOf('image') !== -1) {
+                    var blob = cbData.items[i].getAsFile();
+                    readPastedBlob(blob);
+                }
+            }
+        }
+
+        function readPastedBlob(blob) {
+            if (blob) {
+                reader = new FileReader();
+                reader.onload = function (evt) {
+                    pasteImage(evt.target.result);
+                };
+                reader.readAsDataURL(blob);
+            }
+        }
+
+        function pasteImage(source) {
+            var image = "<img src='" + source + "' data-mce-selected='1'></img>";
+            window.tinyMCE.execCommand('mceInsertContent', false, image);
+        }
+    }
+
+    function getData(id, type) {
+
+        var Content = {
+            Id: id,
+            Type: type
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() +"/ContentPage/EditContent",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Content),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+                var d = data.Data[0];
+                /*console.log(d);*/
+                if (data.StatusCode == 1) {
+
+                    var content = d.PageContent;
+
+                    setTimeout(function () {
+                        tinymce.get("elm1").setContent(content);
+                    }, 500)
+
+                }
+
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+
+            }
+        });
+    }
+
+    function UpdateTemplate() {
+
+        var id = $('#template').val();
+        var content = tinymce.get("elm1").getContent();
+
+        if (content.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Content Can`t Be Blank...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+        }
+        else {
+            var Content = {
+                Id: id,
+                Type: 'Update',
+                PageContent: content
+            }
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/ContentPage/EditContent",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Content),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+                    if (data.StatusCode == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Content Updated Successfully...!',
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: false,
+                            timer: 2000,
+                        })
+
+                        $('#template').val(0);
+                        tinymce.get("elm1").setContent('');
+
+                        setTimeout(function () {
+                            var url = GetglobalDomain() + "/ContentPage/List";
+                            window.location.href = url;
+
+                        }, 500)
+
+
+                    }
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+    }
+</script>

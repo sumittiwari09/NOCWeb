@@ -1,0 +1,169 @@
+﻿@model NewZapures_V2.Models.PartyMaster
+<div class="card-body">
+    <h4 class="mt-0 header-title">Contact Details</h4>
+    @*<p class="text-muted mb-3">User Profile</p>*@
+    <div class="row">
+        <div class="col-lg-8">
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            <label for="pro-start-date">State</label>
+                            <select class="singleselect" id="StateId" name="State">
+                                <option>Select</option>
+
+                            </select>
+                        </div><!--end col-->
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            <label for="pro-start-date">District</label>
+                            <select class="singleselect" id="DistrictId" name="District">
+                                <option>Select</option>
+
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            <label for="pro-end-date">City</label>
+                            <select class="singleselect" id="CityId" name="City">
+                                <option>Select</option>
+
+                            </select>
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+
+
+            </form>  <!--end form-->
+        </div><!--end col-->
+        <div class="col-lg-4">
+
+        </div>
+    </div><!--end row-->
+</div><!--end card-body-->
+<div class="card-body">
+
+    @*<p class="text-muted mb-3">User Profile</p>*@
+    <div class="row">
+
+        <div class="col-lg-6">
+            <h4 class="mt-0 header-title">Currant Address</h4>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-start-date">First Name</label>*@
+                        <input type="text" class="form-control" id="startCUADD" name="CUADD1" value="@Model.CUAdd1" placeholder="Flat House No Building Company Appartment">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control" id="startCUADD2" name="CUADD2"  value="@Model.CUAdd2" placeholder="Area,Street Sector Village">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control" id="startCUADD3" name="CUADD3"  value="@Model.CUAdd3" placeholder="Addresss line 3">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control" id="startCULandMark" name="CULandMark"  value="@Model.CULandMark" placeholder="Land Mark">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control" id="startCUPinCode" name="CUPinCode"  value="@Model.CUPinCode" placeholder="Pincode">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+
+
+        </div><!--end col-->
+
+        <div class="col-lg-6">
+
+            <div class="form-check-inline my-2">
+                <h4 class="mt-0 header-title">
+                    Parmanent Address
+
+                </h4>
+                <div class="custom-control custom-checkbox" style="padding-left: 2.5rem;">
+                    <input type="checkbox" class="custom-control-input" id="customCheck6" data-parsley-multiple="groups" data-parsley-mincheck="2" value="0">
+                    <label class="custom-control-label" for="customCheck6">Same as Current Address</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-start-date">First Name</label>*@
+                        <input type="text" class="form-control" id="startPAAdd1" name="PAAdd1"  value="@Model.PAAdd1" placeholder="Flat House No Building Company Appartment">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control" id="startPAAdd2" name="PAAdd2"  value="@Model.PAAdd2" placeholder="Area,Street Sector Village">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-end-date">Middle Name</label>*@
+                        <input type="text" class="form-control" id="startPAAdd3" name="PAAdd3"  value="@Model.PAAdd3" placeholder="Address Line 3">
+                    </div><!--end col-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control" id="startPALandMark" name="PALandMark"  value="@Model.PALandMark" placeholder="Land Mark">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                        @*<label for="pro-rate">Last Name</label>*@
+
+                        <input type="text" class="form-control" id="startPAPinCode" name="PAPinCode"  value="@Model.PAPinCode" placeholder="Pincode">
+                    </div><!--end col-->
+
+                </div><!--end row-->
+            </div>
+        </div>
+    </div><!--end row-->
+    <footer class="form-footer" style="padding: 20px;">
+        <div class="pull-right" style="text-align: end;">
+            <button type="button" class="btn btn-default" id="btnDocument_Back">Back</button>
+            @*@if (Model.IsPortable == true)
+                {*@
+            <button type="submit" class="btn btn-primary" id="btnDocument_Next">Save</button>
+            @*}
+                else
+                {
+                    <button type="submit" class="btn btn-primary" id="btnDocument_Next">Next</button>
+                }*@
+        </div>
+    </footer>
+</div><!--end card-body-->

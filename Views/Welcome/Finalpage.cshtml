@@ -1,0 +1,177 @@
+﻿@using NewZapures_V2.Models
+@{
+    Layout = null;
+    var s = ViewBag.Service as List<ServiceName>;
+    var u = ViewBag.UserType;
+
+    var serviceImags = System.Configuration.ConfigurationManager.AppSettings["ServiceImages"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+
+    <style>
+        .sub-icon {
+            width: 100%;
+            display: block;
+        }
+
+            .sub-icon ul li {
+                width: 24%;
+                float: left;
+                text-align: center;
+                list-style: none;
+                font-weight: 500;
+            }
+
+        span.icons {
+            display: block;
+        }
+
+            span.icons svg {
+                font-size: 36px;
+                color: #1e56eb;
+                padding: 5px 0px 10px 0px;
+                text-align: center;
+            }
+
+        button.buy-btn {
+            display: block;
+            margin: 0px auto;
+        }
+
+        .red svg {
+            color: #e70f0f !important;
+        }
+
+        .green svg {
+            color: #09a009 !important;
+        }
+
+        button.buy-btn {
+            display: block;
+            margin: 0px auto;
+            border: none;
+            padding: 5px 20px;
+            background: #e70f0f;
+            color: #fff;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+
+        .sub-icon h2 {
+            padding-left: 84px;
+            font-size: 24px;
+            margin: 15px 0px;
+        }
+
+        .cmn-cls {
+            border-bottom: 2px solid #7e7b7b;
+            padding: 10px 0px 20px 15px;
+        }
+
+        .sub-icon.cmn-red li {
+            color: #e70f0f;
+        }
+
+        .sub-icon.cmn-blu li {
+            color: #1e56eb;
+        }
+
+        svg.grey {
+            color: #a39c9c !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-form">
+        <div class="container">
+            <div class="row col-12">
+                <div class="col-lg-8 col-md-8 col cmn-cls">
+                    <div class="main-box">
+                        <div class="sub-icon cmn-red">
+                            <ul>
+                                <li><span class="icons"><i class="fa-solid fa-wallet"></i></span> My wallet</li>
+                                <li><a href="@Url.Action("MyProfile","Home",new { UserID =@u})"> <span class="icons"><i class="fa-solid fa-user"></i></span>Add user</a></li>
+                                <li><span class="icons"><i class="fa-solid fa-comment-dollar"></i></span>Add Comission</li>
+                                <li><a href="@Url.Action("Index","Dashboard")"> <span class="icons"><i class="fa-solid fa-chart-pie"></i></span>Dashboard</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col cmn-cls">
+                    <div class="sub-icon cmn-blu">
+                        <h2>Services</h2>
+                        <br />
+                        <ul>
+                            @{
+                                if (s != null)
+                                {
+                                    foreach (var item in s)
+                                    {
+                                        if (!string.IsNullOrEmpty(item.serviceName))
+                                        {
+
+                                            string imageName = @item.serviceName.Trim().Replace(" ", "_");
+                                            imageName = imageName.Trim().Replace("-", "_");
+
+                                            var imgpath = @serviceImags + "Content/LoginSignUp/img/ServicesIcons/" + imageName + ".png";
+
+
+                                            //var imgpath = "https://localhost:44319/Content/LoginSignUp/img/ServicesIcons/" + imageName + ".png";
+
+                                            <li style="width: 20em;">
+                                                <span class="icons green">
+                                                    <img src=@imgpath style="width: 40px;margin-bottom:12px" />
+                                                </span>@item.serviceName
+                                            </li>
+                                        }
+                                    }
+                                }
+                            }
+                            @*<li><span class="icons green "><i class="fa-solid fa-wallet"></i></span> AePS</li>
+                                <li><span class="icons green"><i class="fa-solid fa-user"></i></span>Railway Reservation</li>
+                                <li>
+                                    <span class="icons"><i class="fa-solid fa-building-columns grey"></i></span>mATM
+                                    <button class="buy-btn"> Buy</button>
+                                </li>
+
+                                <li>
+                                    <span class="icons"><i class="fa-solid fa-chart-pie grey"></i></span>Indo Nepal
+                                    <button class="buy-btn"> Buy</button>
+                                </li>*@
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col">
+                    <div class="sub-icon cmn-blu">
+                        <h2>Bills and Payment</h2>
+                        <ul>
+                            <li><span class="icons red"><i class="fa-solid fa-wallet"></i></span>Mobile Recharge</li>
+                            <li><span class="icons"><i class="fa-solid fa-bolt"></i></span>Electricity Recharge</li>
+                            <li>
+                                <span class="icons green"><i class="fa-solid fa-car"></i></span>FastTag Recharge
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
+    <script type="text/javascript">
+        //alert('@u');
+    </script>
+</body>
+</html>

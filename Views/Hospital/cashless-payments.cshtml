@@ -1,0 +1,228 @@
+﻿@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+}
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Payments</a></li>
+                    <li class="breadcrumb-item active">Cashless</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Cashless Payments</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-gradient-primary px-4 mt-0 mb-3" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New Payment</button>
+                <div class="table-responsive">
+                    <table id="datatable" class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Bill No</th>
+                                <th>Patient Name</th>
+                                <th>Doctor Name</th>
+                                <th>Insurance Company</th>
+                                <th>Payment</th>
+                                <th>Bill Date</th>
+                                <th>Charge</th>
+                                <th>Tax</th>
+                                <th>Discount</th>
+                                <th class="text-right">Total</th>
+                            </tr><!--end tr-->
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Keith Jacobson</a>
+                                </td>
+                                <td>Dr.Justin Williams</td>
+                                <td>Tata MediCare Insurance</td>
+                                <td>Cashless</td>
+                                <td>23/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$1500</td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Fred Godina</a>
+                                </td>
+                                <td>Dr.Thomas Fant</td>
+                                <td> Star Health insurance </td>
+                                <td>Cashless</td>
+                                <td>23/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$3500</td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Greg Crosby</a>
+                                </td>
+                                <td>Dr.Aretha Garland</td>
+                                <td>Apollo Health Insurance</td>
+                                <td>Cashless</td>
+                                <td>24/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$5000</td>
+                            </tr><!--end tr-->
+
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Jennifer Doss</a>
+                                </td>
+                                <td>Dr.Justin Williams</td>
+                                <td>LIC Health Insurance</td>
+                                <td>Cashless</td>
+                                <td>23/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$1500</td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Peggy Doe</a>
+                                </td>
+                                <td>Dr.Thomas Fant</td>
+                                <td> National Insurance</td>
+                                <td>Cashless</td>
+                                <td>23/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$3500</td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    <a href="@Url.Action("payment-invoice", "hospital")">Donald Gardner</a>
+                                </td>
+                                <td>Dr.Aretha Garland</td>
+                                <td>Star Health insurance </td>
+                                <td>Cashless</td>
+                                <td>24/07/2019</td>
+                                <td>$1500</td>
+                                <td>10%</td>
+                                <td>10%</td>
+                                <td class="text-right text-dark font-weight-bold">$5000</td>
+                            </tr><!--end tr-->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!--end col-->
+</div><!--end row-->
+<!--  Modal content for the above example -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PatientName">Patient Name</label>
+                                <input type="text" class="form-control" id="PatientName" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="DoctorName_select" class="mr-2">Doctor Name</label>
+                                <select class="custom-select" id="DoctorName_select">
+                                    <option selected="">-- Select --</option>
+                                    <option value="1">Dr.Thomas Fant</option>
+                                    <option value="2">Dr.Justin Williams</option>
+                                    <option value="3">Dr.Aretha Garland</option>
+                                    <option value="4">Dr.Lea Sanchez</option>
+                                    <option value="5">Dr.Helen White</option>
+                                    <option value="6">Dr.William Gonzalez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="InsuranceCompany">Insurance Company</label>
+                                <input type="text" class="form-control" id="InsuranceCompany" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="BillDate">Bill Date</label>
+                                <input type="text" class="form-control" id="BillDate" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Charge">Charge</label>
+                                <input type="text" class="form-control" id="Charge" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Tax">Tax</label>
+                                <input type="text" class="form-control" id="Tax" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Discount">Discount</label>
+                                <input type="text" class="form-control" id="Discount" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="TotalBill">Total Bill</label>
+                                <input type="text" class="form-control" id="TotalBill" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary">Save</button>
+                    <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+@section scripts {
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        // Datatable
+        $('#datatable').DataTable();
+    </script>
+}

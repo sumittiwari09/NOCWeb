@@ -1,0 +1,22 @@
+﻿@@using NewZapures_V2.Models
+@{
+    Layout = null;
+    List<SlotEnquiryMasterTemp>
+    Modellist = new List<SlotEnquiryMasterTemp>();
+        if (ViewBag.list != null)
+        {
+        Modellist = (List<SlotEnquiryMasterTemp>)ViewBag.list;} }
+            @{
+            foreach (var item in Modellist)
+            {
+              <tr id="tr_@item.Id" style="background:@item.ColorName;color:white">
+                  <td style="display:none;">@item.ColourId</td>
+                  <td id="colour_@item.Id">@item.ColorName</td>
+                  <td id="enquiry_@item.Id">@item.NoofEnquiry</td>
+                  <td>
+                      <button class='btn btn-info btn-xs btn-edit ' data-id="@item.ColourId" onclick='editdata(@item.Id,@item.ColourId,@item.NoofEnquiry)' type='button'>Edit</button>
+                      <button class='btn btn-danger btn-xs btn-delete' type="button" onclick='deletedata(@item.Id)'>Delete</button>
+                  </td>
+              </tr>
+            }
+         }

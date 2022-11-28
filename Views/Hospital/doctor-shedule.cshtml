@@ -1,0 +1,166 @@
+﻿
+@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+}
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Appointments</a></li>
+                    <li class="breadcrumb-item active">Shedule</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Shedule</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<!-- end page title end breadcrumb -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-gradient-primary px-4 mt-0 mb-3" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New Shedule</button>
+                <div class="table-responsive">
+                    <table id="datatable" class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Department</th>
+                                <th>Working days</th>
+                                <th>Time</th>
+                                <th>Extra Info</th>
+                                <th>Status</th>
+                                <th class="text-right">Action</th>
+                            </tr><!--end tr-->
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><img src="~/images/users/user-1.jpg" alt="" class="thumb-sm rounded-circle mr-2">Dr.Thomas Fant</td>
+                                <td>Orthopedic</td>
+                                <td>Monday,Tuesday</td>
+                                <td>11:00 am to 03:00pm </td>
+                                <td>-</td>
+                                <td><span class="badge badge-soft-success">Active</span></td>
+                                <td class="text-right">
+                                    <a href="#" class="mr-2"><i class="fas fa-edit text-info font-16"></i></a>
+                                    <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a>
+                                </td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td><img src="~/images/users/user-4.jpg" alt="" class="thumb-sm rounded-circle mr-2">Dr.Helen White</td>
+                                <td>Neurology</td>
+                                <td>Friday, Saturday</td>
+                                <td>03:30 pm to 10:00 pm</td>
+                                <td>-</td>
+                                <td><span class="badge badge-soft-danger">Inactive</span></td>
+                                <td class="text-right">
+                                    <a href="#" class="mr-2"><i class="fas fa-edit text-info font-16"></i></a>
+                                    <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a>
+                                </td>
+                            </tr><!--end tr-->
+                            <tr>
+                                <td><img src="~/images/users/user-6.jpg" alt="" class="thumb-sm rounded-circle mr-2">Dr.Aretha Garland</td>
+                                <td>Neurology</td>
+                                <td>Monday</td>
+                                <td>09:30 am to 12:30 pm</td>
+                                <td>Going to Family Function</td>
+                                <td><span class="badge badge-soft-success">Active</span></td>
+                                <td class="text-right">
+                                    <a href="#" class="mr-2"><i class="fas fa-edit text-info font-16"></i></a>
+                                    <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a>
+                                </td>
+                            </tr><!--end tr-->
+                        </tbody>
+                    </table>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!--end col-->
+</div><!--end row-->
+<!--  Modal content for the above example -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New Shedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="DoctorName_select" class="mr-2">Doctor Name</label>
+                                <select class="custom-select" id="DoctorName_select">
+                                    <option selected="">-- Select --</option>
+                                    <option value="1">Dr.Thomas Fant</option>
+                                    <option value="2">Dr.Justin Williams</option>
+                                    <option value="3">Dr.Aretha Garland</option>
+                                    <option value="4">Dr.Lea Sanchez</option>
+                                    <option value="5">Dr.Helen White</option>
+                                    <option value="6">Dr.William Gonzalez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Department_select" class="mr-2">Department</label>
+                                <select class="custom-select" id="Department_select">
+                                    <option selected="">-- Select --</option>
+                                    <option value="1">Orthopedic</option>
+                                    <option value="2">Fizioterapie</option>
+                                    <option value="3">Cardiology</option>
+                                    <option value="4">Gynaecology</option>
+                                    <option value="5">Neurology</option>
+                                    <option value="6">Psychology</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="AppoDate">Days</label>
+                                <input type="text" class="form-control" id="AppoDate" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="AppoTime">Time</label>
+                                <input type="text" class="form-control" id="AppoTime" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="message">Extra Info</label>
+                                <textarea class="form-control" rows="3" id="message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary">Save</button>
+                    <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+@section scripts {
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        // Datatable
+        $('#datatable').DataTable();
+    </script>
+}

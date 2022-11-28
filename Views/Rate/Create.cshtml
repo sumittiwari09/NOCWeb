@@ -1,0 +1,377 @@
+﻿@using NewZapures_V2.Models
+@model RateMaster
+@{
+    ViewBag.Title = "New Entity Of Rate";
+    ViewBag.Create = "Add New Rate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    long Category = 0;
+    long service = 0;
+    long childservice = 0;
+    bool access = false;
+    //if (Model != null)
+    //{
+    Category = Model.MstCategoryId;
+    service = Model.SubMstCategoryId;
+    childservice = Model.ChildCateId;
+    ViewBag.Title = "Update Rate Entity";
+    ViewBag.Create = "Update Exiting Rate";
+    //if (CurrentSessions.Edit == "True")
+    //{
+    access = true;
+    //}
+    @*}
+        else
+        {
+            if (CurrentSessions.New == "True")
+            {
+                access = true;
+            }
+        }*@
+    var collection = CollectionDropdown.GetStarterList();
+
+}
+
+
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/scss/select2/css/select2.css" rel="stylesheet" />
+    <style>
+
+        .dr-pro-pic .dropify-wrapper, #settings_detail .dropify-wrapper {
+            width: 100%;
+            position: relative;
+        }
+    </style>
+}
+@if (access)
+{
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">E-Mitra@Home</li>
+                        <li class="breadcrumb-item">Rate</li>
+                        <li class="breadcrumb-item active">@ViewBag.Create</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            @using (Html.BeginForm("Edit", "Rate", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+            {
+                <input type="hidden" id="RateId" name="RateId" value="@(Model != null ? Model.RateMasterId.ToString() : "")" />
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mt-0 header-title float-left">New Entry</h4>
+                        <a class="btn btn-gradient-secondary waves-effect waves-light float-right" href="@Url.Action("Details", "Rate")"><i class="fas fa-arrow-left"></i> Back to List</a>
+                        @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">District Name</label>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ID" id="DD_District">
+                                    @{
+                                        <option value="">Select District</option>
+                                        foreach (var item in (List<Mastersddl>)ViewBag.Districtlist)
+                                        {
+                                            <option style="background: black;" value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Department</label>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="MstCategoryID" id="CategoryMasterID" required>
+                                    @{
+                                        <option value="">Select Department</option>
+
+                                        if (Model != null)
+                                        {
+                                            foreach (var item in (List<DocumentBO>)ViewBag.Categorylist)
+                                            {
+                                                if (Model.MstCategoryId == item.MstCategoryID)
+                                                {
+                                                    <option selected style="background: black;" value="@item.MstCategoryID">@item.Category</option>
+                                                }
+                                                else
+                                                {
+                                                    <option style="background: black;" value="@item.MstCategoryID">@item.Category</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in (List<DocumentBO>)ViewBag.Categorylist)
+                                            {
+
+                                                <option style="background: black;" value="@item.MstCategoryID">@item.Category</option>
+                                            }
+                                        }
+
+                                    }
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Service Name</label>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="SubMstCategoryId" id="ServiceID" required>
+                                    @{
+                                        <option value="">--Select Service--</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Child Services</label>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="ChildCateId" id="ChildCateId">
+                                    @{
+                                        <option value="">--Select Child Service--</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mt-0 header-title float-left">Charges</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Department</label>
+                            <div class="col-sm-6">
+                                <input name="DepartmentCharge" id="Department" type="number" value="@(Model != null ? Model.DepartmentCharge.ToString() : "")" class="form-control" placeholder="Enter Department charge">
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Emitra</label>
+                            <div class="col-sm-6">
+                                <input name="EmitraCharge" id="Emitra" type="number" value="@(Model != null ? Model.EmitraCharge.ToString() : "")" class="form-control" placeholder="Enter Emitra charge">
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Printing</label>
+                            <div class="col-sm-6">
+                                <input name="PrintingCharge" id="Printing" type="number" value="@(Model != null ? Model.PrintingCharge.ToString() : "")" class="form-control" placeholder="Enter Printing charge">
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Home</label>
+                            <div class="col-sm-6">
+                                <input name="HomeCharge" id="Home" type="number" value="@(Model != null ? Model.HomeCharge.ToString() : "")" class="form-control" placeholder="Enter Home charge">
+                            </div>
+                        </div>
+                        <div class="form-group is-empty row">
+                            <label for="nameInput" class="col-sm-3 control-label">Collection</label>
+                            <div class="col-md-6">
+                                <select class="singleselect" name="CollectionTime" id="CollectionTime" multiple>
+                                    @{
+                                        foreach (var item in collection)
+                                        {
+                                            if (Model.RateMasterId == 0)
+                                            {
+                                                <option value="@item.Id">@item.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option @(Model != null && Model.CollectionTime.Contains(item.Id.ToString()) ? "selected" : "") value="@item.Id">@item.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="form-footer">
+                    <div class="pull-right" style="text-align: end;">
+                        <a href="@Url.Action("Details", "Rate")" class="btn btn-default">DISCARD</a>
+                        <button class="btn btn-primary"> Save </button>
+                    </div>
+                </footer>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="page-title text-danger">You do not have permission, Please contact admin!</h2>
+}
+@section Scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/Content/scss/select2/js/select2.js"></script>
+    <script type="text/javascript">
+$(".singleselect").select2();
+        $(document).ready(function () {
+            var Id;
+            $("#CategoryMasterID").change(function () {
+                  Id = $(this).val();
+                BindSubCategory(Id);
+            });
+            $("#DD_District").change(function () {
+                  Id = $(this).val();
+                BindDepartmentList(Id);
+            });
+            $("#ServiceID").change(function () {
+                  Id = $(this).val();
+                BindChildCategory(Id);
+            });
+            if ('@Category' != 0) {
+                BindSubCategory('@Category');
+                $("#ServiceID").val('@service');
+            }
+            if ('@service' != 0) {
+                BindChildCategory('@service');
+            }
+        });
+        function BindDepartmentList(DistrictId) {
+            var strHTML = "";
+            strHTML += "<option value=''>Select Department Name</option>"
+            var Params = JSON.stringify(
+                {
+                    Id: CategoryId
+                });
+                $("#CategoryMasterID").select2("destroy");
+                $("#CategoryMasterID").html(strHTML);
+                $("#CategoryMasterID").select2();
+            $.ajax({
+                url: "/Admin/FillDepartmentServiceList",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if ('@service' == response.Data[i].MstCategoryID) {
+                            strHTML += "<option selected value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+                    }
+                    $("#ServiceID").select2("destroy");
+                    $("#ServiceID").html(strHTML);
+                    $("#ServiceID").select2();
+                    $("#ChildCateId").select2("destroy");
+                    $("#ChildCateId").html("<option value=''>Select</option>");
+                    $("#ChildCateId").select2();
+                }
+            });
+        }
+        function BindSubCategory(CategoryId) {
+
+            var strHTML = "";
+            strHTML += "<option value=''>Select Services Name</option>"
+            var Params = JSON.stringify(
+                {
+                    Id: CategoryId
+                });
+
+                $("#ServiceID").select2("destroy");
+                $("#ServiceID").html(strHTML);
+                $("#ServiceID").select2();
+
+                //$("#ChildCateId").select2("destroy");
+                //$("#ChildCateId").html(strHTML);
+                //$("#ChildCateId").select2();
+
+
+
+            $.ajax({
+                url: "/Admin/FillSubCategory",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if ('@service' == response.Data[i].MstCategoryID) {
+                            strHTML += "<option selected value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                        }
+                    }
+
+                        $("#ServiceID").select2("destroy");
+                        $("#ServiceID").html(strHTML);
+                        $("#ServiceID").select2();
+
+                    $("#ChildCateId").select2("destroy");
+                    $("#ChildCateId").html("<option value=''>Select</option>");
+                    $("#ChildCateId").select2();
+
+
+                }
+            });
+
+
+
+        }
+
+        function BindChildCategory(ServicesId) {
+            var strHTML = "";
+            strHTML += "<option value=''>Select Child Services Name</option>";
+            $("#ChildCateId").select2("destroy");
+            $("#ChildCateId").html(strHTML);
+            $("#ChildCateId").select2();
+            var Params = JSON.stringify(
+                {
+                    Id: ServicesId
+                });
+            $.ajax({
+                url: "/Admin/FillChildSubCategory",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if (response.Data[i].Type == 1) {
+                            if ('@childservice' == response.Data[i].MstCategoryID) {
+                                strHTML += "<option selected value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                            }
+                            else {
+                                strHTML += "<option value='" + response.Data[i].MstCategoryID + "'>" + response.Data[i].ServiceName + "</option>"
+                            }
+
+                        }
+
+                    }
+
+
+                    $("#ChildCateId").select2("destroy");
+                    $("#ChildCateId").html(strHTML);
+                    $("#ChildCateId").select2();
+
+                }
+            });
+        }
+    </script>
+
+}
+

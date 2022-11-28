@@ -1,0 +1,189 @@
+﻿@using NewZapures_V2.Models
+@using PagedList.Mvc
+@model PagedList.IPagedList < NewZapures_V2.Models.CategoryMaster>
+
+
+@{
+    ViewBag.Title = "Index";
+    int FilterCount = 0;
+    int TotalRecords = (int)ViewBag.TotalRecords;
+    //if ((int)ViewBag.Categaryid != 0)
+    //{
+
+    //    FilterCount++;
+    //}
+    //if (!String.IsNullOrEmpty(Searchstring))
+    //{
+    //    FilterCount++;
+    //}
+}
+@*<link href="~/Content/app.bundle.css" rel="stylesheet" />*@
+<style>
+    .modal-dialog {
+        position: fixed;
+        margin: auto;
+        width: 320px;
+        height: 100%;
+        right: 0px;
+    }
+
+    .modal-content {
+        height: 100%;
+    }
+
+    .ulbuttons {
+        position: absolute;
+        top: 14px;
+        right: 15px;
+    }
+
+        .ulbuttons li {
+            display: inline;
+        }
+
+    label.recordsfound {
+        display: block;
+        background-color: #ee5123;
+        width: fit-content;
+        padding: 3px 10px;
+        color: white;
+        margin-top: 5px;
+    }
+</style>
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<div class="card Card--shadow--medium radiuscard fixcard">
+    <header class="card-heading card-default" style="
+    display: -webkit-inline-box;
+">
+        <h4 class="card-title" style="
+    padding-left: 33px;
+">
+            List of Pages<br />
+            <label class="recordsfound">@TotalRecords Records Found</label>
+        </h4>
+        <ul class="ulbuttons">
+            @{
+
+                <li>
+                    <a class="btn btn-primary btn-sm nomargin" href="@Url.Action("create", "Pages")"><i class="fa fa-plus"></i> CREATE</a>
+                </li>
+
+            }
+
+            <li>
+                <button type="button" class="btn btn-primary btn-sm nomargin btn" data-toggle="modal" data-target="#modalsearch">
+                    <i class="fa fa-filter "></i> FILTER
+                    @{
+                        if (FilterCount > 0)
+                        {
+                            <span class="spanfiltercount">@FilterCount</span>
+                        }
+                    }
+                </button>
+            </li>
+        </ul>
+    </header>
+    <div class="card-body maindiv">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>IsActive</th>
+
+                        <th style="width: 150px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <a href="@Url.Action("Create", "Pages", new { Id = item.CategoryId })" class="padding5" title="Update">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete", "Pages", new { Id = item.CategoryId })" class="padding5 removerecord" title="Delete Category">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <div class="pagercontainer">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
+    </div>
+</div>
+
+
+<div class="modal right fade custommodal fixheaderfooter" id="modalsearch" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2">Search By</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="modal-body">
+                @{
+                    using (Html.BeginForm("Index", "Pages", FormMethod.Post, new { @id = "form-horizontal", enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-horizontal searchform">
+
+
+
+                            <div class="form-group is-empty borderbottom">
+                                <label class="col-sm-12 control-label">Menu Type</label>
+                                <div class="col-sm-12">
+                                    <select class="singleselect " name="ddlSearchmenu" id="ddlsearchMenu">
+                                        <option value="0">Select</option>
+
+                                        @{ foreach (var item in (List<FillDropDown>)ViewBag.FillDropDown)
+                                            {
+                                                <option value="@item.Id">@item.Text</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group is-empty borderbottom">
+                                <label class="col-sm-12 control-label">Search string</label>
+                                <div class="col-sm-12">
+
+                                    <input type="text" name="Byname" placeholder="Enter search Name" class="form-control" value="">
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    }
+                }
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary" id="btnSearch">SEARCH</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#SubCategoryId").select2();
+    $("#Typeid").select2();
+    $("#ddlsearchMenu").select2();
+</script>

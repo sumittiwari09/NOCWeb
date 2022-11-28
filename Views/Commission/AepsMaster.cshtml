@@ -1,0 +1,271 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Aeps Commission ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SLBMST> lst_slbmst = new List<SLBMST>();
+    if (ViewBag.lst_slbmst != null)
+    {
+        lst_slbmst = (List<SLBMST>)ViewBag.lst_slbmst;
+    }
+    List<CustomMaster> lst_serviceprovider = new List<CustomMaster>();
+    lst_serviceprovider = Common.GetServiceProviderBaseonServiceId(ViewBag.ServiceId);
+    var typeid = (int)ViewBag.UserType;
+    var typename= Partial.TypeName().FirstOrDefault(p => p.Id == typeid).Text;
+
+    int serviceid = (int)ViewBag.ServiceId;
+    if(serviceid==2)
+    {
+        ViewBag.Title = "DTH COMMISSION";
+    }
+}
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+
+                    <li class="breadcrumb-item active"> @ViewBag.Title For @typename</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left"> @ViewBag.Title of @typename</h4>
+            </div>
+            <div class="card-body">
+                <form class="formcreateupdate" enctype="multipart/form-data" id="frmAddUpdate" name="myForm" onsubmit="return validateForm()" method="post">
+                    <input type="hidden" id="CommissionMasterId" value="@ViewBag.CommissionMasterId" />
+                    <input type="hidden" id="UserType" value="@ViewBag.UserType" />
+                    <input type="hidden" id="ServiceTypeId" value="@ViewBag.ServiceId" />
+                    <input type="hidden" id="IsdefaultPartyId" value="@ViewBag.IsdefaultPartyId" />
+                    <input type="hidden" id="MinMaxapplicable" value="@ViewBag.MinMaxapplicable" />
+                    <input type="hidden" id="MinMaxValue" value="@ViewBag.MinMaxValue" />
+                    <div class="form-group  is-empty row">
+                        <div class="col-sm-4">
+                            <select class="singleselect" id="ServiceId" name="iSerId" required>
+                                <option value="" disabled selected hidden>Select Service Provider</option>
+
+                                @{
+                                    foreach (var item in lst_serviceprovider)
+                                    {
+
+                                        <option value="@item.Id">@item.text </option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="singleselect" id="RangId" name="RangId" required>
+                                <option value="" disabled selected hidden>Select Rang</option>
+
+                                @{
+                                    foreach (var item in lst_slbmst.Where(p => p.iSts == 1).ToList())
+                                    {
+
+                                        <option value="@item.iPk_SlbMst" data-iTxnAmtFm="@item.iTxnAmtFm" data-iTxnAmtTo="@item.iTxnAmtTo" data-rang="@(item.bRngSet==false?0:1)">@item.iTxnAmtFm - @item.iTxnAmtTo</option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <input name="iCommissionAmount" id="iCommissionAmount" type="text" value="" class="form-control" placeholder="From Amount" required>
+                        </div>
+                        @*<div class="col-sm-1">
+                    <button class=" btn btn-primary" type="button" id="Reset"> Reset </button>
+                </div>*@
+                        <div class="col-sm-1">
+                            <button class=" btn btn-primary" type="submit"> Save </button>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="form-group is-empty row">
+                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th>No</th>
+                                <th>Transaction Amount From </th>
+                                <th>Transaction Amount To </th>
+                                <th>Commission Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DataAepslist">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script type="text/javascript">
+        $(".singleselect").select2();
+        //let result = document.querySelector('#ServiceId');
+        //result.addEventListener('change', function () {
+        //    alert( this.value);
+        //});
+        //document.querySelector('#ServiceId').addEventListener('change', (event) => {
+        //    let rang = document.getElementById('ServiceId').options[document.getElementById('ServiceId').selectedIndex].getAttribute('data-rang')
+        //    alert(rang);
+        //});
+        $("#RangId").change(function () {
+            let rang = document.getElementById('RangId').options[document.getElementById('RangId').selectedIndex].getAttribute('data-rang')
+            if (rang == 1) {
+                document.getElementById('iCommissionAmount').value = 0;
+                document.getElementById('iCommissionAmount').setAttribute("disabled", "");
+
+            }
+            else {
+                document.getElementById('iCommissionAmount').value = '';
+                document.getElementById('iCommissionAmount').removeAttribute("disabled", "");
+            }
+        });
+        $("#ServiceId").change(function () {
+            let Id = document.getElementById('ServiceId').value;
+            FillAepslist(Id);
+        });
+        function FillAepslist(Id) {
+            let CommissionMasterId = document.getElementById('CommissionMasterId').value;
+            $.ajax({
+                url: '/AdminAjaxRequestPage/GenerateAepslist?Id=' + Id + '&CommissionMasterId=' + CommissionMasterId,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+                    debugger;
+
+                    $("#DataAepslist").html(response);
+
+
+
+                }
+            });
+            return false;
+        }
+        function validateForm() {
+            let RangId = document.forms["myForm"]["RangId"].value;
+            let iSerId = document.forms["myForm"]["iSerId"].value;
+            let iCommissionAmount = document.forms["myForm"]["iCommissionAmount"].value;
+            if (iSerId == "") {
+
+                return false;
+            }
+            if (RangId == "") {
+              
+                return false;
+            }
+            if (iCommissionAmount == "") {
+               
+                return false;
+            }
+    
+            let iTxnAmtFm = document.getElementById('RangId').options[document.getElementById('RangId').selectedIndex].getAttribute('data-iTxnAmtFm');
+            let iTxnAmtTo = document.getElementById('RangId').options[document.getElementById('RangId').selectedIndex].getAttribute('data-iTxnAmtTo');
+            let Amount = document.getElementById('iCommissionAmount').value;
+            let CommissionMasterId = document.getElementById('CommissionMasterId').value;
+            let UserType = document.getElementById('UserType').value;
+            let ServiceId = document.getElementById('ServiceTypeId').value;
+            let IsdefaultPartyId = document.getElementById('IsdefaultPartyId').value;
+            let MinMaxapplicable = document.getElementById('MinMaxapplicable').value;
+            let MinMaxValue = document.getElementById('MinMaxValue').value;
+
+            if (MinMaxapplicable == 1) {
+                if (parseFloat(MinMaxValue).toFixed(2) >= parseFloat(Amount).toFixed(2)) {
+                    document.getElementById('iCommissionAmount').value = '';
+                    var msg = `Please Enter value grater than ${MinMaxValue}`;
+                    alert(msg);
+                    return false;
+                }
+            }
+            if (MinMaxapplicable == 2) {
+               
+                if (Math.round(MinMaxValue * 100) <= Math.round(Amount * 100)) {
+                    document.getElementById('iCommissionAmount').value = '';
+                    var msg = `Please Enter value Less than ${MinMaxValue}`;
+                    alert(msg);
+                    return false;
+                }
+            }
+            var Params = JSON.stringify(
+                {
+                    iTxnAmtFm: iTxnAmtFm,
+                    iTxnAmtTo: iTxnAmtTo,
+                    Amount: Amount,
+                    CommissionMasterId: CommissionMasterId,
+                    UserType: UserType,
+                    ServiceId: ServiceId,
+                    IsdefaultPartyId: IsdefaultPartyId,
+                    ServiceProvider: iSerId
+                });
+            $.ajax({
+                url: "/AdminAjaxRequestPage/SetCommissionAEPS",//globaUserProperties.domain +
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+                    debugger;
+                    var data = response;
+                    console.log(data);
+                    if (response.IsValid = 1) {
+                        var msg = data['msg'];
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: msg,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        document.forms["myForm"]["iCommissionAmount"].value = '';
+                        var Rang = document.querySelector('#RangId');
+                        Rang[0].selected = true;
+                        $(Rang).change();
+                        let Id = document.getElementById('ServiceId').value;
+                        FillAepslist(Id);
+                    }
+
+
+
+
+                }
+                
+            });
+            return false;
+        }
+    </script>
+
+}

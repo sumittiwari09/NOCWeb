@@ -1,0 +1,47 @@
+﻿@using NewZapures_V2.Models
+@model List <UserCommission>
+@{
+    ViewBag.Title = "GenerateRecharges";
+    Layout =null;
+}
+
+<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <thead>
+
+        <tr>
+            <th>NO</th>
+            <th>Service Provider</th>
+            <th>Operater Name</th>
+            <th>Commission</th>
+
+        </tr>
+        
+    </thead>
+    @{
+        var i = 1;
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@item.ServiceProviderName</td>
+                <td>@item.OperatorName</td>
+                @*<td>
+
+                    @{ if (item.ChargeType == 1)
+                        {
+                            <p> @item.CommissionPercentage (%)</p>
+                        }
+
+                        else
+                        {
+                            <p> @item.CommissionPercentage (Amount)</p>
+                        }
+                    }
+                </td>*@
+                <td>@item.CommissionAmount</td>
+            </tr>
+            i++;
+        }
+    }
+
+    </table>

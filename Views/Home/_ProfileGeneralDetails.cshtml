@@ -1,0 +1,111 @@
+﻿@using NewZapures_V2.Models
+@model PartyMaster
+@{ var GetTypelist = ZapurseCommonlist.GetTypelist();
+}
+<div class="card-body">
+    <h4 class="mt-0 header-title">General Details</h4>
+    @using (Html.BeginForm("AddFirmDetails", "NewAssessmentReqeust"))
+    {
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" maxlength="250" value="@(Model!=null?Model.FirstName:"")" required>
+                        </div><!--end col-->
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            @*<label for="pro-end-date">Middle Name</label>*@
+                            <input type="text" class="form-control" id="MiddleName" name="MiddleName" placeholder="Middle Name" value="@(Model!=null?Model.MiddleName:"")" maxlength="250">
+                        </div><!--end col-->
+                        <div class="col-lg-4 col-6">
+                            @*<label for="pro-rate">Last Name</label>*@
+                            <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name" value="@(Model!=null?Model.LastName:"")" maxlength="250">
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            @*<label for="pro-start-date">First Name</label>*@
+                            <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" placeholder="Mobile Number" data-parsley-type="digits" maxlength="10" value="@(Model!=null?Model.MobileNumber:"")" required>
+                        </div><!--end col-->
+                        <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                            @*<label for="pro-end-date">Middle Name</label>*@
+                            <input type="text" class="form-control" id="EmailId" name="EmailId" placeholder="Email" value="@(Model!=null?Model.EmailId:"")" parsley-type="email">
+                        </div><!--end col-->
+
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                            <div class="input-group">
+                                <input type="date" class="form-control" name="ToDate" required value="@(Model!=null?Model.DOB:"")" id="ToDate" />
+                                @*<input type="text" class="form-control" name="birthday" id="birthday" placeholder="Date of Birth" value="" />*@
+                                @*<input type="date" class="form-control" id="Dob" placeholder="Date of Birth" value="@(Model != null ?Model.DOB : "")">*@
+                                @*<div class="input-group-append">
+                                        <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                                    </div>*@
+                                @*<label for="pro-start-date">First Name</label>*@
+
+                                @*<input type="text" class="form-control" id="Dob" placeholder="Date of Birth">*@
+                            </div>
+                        </div><!--end col-->
+
+
+
+                    </div><!--end row-->
+                </div><!--end form-group-->
+
+
+            </div><!--end col-->
+
+        </div><!--end row-->
+        <h4 class="mt-0 header-title">Official Details</h4>
+        @*<p class="text-muted mb-3">User Profile</p>*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                    <label for="pro-start-date">User Type</label>
+                    @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type">*@
+                    @*<select class="singleselect" name="Type" id="Type" disabled required>*@
+
+                    @{ foreach (var item in GetTypelist)
+                        {
+                            if (Model != null && Model.Type == item.Id)
+                            {
+                                <input type="text" class="form-control" id="pro-start-date" placeholder="User Type" value="@item.Text" readonly>
+                            }
+                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                        }
+                    }
+                    @*</select>*@
+
+                </div><!--end col-->
+                <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                    <label for="pro-end-date">User Role</label>
+                    <input type="text" class="form-control" id="pro-end-date" placeholder="User Role">
+                </div><!--end col-->
+
+            </div><!--end row-->
+        </div><!--end form-group-->
+        <footer class="form-footer" style="padding: 20px;">
+            <div class="pull-right" style="text-align: end;">
+                <button type="button" class="btn btn-default" id="btnDocument_Back">Back</button>
+                @*@if (Model.IsPortable == true)
+                    {*@
+                <button type="submit" class="btn btn-primary" id="btnDocument_Next">Save</button>
+                @*}
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary" id="btnDocument_Next">Next</button>
+                    }*@
+            </div>
+        </footer>
+    }
+</div><!--end card-body-->

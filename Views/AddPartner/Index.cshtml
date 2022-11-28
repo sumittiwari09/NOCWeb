@@ -1,0 +1,381 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Add Partner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userType = ZapurseCommonlist.GetUserTypes();
+
+    var loggedInUserType = (string)ViewBag.userType;
+}
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+@if (loggedInUserType == "4")
+{
+    <div style="display: grid;color:red;place-content: center;height: 100vh;font-size: 35px;">You dont have enough permission to view this page please contact to admin</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Zapures</li>
+                        <li class="breadcrumb-item active">@ViewBag.Title</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("SaveDetails", "AddPartner", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col-lg-12 row" style="margin-left: -12px;">
+                                <div class="form-group col-lg-3">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">First Name</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtFirstName" name="FirstName">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Middle Name</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" id="txtmiddleName" autocomplete="off" type="text" name="MiddleName" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Last Name</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" name="LastName" id="txtLastName">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Mobile Number</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" id="txtMobileNumber">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 row" style="margin-left: -12px;">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Email</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtEmail" name="EmailId">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select User Type</label>
+                                    <div>
+                                        <select id="ddlDept" class="form-control" name="Type">
+                                            <option value="0">Select User Type</option>
+                                            @{
+                                                if (userType != null)
+                                                {
+                                                    foreach (var item in userType.Where(wh=>wh.Id!="5" && int.Parse(wh.Id)>int.Parse(loggedInUserType)).ToList())
+                                                    {
+                                                        <option value='@item.Id'>@item.Text</option>
+                                                    }
+                                                }
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-offset-6 col-lg-3">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">&nbsp;</label>
+                                    <div>
+                                        <button type="button" class="btn btn-gradient-primary waves-effect waves-light" onclick="CheckValidation()">Add Partner Details</button>
+                                        <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#ddlDept").select2();
+
+        $('#txtMobileNumber').blur(function () {
+            if ($("#txtMobileNumber").val().length > 0) {
+                if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+                    $("#txtMobileNumber").val('');
+                }
+                else {
+                    CheckUserMobile($("#txtMobileNumber").val())
+                }
+            }
+        })
+
+        $('#txtEmail').blur(function () {
+            if ($("#txtEmail").val().length > 0) {
+
+                if (!isValidEmailAddress($("#txtEmail").val())) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `"${$("#txtEmail").val()}" Is not valid, Please Enter Valid Email Address`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    $("#txtEmail").val('');
+                }
+                else {
+
+                    CheckUserEmailAddress($('#txtEmail').val());
+                }
+            }
+        })
+    });
+     var isuserExists = '@TempData["IsUserDetailsExists"]'
+            var message = '@TempData["msg"]'
+            if (isuserExists == 1) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+             if (isuserExists == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+            }
+
+
+    function isValidEmailAddress(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+}
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    function CheckValidation() {
+
+        var status = true;
+
+        var FirstName = $('#txtFirstName').val();
+        var MiddleName = $('#txtmiddleName').val();
+        var LastName = $('#txtLastName').val();
+        var MobileNumber = $('#txtMobileNumber').val();
+        var Email = $('#txtEmail').val();
+        var Dept = $('#ddlDept option:selected').val();
+
+
+
+        if (FirstName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'First Name Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtFirstName').focus();
+            status = false;
+        }
+        else if (LastName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Last Name Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtLastName').focus();
+            status = false;
+        }
+        else if (MobileNumber.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Mobile Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtMobileNumber').focus();
+            status = false;
+        }
+        else if (Email.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Email Address Required...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#txtEmail').focus();
+            status = false;
+        }
+        else if (Dept== 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select User Type...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            $('#ddlDept').focus();
+            status = false;
+        }
+
+        if (status) {
+            $('#btnsubmitDetails').click();
+        }
+    }
+
+
+    function CheckUserMobile(mobileNumber) {
+        var m = mobileNumber;
+
+        if (m.length > 0) {
+            var validationRequestModel = {
+                "Email": mobileNumber,
+                "Password": "",
+                "Type": 'UserCheck'
+            }
+
+            var d = JSON.stringify(validationRequestModel);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/ValidateUser", 
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(validationRequestModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1 && data.Message == "User Details Exists") {
+                        var d = `"${mobileNumber}" is Already Registered, Please Use Different Mobile Number`;
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: d,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+
+                        });
+                        $("#txtMobileNumber").val('');
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    }
+
+    function CheckUserEmailAddress(EmailAddress) {
+        var m = EmailAddress;
+
+        if (m.length > 0) {
+            var validationRequestModel = {
+                "Email": EmailAddress,
+                "Password": "",
+                "Type": 'UserCheck'
+            }
+
+            var d = JSON.stringify(validationRequestModel);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/ValidateUser",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(validationRequestModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1 && data.Message == "User Details Exists") {
+                        var d = `"${EmailAddress}" Is Already Registered`;
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: d,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        $("#txtEmail").val('');
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    }
+
+</script>

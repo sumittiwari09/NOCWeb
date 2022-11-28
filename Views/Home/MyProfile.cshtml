@@ -1,0 +1,1390 @@
+﻿@using NewZapures_V2.Models
+@model PartyMaster
+@{
+    ViewBag.Create = "Profile";
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var GetTypelist = ZapurseCommonlist.GetTypelist();
+    var parentID = (string)ViewBag.UserID;
+    var companyType = (List<Dropdown>)ViewBag.companyType;
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    var ID = (string)ViewBag.UserID;
+    int i = 0;
+    var userNameProfileImage = Model.FirstName.Substring(0, 1);
+    if (!string.IsNullOrEmpty(ID))
+    {
+        ID = ID.Substring(0, 1);
+
+        if (ID == "W")
+        {
+            i = 1;
+        }
+        if (ID == "S")
+        {
+            i = 2;
+        }
+        if (ID == "D")
+        {
+            i = 3;
+        }
+        if (ID == "R")
+        {
+            i = 4;
+        }
+        if (ID == "U")
+        {
+            i = 5;
+        }
+
+    }
+
+
+    var countryId = 0;
+    var stateId = 0;
+    var districtId = 0;
+    var cityId = 0;
+    var Areaid = 0;
+    if (Model != null)
+    {
+        if (Model.CountryId != null)
+        {
+            countryId = (int)Model.CountryId;
+        }
+        if (Model.StateId != null)
+        {
+            stateId = (int)Model.StateId;
+        }
+        if (Model.DistrictId != null)
+        {
+            districtId = (int)Model.DistrictId;
+        }
+        if (Model.CityId != null)
+        {
+            cityId = (int)Model.CityId;
+        }
+        if (Model.AreaId != null)
+        {
+            Areaid = (int)Model.AreaId;
+        }
+    }
+}
+@section styles {
+    @*<link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+        <link href="~/plugins/filter/magnific-popup.css" rel="stylesheet" type="text/css" />
+        <link href="~/plugins/lightpick/lightpick.css" rel="stylesheet" />*@
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="~/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />*@
+    <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet" />
+    @*<link href="~/Content/Cropimage.css" rel="stylesheet" />*@
+
+}
+<style>
+
+    .image_area {
+        position: relative;
+    }
+
+    #uploaded_image {
+        display: block;
+        max-width: 100%;
+        border-radius:50%;
+    }
+
+    #divUsernamInitialsProfile {
+        height: 128px;
+        width: 128px;
+        margin-right: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 5rem;
+        background: linear-gradient(135deg, #478bb8 0%, #9cb347 100%);
+    }
+
+
+    .preview {
+        overflow: hidden;
+        width: 160px;
+        height: 160px;
+        margin: 10px;
+        border: 1px solid red;
+    }
+
+    .modal-lg {
+        max-width: 1000px !important;
+    }
+
+    .overlay {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+        overflow: hidden;
+        height: 0;
+        transition: .5s ease;
+        width: 100%;
+    }
+
+    .image_area:hover .overlay {
+        height: 50%;
+        cursor: pointer;
+    }
+
+    .text {
+        color: #333;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+</style>
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapures</a></li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Profile</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <input type="hidden" id="parentID" value='@parentID' />
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body  met-pro-bg">
+                <div class="met-profile">
+                    <div class="row">
+                        <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                            <div class="met-profile-main">
+                                <div class="met-profile-main-pic">
+                                    @*<img src="~/images/users/user-4.jpg" alt="" class="rounded-circle">
+                                        <span class="fro-profile_main-pic-change">
+                                            <i class="fas fa-camera"></i>
+                                        </span>*@
+                                    <label for="upload_image">
+
+                                        @*<img src="~/images/Docs/Zapurse_114e1a86-896b-405a-a443-3f6b9dce3391.jpeg" />*@
+
+
+                                        @{
+                                            if (!string.IsNullOrEmpty(Model.ProfileImage))
+                                            {
+                                                var ImageURL = @BaseURL + Model.ProfileImage;
+                                                <img src=@ImageURL  alt="profile-user" class="uploaded_image" id="uploaded_image" />
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle" id="divUsernamInitialsProfile"></div>
+
+                                                @*<img src="~/images/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
+                                            }
+                                        }
+
+
+
+
+                                        @*<img src="@(!string.IsNullOrEmpty(Model.ProfileImage)?BaseURL+Model.ProfileImage:"../images/users/user-4.jpg")" id="uploaded_image" class="rounded-circle" />*@
+
+
+                                        <div class="overlay">
+                                            <div class="text">Click to Change Profile Image</div>
+                                        </div>
+                                        <input type="file" name="image" class="image" id="upload_image" style="display:none" />
+                                    </label>
+                                </div>
+                                <div class="met-profile_user-detail">
+                                    <h5 class="met-user-name">@Model.FirstName</h5>
+                                    @{ foreach (var item in GetTypelist)
+                                        {
+                                            if (Model != null && Model.Type == item.Id)
+                                            {
+                                                <p class="mb-0 met-user-name-post">@item.Text</p>
+                                                @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type" value="@item.Text" readonly>*@
+                                            }
+                                            
+                                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                                        }
+
+                                    }
+
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-4 ml-auto">
+                            <ul class="list-unstyled personal-detail">
+                                <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone </b> : @Model.MobileNumber</li>
+                                <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b> Email </b> : @Model.EmailId</li>
+                                <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b> : India</li>
+                            </ul>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end f_profile-->
+            </div><!--end card-body-->
+            <div class="card-body">
+                <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="general_detail_tab" data-toggle="pill" href="#general_detail">Profile</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="activity_detail_tab" data-toggle="pill" href="#activity_detail">Activity</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="portfolio_detail_tab" data-toggle="pill" href="#portfolio_detail">Portfolio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings_detail_tab" data-toggle="pill" href="#settings_detail">Settings</a>
+                        </li>*@
+                </ul>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+</div>
+@*<div class="row">
+
+    <div class="col-12">
+        <div class="tab-content detail-list" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="general_detail">*@
+<div class="row">
+    <div class="col-lg-12">
+
+
+        @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+        {
+            <input type="hidden" name="PartyId" value="@Model.PartyId" />
+            <input type="hidden" name="ProfileImage" id="ProfileImage" value="@Model.ProfileImage" />
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title" style="background-color: gainsboro;">General Details</h4>
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" maxlength="250" value="@(Model!=null?Model.FirstName:"")" required>
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="MiddleName" name="MiddleName" placeholder="Middle Name" value="@(Model!=null?Model.MiddleName:"")" maxlength="250">
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6">
+                                        @*<label for="pro-rate">Last Name</label>*@
+                                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name" value="@(Model!=null?Model.LastName:"")" maxlength="250">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="MobileNumber" readonly name="MobileNumber" placeholder="Mobile Number" data-parsley-type="digits" oninput="numberOnly(this.id);" maxlength="10" value="@(Model!=null?Model.MobileNumber:"")" required>
+                                    </div><!--end col-->
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="EmailId" name="EmailId" readonly placeholder="Email" value="@(Model!=null?Model.EmailId:"")" parsley-type="email">
+                                    </div><!--end col-->
+
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+
+                            <div class="form-group">
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <div class="input-group">
+                                            <input type="date" class="form-control" name="DateofBirth" value="@(Model!=null?Model.DOB:"")" id="ToDate" />
+                                            @*<input type="text" class="form-control" name="birthday" id="birthday" placeholder="Date of Birth" value="" />*@
+                                            @*<input type="date" class="form-control" id="Dob" placeholder="Date of Birth" value="@(Model != null ?Model.DOB : "")">*@
+                                            @*<div class="input-group-append">
+                                                    <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                                                </div>*@
+                                            @*<label for="pro-start-date">First Name</label>*@
+
+                                            @*<input type="text" class="form-control" id="Dob" placeholder="Date of Birth">*@
+                                        </div>
+                                    </div><!--end col-->
+
+
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                </div>
+                <div class="card-body">
+                    <h4 class="mt-0 header-title" style="background-color: gainsboro;">Official Details</h4>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3 col-3 mb-2 mb-lg-0">
+                                <label for="pro-start-date">User Type</label>
+                                @*<input type="text" class="form-control" id="pro-start-date" placeholder="User Type">*@
+                                <select class="singleselect" name="Type1" id="Type" @(Model.PartyId != null ? "disabled" : "") required>
+
+                                    @{ foreach (var item in GetTypelist)
+                                        {
+                                            if (item.Id > @i)
+                                            {
+                                                <option @(Model != null && Model.Type == item.Id ? "selected" : "") value="@item.Id">@item.Text</option>
+                                            }
+
+
+                                            @*<option @(Model!=null && Model.Type==item.Id?"selected":"") value="@item.Id">@item.Text</option>*@
+                                        }
+                                    }
+                                </select>
+
+                            </div><!--end col-->
+                            <div class="col-lg-2 col-2 mb-2 mb-lg-0">
+                                <label for="pro-end-date">User Role</label>
+                                <input type="text" class="form-control" name="RoleId1" value="Admin" id="pro-end-date" placeholder="User Role" readonly>
+                                <input type="hidden" class="form-control" name="RoleId" value="1" id="pro-end-date" placeholder="User Role">
+                            </div><!--end col-->
+
+                            <div class="col-lg-3 col-3 mb-2 mb-lg-0">
+                                <label for="pro-end-date">Select Company Type</label>
+                                <select class="form-control singleselect" id="Companytype">
+                                    <option value="0" role=separator>Select Company Type</option>
+                                    @{
+                                        if (companyType != null)
+                                        {
+                                            foreach (var item in companyType)
+                                            {
+                                                <option value=@item.Id>@item.Text.Trim()</option>
+                                            }
+                                        }
+
+                                    }
+                                </select>
+                            </div><!--end col-->
+
+                        </div><!--end row-->
+
+
+                        <div class="row" id="tbldocumentList" style="display:none">
+
+                        </div>
+
+                    </div><!--end form-group-->
+                </div>
+                <div class="card-body">
+                    <h4 class="mt-0 header-title" style="background-color: gainsboro;">Contact Details</h4>
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">Country</label>
+                                        <select class="singleselect" id="CountryId" name="CountryId">
+                                            <option>Select</option>
+
+                                        </select>
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">State</label>
+                                        <select class="singleselect" id="StateId" name="StateId">
+                                            <option></option>
+
+                                        </select>
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">District</label>
+                                        <select class="singleselect" id="DistrictId" name="DistrictId">
+                                            <option></option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-end-date">City</label>
+                                        <select class="singleselect" id="CityId" name="CityId">
+                                            <option></option>
+
+                                        </select>
+                                    </div><!--end col-->
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        <label for="pro-start-date">Area</label>
+                                        <select class="singleselect" id="AreaId" name="AreaId">
+                                            <option></option>
+
+                                        </select>
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div><!--end form-group-->
+                            <!--end form-->
+                        </div><!--end col-->
+
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="col-lg-12 row" style="background-color: gainsboro;">
+                        <h4 class="mt-0 header-title">Address Information</h4>
+                        <div class="custom-control custom-checkbox" style="padding-left: 2.5rem;">
+                            <input type="checkbox" class="custom-control-input" id="customCheck6" data-parsley-multiple="groups" data-parsley-mincheck="2" value="0">
+                            <label class="custom-control-label" for="customCheck6">Same as Current Address</label>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 15px;">
+
+                        <div class="col-lg-6">
+                            <h4 class="mt-0 header-title">Current Address</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD" name="CUAdd1" value="@Model.CUAdd1" placeholder="Flat House No Building Company Appartment">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD2" name="CUAdd2" value="@Model.CUAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startCUADD3" name="CUAdd3" value="@Model.CUAdd3" placeholder="Addresss line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startCULandMark" name="CULandMark" value="@Model.CULandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startCUPinCode" oninput="numberOnly(this.id);" maxlength="6" name="CUPinCode" value="@Model.CUPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+
+
+                        </div><!--end col-->
+
+                        <div class="col-lg-6">
+
+                            @*<div class="form-check-inline my-2">*@
+                            <h4 class="mt-0 header-title">
+                                Parmanent Address
+
+                            </h4>
+                            @*<div class="custom-control custom-checkbox" style="padding-left: 2.5rem;">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck6" data-parsley-multiple="groups" data-parsley-mincheck="2" value="0">
+                                    <label class="custom-control-label" for="customCheck6">Same as Current Address</label>
+                                </div>*@
+                            @*</div>*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd1" name="PAAdd1" value="@Model.PAAdd1" placeholder="Flat House No Building Company Appartment">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd2" name="PAAdd2" value="@Model.PAAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="startPAAdd3" name="PAAdd3" value="@Model.PAAdd3" placeholder="Address Line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startPALandMark" name="PALandMark" value="@Model.PALandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="startPAPinCode" oninput="numberOnly(this.id);" maxlength="6" name="PAPinCode" value="@Model.PAPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div><!--end row-->
+                </div>
+                <div class="card-body">
+                    <h4 class="mt-0 header-title" style="background-color: gainsboro;">Company Details</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4 class="mt-0 header-title">Company Details</h4>
+                            <form>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" id="pro-start-date" name="CompanyContactNo" value="@(Model.CompanyContactNo!=0?Model.CompanyContactNo.ToString():"")" oninput="numberOnly(this.id);" maxlength="10" placeholder="Company Contact Number">
+                                        </div><!--end col-->
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control" id="pro-end-date" name="CompanyEmailId" value="@Model.CompanyEmailId" placeholder="Comapny Email">
+                                        </div><!--end col-->
+
+                                    </div><!--end row-->
+                                </div><!--end form-group-->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control GST" id="pro-start-date" name="GST" value="@Model.GST" maxlength="15" style="text-transform:uppercase" placeholder="GST No.">
+                                        </div><!--end col-->
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+
+                                            <input type="text" class="form-control TANNO" name="TANNo" id="pro-end-date" maxlength="10" style="text-transform:uppercase" placeholder="TAN No.">
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                    <div class="row mt-3">
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+                                            <div class="custom-control custom-checkbox">
+
+                                               
+                                                        <input type="checkbox" class="custom-control-input" id="chkGSTApplicable" data-parsley-multiple="groups" data-parsley-mincheck="2" @(Model.IsGST_Applicable==1?"checked":"")>
+
+                                                    
+                                                    <input type="hidden" id="hdnchkGSTApplicable" name="IsGST_Applicable" value="@Model.IsGST_Applicable">
+                                                    <label class="custom-control-label" for="chkGSTApplicable">Is GST Applicable</label>
+                                                
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-6 col-6 mb-2 mb-lg-0">
+                                            <div class="custom-control custom-checkbox">
+
+                                                   
+                                                        <input type="checkbox" class="custom-control-input" id="chkTDSApplicable" data-parsley-multiple="groups" data-parsley-mincheck="2" @(Model.IsTDS_Applicable==1?"checked":"")>
+                                                    <input type="hidden" id="hdnchkTDSApplicable" name="IsTDS_Applicable" value="@Model.IsTDS_Applicable">
+                                                    <label class="custom-control-label" for="chkTDSApplicable">Is TDS Applicable</label>
+                                                
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                    </div><!--end row-->
+
+
+
+                                </div><!--end form-group-->
+                            </form>  <!--end form-->
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+
+                            <h4 class="mt-0 header-title">
+                                Company Address
+
+                            </h4>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-start-date">First Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd1" name="COAdd1" value="@Model.COAdd1" placeholder="Flat House No Building Company Appartment">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd2" name="COAdd2" value="@Model.COAdd2" placeholder="Area,Street Sector Village">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-end-date">Middle Name</label>*@
+                                        <input type="text" class="form-control" id="COAdd3" name="COAdd3" value="@Model.COAdd3" placeholder="Address Line 3">
+                                    </div><!--end col-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-8 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="COLandMark" name="COLandMark" value="@Model.COLandMark" placeholder="Land Mark">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-4 col-6 mb-2 mb-lg-0">
+                                        @*<label for="pro-rate">Last Name</label>*@
+
+                                        <input type="text" class="form-control" id="COPinCode" oninput="numberOnly(this.id);" maxlength="6" name="COPinCode" value="@Model.COPinCode" placeholder="Pincode">
+                                    </div><!--end col-->
+
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="form-footer" style="padding: 20px;">
+                    <div class="pull-right" style="text-align: end;">
+                        @*<button type="button" class="btn btn-default" id="btnDocument_Back">Back</button>*@
+
+                        <button type="button" class="btn btn-primary" onclick="CheckValidateMobileNew();"> Save </button>
+                        <button type="submit" id="btnsubmit" style="display:none" class="btn btn-primary"> Save </button>
+
+                    </div>
+                </footer>
+            </div>
+
+        }
+
+        <!--end col-->
+
+
+    </div><!--end row-->
+</div><!--end general detail-->
+<!--</div>--><!--end tab-content-->
+<!--</div>--><!--end col-->
+<!--</div>--><!--end row-->
+<!--</div>-->
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crop Image Before Upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <img src="" id="sample_image" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="crop" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/filter/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/filter/masonry.pkgd.min.js"></script>
+    <script src="~/plugins/filter/jquery.magnific-popup.min.js"></script>
+    <script src="~/plugins/chartjs/chart.min.js"></script>
+    <script src="~/plugins/chartjs/roundedBar.min.js"></script>
+    @*<script src="https://unpkg.com/dropzone"></script>*@
+    <script src="https://unpkg.com/cropperjs"></script>
+    @*<script src="~/plugins/cropper/js/cropper.js"></script>*@
+
+    @*<script src="~/plugins/lightpick/lightpick.js"></script>*@
+    @*<script src="~/scripts/pages/jquery.profile.init.js"></script>*@
+    @*<script src="~/Content/jquery/Customjquery.js"></script>*@
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        var mobileExists = false;
+        $('.singleselect').select2();
+        BindCountry('Country');
+    if ('@countryId' != 0) {
+        var Id = '@countryId';
+
+        setTimeout(function () {
+            BindState('State', Id);
+        }, 500)
+
+
+    }
+    if ('@stateId' != 0) {
+        debugger;
+        var Id = '@stateId';
+        setTimeout(function () {
+               BindDistrict('District', '@countryId', Id);
+        }, 1000)
+
+
+    }
+    if ('@districtId' != 0) {
+        debugger;
+        var Id = '@districtId';
+        setTimeout(function () {
+             BindCity('City', '@countryId','@stateId', Id);
+        }, 1500)
+
+
+    }
+     if ('@cityId' != 0) {
+        debugger;
+         var Id = '@cityId';
+         setTimeout(function () {
+             BindArea('Area', '@countryId','@stateId','@districtId', Id);
+         }, 2000)
+
+
+    }
+        $("#CountryId").change(function () {
+            var Id = $(this).val();
+            BindState('State', Id);
+
+        });
+        $("#StateId").change(function () {
+            var Id = $(this).val();
+            var CountryId = $("#CountryId").val();
+
+                BindDistrict('District', CountryId, Id);
+
+        });
+        $("#DistrictId").change(function () {
+            var Id = $(this).val();
+            var CountryId = $("#CountryId").val();
+            var StateId = $("#StateId").val();
+
+                BindCity('City', CountryId, StateId, Id)
+
+
+        });
+        $("#CityId").change(function () {
+            debugger;
+            var Id = $(this).val();
+            var CountryId = $("#CountryId").val();
+            var StateId = $("#StateId").val();
+            var DistrictId = $("#DistrictId").val();
+
+              BindArea('Area', CountryId, StateId, DistrictId, Id)
+
+
+        });
+
+        $("#customCheck6").change(function () {
+            debugger;
+            var Id = $("#customCheck6").val();
+            if (Id == 0) {
+
+                var Add1 = $("#startCUADD").val();
+                var Add2 = $("#startCUADD2").val();
+                var Add3 = $("#startCUADD3").val();
+                var LandMark = $("#startCULandMark").val();
+                var PinCode = $("#startCUPinCode").val();
+
+                $("#customCheck6").val('1');
+                $("#startPAAdd1").val(Add1);
+                $("#startPAAdd2").val(Add2);
+                $("#startPAAdd3").val(Add3);
+                $("#startPALandMark").val(LandMark);
+                $("#startPAPinCode").val(PinCode);
+            }
+            else {
+                var Add1 = $("#endPAAdd1").val();
+                var Add2 = $("#endPAAdd2").val();
+                var Add3 = $("#endPAAdd3").val();
+                var LandMark = $("#endPALandMark").val();
+                var PinCode = $("#endPAPinCode").val();
+
+                $("#customCheck6").val('0');
+                $("#startPAAdd1").val(Add1);
+                $("#startPAAdd2").val(Add2);
+                $("#startPAAdd3").val(Add3);
+                $("#startPALandMark").val(LandMark);
+                $("#startPAPinCode").val(PinCode);
+            }
+
+        });
+
+        $(".TANNO").blur(function (e) {
+            var inputvalues = $(this).val().toUpperCase();
+            validateTANNoFormat(inputvalues);
+        });
+
+        $(".GST").blur(function (e) {
+            var inputvalues = $(this).val().toUpperCase();
+            validateGSTNoFormat(inputvalues);
+        });
+
+        $("#MobileNumber").blur(function (e) {
+            var mobileTxt = $('#MobileNumber').val();
+            var mobileDB = '@Model.MobileNumber';
+
+            CheckValidateMobile();
+        });
+
+        $('#chkGSTApplicable').click(function () {
+            var status = $("#chkGSTApplicable").is(':checked');
+            if (status) {
+                $('#hdnchkGSTApplicable').val(1);
+
+            } else {
+                $('#hdnchkGSTApplicable').val(0);
+            }
+            //IsGSTApplicable
+            //IsTDSApplicable
+        });
+
+        $('#chkTDSApplicable').click(function () {
+            var status = $("#chkTDSApplicable").is(':checked');
+            //alert(status);
+            if (status) {
+                $('#hdnchkTDSApplicable').val(1);
+            } else {
+                $('#hdnchkTDSApplicable').val(0);
+            }
+
+            //alert($('#hdnchkTDSApplicable').val());
+
+        });
+
+        function BindCountry(Type) {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select Country</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    Type: Type
+
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+                        if ('@countryId' == response.Data[i].Id) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+                    }
+                    $("#CountryId").select2("destroy");
+                    $("#CountryId").html(strHTML);
+                    $("#CountryId").select2();
+
+
+                }
+            });
+
+
+
+        }
+        function BindState(Type, CountryId) {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select State</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    Type: Type,
+                    CountryId: CountryId
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                     if ('@stateId' == response.Data[i].Id) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+
+                    }
+                    debugger;
+                    $("#StateId").select2("destroy");
+                    $("#StateId").html(strHTML);
+                    $("#StateId").select2();
+                    $("#DistrictId").select2("destroy");
+                    $("#DistrictId").html('');
+                    $("#DistrictId").select2();
+                    $("#CityId").select2("destroy");
+                    $("#CityId").html('');
+                    $("#CityId").select2();
+                    $("#AreaId").select2("destroy");
+                    $("#AreaId").html('');
+                    $("#AreaId").select2();
+                }
+            });
+
+
+
+        }
+        function BindDistrict(Type, CountryId,StateId) {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select District</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    Type: Type,
+                    CountryId: CountryId,
+                    StateId: StateId
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                          if ('@districtId' == response.Data[i].Id) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+
+
+
+                    }
+                    $("#DistrictId").select2("destroy");
+                    $("#DistrictId").html(strHTML);
+                    $("#DistrictId").select2();
+                    $("#CityId").select2("destroy");
+                    $("#CityId").html(" ");
+                    $("#CityId").select2();
+                    $("#AreaId").select2("destroy");
+                    $("#AreaId").html('');
+                    $("#AreaId").select2();
+                }
+            });
+
+
+
+        }
+        function BindCity(Type, CountryId, StateId,District) {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select City</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    Type: Type,
+                    CountryId: CountryId,
+                    StateId: StateId,
+                    DistrictId: District
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                        if ('@cityId' == response.Data[i].Id) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+
+                    }
+                    $("#CityId").select2("destroy");
+                    $("#CityId").html(strHTML);
+                    $("#CityId").select2();
+                    $("#AreaId").select2("destroy");
+                    $("#AreaId").html('');
+                    $("#AreaId").select2();
+
+                }
+            });
+
+
+
+        }
+        function BindArea(Type, CountryId, StateId, District,City) {
+
+            var strHTML = "";
+
+            strHTML += "<option value=''>Select Area</option>"
+
+
+            var Params = JSON.stringify(
+                {
+                    Type: Type,
+                    CountryId: CountryId,
+                    StateId: StateId,
+                    DistrictId: District,
+                    City: City
+                });
+
+
+
+
+            $.ajax({
+                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillGeographicalData",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    debugger;
+
+
+                    for (var i = 0; i < response.Data.length; i++) {
+
+                          if ('@Areaid' == response.Data[i].Id) {
+                            strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                        }
+                        else {
+                            strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                        }
+
+                    }
+                    $("#AreaId").select2("destroy");
+                    $("#AreaId").html(strHTML);
+                    $("#AreaId").select2();
+
+
+                }
+            });
+
+
+
+        }
+
+        function numberOnly(id) {
+            // Get element by id which passed as parameter within HTML element event
+            var element = document.getElementById(id);
+            // This removes any other character but numbers as entered by user
+            element.value = element.value.replace(/[^0-9]/gi, "");
+        }
+
+        function validateMobile() {
+            var status = true;
+            if ($("#MobileNumber").val().length > 0) {
+                if ($("#MobileNumber").val().substr(0, 1) == 0 || $("#MobileNumber").val().length < 10) {
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4>...!',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+
+                  // $("#MobileNumber").focus();
+                    status = false;
+                }
+                else {
+                    status = true;
+                }
+            }
+            else {
+                status = true;
+            }
+            return status;
+        }
+
+        function CheckValidateMobile() {
+
+            var mobileTxt = $('#MobileNumber').val();
+            var mobileDB = '@Model.MobileNumber';
+            if (validateMobile()) {
+                if (mobileTxt.length > 0 && (mobileDB !== mobileTxt)) {
+
+                    var validationRequestModel = {
+                        "Email": $("#MobileNumber").val(),
+                        "Password": $("#txtResetpassword").val(),
+                        "Type": 'UserCheck'
+                    }
+                    var d = JSON.stringify(validationRequestModel);
+                    console.log(d);
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        url: GetglobalDomain() + "/LoginSignup/ValidateUser", 
+                        dataType: 'json',
+                        type: 'Post',
+                        cache: false,
+                        data: JSON.stringify(validationRequestModel),
+                        success: function (data) {
+                            console.log('ajax');
+                            console.log(data);
+
+                            if (data.StatusCode == 1 && data.Message == "User Details Exists") {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'Mobile Number Already Registered...!',
+                                    allowOutsideClick: false,
+                                    showCloseButton: true,
+                                    showConfirmButton: false,
+                                });
+                                mobileExists = true;
+                                // $("#MobileNumber").focus()
+                            }
+
+                        },
+                        error: function (d) {
+                            console.log(d);
+                        }
+                    });
+                }
+            }
+        }
+
+        function CheckValidateMobileNew() {
+
+            if ($('.GST').val().length > 0 && $('.GST').val().length < 15)
+                validateGSTNoFormat($('.GST').val());
+            if ($('.TANNO').val() && $('.TANNO').val().length < 10)
+                validateTANNoFormat($('.TANNO').val());
+
+            if (!mobileExists) {
+                 $('#btnsubmit').click();
+            }
+        }
+
+        function validateTANNoFormat(TANNumber) {
+            TANNumber = TANNumber.toUpperCase();
+            if (TANNumber.length > 0) {
+                var regex = /[A-Z]{4}[0-9]{5}[A-Z]{1}$/;
+                if (!regex.test(TANNumber)) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Invalid TAN Number, Please Try Again',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    mobileExists = true
+                    return regex.test(TANNumber);
+                }
+                else {
+                    return regex.test(TANNumber);
+                }
+            }
+        }
+
+        function validateGSTNoFormat(GSTNumber) {
+            GSTNumber = GSTNumber.toUpperCase();
+            if (GSTNumber.length > 0) {
+                var regex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+                if (!regex.test(GSTNumber)) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Invalid GST Number, Please Try Again',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    mobileExists = true;
+                    return regex.test(GSTNumber);
+                }
+                else {
+                    return regex.test(GSTNumber);
+                }
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#divUsernamInitialsProfile').html('');
+            $('#divUsernamInitialsProfile').html('@userNameProfileImage');
+
+            var $modal = $('#modal');
+            var image = document.getElementById('sample_image');
+            var cropper;
+            $('#upload_image').change(function (event) {
+                var files = event.target.files;
+
+                var done = function (url) {
+                    image.src = url;
+                    $modal.modal('show');
+                };
+
+                if (files && files.length > 0) {
+                    reader = new FileReader();
+                    reader.onload = function (event) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+
+            $modal.on('shown.bs.modal', function () {
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 3,
+                    preview: '.preview'
+                });
+            }).on('hidden.bs.modal', function () {
+                cropper.destroy();
+                cropper = null;
+            });
+
+            $('#crop').click(function () {
+                debugger;
+                canvas = cropper.getCroppedCanvas({
+                    width: 400,
+                    height: 400
+                });
+
+                canvas.toBlob(function (blob) {
+                    url = URL.createObjectURL(blob);
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = function () {
+                        var base64data = reader.result;
+                        console.log(base64data);
+                        $.ajax({
+                            url: GetglobalDomain() + "/Home/upload",
+                            method: 'POST',
+                            data: { image: base64data },
+                            success: function (response) {
+                                console.log(response.Data);
+                                $("#ProfileImage").val(response.Data);
+                                $modal.modal('hide');
+                                $('#uploaded_image').attr('src', '@BaseURL' + response.Data);
+                                location.reload();
+                            },
+                            error: function (e) {
+                                console.log(e)
+                            }
+                        });
+                    };
+
+                });
+            });
+
+            $('#Companytype').change(function () {
+                var companyId = $(this).val();
+                //alert(companyId);
+                if (companyId > 0) {
+                    $('#tbldocumentList').css('display', 'block');
+
+                    $.ajax({
+                        url: GetglobalDomain() + "/Home/GetDocuments?companyId=" + companyId,
+                        type: 'POST',
+                        dataType: "text",
+                        success: function (response) {
+                            $("#tbldocumentList").html('');
+                            $("#tbldocumentList").html(response);
+                        }
+                    });
+                }
+                else {
+                    $('#Companytype').val(0);
+                    $('#tbldocumentList').css('display', 'none');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,266 @@
+﻿@using NewZapures_V2.Models
+@model BankMaster
+@{
+    ViewBag.Title = "Bank Configuration";
+    ViewBag.Create = "Add New Bank Details";
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+                <button onclick="location.href='@Url.Action("ViewDetails", "BankMaster")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SaveDetails", "BankMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @*<form>*@
+                    <div class="row">
+                        <div class="col-lg-12 row" style="margin-left: -12px;">
+
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Bank Name</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" id="txtBankName" oninput="charecterOnly(this.id);" autocomplete="off" placeholder="Bank Name" name="BankName" style="text-transform:uppercase">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">IFSC</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" id="txtIfsc" autocomplete="off" placeholder="IFSC" name="IFSC" maxlength="11" style="text-transform:uppercase">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Account Number</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="text" id="txtAccountNumber" autocomplete="off" placeholder="Account Number" maxlength="17" name="AccountNumber" style="text-transform:uppercase">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Account Holder Name</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" id="txtAccountHoldName" autocomplete="off" placeholder="AccountHolder Name" id="acName" name="AccountHolderName">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" id="txtMobileNumber" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" placeholder="Mobile Number" autocomplete="off">
+                            </div>
+                        </div>
+                        @*<div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Start Target</label>
+                        <div>
+                         <input class="form-control col-sm-12" type="date" name="StartTargetDate" autocomplete="off"></div>
+                        </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+
+                            <div>
+                                <span>&nbsp;</span>
+                                <button type="button" onclick="CheckValidation()" id="btnSave" class="form-control btn btn-gradient-primary float-right waves-effect waves-light">Save</button>
+                                <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*</form>*@
+                }
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div>
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.select2').select2();
+
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+
+        $('#txtMobileNumber').blur(function () {
+         
+            if ($("#txtMobileNumber").val().length > 0) {
+                if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+                    $("#txtMobileNumber").val('');
+                    // $('#txtUsername').val('');
+                }
+            }
+        })
+
+
+        $('#txtIfsc').blur(function () {
+            if ($("#txtIfsc").val().length > 0) {
+               var ifscCode = $("#txtIfsc").val().toUpperCase();
+                if (!validateIFSC(ifscCode)) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `"<b>${ifscCode}</b>" Is not valid, Please Enter Valid IFSC Code`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                    $("#txtIfsc").val('');
+                }                
+            }
+        })
+
+    });
+
+   
+
+
+    function validateIFSC(ifscCode) {
+     
+        var regex = /^[A-Za-z]{4}[a-zA-Z0-9]{7}$/;
+        return regex.test(ifscCode);
+    }
+
+    function CheckValidation() {
+        var status = true;
+        var Bankname = $('#txtBankName').val().trim();
+        var IFSC = $('#txtIfsc').val().trim();
+        var AccountNumber = $('#txtAccountNumber').val().trim();
+        var AccountHoldName = $('#txtAccountHoldName').val().trim();
+        var MobileNumber = $('#txtMobileNumber').val().trim();
+       
+        if (Bankname.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Bank Name Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtBankName').focus();
+            $('#txtBankName').val('');
+            status = false;
+        }
+        else if (IFSC.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'IFSC Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            $('#txtIfsc').focus();
+            $('#txtIfsc').val('');
+            status = false;
+        }
+        else if (AccountNumber.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Account Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtAccountNumber').focus();
+            $('#txtAccountNumber').val('');
+            status = false;
+        }
+        else if (AccountHoldName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Account Holder Name Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtAccountHoldName').focus();
+            $('#txtAccountHoldName').val('');
+            status = false;
+        }
+        else if (MobileNumber.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Mobile Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            $('#txtMobileNumber').focus();
+            $('#txtMobileNumber').val('');
+            status = false;
+        }
+
+        if (status) {
+            $('#btnsubmitDetails').click();
+        }
+    }
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+    function charecterOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^A-Za-z]/, "");
+    }
+</script>

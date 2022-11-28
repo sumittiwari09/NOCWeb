@@ -1,0 +1,116 @@
+﻿@using NewZapures_V2.Models
+@model List<Tree>
+@{
+    var partyid = ViewBag.partyId;
+    Layout = null;
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Tree Structure</title>
+
+    <link href="~/Content/tree/css/style.css" rel="stylesheet" />
+    <style>
+
+        .btn {
+            font-size: 19px;
+            padding: 8px;
+            background: #4dcfe0;
+            outline: none;
+            border: none;
+            border-radius: 8px;
+            margin: 19px;
+            margin-bottom: 10px;
+            
+        }
+    </style>
+ 
+    @*<script src="~/Content/tree/Treejs.js"></script>*@
+</head>
+<body>
+    <div style="width: max-content;">
+        <div class="row">
+            <a href="@Url.Action("Index", "Dashboard")" class="btn" >
+      Go To Homepage
+            </a>
+         
+            <div class="tree">
+                <ul>
+                    <li>
+                        @{
+                            foreach (var item in Model.Where(p => p.PartyId.Contains(@partyid)).ToList())
+                            {
+                                <a href="#"><img src="~/Content/tree/images/userimage.png" /><span>@item.FirstName</span></a>
+                                <ul>
+                                    @foreach (var Companyitem in Model.Where(p => p.ParentId.Contains(partyid)).ToList())
+                                    {
+
+                                        <li>
+                                            <a href="#"><img src="~/Content/tree/images/userimage.png" /><span data-id="@Companyitem.PartyId" class="show">Name:@Companyitem.FirstName<br />EmailId :@Companyitem.EmailId</span></a>
+                                            <ul id="inner_@Companyitem.ParentId">
+                                                @foreach (var Stockist in Model.Where(p => p.ParentId.Contains(Companyitem.PartyId)).ToList())
+                                                {
+                                                    <li>
+                                                        <a href="#"><img src="~/Content/tree/images/userimage.png" /><span data-id="@Stockist.PartyId" class="show">@Stockist.FirstName</span></a>
+                                                        <ul id="inner_@Stockist.ParentId">
+                                                            @foreach (var Distributer in Model.Where(p => p.ParentId.Contains(Stockist.PartyId)).ToList())
+                                                            {
+                                                                <li>
+                                                                    <a href="#"><img src="~/Content/tree/images/userimage.png" /><span data-id="@Distributer.PartyId" class="show">@Distributer.FirstName</span></a>
+                                                                    <ul id="inner_@Distributer.ParentId">
+                                                                        @foreach (var Retailer in Model.Where(p => p.ParentId.Contains(Distributer.PartyId)).ToList())
+                                                                        {
+                                                                            <li>
+                                                                                <a href="#"><img src="~/Content/tree/images/userimage.png" /><span data-id="@Retailer.PartyId" class="show">@Retailer.FirstName</span></a>
+                                                                            </li>
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        }
+                    </li>
+                </ul>
+                @*<ul>
+
+                <li>
+                    <a href="#"><img src="~/Content/tree/images/userimage.png" /><span>Child</span></a>
+                    <ul>
+                        <li>
+                            <a href="#"><img src="~/Content/tree/images/2.jpg" /><span>Grand Child</span></a>
+                            <ul>
+                                <li> <a href="#"><img src="~/Content/tree/images/3.jpg" /><span>Great Grand Child</span></a> </li>
+                                <li> <a href="#"><img src="~/Content/tree/images/4.jpg" /><span>Great Grand Child</span></a> </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><img src="~/Content/tree/images/5.jpg" /><span>Grand Child</span></a>
+                            <ul>
+                                <li> <a href="#"><img src="~/Content/tree/images/6.jpg" /><span>Great Grand Child</span></a> </li>
+                                <li> <a href="#"><img src="~/Content/tree/images/7.jpg" /><span>Great Grand Child</span></a> </li>
+                                <li> <a href="#"><img src="~/Content/tree/images/8.jpg" /><span>Great Grand Child</span></a> </li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><img src="~/Content/tree/images/9.jpg" /><span>Grand Child</span></a></li>
+                    </ul>
+                </li>
+            </ul>*@
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+

@@ -1,0 +1,165 @@
+﻿@using NewZapures_V2.Models
+@model CategoryMaster
+@{
+    ViewBag.Title = "Target Configuration";
+    ViewBag.Create = "Add New Target";
+
+    var Host = System.Configuration.ConfigurationManager.AppSettings["AdharTokenForVerification"];
+    var serviceImags = System.Configuration.ConfigurationManager.AppSettings["ServiceImages"];
+    var MobileOTPAPIKey = System.Configuration.ConfigurationManager.AppSettings["MobileOTPAPIKey"];
+    var MobileOTPSenderId = System.Configuration.ConfigurationManager.AppSettings["MobileOTPSenderId"];
+    var MobileOTPChennel = System.Configuration.ConfigurationManager.AppSettings["MobileOTPChennel"];
+
+    //var notificationData = (List<NotificationData>)ViewBag.NotificationAllowed;
+    var service = ViewBag.serviceDetailsList as List<Dropdown>;
+
+    // var templateId = (int)ViewBag.TemplateId;
+    // var rowId = (string)ViewBag.rowId;
+    //var htmlContent = (string)ViewBag.HTMLContent;
+    //var pageTitle = (string)ViewBag.PageTitle;
+
+}
+@section styles {
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+}
+<style>
+    .hideclass {
+        display: none;
+    }
+
+    .showclass {
+        display: block;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+                <button onclick="location.href='@Url.Action("ViewDetails", "Target")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SaveDetails", "Target", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @*<form>*@
+                        <div class="row">
+                            <div class="col-lg-12 row" style="margin-left: -12px;">
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Service</label>
+                                    <div>
+                                        <select class="select2" id="ddlCategoryId" name="CategoryId" required>
+                                            <option hidden>Select Any Service</option>
+                                            @{
+                                                if (service != null)
+                                                {
+                                                    foreach (var item in service)
+                                                    {
+                                                        <option value="@item.Id">@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Target Amount</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="number" autocomplete="off" placeholder="Target Amount" id="targetAmount" name="TargetAmount">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Target Type</label>
+                                    <div>
+                                        <select class="select2" name="TargetType">
+                                            <option value="0">Select Target Period</option>
+                                            <option value="M">Monthly</option>
+                                            <option value="D">Days</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Target Period</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="number" autocomplete="off" placeholder="Target Period" id="targetperiod" name="targetperiod">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Starting Date</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="date" name="StartingDate" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Start Target</label>
+                                <div>
+                                    <input class="form-control col-sm-12" type="date" name="StartTargetDate" autocomplete="off">
+
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+
+                                <div>
+                                    <span>&nbsp;</span>
+                                    <button type="submit" class="form-control btn btn-gradient-primary float-right waves-effect waves-light">Save</button>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    @*</form>*@
+                }
+                </div><!--end card-body-->
+        </div><!--end card-->
+    </div> <!-- end col -->
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#ddlCategoryId').select2();
+        //$('#TargetPeriod').select2();
+        $('.select2').select2();
+
+        var myDate = new Date();
+        let daysList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Aug', 'Oct', 'Nov', 'Dec'];
+        let date = myDate.getDate();
+        let month = monthsList[myDate.getMonth()];
+        let year = myDate.getFullYear();
+        let day = daysList[myDate.getDay()];
+        let today = `${date} ${month} ${year}, ${day}`;        
+        console.log(today);
+        console.log(now);
+    });
+
+   
+
+</script>

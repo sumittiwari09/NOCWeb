@@ -1,0 +1,203 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Manage Display Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var List = ViewBag.serviceDetailsList as List<Dropdown>;
+}
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+@*<script src="https://cdn.jsdelivr.net/npm/table-dragger@1.0.2/dist/table-dragger.min.js"></script>*@
+<script src="~/plugins/dragger/table-dragger.min.js"></script>
+<style>
+    .displayId {
+        height: 20px;
+        width: 20px;
+        background: green;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 12px;
+        color: white;
+        margin-left: 12px;
+        font-weight: 800;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Sub Menu Display Order</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-3">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px;">Select Menu</label>
+                            <div>
+
+                                <select class="form-control" id="ddlMenu">
+                                    @{
+                                        if (List != null)
+                                        {
+                                            foreach (var item in List)
+                                            {
+                                                <option value=@item.Id>@item.Text</option>
+                                            }
+                                        }
+
+                                    }
+
+                                </select>
+                                @*<input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Page Title" id="pageTitle" name="PageTitle">*@
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="col-lg-12">
+                        <table id="only-body-table" class="table table-bordered table-hover table-striped" style="margin-left:10px">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Display OrderID</th>
+                                    <th>SubMenu Name</th>
+                                    <th hidden>Submenu ID</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+</div> <!-- end row -->
+
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddlMenu").select2();
+
+        $("#ddlMenu").change(function () {
+
+            var menuID = $(this).val();
+            BindSubmenus(menuID)
+        });
+    })
+
+    function BindSubmenus(MenuId) {
+
+        var Model = {
+            MenuId: MenuId
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/ManageMenuOrder/GetSubmenus",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+
+                var submenuList = data.Data;
+                var tablebody = "";
+
+                submenuList.forEach(item => {
+                    tablebody += `<tr><td class='d-flex'> <div class="displayId">${item.Id}</div> </td><td> ${item.Text}</td><td hidden>${item.ID1}</td></tr>`;
+
+                    //console.log(item);
+                });
+                $('#only-body-table tbody').html('')
+                $('#only-body-table tbody').html(tablebody);
+
+                AddDragNDrop();
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+    }
+
+    function AddDragNDrop() {
+        var el = document.getElementById('only-body-table');
+
+        var dragger = tableDragger(el, {
+            mode: 'row',
+            dragHandler: '',
+            onlyBody: true,
+            animation: 300
+        });
+        dragger.on('drop', function (from, to, el, mode) {
+            var tableId = el.id;
+            //console.log(tableId)
+            var ids = "";
+            $('#' + tableId + ' > tbody  > tr ').each(function () {
+                var status = $(this).find('td:eq(2)').text()
+                if (ids == '') {
+                    ids = status
+                }
+                else {
+                    ids += ',' + status
+                }
+            });
+            //console.log(ids);
+            UpdateDisplayId(ids)
+        });
+
+    }
+
+
+    function UpdateDisplayId(submenuIds) {
+        var Model = {
+            DisplayorderID: submenuIds
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/ManageMenuOrder/UpdateDisplayID",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+
+                console.log(data);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+    }
+
+</script>

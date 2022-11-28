@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+    int Id = (int)@Page.Id;
+    int i = 0;
+}
+<style>
+    .table-body {
+        background: linear-gradient(90deg, #E8E8E8, #ffffff, #E8E8E8);
+        background-size: 200% 200%;
+        animation: Animation 3s linear infinite;
+    }
+
+        .table-body > tbody > tr:nth-of-type(even) .tblMatches {
+            background-color: #EEF5F9;
+        }
+</style>
+<link href="~/Content/scss/css/customer.css" rel="stylesheet" />
+
+<table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <thead>
+
+        <tr>
+            <th>NO</th>
+            <th>Service Provider</th>
+            <th>Operater Name</th>
+            <th colspan="2" style="text-align:center;"></th>
+
+        </tr>
+        <tr><th></th><th></th> <th></th><th>Commission</th></tr>
+    </thead>
+    <tbody class="table table-body">
+
+        <tr>
+            @{
+                while (Id > i)
+                {
+                    <td>
+                        <div class="animated-background">
+                            <div class="background-masker header-top"></div>
+                        </div>
+                    </td>
+                    i++;
+                }
+            }
+
+
+        </tr>
+
+        <tr>
+            @{
+                i = 0;
+                while (Id > i)
+                {
+                    <td>
+                        <div class="animated-background ">
+                            <div class="background-masker header-top"></div>
+                        </div>
+                    </td>
+                    i++;
+                }
+            }
+
+
+        </tr>
+
+        <tr>
+            @{
+                i = 0;
+                while (Id > i)
+                {
+                    <td>
+                        <div class="animated-background height10">
+                            <div class="background-masker header-top"></div>
+                        </div>
+                    </td>
+                    i++;
+                }
+            }
+
+
+        </tr>
+        <tr>
+            @{
+                i = 0;
+                while (Id > i)
+                {
+                    <td>
+                        <div class="animated-background height10">
+                            <div class="background-masker header-top"></div>
+                        </div>
+                    </td>
+                    i++;
+                }
+            }
+
+
+        </tr>
+        <tr>
+            @{
+                i = 0;
+                while (Id > i)
+                {
+                    <td>
+                        <div class="animated-background height10">
+                            <div class="background-masker header-top"></div>
+                        </div>
+                    </td>
+                    i++;
+                }
+            }
+
+
+        </tr>
+    </tbody>
+
+    </table>
