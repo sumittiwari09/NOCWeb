@@ -167,6 +167,7 @@
     <Compile Include="Controllers\User\LoginSignupController.cs" />
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\DocumentLibraryController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3605,6 +3606,7 @@
     <Content Include="Views\ServiceTypeDocument\Setting.cshtml" />
     <Content Include="Views\BasicDetails\CreateDetails.cshtml" />
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
