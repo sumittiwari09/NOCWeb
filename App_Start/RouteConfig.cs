@@ -54,6 +54,15 @@ defaults: new { controller = "Admin", action = "RateMaster" }
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Authentication", action = "login-alt", id = UrlParameter.Optional }
+
+
+
+
+
+
+
+
+
             );
         }
     }
