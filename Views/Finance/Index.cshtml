@@ -1,0 +1,405 @@
+﻿
+@{
+    ViewBag.Title = "Finance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<style type="text/css">
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Finance</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+
+<input type="hidden" id="hdf_longitudeData" />
+<input type="hidden" id="hdf_latitudeData" />
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">Finance Strength- Capital</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Firm Name</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter Firm Name" autocomplete="off" id="txtCapitalFirmName">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Worth</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="number" autocomplete="off" placeholder="Enter Approx Worth" id="txtCapitalWorth">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Remark If Any</label>
+                        <div>
+                            <textarea class="form-control col-sm-12" autocomplete="off" rows="2" style="resize:none" placeholder="Enter Remarks" id="txtCapitalRemark"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                        <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Worth</th>
+                                    <th>Remark</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsi">
+                <h4 class="mt-0 header-title float-left">Finance Strength - Income</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Income/Society/trust/company name" id="txtIncomeName" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Type</label>
+                        <div>
+                            <select class="form-control" id="txtIncomeType">
+                                <option value="0">Type</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Income</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Income" id="txtIncomeApprox" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Time Frame</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter Time Frame" id="txtIncomeTimeFrame" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                        <button class="btn"  id="btnIncomeAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <table class="table table-borderless table-striped table-hover" id="tblIncome">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Worth</th>
+                                    <th>Time Frame</th>
+                                    <th>Remark</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fop">
+                <h4 class="mt-0 header-title float-left">Finance Of Project</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Income/Society/trust/company name" id="txtProjectName" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Source</label>
+                        <div>
+                            <select class="form-control" id="ddlProjectSource">
+                                <option value="0">Source</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Fund</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Fund" id="txtProjectFund" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Remark</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter Remark" id="txtProjectRemark" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                        <button class="btn" id="btnProjectAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <table class="table table-borderless table-striped table-hover" id="tblProject">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Fund</th>
+                                    <th>Remark</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Expected Project Cost</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Expected Project Cost" id="txtExpectedCost" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6" style="display: flex;align-items: end;gap:10px">
+                        <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase "><i class="fa fa-save"></i> Save</button>
+                        <button class="btn" style="color:white!important;background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */;text-transform: uppercase"><i class="fa fa-save"></i> Continue</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        $("#ddlOperator").select2({
+            templateResult: formatState,
+            templateSelection: formatState
+        });
+        $("#ddlCircle").select2();
+
+        $('#ddlOperator').change(function () {
+            var operator = $("#ddlOperator option:selected").text();
+            var operatorval = parseInt($("#ddlOperator").val());
+            //getCommissions(operatorval);
+            //alert(operator)
+            //alert(operatorval)
+            if (operatorval <= 6) {
+                $('#divPlansForDTH').hide();
+                $('#divPlansForMobile').show();
+                $('#divCircle').show();
+                var selectedCircle = $('#ddlCircle').val();
+                if (selectedCircle != "0") {
+                    $('#loadingDiv').css('display', 'block');
+                }
+
+                $('#txtRechargeAmount').attr('readonly', 'true');
+                $('#lblmobile').html('Enter Mobile Number');
+                $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
+
+                $('#txtRechargeAmount').val('');
+                $('#txtplanDescription').html('');
+                $('#txtMobileNumer').val('');
+                $('#btnRecharge').attr('disabled', 'true');
+                //$('#divplanDiscription').hide();
+                getPlans(operator, selectedCircle);
+            }
+            if (operatorval >= 7) {
+                var operator = $("#ddlOperator option:selected").text();
+                $('#loadingDivnew').css('display', 'block');
+                $('#divPlansForDTH').show();
+                $('#divPlansForMobile').hide();
+                $('#PlansDivForDTH').show();
+                $('#txtRechargeAmount').removeAttr('readonly');
+                $('#lblmobile').html('Enter Subscriber ID');
+                $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
+                $('#divCircle').hide();
+
+                $('#txtRechargeAmount').val('');
+                $('#txtplanDescription').html('');
+                $('#txtMobileNumer').val('');
+                $('#btnRecharge').attr('disabled', 'true');
+                //$('#divplanDiscription').hide();
+                getPlansForDTH(operator);
+            }
+
+        });
+        $('#ddlCircle').change(function () {
+            var operator = $("#ddlOperator option:selected").text();
+            var circle = $(this).val();
+
+            $('#txtRechargeAmount').attr('readonly', 'true');
+            $('#lblmobile').html('Enter Mobile Number');
+            $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
+
+            $('#txtRechargeAmount').val('');
+            $('#txtplanDescription').html('');
+            $('#txtMobileNumer').val('');
+            $('#btnRecharge').attr('disabled', 'true');
+
+            if (operator == 'Select Operator') {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Operator Not Selected',
+                    text: 'Please select operator first...',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: true,
+                });
+            }
+            else if (circle == 0) {
+                $('#divPlansForMobile').hide();
+
+
+            }
+            else {
+                $('#loadingDiv').css('display', 'block');
+                $('#divPlansForMobile').show();
+                getPlans(operator, circle);
+            }
+
+
+        });
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    function showPosition(position) {
+        //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        //var data = {
+        //    lat:position.coords.latitude,
+        //    long:position.coords.longitude
+        //}
+
+        //console.log(JSON.stringify(data));
+
+        $('#hdf_longitudeData').val(position.coords.longitude)
+        $('#hdf_latitudeData').val(position.coords.latitude)
+
+        console.log('from inner');
+        console.log("lat : " + $('#hdf_longitudeData').val());
+        console.log("long : " + $('#hdf_latitudeData').val());
+    }
+
+</script>
+
+
+
