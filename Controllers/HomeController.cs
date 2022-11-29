@@ -22,7 +22,7 @@ namespace NewZapures_V2.Controllers
         // GET: Home
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         CommonFunction objcf = new CommonFunction();
-        public ResponseData ObjResponse = null;
+        public ResponseData ObjResponse = null; 
 
         //public ActionResult Profile(string Id= "R000001")
         //{
