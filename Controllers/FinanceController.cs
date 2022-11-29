@@ -10,9 +10,12 @@ namespace NewZapures_V2.Controllers
 
     public class FinanceController : Controller
     {
+
         //ResponseData objResponse;
         public ActionResult Index()
         {
+
+            string ok = "Virend";
             return View();
         }
     }
