@@ -15,7 +15,7 @@ namespace NewZapures_V2.Controllers
         {
 
 
-
+            string heelo = "";
             return View();
         }
     }
