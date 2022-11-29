@@ -12,6 +12,7 @@ namespace NewZapures_V2.Controllers
         //ResponseData objResponse;
         public ActionResult Index()
         {
+            
             return View();
         }
     }
