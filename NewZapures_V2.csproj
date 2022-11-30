@@ -135,7 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AEPSCommon.cs" />
+    <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="Controllers\AppsController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BankMasterController.cs" />
+    <Compile Include="Controllers\BasicDetailsController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Controllers\DashboardReportController.cs" />
     <Compile Include="Controllers\EcommerceController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\GeographicalController.cs" />
     <Compile Include="Controllers\HelpdeskController.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Models\AddGroupDepartment.cs" />
     <Compile Include="Models\AEPSTransaction.cs" />
     <Compile Include="Models\BankMaster.cs" />
+    <Compile Include="Models\BasicDetailsBO.cs" />
     <Compile Include="Models\CategoryMaster.cs" />
     <Compile Include="Models\ClientWalletRechage.cs" />
     <Compile Include="Models\Commission.cs" />
@@ -201,6 +204,7 @@
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
+    <Compile Include="Models\FinanceModalSave.cs" />
     <Compile Include="Models\ListRequest.cs" />
     <Compile Include="Models\MenuMasters.cs" />
     <Compile Include="Models\Notification.cs" />
@@ -3646,12 +3650,14 @@
     <Content Include="Views\DashboardReport\GetTargetvsActual.cshtml" />
     <Content Include="Views\Admin\CheckPendingRecharges.cshtml" />
     <Content Include="Views\Admin\ProviderWalletFill.cshtml" />
+    <Content Include="Views\BasicDetails\CreateDetails.cshtml" />
+    <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\Docs\" />
     <Folder Include="images\WalletRecipts\" />
-    <Folder Include="Models\AEPS\" />
     <Folder Include="Views\SwitchParty\" />
   </ItemGroup>
   <ItemGroup>

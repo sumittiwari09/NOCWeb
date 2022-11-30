@@ -151,7 +151,7 @@
                                     {
                                         foreach (var item in CollegeType)
                                         {
-                                            <option value=@item.Id>@item.Text</option>
+                                            <option value='@item.Id'>@item.Text</option>
                                         }
                                     }
 
@@ -164,13 +164,13 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Income</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Income" id="txtIncomeApprox" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Approx Income" id="txtIncomeApprox" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Time Frame</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Time Frame" id="txtIncomeTimeFrame" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Time Frame" id="txtIncomeTimeFrame" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-6" style="display: flex;align-items: end;">
@@ -227,7 +227,7 @@
                                     {
                                         foreach (var item in ProjectSource)
                                         {
-                                            <option value=@item.Id>@item.Text</option>
+                                            <option value='@item.Id'>@item.Text</option>
                                         }
                                     }
 
@@ -240,7 +240,7 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Fund</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Fund" id="txtProjectFund" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Approx Fund" id="txtProjectFund" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-3">
@@ -325,14 +325,23 @@
                 sRemark: cRemark,
             });
             clearData('Capital', true);
+            $('#txtCapitalFirmName').focus();
         }
-        capitalArr.forEach(function (item, index) {
-            capitalTableString += `<tr><td>${index + 1}</td><td>${item.sFirstName}</td><td>${item.dAproxWdth}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Capital','${item.sFirstName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+        if (capitalArr.length <= 0) {
+            capitalTableString = `<tr><td colspan="5" style="text-align: center;">No Data Available</td></tr>`
+            $("#tblCapital tbody").html('');
+            $("#tblCapital tbody").html(capitalTableString);
+        }
+        else {
 
-        });
+            capitalArr.forEach(function (item, index) {
+                capitalTableString += `<tr><td>${index + 1}</td><td>${item.sFirstName}</td><td>${item.dAproxWdth}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Capital','${item.sFirstName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+            });
 
-        $("#tblCapital tbody").html('');
-        $("#tblCapital tbody").html(capitalTableString);
+            $("#tblCapital tbody").html('');
+            $("#tblCapital tbody").html(capitalTableString);
+        }
+        /*  $('#btnCapitalAdd').html('<i class="fa fa-plus"></i> ADD');*/
 
         clearData('Capital', false);
     });
@@ -356,16 +365,23 @@
                 sTimeFrame: iTimeFrame,
             });
             clearData('Income', true);
-
+            $('#txtIncomeName').focus();
         }
-        incomeArr.forEach(function (item, index) {
-            incomeTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTypval}</td><td>${item.dAproxIncome}</td><td>${item.sTimeFrame}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Income','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+        if (incomeArr.length <= 0) {
+            incomeTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
 
-        });
+            $("#tblIncome tbody").html('');
+            $("#tblIncome tbody").html(incomeTableString);
+        }
+        else {
+            incomeArr.forEach(function (item, index) {
+                incomeTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTypval}</td><td>${item.dAproxIncome}</td><td>${item.sTimeFrame}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Income','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
 
-        $("#tblIncome tbody").html('');
-        $("#tblIncome tbody").html(incomeTableString);
+            });
 
+            $("#tblIncome tbody").html('');
+            $("#tblIncome tbody").html(incomeTableString);
+        }
         clearData('Income', false);
     });
 
@@ -382,23 +398,36 @@
 
             projectArr.push({
                 sName: pName,
+                iTypeValue: pSourceValue,
                 iTyp: pSource,
                 dAproxFund: pFund,
                 sRemark: pRemark,
                 ExpectedCost: pExpectedCost,
             });
             clearData('Project', true);
-
+            $('#txtProjectName').focus();
         }
-        projectArr.forEach(function (item, index) {
-            ProjectTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTyp}</td><td>${item.dAproxFund}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Project','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
-        });
 
-        $("#tblProject tbody").html('');
-        $("#tblProject tbody").html(ProjectTableString);
+        if (projectArr.length <= 0) {
+            ProjectTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
+
+            $("#tblProject tbody").html('');
+            $("#tblProject tbody").html(ProjectTableString);
+        }
+        else {
+
+            projectArr.forEach(function (item, index) {
+                ProjectTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTyp}</td><td>${item.dAproxFund}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Project','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+
+            });
+
+            $("#tblProject tbody").html('');
+            $("#tblProject tbody").html(ProjectTableString);
+        }
 
         clearData('Project', false);
     });
+
     $('#btnfinalSave').click(function () {
         var expectedCost = $('#txtExpectedCost').val();
 
@@ -458,25 +487,43 @@
 
             var d = JSON.stringify(financeModal);
             console.log(d);
-            //$.ajax({
-            //    headers: {
-            //        'Accept': 'application/json',
-            //        'Content-Type': 'application/json'
-            //    },
-            //    url: GetglobalDomain() + "/Finance/SaveDetails",
-            //    dataType: 'json',
-            //    type: 'Post',
-            //    cache: false,
-            //    data: JSON.stringify(validationRequestModel),
-            //    success: function (data) {
-            //        console.log('ajax');
-            //        console.log(data);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: "/Finance/SaveDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(financeModal),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
 
-            //    },
-            //    error: function (d) {
-            //        console.log(d);
-            //    }
-            //});
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Success...!',
+                            html: `${data.Message}`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+
+                    setTimeout(function () {
+                        location.reload();
+
+                    }, 2500);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
         }
 
     });
@@ -490,6 +537,7 @@
             alert("Geolocation is not supported by this browser.");
         }
     }
+
     function showPosition(position) {
         //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
         //var data = {
@@ -506,6 +554,7 @@
         console.log("lat : " + $('#hdf_longitudeData').val());
         console.log("long : " + $('#hdf_latitudeData').val());
     }
+
     function validation(typ) {
         var status = true;
         if (typ == 'Capital') {
@@ -676,6 +725,7 @@
             return status;
         }
     }
+
     function clearData(typ, IsSaved) {
         if (typ == 'Capital') {
 
@@ -821,6 +871,31 @@
             }
         }
     }
+
+    //function EditRow(typ, IdToEdit) {
+    //    alert(IdToEdit);
+    //    if (typ == 'Capital') {
+    //        $('#tblCapital > tbody  > tr:eq('+IdToEdit+')').each(function () {
+    //            var itemName = $(this).find('td:eq(1)').html();
+    //            var worth = $(this).find('td:eq(2)').html();
+    //            var remark = $(this).find('td:eq(3)').html();
+
+    //            clearData('Capital', false);
+    //            $('#txtCapitalFirmName').val(itemName);
+    //            $('#txtCapitalWorth').val(worth);
+    //            $('#txtCapitalRemark').val(remark);
+
+    //            $('#btnCapitalAdd').html('');
+    //            $('#btnCapitalAdd').html('<i class="mdi mdi-recycle"></i> UPDATE');
+
+    //            //capitalArr = capitalArr.filter(function (e) {
+    //            //    return e.sFirstName !== itemName
+    //            //})
+
+    //        });
+
+    //    }
+    //}
 
 
 </script>
