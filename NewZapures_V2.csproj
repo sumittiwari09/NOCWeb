@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -190,7 +191,6 @@
     <Compile Include="Helper\Recharge_Helper.cs" />
     <Compile Include="Models\AddGroupDepartment.cs" />
     <Compile Include="Models\AEPSTransaction.cs" />
-    <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="Models\BankMaster.cs" />
     <Compile Include="Models\CategoryMaster.cs" />
     <Compile Include="Models\ClientWalletRechage.cs" />
@@ -3651,6 +3651,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="images\Docs\" />
     <Folder Include="images\WalletRecipts\" />
+    <Folder Include="Models\AEPS\" />
     <Folder Include="Views\SwitchParty\" />
   </ItemGroup>
   <ItemGroup>
