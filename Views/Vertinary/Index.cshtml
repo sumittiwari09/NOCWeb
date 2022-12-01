@@ -25,7 +25,15 @@
         background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
 
-    .continue {
+    .btnPrev {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        text-transform: uppercase;
+    }
+
+    .btnNext {
         color: white !important;
         background: #00B4DB; /* fallback for old browsers */
         background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */
@@ -94,7 +102,7 @@
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Location</label>
                         <div style="display:flex">
                             <input class="form-control col-sm-9" type="text" autocomplete="off" placeholder="Location" id="txtLocation">
-                            <button class="btn col-sm-3 locationBTN"><i class="fas fa-map-marker-alt"></i> Pin Location</button>
+                            <button class="btn col-sm-3 locationBTN" id="pinMyLocation"><i class="fas fa-map-marker-alt"></i> Pin Location</button>
                         </div>
                     </div>
 
@@ -124,32 +132,34 @@
                     </div>
                 </div>
 
-                <div class="row mt-4">
-                    <div class="form-group col-lg-4">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Admin Name</label>
-                        <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Name Of Admin" id="txtAdminName">
+                <div id="divAdminBlock" style="display:block">
+                    <div class="row mt-4">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Admin Name</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Name Of Admin" id="txtAdminName">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Designation</label>
+                            <div>
+                                <select class="form-control" id="ddldesignation">
+                                    <option value="0">Select Designation</option>
+                                    <option value="001">HOD</option>
+                                    <option value="002">CFO</option>
+                                    <option value="003">Principal</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Designation</label>
-                        <div>
-                            <select class="form-control" id="ddldesignation">
-                                <option value="0">Select Designation</option>
-                                <option value="001">HOD</option>
-                                <option value="002">CFO</option>
-                                <option value="003">Principal</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Relation</label>
-                        <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Relation With Institute" id="txtRelation">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Relation</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Relation With Institute" id="txtRelation">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,8 +190,8 @@
 
                 <div class="row text-center">
                     <div class="form-group col-lg-12">
-                        <button class="btn col-sm-1 locationBTN" id="btnSave" style=""><i class="fas fa-save"></i> Save</button>
-                        <button class="btn continue"><i class="ti-loop"></i> Continue</button>
+                        <button class="btn col-sm-1 btnPrev" id="btnPrev"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button class="btn btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>
                     </div>
                 </div>
             </div>
@@ -193,12 +203,13 @@
 <script src="~/Content/select2/js/select2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
-<script>
+<script type="text/javascript">
+    var isAdmin = 1;
     $(document).ready(function () {
         $("#ddldesignation").select2();
     });
 
-    $('#btnSave').click(function () {
+    $('#btnSaveNext').click(function () {
         var status = validation();
         console.log(status);
 
@@ -270,6 +281,18 @@
         }
     });
 
+    $('input[name=customRadio]').change(function () {
+        var isadmin = $(this).val();
+
+        if (isadmin == 'yes') {
+            $('#divAdminBlock').css('display', 'block');
+            isAdmin = 1;
+        }
+        else {
+            $('#divAdminBlock').css('display', 'none');
+            isAdmin=0
+        }
+    })
 
     function validation() {
         var status = true;
@@ -280,7 +303,7 @@
         var mobile = $('#txtMobileNo').val();
         var location = $('#txtLocation').val();
         var email = $('#txtEmail').val();
-        var isBoard = $("input[name=customRadio]").val();
+        var isBoard = parseInt(isAdmin);
         var adminName = $('#txtAdminName').val();
         var designation = $('#ddldesignation').val();
         var relation = $('#txtRelation').val();
@@ -358,7 +381,11 @@
             })
             status = false;
         }
-        else if (adminName.length <= 0) {
+
+        else if (isBoard == 1)
+        {
+
+        if (adminName.length <= 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -394,6 +421,10 @@
             })
             status = false;
         }
+
+        }
+
+
         else if (remark.length <= 0) {
             Swal.fire({
                 position: 'center',
@@ -411,12 +442,48 @@
 
     }
 
-
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);
         // This removes any other character but numbers as entered by user
         element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    $('#pinMyLocation').click(function () {
+
+        getLocation();
+
+
+    });
+
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+       //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        var data = {
+            lat:position.coords.latitude,
+            long:position.coords.longitude
+        }
+
+        console.log(JSON.stringify(data));
+
+        $('#txtLocation').val(data.lat + '-' + data.long);
+        $('#txtLocation').attr('readonly', true);
+
+        //$('#hdf_longitudeData').val(position.coords.longitude)
+        //$('#hdf_latitudeData').val(position.coords.latitude)
+
+        //console.log('from inner');
+        //console.log("lat : " + $('#hdf_longitudeData').val());
+        //console.log("long : " + $('#hdf_latitudeData').val());
     }
 </script>
 
