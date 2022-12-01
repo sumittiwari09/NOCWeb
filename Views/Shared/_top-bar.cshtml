@@ -364,20 +364,19 @@
 
 
     $('#btnLogout').on('click', function () {
-        alert(click)
         $.ajax({
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            url: GetglobalDomain() + "/Home/SignOut1",
+            url: "/Home/SignOut1",
             dataType: 'json',
             type: 'Post',
             cache: false,
             data: '',
             success: function (data) {
 
-                var url = GetglobalDomain() + "/authentication/login-alt";
+                var url = "/authentication/login-alt";
                 window.location.href = url;
 
             },

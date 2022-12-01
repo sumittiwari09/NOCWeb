@@ -11,6 +11,7 @@ namespace NewZapures_V2.Models
         public List<FinanceCapital> financeCapitals { get; set; }
         public List<FinanceIncome> financeIncomes { get; set; }
         public List<FinanceProject> financeProjects { get; set; }
+        public decimal ProjectExpectedCost { get; set; }
     }
     public class FinanceCapital
     {
