@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 ﻿@using NewZapures_V2.Models
 @model BasicDetailsBO
+=======
+﻿@using NewZapures_V2.Models;
+>>>>>>> 57a6ff9607e5e12ed29219200bfc3ba2010729d5
 @{
     ViewBag.Title = "Finance";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var CollegeType = ZapurseCommonlist.GetCollegeType();
+    var ProjectSource = ZapurseCommonlist.GetProjectSource();
+
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
@@ -48,8 +56,6 @@
             color: white !important;
         }
 </style>
-
-
 
 <div class="row">
     <div class="col-sm-12">
@@ -141,9 +147,19 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Type</label>
                         <div>
-                            <select class="form-control" id="txtIncomeType">
-                                <option value="0">Type</option>
+                            <select class="form-control" id="ddlIncomeType">
+                                <option value="0">Select Type</option>
+                                @{
 
+                                    if (CollegeType != null)
+                                    {
+                                        foreach (var item in CollegeType)
+                                        {
+                                            <option value='@item.Id'>@item.Text</option>
+                                        }
+                                    }
+
+                                }
                             </select>
                         </div>
                     </div>
@@ -152,13 +168,13 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Income</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Income" id="txtIncomeApprox" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Approx Income" id="txtIncomeApprox" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Time Frame</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Time Frame" id="txtIncomeTimeFrame" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Time Frame" id="txtIncomeTimeFrame" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-6" style="display: flex;align-items: end;">
@@ -174,15 +190,14 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Type</th>
-                                    <th>Worth</th>
+                                    <th>Income</th>
                                     <th>Time Frame</th>
-                                    <th>Remark</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="7" style="text-align: center;">No Data Available</td>
+                                    <td colspan="6" style="text-align: center;">No Data Available</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -209,8 +224,18 @@
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Source</label>
                         <div>
                             <select class="form-control" id="ddlProjectSource">
-                                <option value="0">Source</option>
+                                <option value="0">Select Project Source</option>
+                                @{
 
+                                    if (ProjectSource != null)
+                                    {
+                                        foreach (var item in ProjectSource)
+                                        {
+                                            <option value='@item.Id'>@item.Text</option>
+                                        }
+                                    }
+
+                                }
                             </select>
                         </div>
                     </div>
@@ -219,7 +244,7 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Approx Fund</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" placeholder="Enter Approx Fund" id="txtProjectFund" autocomplete="off">
+                            <input class="form-control col-sm-12" type="number" placeholder="Enter Approx Fund" id="txtProjectFund" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-3">
@@ -239,7 +264,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
-                                    <th>Type</th>
+                                    <th>Source</th>
                                     <th>Fund</th>
                                     <th>Remark</th>
                                     <th>Action</th>
@@ -281,98 +306,232 @@
 <script src="~/Content/globalDomain.js"></script>
 <script>
 
+    var capitalArr = [];
+    var incomeArr = [];
+    var projectArr = [];
 
     $(document).ready(function () {
-        $("#ddlOperator").select2({
-            templateResult: formatState,
-            templateSelection: formatState
-        });
-        $("#ddlCircle").select2();
-
-        $('#ddlOperator').change(function () {
-            var operator = $("#ddlOperator option:selected").text();
-            var operatorval = parseInt($("#ddlOperator").val());
-            //getCommissions(operatorval);
-            //alert(operator)
-            //alert(operatorval)
-            if (operatorval <= 6) {
-                $('#divPlansForDTH').hide();
-                $('#divPlansForMobile').show();
-                $('#divCircle').show();
-                var selectedCircle = $('#ddlCircle').val();
-                if (selectedCircle != "0") {
-                    $('#loadingDiv').css('display', 'block');
-                }
-
-                $('#txtRechargeAmount').attr('readonly', 'true');
-                $('#lblmobile').html('Enter Mobile Number');
-                $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-                $('#txtRechargeAmount').val('');
-                $('#txtplanDescription').html('');
-                $('#txtMobileNumer').val('');
-                $('#btnRecharge').attr('disabled', 'true');
-                //$('#divplanDiscription').hide();
-                getPlans(operator, selectedCircle);
-            }
-            if (operatorval >= 7) {
-                var operator = $("#ddlOperator option:selected").text();
-                $('#loadingDivnew').css('display', 'block');
-                $('#divPlansForDTH').show();
-                $('#divPlansForMobile').hide();
-                $('#PlansDivForDTH').show();
-                $('#txtRechargeAmount').removeAttr('readonly');
-                $('#lblmobile').html('Enter Subscriber ID');
-                $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
-                $('#divCircle').hide();
-
-                $('#txtRechargeAmount').val('');
-                $('#txtplanDescription').html('');
-                $('#txtMobileNumer').val('');
-                $('#btnRecharge').attr('disabled', 'true');
-                //$('#divplanDiscription').hide();
-                getPlansForDTH(operator);
-            }
-
-        });
-        $('#ddlCircle').change(function () {
-            var operator = $("#ddlOperator option:selected").text();
-            var circle = $(this).val();
-
-            $('#txtRechargeAmount').attr('readonly', 'true');
-            $('#lblmobile').html('Enter Mobile Number');
-            $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-            $('#txtRechargeAmount').val('');
-            $('#txtplanDescription').html('');
-            $('#txtMobileNumer').val('');
-            $('#btnRecharge').attr('disabled', 'true');
-
-            if (operator == 'Select Operator') {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Operator Not Selected',
-                    text: 'Please select operator first...',
-                    allowOutsideClick: false,
-                    showCloseButton: false,
-                    showConfirmButton: true,
-                });
-            }
-            else if (circle == 0) {
-                $('#divPlansForMobile').hide();
-
-
-            }
-            else {
-                $('#loadingDiv').css('display', 'block');
-                $('#divPlansForMobile').show();
-                getPlans(operator, circle);
-            }
-
-
-        });
+        $("#ddlIncomeType").select2();
+        $("#ddlProjectSource").select2();
     });
+
+    $('#btnCapitalAdd').click(function () {
+        var capitalTableString = "";
+        var status = validation('Capital');
+        if (status) {
+            var cFirmname = $('#txtCapitalFirmName').val();
+            var cApproxworth = $('#txtCapitalWorth').val();
+            var cRemark = $('#txtCapitalRemark').val();
+
+            capitalArr.push({
+                sFirstName: cFirmname,
+                dAproxWdth: cApproxworth,
+                sRemark: cRemark,
+            });
+            clearData('Capital', true);
+            $('#txtCapitalFirmName').focus();
+        }
+        if (capitalArr.length <= 0) {
+            capitalTableString = `<tr><td colspan="5" style="text-align: center;">No Data Available</td></tr>`
+            $("#tblCapital tbody").html('');
+            $("#tblCapital tbody").html(capitalTableString);
+        }
+        else {
+
+            capitalArr.forEach(function (item, index) {
+                capitalTableString += `<tr><td>${index + 1}</td><td>${item.sFirstName}</td><td>${item.dAproxWdth}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Capital','${item.sFirstName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+            });
+
+            $("#tblCapital tbody").html('');
+            $("#tblCapital tbody").html(capitalTableString);
+        }
+        /*  $('#btnCapitalAdd').html('<i class="fa fa-plus"></i> ADD');*/
+
+        clearData('Capital', false);
+    });
+
+    $('#btnIncomeAdd').click(function () {
+        var incomeTableString = "";
+        var status = validation('Income');
+        if (status) {
+            var iName = $('#txtIncomeName').val();
+            var iTypeValue = $('#ddlIncomeType').val();
+            var iType = $('#ddlIncomeType option:selected').text();
+            var iApproxIncome = $('#txtIncomeApprox').val();
+            var iTimeFrame = $('#txtIncomeTimeFrame').val();
+
+
+            incomeArr.push({
+                sName: iName,
+                iTyp: iTypeValue,
+                iTypval: iType,
+                dAproxIncome: iApproxIncome,
+                sTimeFrame: iTimeFrame,
+            });
+            clearData('Income', true);
+            $('#txtIncomeName').focus();
+        }
+        if (incomeArr.length <= 0) {
+            incomeTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
+
+            $("#tblIncome tbody").html('');
+            $("#tblIncome tbody").html(incomeTableString);
+        }
+        else {
+            incomeArr.forEach(function (item, index) {
+                incomeTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTypval}</td><td>${item.dAproxIncome}</td><td>${item.sTimeFrame}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Income','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+
+            });
+
+            $("#tblIncome tbody").html('');
+            $("#tblIncome tbody").html(incomeTableString);
+        }
+        clearData('Income', false);
+    });
+
+    $('#btnProjectAdd').click(function () {
+        var ProjectTableString = "";
+        var status = validation('Project');
+        if (status) {
+            var pName = $('#txtProjectName').val();
+            var pSourceValue = $('#ddlProjectSource').val();
+            var pSource = $('#ddlProjectSource option:selected').text();
+            var pFund = $('#txtProjectFund').val();
+            var pRemark = $('#txtProjectRemark').val();
+            var pExpectedCost = $('#txtExpectedCost').val();
+
+            projectArr.push({
+                sName: pName,
+                iTypeValue: pSourceValue,
+                iTyp: pSource,
+                dAproxFund: pFund,
+                sRemark: pRemark,
+                ExpectedCost: pExpectedCost,
+            });
+            clearData('Project', true);
+            $('#txtProjectName').focus();
+        }
+
+        if (projectArr.length <= 0) {
+            ProjectTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
+
+            $("#tblProject tbody").html('');
+            $("#tblProject tbody").html(ProjectTableString);
+        }
+        else {
+
+            projectArr.forEach(function (item, index) {
+                ProjectTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTyp}</td><td>${item.dAproxFund}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Project','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+
+            });
+
+            $("#tblProject tbody").html('');
+            $("#tblProject tbody").html(ProjectTableString);
+        }
+
+        clearData('Project', false);
+    });
+
+    $('#btnfinalSave').click(function () {
+        var expectedCost = $('#txtExpectedCost').val();
+
+        if (capitalArr.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Finance Capital Have No Data, Kindly Add some...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+        }
+
+        else if (incomeArr.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Finance Income Have No Data, Kindly Add some...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+        }
+
+        else if (projectArr.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Finance Project Have No Data, Kindly Add some...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+        }
+        else if (expectedCost.length <= 0 || expectedCost == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Expected Cost...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+        }
+        else {
+            var financeModal = {
+                "type": "",
+                "financeCapitals": capitalArr,
+                "financeIncomes": incomeArr,
+                "financeProjects": projectArr,
+            }
+
+            var d = JSON.stringify(financeModal);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: "/Finance/SaveDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(financeModal),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Success...!',
+                            html: `${data.Message}`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+
+                    setTimeout(function () {
+                        location.reload();
+
+                    }, 2500);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+
+    });
+
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -382,6 +541,7 @@
             alert("Geolocation is not supported by this browser.");
         }
     }
+
     function showPosition(position) {
         //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
         //var data = {
@@ -399,7 +559,347 @@
         console.log("long : " + $('#hdf_latitudeData').val());
     }
 
+    function validation(typ) {
+        var status = true;
+        if (typ == 'Capital') {
+            var cFirmname = $('#txtCapitalFirmName').val();
+            var cApproxworth = $('#txtCapitalWorth').val();
+            var cRemark = $('#txtCapitalRemark').val();
+            if (cFirmname.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Firm Name...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (cApproxworth.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Approx worth...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (cRemark.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Remark...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            return status;
+        }
+        if (typ == 'Income') {
+            var iName = $('#txtIncomeName').val();
+            var iTypeValue = $('#ddlIncomeType').val();
+            var iType = $('#ddlIncomeType option:selected').text();
+            var iApproxIncome = $('#txtIncomeApprox').val();
+            var iTimeFrame = $('#txtIncomeTimeFrame').val();
+            if (iName.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Name...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (iTypeValue == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Select Type...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (iApproxIncome.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Approx Income...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (iTimeFrame.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Time Frame...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            return status;
+        }
+        if (typ == 'Project') {
+            var pName = $('#txtProjectName').val();
+            var pSourceValue = $('#ddlProjectSource').val();
+            var pSource = $('#ddlProjectSource option:selected').text();
+            var pFund = $('#txtProjectFund').val();
+            var pRemark = $('#txtProjectRemark').val();
+            /*  var pExpectedCost = $('#txtExpectedCost').val();*/
+            if (pName.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Project Name...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (pSourceValue == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Select Source...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (pFund.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Fund...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (pRemark.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error...!',
+                    html: 'Please Enter Remark...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            //else if (pExpectedCost.length <= 0) {
+            //    Swal.fire({
+            //        position: 'center',
+            //        icon: 'error',
+            //        title: 'Error...!',
+            //        html: 'Please Enter Expected Cost...!',
+            //        allowOutsideClick: false,
+            //        showCloseButton: true,
+            //        showConfirmButton: false,
+            //    })
+            //    status = false;
+            //}
+            return status;
+        }
+    }
+
+    function clearData(typ, IsSaved) {
+        if (typ == 'Capital') {
+
+            if (!IsSaved) {
+                if (!$('#txtCapitalFirmName').val().length > 0)
+                    $('#txtCapitalFirmName').val('');
+
+                if (!$('#txtCapitalWorth').val().length > 0)
+                    $('#txtCapitalWorth').val('');
+
+                if (!$('#txtCapitalRemark').val().length > 0)
+                    $('#txtCapitalRemark').val('');
+            }
+            else {
+                $('#txtCapitalFirmName').val('');
+                $('#txtCapitalWorth').val('');
+                $('#txtCapitalRemark').val('');
+            }
+        }
+
+        if (typ == 'Income') {
+            if (!IsSaved) {
+
+                if (!$('#txtIncomeName').val().length > 0)
+                    $('#txtIncomeName').val('');
+
+
+                $('#ddlIncomeType').select2('destroy');
+                $('#ddlIncomeType').val(0);
+                $('#ddlIncomeType').select2();
+
+
+                if (!$('#txtIncomeApprox').val().length > 0)
+                    $('#txtIncomeApprox').val('');
+
+                if (!$('#txtIncomeTimeFrame').val().length > 0)
+                    $('#txtIncomeTimeFrame').val('');
+
+            } else {
+                $('#txtIncomeName').val('');
+                $('#txtIncomeApprox').val('');
+                $('#txtIncomeTimeFrame').val('');
+            }
+        }
+
+        if (typ == 'Project') {
+            if (!IsSaved) {
+
+                if (!$('#txtProjectName').val().length > 0)
+                    $('#txtProjectName').val('');
+
+
+                $('#ddlProjectSource').select2('destroy');
+                $('#ddlProjectSource').val(0);
+                $('#ddlProjectSource').select2();
+
+
+                if (!$('#txtProjectFund').val().length > 0)
+                    $('#txtProjectFund').val('');
+
+                if (!$('#txtProjectRemark').val().length > 0)
+                    $('#txtProjectRemark').val('');
+
+                if (!$('#txtExpectedCost').val().length > 0)
+                    $('#txtExpectedCost').val('');
+
+            } else {
+                $('#txtProjectName').val('');
+                $('#txtProjectFund').val('');
+                $('#txtProjectRemark').val('');
+                $('#txtExpectedCost').val('');
+            }
+        }
+    }
+
+    function DeleteData(typ, idToremove) {
+        if (typ == 'Capital') {
+            var capitalTableString = "";
+            capitalArr = capitalArr.filter(function (e) {
+                return e.sFirstName !== idToremove
+            })
+            if (capitalArr.length <= 0) {
+                capitalTableString = `<tr><td colspan="5" style="text-align: center;">No Data Available</td></tr>`
+
+                $("#tblCapital tbody").html('');
+                $("#tblCapital tbody").html(capitalTableString);
+            }
+            else {
+
+                capitalArr.forEach(function (item, index) {
+                    capitalTableString += `<tr><td>${index + 1}</td><td>${item.sFirstName}</td><td>${item.dAproxWdth}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Capital','${item.sFirstName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+                });
+
+                $("#tblCapital tbody").html('');
+                $("#tblCapital tbody").html(capitalTableString);
+            }
+
+        }
+        if (typ == 'Income') {
+            var incomeTableString = "";
+            incomeArr = incomeArr.filter(function (e) {
+                return e.sName !== idToremove
+            })
+
+            if (incomeArr.length <= 0) {
+                incomeTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
+
+                $("#tblIncome tbody").html('');
+                $("#tblIncome tbody").html(incomeTableString);
+            }
+            else {
+                incomeArr.forEach(function (item, index) {
+                    incomeTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTypval}</td><td>${item.dAproxIncome}</td><td>${item.sTimeFrame}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Income','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+
+                });
+
+                $("#tblIncome tbody").html('');
+                $("#tblIncome tbody").html(incomeTableString);
+            }
+        }
+        if (typ == 'Project') {
+            var ProjectTableString = "";
+            projectArr = projectArr.filter(function (e) {
+                return e.sName !== idToremove
+            })
+
+
+            if (projectArr.length <= 0) {
+                ProjectTableString += `<tr><td colspan="6" style="text-align: center;">No Data Available</td></tr>`
+
+                $("#tblProject tbody").html('');
+                $("#tblProject tbody").html(ProjectTableString);
+            }
+            else {
+
+                projectArr.forEach(function (item, index) {
+                    ProjectTableString += `<tr><td>${index + 1}</td><td>${item.sName}</td><td>${item.iTyp}</td><td>${item.dAproxFund}</td><td>${item.sRemark}</td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('Project','${item.sName}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+
+                });
+
+                $("#tblProject tbody").html('');
+                $("#tblProject tbody").html(ProjectTableString);
+            }
+        }
+    }
+
+    //function EditRow(typ, IdToEdit) {
+    //    alert(IdToEdit);
+    //    if (typ == 'Capital') {
+    //        $('#tblCapital > tbody  > tr:eq('+IdToEdit+')').each(function () {
+    //            var itemName = $(this).find('td:eq(1)').html();
+    //            var worth = $(this).find('td:eq(2)').html();
+    //            var remark = $(this).find('td:eq(3)').html();
+
+    //            clearData('Capital', false);
+    //            $('#txtCapitalFirmName').val(itemName);
+    //            $('#txtCapitalWorth').val(worth);
+    //            $('#txtCapitalRemark').val(remark);
+
+    //            $('#btnCapitalAdd').html('');
+    //            $('#btnCapitalAdd').html('<i class="mdi mdi-recycle"></i> UPDATE');
+
+    //            //capitalArr = capitalArr.filter(function (e) {
+    //            //    return e.sFirstName !== itemName
+    //            //})
+
+    //        });
+
+    //    }
+    //}
+
+
 </script>
-
-
-
