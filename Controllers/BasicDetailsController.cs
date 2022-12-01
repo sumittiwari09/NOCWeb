@@ -7,14 +7,22 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static NewZapures_V2.Models.Common;
+using System.Web.Script.Serialization;
 
 namespace NewZapures_V2.Controllers
 {
     public class BasicDetailsController : Controller
     {
+        JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
+        CommonFunction objcf = new CommonFunction();
+        ResponseData objResponse;
         // GET: BasicDetails
         public ActionResult CreateDetails()
         {
+           var universityList = ZapurseCommonlist.GetUniversities();
+
+            ViewBag.universityCollection = universityList;  
             return View();
         }
         public ActionResult ShowDetails()
@@ -29,7 +37,7 @@ namespace NewZapures_V2.Controllers
             {
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
                 //party.ParentId = userdetailsSession.PartyId;
-                var json = JsonConvert.SerializeObject(trg);
+                var json = JsonConvert.SerializeObject(trg);                                                
                 var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/BasicDetailConfigure");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");

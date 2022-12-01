@@ -1,10 +1,10 @@
-﻿
+﻿@using NewZapures_V2.Models
+@model BasicDetailsBO
 @{
     ViewBag.Title = "Finance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 <style type="text/css">
     .table thead {
@@ -162,7 +162,7 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-6" style="display: flex;align-items: end;">
-                        <button class="btn"  id="btnIncomeAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                        <button class="btn" id="btnIncomeAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
 
                     </div>
                 </div>
