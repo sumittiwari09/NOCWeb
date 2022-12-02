@@ -1,0 +1,233 @@
+﻿@using NewZapures_V2.Models
+@model List<BENEFMST>
+@{
+    ViewBag.Title = "Transaction List";
+    List<BENTRANS> listTrans = new List<BENTRANS>();
+    if (ViewBag.BENTRANS != null)
+    {
+        listTrans = (List<BENTRANS>)ViewBag.BENTRANS;
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    @section styles{
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">*@
+    @*<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+    <style>
+        .margines {
+            margin-top: 15px !important;
+            margin-bottom: 15px !important;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+        }
+
+            .separator::before,
+            .separator::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #000;
+            }
+
+            .separator:not(:empty)::before {
+                margin-right: .25em;
+            }
+
+            .separator:not(:empty)::after {
+                margin-left: .25em;
+            }
+        .formclass {
+            border: double;
+            margin-top: 10px;
+            background-color: currentColor;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+
+            @*<div class="float-right">
+
+                    <ol class="breadcrumb">
+
+
+                        <li class="breadcrumb-item active">@ViewBag.Create</li>
+                    </ol>
+                </div>*@
+            <h4 class="page-title">Money Transfer</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row" id="SecondShow">
+   
+    <div class="col-lg-2" style="margin-top: -20px !important;">
+        <nav class="navbar navbar-light">
+            <div class="container-fluid">
+                @{
+                    if (!string.IsNullOrEmpty(ViewBag.MobileNo))
+                    {
+                        <a class="btn btn-primary col-lg-12 margines" id="BeneficiaryList" href="@Url.Action("MoneyTransfer", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fa-list"> Beneficiary List</i></a>
+                        <a class="btn btn-primary col-lg-12 margines" id="AddBeneficiary" href="@Url.Action("Addbeneficiary", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fa-plus"> Add Beneficiary</i></a>
+
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary col-lg-12 margines" id="DMT" href="@Url.Action("DMT", "Category")"><i class="fa fa-arrow-left">Back</i></a>
+
+                    }
+                }
+              
+            </div>
+
+        </nav>
+    </div>
+    <div class="col-lg-10" id="ShowUpdatediv">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Money Transfer/Transaction List</h4>
+            </div>
+           
+            <div class="card-body">
+                @using (Html.BeginForm("TransactionList", "Category", FormMethod.Post, new { @class = "formclass", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" name="iRmtMob" id="iRmtMob" value="@ViewBag.MobileNo" />
+                    <input type="hidden" name="MobileNo" id="MobileNo" value="@ViewBag.MobileNo" />
+                    <div class="form-group is-empty row" style="margin-left: 60px;margin: inherit;">
+                        <div class="col-md-3">
+                            <select class="singleselect" name="SBenNam" id="Beneficaryid">
+                                <option value="">Select</option>
+                                @{
+                                    foreach (var item in Model)
+                            {
+                                <option value="@item.sBenNam">@item.sBenNam</option>
+                            }
+                                }
+                            </select>
+                            <small id="msgshow" class="col-sm-12 control-label" style="color: white; text-align: unset;">Beneficiary Name</small>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="singleselect" name="Status" id="status">
+                                <option value="">Select Status</option>
+                                @{
+                                    <option value="Completed">Completed</option>
+                                    <option value="Failed">Failed</option>
+                                    @*foreach (var item in UnitType)
+            {
+                <option value="@item.Id">@item.text</option>
+            }*@
+                                }
+                            </select>
+                            <small id="msgshow" class="col-sm-12 control-label" style="color: white; text-align: unset;">Status</small>
+                        </div>
+                        <div class="col-md-2">
+                            @*@Html.TextBoxFor(model => model.Fromdate, new { @Value = Model.Fromdate, @style = "width:100%", type = "date" })*@
+                            @*@Html.TextBox("FromDate", Model.Fromdate.ToString(), "{0:yyyy-MM-dd}", new { @style = "width:100%", type = "date" })*@
+
+                            <input type="date" class="form-control" name="Fromdate" value="" id="FromDate" placeholder="From Date" />
+                            <small id="msgshow" class="col-sm-12 control-label" style="color: white; text-align: unset;">From Date</small>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" name="Todate" value="" id="ToDate" />
+                            <small id="msgshow" class="col-sm-12 control-label" style="color: white; text-align: unset;">To Date</small>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" id="searchid"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                }
+                <div class="separator">Search Transaction List</div>
+                <div class="col-md-12">
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Bank Name</th>
+                                <th>Transaction ID</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+
+                                <th>Date</th>
+                                <th>Status</th>
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody id="Updatediv">
+                            @foreach (var item in listTrans)
+                            {
+                                <tr>
+                                    <td>@item.sBenBankName</td>
+                                    <td>@item.sBenTransId</td>
+                                    <td>@item.SBenNam</td>
+                                    <td>@item.sTransAmt</td>
+                                    <td>@item.dtCrtDt</td>
+                                    <td>@item.sBenTransSta</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script type="text/javascript">
+        $(".singleselect").select2();
+  /*      ListOfTransaction();*/
+        //$("#searchid").click(function () {
+           
+        //    ListOfTransaction();
+
+        //});
+        //function ListOfTransaction() {
+        //    var iRmtMob = $("#MobileNo").val();
+        //    var SBenNam = $("#SBenNam").val();
+        //    var status = $("#status").val();
+        //    var Fromdate = $("#FromDate").val();
+        //    var Todate = $("#Todate").val();
+
+        //    var Params = JSON.stringify({ iRmtMob: iRmtMob, SBenNam: SBenNam, status: status, Fromdate: Fromdate, Todate: Todate });
+
+        //    $.ajax({
+        //        url: '/Category/SearchTransaction',
+        //        type: 'POST',
+        //        dataType: "text",
+        //        type: 'POST',
+        //        contentType: "application/json",
+        //        data: Params,
+        //        success: function (response) {
+        //            debugger;
+
+        //            $("#Updatediv").html(response);
+
+
+
+        //        }
+        //    });
+        //    return false;
+        //}
+    </script>
+}

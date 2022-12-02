@@ -1,0 +1,469 @@
+﻿@using NewZapures_V2.Models
+@model BENEFMST
+@{
+    ViewBag.Title = "TransferMoney";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var mob = ViewBag.MobileNo;
+}
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+@*<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+
+
+*@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">*@
+@*<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />*@
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+<style>
+    .margines {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+    }
+</style>
+<style>
+    .hidden {
+        display: none;
+    }
+
+    .control-label {
+        color: black;
+        font-weight: bold;
+    }
+
+    .language2 {
+        cursor: pointer;
+    }
+
+    .detail {
+        border-radius: 9px;
+        background: azure;
+        padding-top: 2px;
+        margin-top: 10px;
+    }
+
+    .AmountDetail {
+        margin-left: 10px;
+        margin-right: 10px;
+        text-align: center;
+        font-weight: bold;
+        background: azure;
+        cursor: pointer;
+    }
+
+    .blink {
+        font-weight: bold;
+        color: blue;
+        font-size: initial;
+        font-weight: bold;
+    }
+
+
+    .spinner1 {
+        /*display: inline-block;*/
+        opacity: 0;
+        /*max-width: 0;*/
+        /*-webkit-transition: opacity 0.25s, max-width 0.45s;
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s;*/ /* Duration fixed since we animate additional hidden width */
+    }
+
+    .has-spinner1.activeSpin {
+        cursor: progress;
+    }
+
+        .has-spinner1.activeSpin .spinner1 {
+            opacity: 1;
+            /*max-width: 50px;*/ /* More than it will ever come, notice that this affects on animation duration */
+        }
+</style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+
+
+            <h4 class="page-title">Money Transfer</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row" id="SecondShow">
+
+    <div class="col-lg-2" style="margin-top: -20px !important;">
+        <nav class="navbar navbar-light">
+            <div class="container-fluid">
+                <a class="btn btn-primary col-lg-12 margines" id="BeneficiaryList" href="@Url.Action("MoneyTransfer", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fa-list"> Beneficiary List</i></a>
+                @*<a class="btn btn-primary col-lg-12 margines" id="AddBeneficiary" href="@Url.Action("Addbeneficiary", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fa-plus"> Add Beneficiary</i></a>*@
+                <a class="btn btn-primary col-lg-12 margines" id="TransactionList" href="@Url.Action("TransactionList", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fa-list"> Transaction List</i></a>
+                @*<button class="btn btn-primary col-lg-12 margines" id="TransferMoney" onclick="TransferMoney()"><i class="fa fa-money-bill-alt"> Transfer Money</i></button>*@
+
+            </div>
+
+        </nav>
+    </div>
+    <div class="col-lg-10" id="ShowUpdatediv">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Money Transfer/Transfer Money </h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("TransferMoney", "Category", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+                {
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            @*<div class="form-group is-empty row">
+                                    <label for="nameInput" class="col-sm-3 my-1 control-label" >Select Beneficiary</label>
+                                    <div class="col-sm-6">
+                                        <select class="singleselect" id="Beneficiary" name="Beneficiary" style="text-align: center;border-radius: 10px;width: 100%;">
+                                            <option value="">Select Beneficiary</option>
+                                            @{
+                                                foreach (var item in Model)
+                                                {
+                                                    <option value="@item.iPK_BenefId">@item.sBenNam</option>
+                                                }
+                                            }
+
+
+
+
+                                        </select>
+                                    </div>
+                                </div>*@
+                            <div class="form-group is-empty row">
+                                <input type="hidden" id="MobileNo" value="@ViewBag.MobileNo" />
+                                <input type="hidden" id="sendedOTP" />
+                                <label for="nameInput" class="col-sm-12 my-1 control-label blink">Fund Transfer</label>
+                                <label for="nameInput" class="col-sm-3 control-label" style="font-weight: bold; margin-top: 16px;">Beneficiary Name:-</label>
+                                <input id="sBenNam" class="col-sm-9 detail" name="sBenNam" value="@Model.sBenNam" />
+                                <label for="nameInput" class="col-sm-3 control-label" style="font-weight: bold; margin-top: 16px;">Beneficiary Mobile:-</label>
+                                <input id="sBenMob" class="col-sm-9 detail" name="sBenMob" value="@Model.sBenMob" />
+                                <label for="nameInput" class="col-sm-3 control-label" style="font-weight: bold; margin-top: 16px;">Bank Name:-</label>
+                                <input id="sBenBankName" class="col-sm-9 detail" name="sBenBankName" value="@Model.sBenBankName" />
+                                <label for="nameInput" class="col-sm-3  control-label" style="font-weight: bold; margin-top: 16px;">IFSC:-</label>
+                                <input id="sBenIfsc" class="col-sm-9 detail" name="sBenIfsc" value="@Model.sBenIfsc" />
+                                <label for="nameInput" class="col-sm-3  control-label" style="font-weight: bold; margin-top: 16px;">Account No:-</label>
+                                <input id="sBenActNo" class="col-sm-9 detail" name="sBenActNo" value="@Model.sBenActNo" />
+                            </div>
+                            <div class="form-group is-empty row">
+                                <label for="nameInput" class="col-sm-12 my-1 control-label blink">Enter Amount(Minimum Amount is INR 100)</label>
+                                <input id="sAmount" class="col-sm-9" name="sAmount" value="0" style="border-inline: initial; border-block-start: initial; margin-left: 10px; font-weight: bold;" />
+                            </div>
+                            <div class="form-group is-empty row">
+                                <input id="s100" class="col-sm-2 detail AmountDetail" readonly value="100" />
+
+                                <input id="s500" class="col-sm-2 detail AmountDetail" readonly value="500" />
+                                <input id="s1000" class="col-sm-2 detail AmountDetail" readonly value="1000" />
+
+                                <input id="s2000" class="col-sm-2 detail AmountDetail" readonly value="2000" />
+                                <input id="s3000" class="col-sm-2 detail AmountDetail" readonly value="3000" />
+                            </div>
+                            <div class="form-group is-empty row hidden" id="OTPDIV">
+                                <input id="OTPNO" class="col-sm-12" name="OTPNO" value="" style="border-inline: initial; border-block-start: initial; margin-left: 10px; font-weight: bold;" placeholder="Enter OTP" />
+                                <label for="nameInput" class="col-sm-9 my-1 control-label" style="font-weight: bold; color: darkgrey; font-size: initial;">OTP send to mobile Number @mob.Substring(0, 2)-XXXXXXXX-@mob.Substring(8, 2);</label>
+
+                            </div>
+                            <div style="text-align:center;">
+                                <button class="btn btn-primary hidden" id="verifyamount">Verify and Transfer Money</button>
+                                <button class="btn btn-primary hidden" id="ResendOTP">Resend OTP</button>
+                                <button class="btn btn-primary" id="GenerateOTP">Generate OTP</button>
+                                <a class="btn btn-primary margines" href="@Url.Action("MoneyTransfer", "Category", new { MobileNo = ViewBag.MobileNo })"><i class="fa fancybox-close-small">Cancel</i></a>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <i class="fa fa-language"><span id="langchange2" class="language2">Hindi</span></i>
+                            <p class="hindi" style="color: blue; font-weight: bold;">
+                                निर्देश
+                            </p>
+                            @*<p class="hindi">
+                                    * सूची से लाभार्थी का चयन करें
+                                </p>*@
+                            <p class="hindi">
+                                * कृपया Beneficiary खाता विवरण अच्छी तरह से जांचें
+                            </p>
+                            <p class="hindi">
+                                * फंड ट्रांसफर करने योग्य राशि दर्ज करें या चुनें और लेनदेन के लिए आगे बढ़ें
+                            </p>
+                            <p class="hindi">
+                                * प्रेषक को एक ओटीपी प्राप्त होगा
+                            </p>
+                            <p class="hindi">
+                                * OTP दर्ज करें और फिर "सत्यापित करें और स्थानांतरित करें" पर क्लिक करें।
+                            </p>
+                            <p class="English" style="color: blue; font-weight: bold;">
+                                Instructions
+                            </p>
+                            @*<p class="English">
+                                    * Select Benficiary from list
+                                </p>*@
+                            <p class="English">
+                                * Please check the Beneficiary account details thoroughly
+                            </p>
+                            <p class="English">
+                                * Enter or Select Fund transferable amount and proceed for transaction
+                            </p>
+                            <p class="English">
+                                * Remitter will receive an OTP
+                            </p>
+                            <p class="English">
+                                * Enter the OTP then click on "Verify and Transfer"
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        (function blink() {
+            $('.blink').fadeOut(500).fadeIn(2000, blink);
+        })();
+        $(".singleselect").select2();
+        $(".hindi").css('display', 'none');
+        $("#langchange2").click(function () {
+            debugger;
+            var data = $(this).text();
+            if (data == 'Hindi') {
+                document.getElementById('langchange2').innerText = 'English';
+                $(".hindi").css('display', 'block');
+                $(".English").css('display', 'none');
+            }
+            else {
+                document.getElementById('langchange2').innerHTML = 'Hindi';
+                $(".hindi").css('display', 'none');
+                $(".English").css('display', 'block');
+            }
+
+        });
+        $('.AmountDetail').click(function () {
+            var amount = $(this).val();
+            $("#sAmount").val(amount);
+            $('.AmountDetail').css('background', 'azure');
+            $(this).css('background', 'green');
+        });
+        $("#sAmount").blur(function () {
+            var amount = $(this).val();
+
+            if (amount < 100 && amount > 0) {
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "Minimum Amount Is &#8377; 100",
+                    showConfirmButton: true,
+                })
+                $("#GenerateOTP").addClass('hidden');
+                $('.AmountDetail').css('background', 'azure');
+                $('#s' + amount).css('background', 'azure');
+                $('#s' + amount).css('color', 'black');
+            }
+            else {
+                $("#GenerateOTP").removeClass('hidden');
+                //$('.AmountDetail').css('background', 'azure');
+                //$('#s' + amount).css('background', 'green');
+                //$('#s' + amount).css('color', 'white');
+            }
+
+        });
+        $("#GenerateOTP").click(function () {
+
+            var h = '<span class="spinner1" style="font-size: 15px;padding: 0px 5px;"><i class="fa fa-spinner fa-pulse"></i> Generate OTP</span>'
+
+            $('#GenerateOTP').addClass('has-spinner1').addClass('activeSpin');
+
+            $('#GenerateOTP').html('');
+            $('#GenerateOTP').html(h);
+
+            debugger;
+            var amount = $("#sAmount").val();
+            $("#OTPDIV").addClass('hidden');
+            if (parseInt(amount) <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "Please Enter Amount",
+                    showConfirmButton: true,
+                })
+
+                $("#OTPDIV").addClass('hidden');
+                $("#verifyamount").addClass('hidden');
+                $("#ResendOTP").addClass('hidden');
+                $("#GenerateOTP").removeClass('hidden');
+
+                $('#GenerateOTP').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#GenerateOTP').html('')
+                $('#GenerateOTP').html('Generate OTP');
+
+            }
+            else {
+
+                SendOTPDMT('@mob','GenerateOTP','Generate OTP');
+                $("#OTPDIV").removeClass('hidden');
+                $("#verifyamount").removeClass('hidden');
+                $("#ResendOTP").removeClass('hidden');
+                $("#GenerateOTP").addClass('hidden');
+            }
+            return false;
+        });
+
+        $("#verifyamount").click(function () {
+
+
+            var h = '<span class="spinner1" style="font-size: 15px;padding: 0px 5px;"><i class="fa fa-spinner fa-pulse"></i> Verify and Transfer Money</span>'
+
+            $('#verifyamount').addClass('has-spinner1').addClass('activeSpin');
+
+            $('#verifyamount').html('');
+            $('#verifyamount').html(h);
+
+
+            var MsgOTP = $('#sendedOTP').val();
+            var enteredOTP = $('#OTPNO').val();
+
+            if (enteredOTP.length > 0) {
+
+                if (MsgOTP === enteredOTP) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: "Verified Successfully",
+                        showConfirmButton: true,
+                    });
+
+                    $('#verifyamount').removeClass('has-spinner1').removeClass('activeSpin');
+                    $('#verifyamount').html('')
+                    $('#verifyamount').html('Verify and Transfer Money');
+                }
+                else {
+                    $('#verifyamount').removeClass('has-spinner1').removeClass('activeSpin');
+                    $('#verifyamount').html('')
+                    $('#verifyamount').html('Verify and Transfer Money');
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: "OTP doesn`t mached",
+                        showConfirmButton: true,
+                    })
+                }
+            }
+            else {
+                $('#verifyamount').removeClass('has-spinner1').removeClass('activeSpin');
+                $('#verifyamount').html('')
+                $('#verifyamount').html('Verify and Transfer Money');
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "OTP Can`t be blank",
+                    showConfirmButton: true,
+                })
+            }
+
+
+            return false;
+        });
+
+        $("#ResendOTP").click(function () {
+            var h = '<span class="spinner1" style="font-size: 15px;padding: 0px 5px;"><i class="fa fa-spinner fa-pulse"></i> Resend OTP</span>'
+
+            $('#ResendOTP').addClass('has-spinner1').addClass('activeSpin');
+
+            $('#ResendOTP').html('');
+            $('#ResendOTP').html(h);
+
+
+            $('#OTPNO').val('');
+            $('#sendedOTP').val('');
+            SendOTPDMT('@mob','ResendOTP','Resend OTP');
+
+            return false;
+        });
+
+
+        function SendOTPDMT(MobileNumber,itemID,buttonMsg) {
+            var maskedMobile = MobileNumber.replace(/\d(?=\d{4})/g, "*");
+
+                //var mobileVerification = {
+                //    "ApiKey": MobileOTPAPIKey,
+                //    "senderID": MobileOTPSenderId,
+                //    "Chennel": MobileOTPChennel,
+                //    "mobile": mob,
+                //    "messageContent": 'Welcome to www.zapurse.com.Client Verification Use this OTP ##var## to register your Mobile Number.'
+                //}
+
+                var mobileVerification = {
+                    "mobile": MobileNumber,
+                    "messageContent": 'Welcome to ZAPURSE.DMT - Customer Verification.Use this OTP ##var## to register your Mobile Number.'
+                }
+
+                var d = JSON.stringify(mobileVerification);
+                console.table(d);
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/Category/DMTMobileOTP",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(mobileVerification),
+                    success: function (data) {
+                        console.log('ajax');
+                        console.log(data);
+                        if (data.Message == "Done") {
+
+                            $('#'+itemID).removeClass('has-spinner1').removeClass('activeSpin');
+                            $('#'+itemID).html('')
+                            $('#' + itemID).html(buttonMsg);
+
+
+                            $('#sendedOTP').val('');
+                            $('#sendedOTP').val(data.Data.OTP);
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                onOpen: function (toast) {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'OTP Sent to ' + maskedMobile
+                            })
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: data.Message,
+                                showConfirmButton: true,
+                            })
+                        }
+
+                    },
+                    error: function (d) {
+                        console.log(d);
+                        //alert("404. Please wait until the File is Loaded.");
+
+                    }
+                });
+
+        }
+    </script>
+}
