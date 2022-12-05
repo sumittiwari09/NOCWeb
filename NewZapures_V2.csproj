@@ -171,6 +171,8 @@
     <Compile Include="Controllers\IconController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageMenuOrderController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
+
     <Compile Include="Controllers\MapsController.cs" />
     <Compile Include="Controllers\MobileRechargeController.cs" />
     <Compile Include="Controllers\MyPaymentsController.cs" />
@@ -212,6 +214,7 @@
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
     <Compile Include="Models\ListRequest.cs" />
+    <Compile Include="Models\Master.cs" />
     <Compile Include="Models\MenuMasters.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Others\GetCommonResponseMessage_DMT.cs" />
@@ -2333,6 +2336,7 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\globalDomain.js" />
+    <Content Include="Content\loader.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -2412,6 +2416,7 @@
     <Content Include="images\cards\card-3.png" />
     <Content Include="images\cards\card-4.png" />
     <Content Include="images\cards\paypal.png" />
+    <Content Include="images\cccf04b7-d5be-4d27-852a-d5dfe66fef66.jfif" />
     <Content Include="images\close.png" />
     <Content Include="images\coins\btc.png" />
     <Content Include="images\coins\dash.png" />
@@ -2503,6 +2508,8 @@
     <Content Include="images\small\sm-1.jpg" />
     <Content Include="images\small\sm-2.jpg" />
     <Content Include="images\small\sm-3.jpg" />
+    <Content Include="images\Stopwatch.gif" />
+    <Content Include="images\testing.jpg" />
     <Content Include="images\user-4.jpg" />
     <Content Include="images\users\dr-1.jpg" />
     <Content Include="images\users\dr-2.jpg" />
@@ -2721,6 +2728,12 @@
     <Content Include="plugins\fullcalendar\packages\luxon\main.min.js" />
     <Content Include="plugins\fullcalendar\packages\luxon\package.json" />
     <Content Include="plugins\fullcalendar\packages\luxon\README.md" />
+    <Content Include="plugins\pace\pace-theme-center-atom.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-circle.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-radar.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-simple.tmpl.css" />
+    <Content Include="plugins\pace\pace.min.js" />
+
     <Content Include="Scripts\aeps.js" />
     <Content Include="Scripts\pages\jquery.agents.init.js" />
     <Content Include="Scripts\pages\jquery.analytics_customers.init.js" />
@@ -3662,7 +3675,13 @@
     <Content Include="Views\BasicDetails\CreateDetails.cshtml" />
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
+
+    <Content Include="Views\Master\DepartmentMapping.cshtml" />
+    <Content Include="Views\Master\ParameterCategoryMapping.cshtml" />
+    <Content Include="Views\Master\_AddParameterCategoryMapping.cshtml" />
+    <Content Include="Views\Master\_InsertPerametertable.cshtml" />
     <Content Include="Views\Vertinary\Index.cshtml" />
+
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

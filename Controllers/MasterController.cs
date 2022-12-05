@@ -224,7 +224,7 @@ namespace NewZapures_V2.Controllers
             IRestResponse response2 = client2.Execute(request2);
             if (response2.StatusCode.ToString() == "OK")
             {
-                 ServiceTypeDocumentData objResponseData = JsonConvert.DeserializeObject<ServiceTypeDocumentData>(response2.Content);
+                ServiceTypeDocumentData objResponseData = JsonConvert.DeserializeObject<ServiceTypeDocumentData>(response2.Content);
                 if (objResponseData.ResponseCode == "001")
                 {
                     return new JsonResult
