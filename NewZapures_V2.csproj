@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
+    <Compile Include="Models\LandDetailsBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
     <Compile Include="Models\ListRequest.cs" />
@@ -2383,6 +2385,7 @@
     <Content Include="images\404.png" />
     <Content Include="images\500.png" />
     <Content Include="images\60337402_2259898487424112_4875445474812755968_n.jpg" />
+    <Content Include="images\atishay.png" />
     <Content Include="images\BankIcon\Aadhaar_Logo.svg_.png" />
     <Content Include="images\BankIcon\Allahabad_Bank.png" />
     <Content Include="images\BankIcon\Allahabad_UP_Gramin_Bank.png" />
@@ -2452,6 +2455,8 @@
     <Content Include="images\MobileOperators\VI.png" />
     <Content Include="images\MobileOperators\Videocon.png" />
     <Content Include="images\MobileOperators\Vodafone.png" />
+    <Content Include="images\NOCIMAGE.png" />
+    <Content Include="images\NOCIMAGE1.jpeg" />
     <Content Include="images\open.png" />
     <Content Include="images\pattern.png" />
     <Content Include="images\pattern2.png" />
@@ -3658,6 +3663,7 @@
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
     <Content Include="Views\Vertinary\Index.cshtml" />
+    <Content Include="Views\LandBuildingInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

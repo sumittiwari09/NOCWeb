@@ -653,7 +653,6 @@ function changeIcon(sender) {
 
 function validateform(item) {
     //debugger;
-
     validate = true;
     var validate_inputs = document.querySelectorAll(".main.active .input-text .input-div input");
     validate_inputs.forEach(function (input_valid) {
@@ -772,19 +771,13 @@ function GetHardewareList(item) {
 }
 
 function BindCheckoutData() {
-
     var serviceTable = "";
     var hardwareTable = "";
-
     var totalServicePrice = 0;
     var totalHardwarePrice = 0;
-
     var totalGSTPrice = 0;
 
-
-
     $("#ServiceCheckout").html('');
-
     serviceTable = "<table class='table table-hover table-responsive' id='tableServices'><tr><th style='display:none'>Service Id</th><th>Service Name</th><th>Price</th><th>GST Amount</th><th>Action</th></tr>"
 
     serviceList.forEach(function (service) {
