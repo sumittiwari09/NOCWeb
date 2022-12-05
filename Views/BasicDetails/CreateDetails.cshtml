@@ -1,246 +1,331 @@
 ﻿@using NewZapures_V2.Models
-@model BankMaster
+@model BasicDetailsBO
 @{
     ViewBag.Title = "Basic Information";
-    ViewBag.Create = "Add New Basic Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var university = ViewBag.universityCollection as List<Dropdown>;
 
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/fontawesome.min.css">
-<style>
-    .right-form {
-        margin: 70px 0px;
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<style type="text/css">
+    .table thead {
+        background-color: #646d91 !important;
     }
 
-    div#collage input, #demo select {
-        width: 100%;
-        padding: 5px 6px;
-        border: 2px solid #7a7a7a;
-        border-radius: 1px;
+    .table th {
+        color: #ffffff !important;
     }
 
-    .basic-info h2, .address-head h2 {
-        font-size: 22px;
-        margin: 0px 0px 15px 15px;
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
     }
 
-    .cmn-brdr {
-        border: 2px solid #323131;
-        padding: 20px 10px;
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
     }
 
-    .form-group.name.blue-btn input {
-        background: #0954b9;
-        color: #fff;
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
     }
 
-    .form-group.name.red-btn input {
-        background: #dc3939;
-        color: #ffffff;
-    }
-
-    input[type="date"] {
-        width: 100%;
-        height: 38px;
-    }
-
-    .land {
-        margin: 10px;
-    }
-
-    .paymentt label {
-        display: inline-block;
-    }
-
-    .pymnts-two input {
-        width: auto !important;
-    }
-
-    .land h3 {
-        font-size: 16px;
-    }
-
-    .form-group.pymnts-two .institut {
-        margin: 10px 0px 0px 0px;
-    }
-
-    .remv-mrg {
-        margin-bottom: 0px;
-        line-height: 35px;
-    }
-
-    .address-head, .basic-info {
-        background: #9bc4e7;
-        width: 100%;
-        margin: 10px 5px 10px 5px;
-    }
-
-        .basic-info h2, .address-head h2 {
-            font-size: 22px;
-            margin: 10px 0px 15px 15px;
+        .fop h4 {
+            color: white !important;
         }
 </style>
+
+
+
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Zapures</li>
-                    <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                    <li class="breadcrumb-item">NOC</li>
+                    @*<li class="breadcrumb-item">Master</li>*@
+                    <li class="breadcrumb-item active">Basic Information</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
+
+
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
-                <button onclick="location.href='@Url.Action("ShowDetails", "BasicDetails")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fas fa-angle-left mr-2"></i>Back To List</button>
+            <div class="card-header fsi">
+                <h4 class="mt-0 header-title float-left">Basic Information</h4>
             </div>
             <div class="card-body">
                 @using (Html.BeginForm("SaveDetails", "BasicDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div class="row">
-
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-                                <div id="collage" class="col-lg-4 ">
-                                    <div class="name">                                        
-                                        <input class="form-control col-sm-12" type="text" id="txtMobileNumber" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" placeholder="Mobile Number" autocomplete="off">
-                                    </div>
-                                </div>
-                                <div id="collage" class="col-lg-4">
-                                    <div class="name">
-                                        <input type="email" placeholder="Email-Address">
-                                    </div>
-                                </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" id="txtCollegeName" name="CollegeName" autocomplete="off">
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Divison --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Sub Division --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">UniverSity</label>
+                            <div>
+                                <select class="form-control" id="txtUniverSity" name="UniverSity">
+                                    <option value="">--UniverSity --</option>
+                                    @{
+                                        if (university != null)
+                                        {
+                                            foreach (var item in university)
+                                            {
+                                                <option value="@item.Id">@item.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--District --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Tehsil --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" id="txtMobileNumber" name="MobileNumber" autocomplete="off">
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Parliament Area --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Assemble Area --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off">
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--City Town Village --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Urban / Rural --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Division</label>
+                            <div>
+                                <select class="form-control" id="txtdistrict" name="Division">
+                                    <option value="">--Divison --</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group row">
-                                <div id="demo" class="col-lg-4">
-                                    <select class="form-control m-b servicetype" id="district" name="district" required="">
-                                        <option value="">--Panchayat Simiti --</option>
-                                        <option value="sub">demo 1</option>
-                                        <option value="sub">demo 2</option>
-                                        <option value="sub">demo 3</option>
-                                    </select>
-                                </div>
-                                <div id="collage" class="col-lg-4">
-                                    <div class="form-group name">
-                                        <input type="text" placeholder="Website URL">
-                                    </div>
-                                </div>
-
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Sub Division</label>
+                            <div>
+                                <select class="form-control" id="txtdistrict" name="District">
+                                    <option value="">--Sub Divison --</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District</label>
+                            <div>
+                                <select class="form-control" id="txtdistrict" name="District">
+                                    <option value="">--District--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil</label>
+                            <div>
+                                <select class="form-control" id="txttehsil" name="Tehsil">
+                                    <option value="">--Sub Divison --</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Parliment Area</label>
+                            <div>
+                                <select class="form-control" id="txtParlimentArea" name="ParliamentArea">
+                                    <option value="">--Parliament Area--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Assemble Area</label>
+                            <div>
+                                <select class="form-control" id="txtAssembleArea" name="AssembleArea">
+                                    <option value="">--Assemble Area--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City Town Village</label>
+                            <div>
+                                <select class="form-control" id="txtCityTownVillage" name="CityTownVillage">
+                                    <option value="">--City Town Village--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Urban/Rural</label>
+                            <div>
+                                <select class="form-control" id="txtUrbanRural" name="UrbanRural">
+                                    <option value="">--Urban Rural--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Panchayat Simiti</label>
+                            <div>
+                                <select class="form-control" id="txtPanchayatSimiti" name="PanchayatSimiti" required="required">
+                                    <option value="">--Panchayat Simiti--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website URL</label>
+                            <div>
+                                <input type="text" class="form-control" name="Websiteurl" placeholder="Website URL" id="txtWebsiteurl" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="card-header fsi">
+                        <h4 class="header-title">Permanent Address</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line1</label>
+                            <div>
+                                <input type="text" class="form-control" name="AddressLine1" id="txtAddressLine1" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line2</label>
+                            <div>
+                                <input type="text" class="form-control" name="AddressLine2" id="txtAddressLine2" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header fsi">
+                        <h4 class="header-title">Track Geo Location</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Latitude </label>
+                            <div>
+                                <input type="text" class="form-control" name="Latitudedd" id="txtLatitude" autocomplete="off" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Longituted</label>
+                            <div>
+                                <input type="text" class="form-control" name="Longitudedd" id="txtLongitude" autocomplete="off" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsi">
+                        <h4 class="header-title">Additional Contact</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                            <div>
+                                <input type="text" class="form-control" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">LandLine Number</label>
+                            <div>
+                                <input type="text" class="form-control" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6" style="text-align:right">
+                            <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                            <button class="btn" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
+                            @*<button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>*@
+                            <button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>
+
+                        </div>
                     </div>
                 }
-            </div><!--end card-body-->
-        </div><!--end card-->
-    </div> <!-- end col -->
+            </div>
+        </div>
+    </div>
+
+
 </div>
+
+
 <script src="~/Content/jquery/jquery.js"></script>
 <script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/js/all.min.js"></script>
+<script>
 
-<script type="text/javascript">
+
     $(document).ready(function () {
-        $('.select2').select2();
-
+        getLocation()
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
         if (isuserExists == 1 && message.length> 0) {
@@ -265,8 +350,97 @@
                 });
         }
 
-        $('#txtMobileNumber').blur(function () {
+        //$("#ddlOperator").select2({
+        //    templateResult: formatState,
+        //    templateSelection: formatState
+        //});
+        $("#ddlUniverSity").select2();
 
+        //$('#ddlOperator').change(function () {
+        //    var operator = $("#ddlOperator option:selected").text();
+        //    var operatorval = parseInt($("#ddlOperator").val());
+        //    //getCommissions(operatorval);
+        //    //alert(operator)
+        //    //alert(operatorval)
+        //    if (operatorval <= 6) {
+        //        $('#divPlansForDTH').hide();
+        //        $('#divPlansForMobile').show();
+        //        $('#divCircle').show();
+        //        var selectedCircle = $('#ddlCircle').val();
+        //        if (selectedCircle != "0") {
+        //            $('#loadingDiv').css('display', 'block');
+        //        }
+
+        //        $('#txtRechargeAmount').attr('readonly', 'true');
+        //        $('#lblmobile').html('Enter Mobile Number');
+        //        $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
+
+        //        $('#txtRechargeAmount').val('');
+        //        $('#txtplanDescription').html('');
+        //        $('#txtMobileNumer').val('');
+        //        $('#btnRecharge').attr('disabled', 'true');
+        //        //$('#divplanDiscription').hide();
+        //        getPlans(operator, selectedCircle);
+        //    }
+        //    if (operatorval >= 7) {
+        //        var operator = $("#ddlOperator option:selected").text();
+        //        $('#loadingDivnew').css('display', 'block');
+        //        $('#divPlansForDTH').show();
+        //        $('#divPlansForMobile').hide();
+        //        $('#PlansDivForDTH').show();
+        //        $('#txtRechargeAmount').removeAttr('readonly');
+        //        $('#lblmobile').html('Enter Subscriber ID');
+        //        $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
+        //        $('#divCircle').hide();
+
+        //        $('#txtRechargeAmount').val('');
+        //        $('#txtplanDescription').html('');
+        //        $('#txtMobileNumer').val('');
+        //        $('#btnRecharge').attr('disabled', 'true');
+        //        //$('#divplanDiscription').hide();
+        //        getPlansForDTH(operator);
+        //    }
+
+        //});
+        //$('#ddlCircle').change(function () {
+        //    var operator = $("#ddlOperator option:selected").text();
+        //    var circle = $(this).val();
+
+        //    $('#txtRechargeAmount').attr('readonly', 'true');
+        //    $('#lblmobile').html('Enter Mobile Number');
+        //    $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
+
+        //    $('#txtRechargeAmount').val('');
+        //    $('#txtplanDescription').html('');
+        //    $('#txtMobileNumer').val('');
+        //    $('#btnRecharge').attr('disabled', 'true');
+
+        //    if (operator == 'Select Operator') {
+        //        Swal.fire({
+        //            position: 'center',
+        //            icon: 'error',
+        //            title: 'Operator Not Selected',
+        //            text: 'Please select operator first...',
+        //            allowOutsideClick: false,
+        //            showCloseButton: false,
+        //            showConfirmButton: true,
+        //        });
+        //    }
+        //    else if (circle == 0) {
+        //        $('#divPlansForMobile').hide();
+
+
+        //    }
+        //    else {
+        //        $('#loadingDiv').css('display', 'block');
+        //        $('#divPlansForMobile').show();
+        //        getPlans(operator, circle);
+        //    }
+
+
+        //});
+
+        $('#txtMobileNumber').blur(function () {
             if ($("#txtMobileNumber").val().length > 0) {
                 if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
                     Swal.fire({
@@ -282,98 +456,76 @@
                     // $('#txtUsername').val('');
                 }
             }
-        })
-
-
-        $('#txtIfsc').blur(function () {
-            if ($("#txtIfsc").val().length > 0) {
-               var ifscCode = $("#txtIfsc").val().toUpperCase();
-                if (!validateIFSC(ifscCode)) {
+            if ($("#txtAddiMobileNumber").val().length > 0) {
+                if ($("#txtAddiMobileNumber").val().substr(0, 1) == 0 || $("#txtAddiMobileNumber").val().length < 10) {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: `"<b>${ifscCode}</b>" Is not valid, Please Enter Valid IFSC Code`,
+                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
                         allowOutsideClick: false,
                         showCloseButton: true,
                         showConfirmButton: false,
+
                     });
-                    $("#txtIfsc").val('');
+                    $("#txtAddiMobileNumber").val('');
+                    // $('#txtUsername').val('');
                 }
             }
         })
-
     });
 
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+         } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    function showPosition(position) {
+        //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        var data = {
+            lat:position.coords.latitude,
+            long:position.coords.longitude
+        }
 
+        console.log(JSON.stringify(data));
 
+        $('#txtLatitude').val(data.lat);
+        $('#txtLongitude').val(data.long);
 
-    function validateIFSC(ifscCode) {
-
-        var regex = /^[A-Za-z]{4}[a-zA-Z0-9]{7}$/;
-        return regex.test(ifscCode);
+        //$('#hdf_longitudeData').val(position.coords.longitude)
+        //$('#hdf_latitudeData').val(position.coords.latitude)
+        //console.log('from inner');
+        //console.log("lat : " + $('#hdf_longitudeData').val());
+        //console.log("long : " + $('#hdf_latitudeData').val());
     }
 
     function CheckValidation() {
         var status = true;
-        var Bankname = $('#txtBankName').val().trim();
-        var IFSC = $('#txtIfsc').val().trim();
-        var AccountNumber = $('#txtAccountNumber').val().trim();
-        var AccountHoldName = $('#txtAccountHoldName').val().trim();
+       // var Bankname = $('#txtBankName').val().trim();
         var MobileNumber = $('#txtMobileNumber').val().trim();
+        var Email = $('#txtEmail').val().trim();
+        var WebsiteUrl = $('#txtWebsiteurl').val().trim();
+        var Address1 = $('#txtAddressLine1').val().trim();
+        var Address2 = $('#txtAddressLine2').val().trim();
+        var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
+        var LandlineNumber = $('#txtLandlineNumber').val().trim();
 
-        if (Bankname.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Bank Name Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtBankName').focus();
-            $('#txtBankName').val('');
-            status = false;
-        }
-        else if (IFSC.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'IFSC Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtIfsc').focus();
-            $('#txtIfsc').val('');
-            status = false;
-        }
-        else if (AccountNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Account Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAccountNumber').focus();
-            $('#txtAccountNumber').val('');
-            status = false;
-        }
-        else if (AccountHoldName.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Account Holder Name Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAccountHoldName').focus();
-            $('#txtAccountHoldName').val('');
-            status = false;
-        }
-        else if (MobileNumber.length <= 0) {
+        //if (Bankname.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Bank Name Required...!',
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //        showConfirmButton: false,
+        //    })
+        //    $('#txtBankName').focus();
+        //    $('#txtBankName').val('');
+        //    status = false;
+        //}
+        //else
+        if (MobileNumber.length <= 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -384,6 +536,84 @@
             })
             $('#txtMobileNumber').focus();
             $('#txtMobileNumber').val('');
+            status = false;
+         }
+        else if (Email.length <= 0) {
+             Swal.fire({
+                 position: 'center',
+                 icon: 'error',
+                 title: 'Email Id Required...!',
+                 allowOutsideClick: false,
+                 showCloseButton: true,
+                 showConfirmButton: false,
+             })
+             $('#txtEmail').focus();
+             $('#txtEmail').val('');
+             status = false;
+         }
+        else if (WebsiteUrl.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Website URL Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            $('#txtWebsiteurl').focus();
+            $('#txtWebsiteurl').val('');
+            status = false;
+        }
+        else if (Address1.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Address1 is Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtAddressLine1').focus();
+            $('#txtAddressLine1').val('');
+            status = false;
+        }
+        else if (Address2.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Address2 is Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtAddressLine2').focus();
+            $('#txtAddressLine2').val('');
+            status = false;
+        }
+        else if (AdiMobileNumber.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Additional Mobile Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            $('#txtAddiMobileNumber').focus();
+            $('#txtAddiMobileNumber').val('');
+            status = false;
+        }
+        else if (LandlineNumber.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Landline Number Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            $('#txtLandlineNumber').focus();
+            $('#txtLandlineNumber').val('');
             status = false;
         }
 
@@ -404,3 +634,6 @@
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
 </script>
+
+
+

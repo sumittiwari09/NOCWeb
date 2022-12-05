@@ -1,0 +1,490 @@
+﻿@{
+    ViewBag.Title = "Vertinary Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<style type="text/css">
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .btnPrev {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        text-transform: uppercase;
+    }
+
+    .btnNext {
+        color: white !important;
+        background: #00B4DB; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Vertinary Details</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">Vertinary Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Vertinary Name</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" placeholder="Enter vertinary name" autocomplete="off" id="txtvertinaryName">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Distance</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Distance From Institute" id="txtDistance">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Authorize Person</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Authorize Person Name" id="txtAuthPerson">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile No</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" placeholder="Mobile Number" id="txtMobileNo">
+                        </div>
+                    </div>
+
+                    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                            <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                        </div>*@
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Location</label>
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="text" autocomplete="off" placeholder="Location" id="txtLocation">
+                            <button class="btn btn-sm col-sm-4 locationBTN" id="pinMyLocation"><i class="fas fa-map-marker-alt"></i> Location</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address</label>
+                        <div style="display:flex">
+                            <input class="form-control col-sm-12" type="email" autocomplete="off" placeholder="Email Address" id="txtEmail">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3" style="display: flex;align-items: end;place-content: center;background: #d0d0d0;padding: 7px;color: white;border-radius: 8px;">
+                    <label class="col-md-6 control-label" style="font-weight: 600;font-size: 14px;">If person from admin/finance field are on board</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" value="yes" checked>
+                                <label class="custom-control-label" for="customRadio8" style="font-weight: 600;font-size: 14px;">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" value="no">
+                                <label class="custom-control-label" for="customRadio9" style="font-weight: 600;font-size: 14px;">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="divAdminBlock" style="display:block">
+                    <div class="row mt-4">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Admin Name</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Name Of Admin" id="txtAdminName">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Designation</label>
+                            <div>
+                                <select class="form-control" id="ddldesignation">
+                                    <option value="0">Select Designation</option>
+                                    <option value="001">HOD</option>
+                                    <option value="002">CFO</option>
+                                    <option value="003">Principal</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Relation</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Relation With Institute" id="txtRelation">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3" style="display: flex;align-items: end;place-content: center;background: #d0d0d0;padding: 7px;color: white;border-radius: 8px;">
+                    <label class="col-md-12 control-label" style="font-weight: 600;font-size: 14px;">Objectives of society/trust/company with Reference to vertinary/animal husbandry & education</label>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="form-group col-lg-10">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Remark</label>
+                        <div>
+                            <textarea class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Detailed Remark" id="txtRemark" cols="5" rows="4" style="resize:none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="form-group col-lg-10">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload File</label>
+                        <div style="display:flex">
+                            <input class="form-group col-sm-10" type="file" id="fupFile" />
+                            <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="form-group col-lg-12">
+                        <button class="btn col-sm-2 btnPrev" id="btnPrev"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var isAdmin = 1;
+    $(document).ready(function () {
+        $("#ddldesignation").select2();
+    });
+
+    $('#btnSaveNext').click(function () {
+        var status = validation();
+        console.log(status);
+
+        if (status) {
+            var vertinaryName = $('#txtvertinaryName').val();
+            var distance = $('#txtDistance').val();
+            var authPerson = $('#txtAuthPerson').val();
+            var mobile = $('#txtMobileNo').val();
+            var location = $('#txtLocation').val();
+            var email = $('#txtEmail').val();
+            var isBoard = ($("input[name=customRadio]").val() == "yes") ? 1 : 0;
+            var adminName = $('#txtAdminName').val();
+            var designation = $('#ddldesignation').val();
+            var relation = $('#txtRelation').val();
+            var remark = $('#txtRemark').val();
+
+            var VertinaryModal = {
+                "sNameOfVtnry": vertinaryName,
+                "dDistance": parseFloat(distance),
+                "sPersnNm": authPerson,
+                "sMobileNO": mobile,
+                "sLocation": location,
+                "sEmailId": email,
+                "IsOnBoard": parseInt(isBoard),
+                "sNameOfAdmin": adminName,
+                "iFk_DesgntnId": parseInt(designation),
+                "sRelWithInst": relation,
+                "sRemark": remark
+            }
+
+            var d = JSON.stringify(VertinaryModal);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: "/Vertinary/SaveDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(VertinaryModal),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Success...!',
+                            html: `${data.Message}`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        })
+                    }
+
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", "Vertinary")';
+                    }, 2500);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    });
+
+    $('input[name=customRadio]').change(function () {
+        var isadmin = $(this).val();
+
+        if (isadmin == 'yes') {
+            $('#divAdminBlock').css('display', 'block');
+            isAdmin = 1;
+        }
+        else {
+            $('#divAdminBlock').css('display', 'none');
+            isAdmin=0
+        }
+    })
+
+    function validation() {
+        var status = true;
+
+        var vertinaryName = $('#txtvertinaryName').val();
+        var distance = $('#txtDistance').val();
+        var authPerson = $('#txtAuthPerson').val();
+        var mobile = $('#txtMobileNo').val();
+        var location = $('#txtLocation').val();
+        var email = $('#txtEmail').val();
+        var isBoard = parseInt(isAdmin);
+        var adminName = $('#txtAdminName').val();
+        var designation = $('#ddldesignation').val();
+        var relation = $('#txtRelation').val();
+        var remark = $('#txtRemark').val();
+
+        if (vertinaryName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter vertinary name...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (distance.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter distance...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (authPerson.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter the authorize person name...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (mobile.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter mobile number...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (location.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter location...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (email.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter email address...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+
+        else if (isBoard == 1)
+        {
+
+        if (adminName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter admin name...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (designation == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please select any designation...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (relation.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter relation...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+
+        }
+
+
+        else if (remark.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please enter remark...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        return status;
+
+
+    }
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    $('#pinMyLocation').click(function () {
+
+        getLocation();
+
+
+    });
+
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+       //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        var data = {
+            lat:position.coords.latitude,
+            long:position.coords.longitude
+        }
+
+        console.log(JSON.stringify(data));
+
+        $('#txtLocation').val(data.lat + '-' + data.long);
+        $('#txtLocation').attr('readonly', true);
+
+        //$('#hdf_longitudeData').val(position.coords.longitude)
+        //$('#hdf_latitudeData').val(position.coords.latitude)
+
+        //console.log('from inner');
+        //console.log("lat : " + $('#hdf_longitudeData').val());
+        //console.log("long : " + $('#hdf_latitudeData').val());
+    }
+</script>
+
+

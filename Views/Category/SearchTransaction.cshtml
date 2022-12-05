@@ -1,0 +1,19 @@
+﻿@using NewZapures_V2.Models
+@model List<BENTRANS>
+@{
+    ViewBag.Title = "SearchTransaction";
+    Layout =null;
+}
+@foreach(var item in Model)
+            {
+<tr>
+    <td>@item.sBenBankName</td>
+    <td>@item.sBenTransId</td>
+    <td>@item.SBenNam</td>
+    <td>@item.sTransAmt</td>
+    <td>@item.dtCrtDt</td>
+    <td>@item.sBenTransSta</td>
+</tr>
+            }
+
+

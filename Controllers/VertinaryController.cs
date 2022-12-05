@@ -2,24 +2,30 @@
 using NewZapures_V2.Helper;
 using NewZapures_V2.Models;
 using RestSharp;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NewZapures_V2.Controllers
 {
-    public class FinanceController : Controller
+    //[NoDirectAccess]
+    public class VertinaryController : Controller
     {
+        // GET: ContentPage
         ResponseData objResponse;
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
-        public JsonResult SaveDetails(FinanceModalSave financeModal)
+        public JsonResult SaveDetails(VertinaryModalSave vertinary)
         {
-            var json = JsonConvert.SerializeObject(financeModal);
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Finance/addFinanceDetails");
+            var json = JsonConvert.SerializeObject(vertinary);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Vertinary/addVertinaryDetails");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -41,5 +47,6 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
     }
 }
