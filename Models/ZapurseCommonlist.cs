@@ -40,6 +40,36 @@ namespace NewZapures_V2.Models
             return Lst;
 
         }
+        public static List<GlobalClass> GetMode()
+        {
+            List<GlobalClass> Lst = new List<GlobalClass>();
+
+            Lst.Add(new GlobalClass
+            {
+                Id = 1,
+                Text = "Temporary",
+                label= "radio-danger"
+
+            });
+
+            Lst.Add(new GlobalClass
+            {
+                Id = 2,
+                Text = "Permanent",
+                label = "radio-primary"
+
+            });
+            Lst.Add(new GlobalClass
+            {
+                Id = 3,
+                Text = "Both",
+                label = "radio-success"
+
+            });
+
+            return Lst;
+
+        }
         public static List<GlobalClass> GetServicesRate()
         {
             List<GlobalClass> Lst = new List<GlobalClass>();
