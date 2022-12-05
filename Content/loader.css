@@ -1,0 +1,67 @@
+﻿/*
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid blue;
+    border-right: 16px solid green;
+    border-bottom: 16px solid red;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    background-image: url("/images/testing.jpg");
+    background-size: 88px 94px;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    margin: 10px auto;
+    align-items: center;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        opacity:0%;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 100%;
+    }
+}
+*/
+
+.loader-div {
+    display: none;
+    position: fixed;
+    margin: 0px;
+    padding: 0px;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 30001;
+    opacity: 0.8;
+}
+
+.loader-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+
