@@ -1,0 +1,244 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Trustee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.TrusteeBO.Trustee> trusteelist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Trustee</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header fsc">
+        <h4 class="mt-0 header-title float-left">Trustee Details</h4>
+    </div>
+    @using (Html.BeginForm("Index", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
+    {
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Person</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Role</label>
+                        <div>
+                            <select class="form-control" id="txtrole" name="Role">
+                                <option value="0">Role</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile No</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtmobile" name="Mobile" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtemail" name="Email">
+                        </div>
+                    </div>
+                    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+            </div>*@
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Aadhaar No</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <label for="file1">Aadhaar Card</label>
+                        <input type="file" id="fileaadhaar" style="border: 0px solid #e8ebf3" name="aadhaarfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <span id="aadhaarfile"></span>
+                    </div>                   
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Pan No</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtpanno" name="PanNo" maxlength="12">
+                        </div>
+                    </div>                   
+                    <div class="form-group col-lg-6" id="filediv">
+                        <label for="file2">Pan Card</label>
+                        <input type="file" id="filepan" style="border: 0px solid #e8ebf3" name="panfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <span id="panfile"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                <div class="">
+                    <h4 class="mt-0 header-title">Profile Photo</h4>
+                    @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
+                    <input type="file" id="input-file-now" class="dropify" name="profilefile" />
+                </div>
+            </div>
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+                    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+                    <button class="btn" id="btnCapitalAdd" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    }
+    <div class="row col-lg-12">
+        <div class="form-group col-lg-12">
+            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                <thead class="dark">
+                    <tr>
+                        <th>SNo</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Mobile No</th>
+                        <th>Email</th>
+                        <th style="text-align:center">Aadhaar</th>
+                        <th style="text-align:center">Pan</th>
+                        <th style="text-align:center">Profile</th>
+                        @*<th>Action</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (trusteelist != null)
+                    {
+                        int i = 1;
+                        foreach (var item in trusteelist)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.Name</td>
+                                <td>@item.RoleId</td>
+                                <td>@item.Mobile</td>
+                                <td>@item.Email</td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+
+                                @*<td></td>*@
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row col-lg-12" style="margin-bottom:10px">
+        <div class="col-lg-12 float-right">
+            @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+
+            <button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
+            <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase; float:right"><i class="fa fa-arrow-left"></i> Previous</button>
+            @*</div>*@
+        </div>
+    </div>
+    @*<div class="row col-lg-12 float-right">
+        <div class="form-group col-lg-12 float-right" style="display: flex;align-items: end;gap:10px;">
+            
+        </div>
+    </div>*@
+</div>
+
+
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}
+
