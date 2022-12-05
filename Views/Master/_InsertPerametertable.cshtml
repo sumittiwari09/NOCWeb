@@ -1,0 +1,34 @@
+﻿@using NewZapures_V2.Models
+@{
+    List<PARAMCAT> lstTable = new List<PARAMCAT>();
+    if (ViewBag.parameterlst != null)
+    {
+        lstTable = (List<PARAMCAT>)ViewBag.parameterlst;
+    }
+}
+
+
+        @{
+            foreach (var item in lstTable)
+            {
+                <tr id="tr_@item.iPk_ParmCateId" name="@item.iPk_ParmCateId" class="abctest">
+                    <td>@item.iPk_ParmCateId</td>
+                    <td>@item.sParmetNam</td>
+                    <td>@item.sParCatName</td>
+                    <td>@item.sParCatSubName</td>
+                    <td>@item.sParUomName</td>
+                    <td>
+                        @*<a href="@Url.Action("DepartmentMapping", "Master", new { Id = item.iPk_DeptMapId })" class="btn btn-success btn-xs padding5" title="Update">
+            <i class="fa fa-edit"></i>
+        </a>*@
+                        <a href="#" class="btn btn-success btn-sm padding5" title="Update" onclick="update(@item.iPk_ParmCateId,@item.iFk_Deptid,@item.iParCatId,@item.iParCatSubId,@item.iParUomid,'@item.sParmetNam')">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm padding5" title="Delete" onclick="Delete(@item.iPk_ParmCateId)">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+   
