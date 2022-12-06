@@ -11,6 +11,7 @@ namespace NewZapures_V2.Controllers
         // GET: AddCourse
         public ActionResult CreateDetails()
         {
+        string vs = "Hello";
             return View();
         }
     }
