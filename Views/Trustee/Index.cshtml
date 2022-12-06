@@ -3,6 +3,16 @@
     ViewBag.Title = "Trustee";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.TrusteeBO.Trustee> trusteelist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+    List<CustomMaster> TrustList = new List<CustomMaster>();
+    if (ViewBag.TrustList != null)
+    {
+        TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    }
+    List<CustomMaster> RoleType = new List<CustomMaster>();
+    if (ViewBag.RoleType != null)
+    {
+        RoleType = (List<CustomMaster>)ViewBag.RoleType;
+    }
 }
 @section styles {
 
@@ -95,6 +105,27 @@
             <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
+                        <div>
+                            <select class="form-control" name="TrustInfoId" id="TrustType">
+
+                                <option value="0">Select Trust</option>
+                                @{
+                                    foreach (var item in TrustList)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+                            @*<select class="form-control" id="txtrole" name="TrustType">
+                        <option value="0">Type</option>
+                    </select>*@
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Person</label>
                         <div>
                             <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name">
@@ -104,7 +135,13 @@
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Role</label>
                         <div>
                             <select class="form-control" id="txtrole" name="Role">
-                                <option value="0">Role</option>
+                                <option value="0">Select Role</option>
+                                @{
+                                    foreach (var item in RoleType)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
                             </select>
                         </div>
                     </div>
@@ -138,7 +175,7 @@
                         <label for="file1">Aadhaar Card</label>
                         <input type="file" id="fileaadhaar" style="border: 0px solid #e8ebf3" name="aadhaarfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
                         <span id="aadhaarfile"></span>
-                    </div>                   
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
@@ -146,7 +183,7 @@
                         <div>
                             <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtpanno" name="PanNo" maxlength="12">
                         </div>
-                    </div>                   
+                    </div>
                     <div class="form-group col-lg-6" id="filediv">
                         <label for="file2">Pan Card</label>
                         <input type="file" id="filepan" style="border: 0px solid #e8ebf3" name="panfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
@@ -177,10 +214,13 @@
                 <thead class="dark">
                     <tr>
                         <th>SNo</th>
+                        <th>Profile</th>
                         <th>Name</th>
                         <th>Role</th>
                         <th>Mobile No</th>
                         <th>Email</th>
+                        <th>AadhaarNo</th>
+                        <th>PanNo</th>
                         <th style="text-align:center">Aadhaar</th>
                         <th style="text-align:center">Pan</th>
                         <th style="text-align:center">Profile</th>
@@ -193,19 +233,22 @@
                         int i = 1;
                         foreach (var item in trusteelist)
                         {
-                            <tr>
-                                <td>@i</td>
-                                <td>@item.Name</td>
-                                <td>@item.RoleId</td>
-                                <td>@item.Mobile</td>
-                                <td>@item.Email</td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                    <tr>
+                        <td>@i</td>
+                        <td><img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                        <td>@item.Name</td>
+                        <td>@item.RoleId</td>
+                        <td>@item.Mobile</td>
+                        <td>@item.Email</td>
+                        <td>@item.AadhaarNo</td>
+                        <td>@item.PanNo</td>
+                        <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                        <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                        @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
-                                @*<td></td>*@
+                        @*<td></td>*@
 
-                            </tr>
+                    </tr>
                             i++;
                         }
                     }
