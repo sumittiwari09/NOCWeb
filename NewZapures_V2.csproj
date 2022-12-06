@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AddCourseController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageMenuOrderController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
-
     <Compile Include="Controllers\MapsController.cs" />
     <Compile Include="Controllers\MobileRechargeController.cs" />
     <Compile Include="Controllers\MyPaymentsController.cs" />
@@ -2733,7 +2733,6 @@
     <Content Include="plugins\pace\pace-theme-center-radar.tmpl.css" />
     <Content Include="plugins\pace\pace-theme-center-simple.tmpl.css" />
     <Content Include="plugins\pace\pace.min.js" />
-
     <Content Include="Scripts\aeps.js" />
     <Content Include="Scripts\pages\jquery.agents.init.js" />
     <Content Include="Scripts\pages\jquery.analytics_customers.init.js" />
@@ -3675,14 +3674,13 @@
     <Content Include="Views\BasicDetails\CreateDetails.cshtml" />
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
-
     <Content Include="Views\Master\DepartmentMapping.cshtml" />
     <Content Include="Views\Master\ParameterCategoryMapping.cshtml" />
     <Content Include="Views\Master\_AddParameterCategoryMapping.cshtml" />
     <Content Include="Views\Master\_InsertPerametertable.cshtml" />
     <Content Include="Views\Vertinary\Index.cshtml" />
-
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
+    <Content Include="Views\AddCourse\CreateDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

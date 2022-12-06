@@ -55,4 +55,9 @@ namespace NewZapures_V2.Models
         public string sDeptName { get; set; }
     }
 
+    public class ServiceTypeDocumentData
+    {
+        
+    }
+
 }
