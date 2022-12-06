@@ -1,0 +1,239 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "General Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CustomMaster> TrusteeType = new List<CustomMaster>();
+    if (ViewBag.TrusteeType != null)
+    {
+        TrusteeType = (List<CustomMaster>)ViewBag.TrusteeType;
+    }
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Trustee General Information</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header fsc">
+        <h4 class="mt-0 header-title float-left">Trustee General Information</h4>
+    </div>
+    @using (Html.BeginForm("TrusteeGeneralInfo", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
+    {
+        <div class="card-body row">
+            <div class="col-8">                
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Trust</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
+                        <div>
+                            <select class="form-control" name="TrustType" id="TrustType">
+
+                                <option value="0">Select Trust Type</option>
+                                @{
+                                    foreach (var item in TrusteeType)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+                            @*<select class="form-control" id="txtrole" name="TrustType">
+                        <option value="0">Type</option>
+                    </select>*@
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Ceritified By</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtCerifiedby" name="CertiFiedBy">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <label for="file1">Ceritified By Proof</label>
+                        <input type="file" id="filecerifiedby" style="border: 0px solid #e8ebf3" name="Ceritifiedbyfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <span id="Ceritifiedbyfile"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registration No</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtRegistrationNo" name="RegistrationNo" maxlength="50">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <label for="file2">Registration No Proof</label>
+                        <input type="file" id="fileregistrationno" style="border: 0px solid #e8ebf3" name="registrationnofile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <span id="registrationnofile"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date Of Registration</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="RegistrationDate" id="RegistrationDate" placeholder="DD/MM/YYYY">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date Of Election Comm.</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="ElectionDate" id="ElectionDate" placeholder="DD/MM/YYYY">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                            </div>
+                        </div>
+                        @*<div>
+                    <input class="form-control col-sm-12" type="date" autocomplete="off" id="txtDateElectionComm" name="DateElectionComm">
+                </div>*@
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                <div class="">
+                    <h4 class="mt-0 header-title">Trust Logo</h4>
+                    <input type="file" id="input-file-now" class="dropify" name="trustfile" />
+                </div>
+            </div>
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+
+                    <button class="btn" id="btnCapitalAdd" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ ">Save</button>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#RegistrationDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                //yearRange: new Date().getFullYear().toString() + ':' + new Date().getFullYear().toString(),
+                //onClose: function (selectedDate) {
+                //    $("#ToDate").datepicker("option", "minDate", selectedDate);
+                //}
+            });
+            $("#ElectionDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                //yearRange: new Date().getFullYear().toString() + ':' + new Date().getFullYear().toString(),
+                //onClose: function (selectedDate) {
+                //    $("#ToDate").datepicker("option", "minDate", selectedDate);
+                //}
+            });
+            //$("#ToDate").datepicker({
+            //    dateFormat: 'dd/mm/yy',
+            //    changeMonth: true,
+            //    yearRange: new Date().getFullYear().toString() + ':' + new Date().getFullYear().toString(),
+            //    onClose: function (selectedDate) {
+            //        $("#FromDate").datepicker("option", "maxDate", selectedDate);
+            //    }
+            //});
+        });
+    </script>
+}
+

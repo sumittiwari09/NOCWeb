@@ -1,4 +1,5 @@
-﻿using NewZapures_V2.Models;
+﻿using Newtonsoft.Json;
+using NewZapures_V2.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,14 @@ namespace NewZapures_V2.Controllers
         // GET: Trustee
         public ActionResult Index()
         {
+            List<CustomMaster> TrustList = new List<CustomMaster>();
+            TrustList = GetTrustDropDownList(24);
+            ViewBag.TrustList = TrustList;
+
+            List<CustomMaster> RoleType = new List<CustomMaster>();
+            RoleType = Common.GetCustomMastersList(25);
+            ViewBag.RoleType = RoleType;
+
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
             var request = new RestRequest(Method.GET);
@@ -207,7 +216,31 @@ namespace NewZapures_V2.Controllers
             //    }
             //}
             //#endregion
+
+            List<CustomMaster> TrusteeType = new List<CustomMaster>();
+            TrusteeType = Common.GetCustomMastersList(24);
+            ViewBag.TrusteeType = TrusteeType;
             return View();
+        }
+        public List<CustomMaster> GetTrustDropDownList(int Enum)
+        {
+            List<CustomMaster> objUsermaster = new List<CustomMaster>();
+
+
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                var objResponseData = JsonConvert.DeserializeObject<ListCustom>(d.Data.ToString());
+
+                objUsermaster = objResponseData.ListRequest;
+            }
+            return objUsermaster;
         }
 
         [HttpPost]
@@ -293,7 +326,7 @@ namespace NewZapures_V2.Controllers
                     TempData["SwalStatusMsg"] = "success";
                     TempData["SwalMessage"] = "Data saved sussessfully!";
                     TempData["SwalTitleMsg"] = "Success...!";
-                    //return RedirectToAction("Index");
+                    return RedirectToAction("TrusteeGeneralInfo");
                 }
                 else
                 {
