@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -3658,6 +3659,7 @@
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
     <Content Include="Views\Vertinary\Index.cshtml" />
+    <Content Include="Views\SSODeptMapping\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

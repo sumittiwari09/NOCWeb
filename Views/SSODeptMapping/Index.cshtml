@@ -1,0 +1,375 @@
+﻿@{
+    ViewBag.Title = "SSO Department Mapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<style type="text/css">
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .btnPrev {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        text-transform: uppercase;
+    }
+
+    .btnNext {
+        color: white !important;
+        background: #00B4DB; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">SSO-Department Mapping</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">SSO Mapping With System Roles And Group</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Department</label>
+                        <div>
+                            <select class="form-control" id="ddldept">
+                                <option value="0">Select Department</option>
+                                <option value="001">Department 1</option>
+                                <option value="002">Department 2</option>
+                                <option value="003">Department 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Group</label>
+                        <div>
+                            <select class="form-control" id="ddlgrp">
+                                <option value="0">Select Group</option>
+                                <option value="011">Group 1</option>
+                                <option value="012">Group 2</option>
+                                <option value="013">Group 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select District</label>
+                        <div>
+                            <select class="form-control" id="ddldist">
+                                <option value="0">Select District</option>
+                                <option value="021">District 1</option>
+                                <option value="022">District 2</option>
+                                <option value="023">District 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Tehsil</label>
+                        <div>
+                            <select class="form-control" id="ddlteh">
+                                <option value="0">Select Tehsil</option>
+                                <option value="031">Tehsil 1</option>
+                                <option value="032">Tehsil 2</option>
+                                <option value="033">Tehsil 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="display: flex;align-items: end;">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">SSO ID</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Enter SSO ID" id="txtSSOID">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <button class="btn col-sm-4 locationBTN" id="btnAdd"><i class="ti-plus"></i> ADD</button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="form-group col-lg-12">
+                        <table class="table table-borderless table-striped table-hover" id="tblSSODeptMapping">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Department</th>
+                                    <th>Group</th>
+                                    <th>District</th>
+                                    <th>Tehsil</th>
+                                    <th>SSO ID</th>
+                                    <th>Activate</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="row text-center" style="display:none">
+                    <div class="form-group col-lg-12">
+                        <button class="btn col-sm-2 btnPrev" id="btnPrev"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var isAdmin = 1;
+    var mappingArr = [];
+    var tableID = 1;
+    $(document).ready(function () {
+        $("#ddldept").select2();
+        $("#ddlgrp").select2();
+        $("#ddlteh").select2();
+        $("#ddldist").select2();
+    });
+
+    $('#btnAdd').click(function () {
+        var capitalTableString = "";
+        var status = validation();
+        if (status) {
+            var deptID = $('#ddldept').val();
+            var deptname = $('#ddldept option:selected').text();
+
+            var groupID = $('#ddlgrp').val();
+            var groupname = $('#ddlgrp option:selected').text();
+
+            var districtID = $('#ddldist').val();
+            var districtname = $('#ddldist option:selected').text();
+
+            var tehsilID = $('#ddlteh').val();
+            var tehsilname = $('#ddlteh option:selected').text();
+
+            var ssoID = $('#txtSSOID').val();
+
+            mappingArr.push({
+                mappingID: 'M000' + tableID,
+                dept: deptname,
+                group: groupname,
+                dist: districtname,
+                teh: tehsilname,
+                sso: ssoID,
+            });
+
+            console.log(mappingArr);
+            console.log(mappingArr.length);
+            tableID = tableID + 1;
+            clearData(true);
+            $('#ddldept').focus();
+        }
+        if (mappingArr.length <= 0) {
+            capitalTableString = `<tr><td colspan="5" style="text-align: center;">No Data Available</td></tr>`
+            $("#tblSSODeptMapping tbody").html('');
+            $("#tblSSODeptMapping tbody").html(capitalTableString);
+        }
+        else {
+
+            mappingArr.forEach(function (item, index) {
+                capitalTableString += `<tr><td>${index + 1}</td><td>${item.dept}</td><td>${item.group}</td><td>${item.dist}</td><td>${item.teh}</td><td>${item.sso}</td><td><input type="checkbox" /></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('${item.mappingID}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+            });
+
+            $("#tblSSODeptMapping tbody").html('');
+            $("#tblSSODeptMapping tbody").html(capitalTableString);
+        }
+        /*  $('#btnCapitalAdd').html('<i class="fa fa-plus"></i> ADD');*/
+
+        clearData(false);
+    });
+
+    function validation() {
+        var status = true;
+        var deptID = $('#ddldept').val();
+        var deptname = $('#ddldept option:selected').text();
+
+        var groupID = $('#ddlgrp').val();
+        var groupname = $('#ddlgrp option:selected').text();
+
+        var districtID = $('#ddldist').val();
+        var districtname = $('#ddldist option:selected').text();
+
+        var tehsilID = $('#ddlteh').val();
+        var tehsilname = $('#ddlteh option:selected').text();
+
+        var ssoID = $('#txtSSOID').val();
+
+
+        if (deptID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Department...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (groupID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Group...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (districtID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select District...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (tehsilID == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Tehsil...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (ssoID.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter SSO ID...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        return status;
+
+
+    }
+
+    function clearData(IsSaved) {
+
+        if (!IsSaved) {
+            if (!$('#txtSSOID').val().length > 0)
+                $('#txtSSOID').val('');
+
+        } else {
+            $('#ddldept').select2('destroy');
+            $('#ddldept').val(0);
+            $('#ddldept').select2();
+
+            $('#ddlgrp').select2('destroy');
+            $('#ddlgrp').val(0);
+            $('#ddlgrp').select2();
+
+            $('#ddldist').select2('destroy');
+            $('#ddldist').val(0);
+            $('#ddldist').select2();
+
+            $('#ddlteh').select2('destroy');
+            $('#ddlteh').val(0);
+            $('#ddlteh').select2();
+
+
+
+            $('#txtSSOID').val('');
+        }
+    }
+
+    function DeleteData(idToremove) {
+        var capitalTableString = "";
+        mappingArr = mappingArr.filter(function (e) {
+            return e.mappingID !== idToremove
+        })
+        if (mappingArr.length <= 0) {
+            capitalTableString = `<tr><td colspan="7" style="text-align: center;">No Data Available</td></tr>`
+
+            $("#tblSSODeptMapping tbody").html('');
+            $("#tblSSODeptMapping tbody").html(capitalTableString);
+        }
+        else {
+            mappingArr.forEach(function (item, index) {
+                capitalTableString += `<tr><td>${index + 1}</td><td>${item.dept}</td><td>${item.group}</td><td>${item.dist}</td><td>${item.teh}</td><td>${item.sso}</td><td><input type="checkbox" /></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger" onclick="DeleteData('${item.mappingID}')"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+            });
+
+            $("#tblSSODeptMapping tbody").html('');
+            $("#tblSSODeptMapping tbody").html(capitalTableString);
+        }
+    }
+</script>
+
