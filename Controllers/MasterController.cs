@@ -211,48 +211,45 @@ namespace NewZapures_V2.Controllers
             }
             return departments;
         }
-        public JsonResult InsertParameterCategoryMapping(PARAMCAT Master)
-        {
-            
-           
+        //public JsonResult InsertParameterCategoryMapping(PARAMCAT Master)
+        //{
+        //    var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertParameterCategoryMapping");
+        //    var request2 = new RestRequest(Method.POST);
+        //    request2.AddHeader("cache-control", "no-cache");
+        //    // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+        //    request2.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+        //    IRestResponse response2 = client2.Execute(request2);
+        //    if (response2.StatusCode.ToString() == "OK")
+        //    {
+        //        ServiceTypeDocumentData objResponseData = JsonConvert.DeserializeObject<ServiceTypeDocumentData>(response2.Content);
+        //        if (objResponseData.ResponseCode == "001")
+        //        {
+        //            return new JsonResult
+        //            {
+        //                Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+        //                ContentEncoding = System.Text.Encoding.UTF8,
+        //                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //            };
+        //        }
+        //        else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+        //        {
+        //            return new JsonResult
+        //            {
+        //                Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+        //                ContentEncoding = System.Text.Encoding.UTF8,
+        //                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //            };
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertParameterCategoryMapping");
-            var request2 = new RestRequest(Method.POST);
-            request2.AddHeader("cache-control", "no-cache");
-            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request2.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
-            IRestResponse response2 = client2.Execute(request2);
-            if (response2.StatusCode.ToString() == "OK")
-            {
-                ServiceTypeDocumentData objResponseData = JsonConvert.DeserializeObject<ServiceTypeDocumentData>(response2.Content);
-                if (objResponseData.ResponseCode == "001")
-                {
-                    return new JsonResult
-                    {
-                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
-                        ContentEncoding = System.Text.Encoding.UTF8,
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    };
-                }
-                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
-                {
-                    return new JsonResult
-                    {
-                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
-                        ContentEncoding = System.Text.Encoding.UTF8,
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    };
+        //        }
+        //    }
+        //    return new JsonResult
+        //    {
+        //        Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+        //        ContentEncoding = System.Text.Encoding.UTF8,
+        //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //    };
 
-                }
-            }
-            return new JsonResult
-            {
-                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
-                ContentEncoding = System.Text.Encoding.UTF8,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };
-
-        }
+        //}
 
         public JsonResult FillDataPerameter(int Deptid = 0, int iFk_SelfId = 0, int Typid = 0)
         {
