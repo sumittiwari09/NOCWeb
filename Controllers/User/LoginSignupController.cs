@@ -120,7 +120,7 @@ namespace NewZapures_V2.Controllers
                                 Session["UserPermissions"] = permissions;
                                 Session["notificationList"] = notificationsData;
 
-                                return RedirectToAction("Index", "Welcome");
+                                return RedirectToAction("WelcomeNoc", "Dashboard");
                             }
                         }
                     }

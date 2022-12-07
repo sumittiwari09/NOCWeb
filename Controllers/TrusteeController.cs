@@ -339,5 +339,28 @@ namespace NewZapures_V2.Controllers
             #endregion
             return View();
         }
+
+        [HttpGet]
+        public ActionResult TrustList()
+        {
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustInfoList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.TrusteeInfo> _result = _JsonSerializer.Deserialize<List<TrusteeBO.TrusteeInfo>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.TrusteeList = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            return View();
+        }
     }
 }
