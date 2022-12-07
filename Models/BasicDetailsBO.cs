@@ -7,5 +7,27 @@ namespace NewZapures_V2.Models
 {
     public class BasicDetailsBO
     {
+        public string CollegeName { get; set; }
+        public int UniverSity { get; set; }
+        public string MobileNumber { get; set; }
+        public string Email { get; set; }
+        public int District { get; set; }
+        public int Division { get; set; }
+        public int SubDivision { get; set; }
+        public int District1 { get; set; }
+        public int Tehsil { get; set; }
+        public int ParliamentArea { get; set; }
+        public int AssembleArea { get; set; }
+        public int CityTownVillage { get; set; }
+        public int UrbanRular { get; set; }
+        public int PanchayatSimiti { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public int PinCode { get; set; }
+        public string Latitudedd { get; set; }
+        public string Longitudedd { get; set; }
+        public string AddiMobileNumber { get; set; }
+        public string Websiteurl { get; set; }
+        public string LandlineNumber { get; set; }
     }
 }

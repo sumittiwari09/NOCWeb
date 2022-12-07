@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Manage Department";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
     var departments = ViewBag.departmentList as List<AddDepartment>;
 }
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
@@ -266,7 +264,7 @@
 
 <script>
     function SaveDepartment() {
-
+        debugger;
         var type = $('#btnSave').text();
         var departmentID = $('#hddtxtDepartment').val();
 

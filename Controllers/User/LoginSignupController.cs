@@ -29,7 +29,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.userTypesList = userTypes;
 
             var content = ViewContent();
-            if (content != null)
+            if (content.Count!= null)
             {
                 ViewBag.TandC = content[0];
                 ViewBag.TandCId = content[0].Id;

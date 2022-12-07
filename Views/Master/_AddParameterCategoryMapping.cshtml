@@ -1,0 +1,384 @@
+﻿@using NewZapures_V2.Models
+@{
+    List<AddDepartment> lstDepart = new List<AddDepartment>();
+    if (ViewBag.Department != null)
+    {
+        lstDepart = (List<AddDepartment>)ViewBag.Department;
+    }
+    List<Dropdown> PerameterCategorylst = new List<Dropdown>();
+    if (ViewBag.PerameterCategorylst != null)
+    {
+        PerameterCategorylst = (List<Dropdown>)ViewBag.PerameterCategorylst;
+    }
+}
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+
+<form name="myForm" onsubmit="return validateForm()" method="post">
+
+    <div class="form-group  is-empty row">
+        <input type="hidden" name="iPk_ParmCateId" id="iPk_ParmCateId" value="0" />
+        <div class="col-sm-3">
+            <select class="singleselect" id="iFk_Deptid" name="iFk_Deptid" required>
+                <option value="" disabled selected hidden>Select Department</option>
+                @{
+                    foreach (var item in lstDepart)
+                    {
+
+                        <option value="@item.DepartmentID">@item.DepartmentName </option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <select class="singleselect" data-tags="true" id="iParCatId" name="iParCatId" required>
+                <option value="" disabled selected hidden>Select Parameter Category</option>
+                @{
+                    foreach (var item in PerameterCategorylst)
+                    {
+
+                        <option value="@item.Id">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <select class="singleselect" data-tags="true" id="iParCatSubId" name="iParCatSubId" required>
+                <option value="" disabled selected hidden>Select Parameter</option>
+
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <select class="singleselect" data-tags="true" id="iParUomid" name="iParUomid" required>
+                <option value="" disabled selected hidden>Select UOM</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group  is-empty row">
+        <div class="col-sm-3">
+            <input name="sParmetNam" id="sParmetNam" type="text" value="" class="form-control" placeholder="Enter Parameter Name">
+        </div>
+        <div class="col-sm-6 row" id="adddiv">
+            <button class="btn btn-primary col-sm-3" id="addbtn" style="display:block; margin: 5px;"> <i class="fa fa-plus"></i> Add </button>
+            <a href="#" class="btn btn-primary col-sm-3" style="display:block ; margin: 5px; background-color: deeppink;" id="Reset"> Reset</a>
+        </div>
+        <div class="col-sm-6 hidden row" id="editdiv">
+
+
+            <button class="btn btn-primary col-sm-3" id="updatebtn" style="display: block; margin: 5px;"> <i class="fa fa-plus"></i> Update </button>
+            <a href="#" class="btn btn-primary col-sm-3" id="cancelbtn" style="display: block; margin: 5px; background-color:deeppink;"> <i class="fa fa-minus"></i> Cancel </a>
+
+        </div>
+
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(".singleselect").select2();
+    $("#datatable-buttons_info").css('display', 'none');
+    function validateForm() {
+        debugger;
+        let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;
+        let iParCatId = document.forms["myForm"]["iParCatId"].value;
+        let iParCatSubId = document.forms["myForm"]["iParCatSubId"].value;
+        let iParUomid = document.forms["myForm"]["iParUomid"].value;
+        let sParmetNam = document.forms["myForm"]["sParmetNam"].value;
+        let iPk_ParmCateId = document.forms["myForm"]["iPk_ParmCateId"].value;
+
+        if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" || sParmetNam.trim() == "") {
+            return false;
+        }
+        var Params = JSON.stringify({
+            iPk_ParmCateId: iPk_ParmCateId,
+            iFk_Deptid: iFk_Deptid,
+            iParCatId: iParCatId,
+            iParCatSubId: iParCatSubId,
+            iParUomid: iParUomid,
+            sParmetNam: sParmetNam
+        });
+        $("#bodyid").css('display', 'none');
+        $("#loader").css('display', 'block');
+        $.ajax({
+            url: "/Master/InsertParameterCategoryMapping",
+            type: 'POST',
+            dataType: "json",
+            data: Params,
+            contentType: "application/json",
+            success: function (response) {
+                $("#bodyid").css('display', 'block');
+                $("#loader").css('display', 'none');
+                if (response.IsValid = 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.msg,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    Generatepartialpage(0);
+                }
+
+
+            }
+        });
+    }
+    //$("#addbtn").click(function () {
+
+    //    let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;
+    //    let iParCatId = document.forms["myForm"]["iParCatId"].value;
+    //    let iParCatSubId = document.forms["myForm"]["iParCatSubId"].value;
+    //    let iParUomid = document.forms["myForm"]["iParUomid"].value;
+    //    let sParmetNam = document.forms["myForm"]["sParmetNam"].value;
+    //    let iPk_ParmCateId = document.forms["myForm"]["iPk_ParmCateId"].value;
+
+    //    if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" || sParmetNam.trim() == "") {
+    //        return false;
+    //    }
+    //    var Params = JSON.stringify({
+    //        iPk_ParmCateId: iPk_ParmCateId,
+    //        iFk_Deptid: iFk_Deptid,
+    //        iParCatId: iParCatId,
+    //        iParCatSubId: iParCatSubId,
+    //        iParUomid: iParUomid,
+    //        sParmetNam: sParmetNam
+    //    });
+    //    $.ajax({
+    //        url: "/Master/InsertParameterCategoryMapping",
+    //        type: 'POST',
+    //        dataType: "json",
+    //        data: Params,
+    //        contentType: "application/json",
+    //        success: function (response) {
+    //            debugger;
+    //            if (response.IsValid = 1) {
+    //                Swal.fire({
+    //                    position: 'center',
+    //                    icon: 'success',
+    //                    title: response.msg,
+    //                    showConfirmButton: false,
+    //                    timer: 3000
+    //                })
+    //                Generatepartialpage(0);
+    //            }
+
+
+    //        }
+    //    });
+    //});
+    $("#iParCatId").change(function () {
+
+        var strHTML = "";
+        strHTML += "<option value=''>Select Parameter</option>"
+
+        var Params = JSON.stringify({ Deptid: 0, iFk_SelfId: $(this).val(), Typid: 4 });
+
+        if ($(this).val() == "") {
+            $("#iParCatSubId").select2("destroy");
+            $("#iParCatSubId").html(strHTML);
+            $("#iParCatSubId").select2();
+
+        }
+
+
+        $.ajax({
+            url: "/Master/FillDataPerameter",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+                debugger;
+                console.log(response);
+
+                if (response.isvalid == 1) {
+                    for (var i = 0; i < response.Data.length; i++) {
+                        strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                    }
+                }
+
+                $("#iParCatSubId").select2("destroy");
+                $("#iParCatSubId").html(strHTML);
+                $("#iParCatSubId").select2();
+
+                $("#iParUomid").select2("destroy");
+                $("#iParUomid").html("<option value=''>Select</option>");
+                $("#iParUomid").select2();
+
+
+            }
+        });
+    });
+    $("#iParCatSubId").change(function () {
+
+        var strHTML = "";
+        strHTML += "<option value=''>Select UOM</option>"
+
+        var Params = JSON.stringify({ Deptid: 0, iFk_SelfId: $(this).val(), Typid: 5 });
+
+        if ($(this).val() == "") {
+            $("#iParUomid").select2("destroy");
+            $("#iParUomid").html(strHTML);
+            $("#iParUomid").select2();
+
+        }
+      
+        $.ajax({
+            url: "/Master/FillDataPerameter",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.isvalid == 1) {
+                    for (var i = 0; i < response.Data.length; i++) {
+                        strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                    }
+                }
+
+                $("#iParUomid").select2("destroy");
+                $("#iParUomid").html(strHTML);
+                $("#iParUomid").select2();
+
+
+
+            }
+        });
+    });
+    $("#iFk_Deptid").change(function () {
+        Generatepartialtable($(this).val());
+    });
+    function Generatepartialtable(Id) {
+      
+        $.ajax({
+            url: '/Master/InsertPerametertable?Deptid=' + Id,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+
+
+                $("#DataParameterlist").html(response);
+
+                /*  $("#AddSection").html(response);*/
+
+            }
+        });
+        return false;
+    }
+    function update(iPk_ParmCateId, iFk_Deptid, iParCatId, iParCatSubId, iParUomid, sParmetNam) {
+        $("#iPk_ParmCateId").val(iPk_ParmCateId);
+        $("#iFk_Deptid").val(iFk_Deptid);
+        $('#iFk_Deptid').trigger('change');
+        $('#iFk_Deptid').attr('disabled', true);
+
+        setTimeout(function () {
+
+            $("#iParCatId").val(iParCatId);
+            $('#iParCatId').trigger('change');
+        }, 100)
+        setTimeout(function () {
+
+            $("#iParCatSubId").val(iParCatSubId);
+            $('#iParCatSubId').trigger('change');
+        }, 200)
+        setTimeout(function () {
+
+            $("#iParUomid").val(iParUomid);
+            $('#iParUomid').trigger('change');
+        }, 300)
+
+        $('#sParmetNam').val(sParmetNam);
+        $("#editdiv").removeClass('hidden');
+        $("#adddiv").addClass('hidden');
+    }
+    function Delete(iPk_ParmCateId) {
+        var Id = iPk_ParmCateId;
+
+        /*  var TypeId = $(this).attr("name");*/
+        $.confirm({
+
+            title: 'Remove Confirmation',
+            content: 'Are you sure to remove record',
+            type: 'red',
+            typeAnimated: true,
+            animation: 'rotate',
+            closeAnimation: 'scale',
+            buttons: {
+                Confirm: {
+                    text: 'YES',
+                    btnClass: 'btn-red',
+                    action: function () {
+
+
+
+                        var Params = JSON.stringify({
+                            TableId: 'PARAMCAT',
+                            Id: Id,
+                            type: 2
+
+
+                        });
+                        /* ShowBALoader("LoaderBASinup1");*/
+                        $.ajax({
+                            url: "/Role/ChangeStatus",
+                            type: 'POST',
+                            dataType: "json",
+                            data: Params,
+                            contentType: "application/json",
+                            success: function (response) {
+
+
+                                debugger;
+                                if (response.IsValid = 1) {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'success',
+                                        title: 'Record Delete Successfully',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    })
+                                    $("#tr_" + Id).remove();
+                                }
+
+                            },
+
+                        });
+
+                    }
+                },
+                close: {
+                    text: 'NO',
+                    action: function () { }
+                }
+            }
+        });
+    }
+    $("#cancelbtn").click(function () {
+        $("#adddiv").removeClass('hidden');
+        $("#editdiv").addClass('hidden');
+        $("#iPk_ParmCateId").val('0');
+
+        $("#iParCatId").val('');
+        $('#iParCatId').trigger('change');
+        $('#sParmetNam').val('');
+    });
+    $("#Reset").click(function () {
+
+
+        $("#adddiv").removeClass('hidden');
+        $("#editdiv").addClass('hidden');
+        $("#iPk_ParmCateId").val('0');
+
+        $("#iParCatId").val('');
+        $('#iParCatId').trigger('change');
+        $('#sParmetNam').val('');
+    });
+
+</script>

@@ -1,0 +1,419 @@
+﻿
+@{
+    ViewBag.Title = "AddRemitterPage";
+    Layout = null;
+}
+<style>
+    .control-label {
+        color: black;
+        font-weight: bold;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .hiddenback {
+        opacity: 0.2;
+    }
+
+    dfnPan {
+        display: flex;
+        position: relative;
+        right: -52px;
+        top: -20px;
+        z-index: 998;
+    }
+
+        dfnPan > span {
+            display: none;
+        }
+
+        dfnPan:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(-168px + 1px);
+            right: 50px;
+            background: #304767;
+            color: white;
+            width: 20rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+            z-index: 99999 !important;
+        }
+
+
+    dfnAadhar {
+        display: flex;
+        position: relative;
+        right: -112px;
+        top: -20px;
+        z-index: 998;
+    }
+
+        dfnAadhar > span {
+            display: none;
+        }
+
+        dfnAadhar:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(-100px + 1px);
+            right: 10px;
+            background: #304767;
+            color: white;
+            width: 20rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+            z-index: 99999 !important;
+        }
+</style>
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">Money Transfer/Add Remitter</h4>
+        @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+    </div>
+    <div class="card-body">
+        <div class="spinner-grow text-primary hidden" id="status" role="status" style=" position: absolute;top: 250px;left: 500px;z-index: 100;"></div>
+        <form name="addRemitterForm" id="addRemitterForm">
+            <div class="form-group is-empty row">
+
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Mobile Number</label>
+                    <dfnAadhar>
+                        <span>
+                            <p>
+                                - Mobile Number Should be 10 Digits Long.</br>
+                                - Must stats with either 6,7,8,9.</br>
+                                - eg: 6759834601.
+                            </p>
+                        </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                    </dfnAadhar>
+                </div>
+                <div class="col-sm-6">
+                    <input name="MobileNo" id="MobileNo" type="text" value="" class="form-control" placeholder="Enter Mobile No" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" required>
+                </div>
+            </div>
+            <div class="form-group mb-0 row">
+
+                <div class="col-sm-3">
+                    <label class="col-sm-12 my-1 control-label">Gender</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="male" name="genederradio" class="custom-control-input" value="male">
+                            <label class="custom-control-label" for="male">Male</label>
+                        </div>
+                    </div>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio ">
+                            <input type="radio" id="female" name="genederradio" class="custom-control-input" value="female">
+                            <label class="custom-control-label" for="female">Female</label>
+                        </div>
+                    </div>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="other" name="genederradio" class="custom-control-input" value="other">
+                            <label class="custom-control-label" for="other">Other</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group is-empty my-3 row">
+
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Enter Received OTP</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <input name="sOTP" id="txtOTP" type="text" value=""  maxlength="6" class="form-control"  oninput="numberOnly(this.id);" placeholder="OTP" required>
+                </div>
+            </div>
+            
+            <div class="form-group is-empty my-3 row">
+
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Remitter First Name</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <input name="firstName" id="RemitterFName" type="text" value="" class="form-control" placeholder="Enter First Name" required>
+                </div>
+            </div>
+
+            <div class="form-group is-empty my-3 row">
+
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Remitter Last Name</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <input name="lastName" id="RemitterLName" type="text" value="" class="form-control" placeholder="Enter Last Name" required>
+                </div>
+            </div>
+
+            <div class="form-group is-empty row">
+
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">PAN</label>
+                    <dfnPan>
+                        <span>
+                            <p>
+                                - Valid PAN number should be allowed</br>
+                                - Length must be 10 Characters</br>
+                                - First 5 letters in capital </br>
+                                - Next 4 digits</br>
+                                - Last one letter in capital</br>
+                                - eg: COBSS0987P
+                            </p>
+                        </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                    </dfnPan>
+                </div>
+                <div class="col-sm-6">
+                    <input name="PAN" id="PAN" type="text" value="" class="form-control" placeholder="Enter PAN" maxlength="10" style="text-transform:uppercase">
+                </div>
+            </div>
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Email Id</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <input name="EmailId" id="EmailId" type="email" value="" class="form-control" placeholder="Enter Email Id">
+                </div>
+            </div>
+
+
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Country</label>
+                </div>
+
+                <div class="col-sm-6">
+                    <input name="country" id="txtcountry" type="text" value="India" class="form-control" placeholder="Enter country" readonly>
+                </div>
+            </div>
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">State</label>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <input name="state" id="txtstate" type="text" value="" class="form-control" placeholder="Enter State">
+                </div>
+            </div>
+
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">City</label>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <input name="City" id="City" type="text" value="" class="form-control" placeholder="Enter City">
+                </div>
+            </div>
+
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Address 1</label>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <textarea name="address1" id="txtaddress1" type="text" value="" class="form-control" placeholder="Enter Address 1" cols="4" rows="3" style="resize:none"/>
+                </div>
+            </div>
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Address 2</label>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <textarea name="address2" id="txtaddress2" type="text" value="" class="form-control" placeholder="Enter Address 2" cols="4" rows="3" style="resize:none"/>
+                </div>
+            </div>
+            <div class="form-group is-empty row">
+                <div class="col-sm-3">
+                    <label for="nameInput" class="col-sm-12 my-1 control-label">Pincode</label>
+                </div>
+                <div class="col-sm-6">
+                    <input name="Pincode" id="Pincode" type="text" value="" class="form-control" placeholder="Enter PinCode" oninput="numberOnly(this.id);" maxlength="6" autocomplete="off" required>
+                </div>
+            </div>
+            <div class="pull-right" style="text-align: end;">
+
+                <button class="btn btn-primary " type="submit"><i class="fa fa-plus"></i>Add Remitter</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    addRemitterForm.addEventListener("submit", (e) => {
+
+        e.preventDefault();
+        var phone_input = $("#MobileNo").val();
+        var genederradio = $('input[name="genederradio"]:checked').val();
+        var RemitterFName = $("#RemitterFName").val();
+        var RemitterLName = $("#RemitterLName").val();
+        var address1 = $("#txtaddress1").val();
+        var address2 = $("#txtaddress2").val();
+        var PAN = $("#PAN").val().toUpperCase();
+        var EmailId = $("#EmailId").val();
+        var Pincode = $("#Pincode").val();
+        var City = $("#City").val();
+        var country = $("#txtcountry").val();
+        var rState = $("#txtstate").val();
+        var OTPData = $("#txtOTP").val();
+        var APIState = $('#hdnStateID').val();
+
+        alert(APIState);
+
+        var Params = JSON.stringify(
+            {
+                phone_input: phone_input,
+                genederradio: genederradio,
+                RemitterFName: RemitterFName,
+                RemitterLName: RemitterLName,
+                addr1: address1,
+                addr2: address2,
+                PAN: PAN,
+                EmailId: EmailId,
+                Pincode: Pincode,
+                City: City,
+                cntry: country,
+                remitterState: rState,
+                OTP: OTPData,
+                APIState: APIState
+            });
+        $("#status").removeClass("hidden");
+        $("#addRemitterForm").addClass("hiddenback");
+        $.ajax({
+            url: GetglobalDomain() + "/Category/AddRemitter",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+                $("#status").addClass("hidden");
+                $("#addRemitterForm").removeClass("hiddenback");
+                debugger;
+                /*  var data = JSON.parse(response);*/
+
+                if (response.Data == "success") {
+                    var msg = response.Data;
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: msg,
+                        showConfirmButton: false,
+                        timer: 7000
+                    })
+                    //setTimeout(function () {
+                    //    location.reload();
+                    //}, 5000);
+
+                }
+                else {
+
+                    var APIData = response.APIData;
+
+                    var msg = APIData.errorMessage;
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: msg,
+                        showConfirmButton: false,
+                        timer: 7000
+                    })
+                    $("#MobileNo").val('');
+                    return false;
+                }
+                /* location.reload();*/
+
+            }
+        });
+    });
+
+    $('#MobileNo').blur(function () {
+        var no = $("#MobileNo").val();
+        if (no.length > 0) {
+            var pattern = new RegExp("^[6-9]{1}[0-9]{9}$");
+            var check = pattern.test(no);
+            if (check == false) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "Please Enter valid mobile no",
+                    showConfirmButton: true,
+                })
+                return false;
+            }
+        }
+    });
+
+    $("#PAN").blur(function (e) {
+        var inputvalues = $(this).val().toUpperCase();
+        validatePanFormat(inputvalues);
+    });
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    function validatePanFormat(panNumber) {
+        panNumber = panNumber.toUpperCase();
+        if (panNumber.length > 0) {
+            var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if (!regex.test(panNumber)) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Invalid Pan Number, Please Try Again',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+                return regex.test(panNumber);
+            }
+            else {
+                return regex.test(panNumber);
+            }
+            //console.log('status', regex.test(panNumber));
+        }
+    }
+
+
+
+
+    //$("#MobileNo").blur(function () {
+    //    var mob = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+    //    var txtMobile = $("#MobileNo").val();
+    //    if (txtMobile == '') {
+    //        return false;
+    //    }
+    //    if (mob.test(txtMobile.value) == false) {
+    //        alert("Please enter valid mobile number.");
+
+    //        $(this).val('');
+    //        $("#MobileNo").focus();
+    //        return true;
+    //    }
+
+    //    //$(this).val($(this).val().replace(/^(\d{2})(\d{5})(\d{4})+$/, "($1) $2-$3"));
+    //});
+
+</script>

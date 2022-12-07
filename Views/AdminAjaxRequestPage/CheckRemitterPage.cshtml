@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewBag.Title = "CheckRemitterPage";
+    Layout = null;
+}
+<style>
+    .language1 {
+        cursor: pointer;
+    }
+
+    .spinner1 {
+        /*display: inline-block;*/
+        opacity: 0;
+        /*max-width: 0;*/
+        /*-webkit-transition: opacity 0.25s, max-width 0.45s;
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s;*/ /* Duration fixed since we animate additional hidden width */
+    }
+
+    .has-spinner1.activeSpin {
+        cursor: progress;
+    }
+
+        .has-spinner1.activeSpin .spinner1 {
+            opacity: 1;
+            /*max-width: 50px;*/ /* More than it will ever come, notice that this affects on animation duration */
+        }
+
+
+    dfnAadhar {
+        display: flex;
+        position: relative;
+        right: -112px;
+        top: -20px;
+        z-index: 998;
+        width: 30px;
+    }
+
+        dfnAadhar > span {
+            display: none;
+        }
+
+        dfnAadhar:hover > span {
+            display: inline-block;
+            position: absolute;
+            bottom: calc(-100px + 1px);
+            right: 10px;
+            background: #304767;
+            color: white;
+            width: 20rem;
+            padding: 7px 18px 7px 18px;
+            border-radius: 12px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            font-style: normal;
+            z-index: 99999 !important;
+        }
+</style>
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">Money Transfer</h4>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-sm-8">
+                <form name="CheckRemitterForm" id="CheckRemitterForm">
+                    <div class="form-group is-empty row">
+                        <div class="col-sm-3">
+                            <label for="nameInput" class="col-sm-12 my-1 control-label">Mobile Number</label>
+                            <dfnAadhar>
+                                <span>
+                                    <p>
+                                        - Mobile Number Should be 10 Digits Long.</br>
+                                        - Must stats with either 6,7,8,9.</br>
+                                        - eg: 6759834601.
+                                    </p>
+                                </span><i class='fa fa-info-circle' style="font-size: 14px; color: #11a6e2"></i>
+                            </dfnAadhar>
+                        </div>
+                        <div class="col-sm-6">
+                            <input name="MobileNo" id="MobileNo" type="text" value="" class="form-control" placeholder="Enter Mobile No" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div style="text-align:center;">
+                        <button class="btn btn-primary" type="submit" id="btnsubmit"><i class="fa fa-check"></i> Verify</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <i class="fa fa-language"><span id="langchange" class="language1">Hindi</span></i>
+                <p class="hindi" style="color: blue; font-weight: bold;">
+                    आप फंड ट्रांसफर अनुरोध शुरू कर सकते हैं, beneficiary जोड़ सकते हैं
+                </p>
+                <p class="hindi">
+                    * प्रेषक का पंजीकृत मोबाइल नंबर दर्ज करें
+                </p>
+                <p class="hindi">
+                    * प्रमाणीकरण के लिए नंबर पर एक ओटीपी भेजा जाएगा, ओटीपी सत्यापित करें और आगे बढ़ें
+                </p>
+                <p class="hindi">
+                    * प्रेषक से अनुरोध है कि वह अपने द्वारा किए गए प्रत्येक लेनदेन पर स्वयं को प्रमाणित करें
+                </p>
+
+                <p class="English" style="color: blue; font-weight: bold;">
+                    you can initiate  fund transfer requwst ,add beneficiary
+                </p>
+                <p class="English">
+                    * Enter the Remitter's registered mobile number
+                </p>
+                <p class="English">
+                    * An OTP will be sent to the number for authentication,Verify the OTP and proceed
+                </p>
+                <p class="English">
+                    * Remitter is requested to authentication himself on every transaction he makes
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $(".hindi").css('display', 'none');
+    $("#langchange").click(function () {
+        debugger;
+        var data = $(this).text();
+        if (data == 'Hindi') {
+            document.getElementById('langchange').innerText = 'English';
+            $(".hindi").css('display', 'block');
+            $(".English").css('display', 'none');
+        }
+        else {
+            document.getElementById('langchange').innerHTML = 'Hindi';
+            $(".hindi").css('display', 'none');
+            $(".English").css('display', 'block');
+        }
+
+    });
+    $("#Loginsave").click(function () {
+        alert("dsjhwd");
+        $("#FirstShow").addClass('hidden');
+        $("#SecondShow").removeClass('hidden');
+    });
+    CheckRemitterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        var btnText = $('#btnsubmit').val();
+        var h = '<span class="spinner1"><i class="fa fa-spinner fa-pulse"></i> ' + btnText +'</span>'
+
+        $('#btnsubmit').addClass('has-spinner1').addClass('activeSpin');
+        $('#btnsubmit').html('');
+        $('#btnsubmit').html(h);
+
+        var no = $("#MobileNo").val();
+        var pattern = new RegExp("^[6-9]{1}[0-9]{9}$");
+        var check = pattern.test(no);
+        if (check == false) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Please Enter valid mobile no",
+                showConfirmButton: true,
+            })
+            return false;
+        }
+        var Params = JSON.stringify(
+            {
+                phone_input: no
+            });
+        $.ajax({
+            url: GetglobalDomain() + "/Category/CheckRemitter",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+
+                debugger;
+                if (response.Success == "success" && response.isDataExists == 1) {
+                    //var msg = response.msg;
+                    //Swal.fire({
+                    //    position: 'center',
+                    //    icon: 'success',
+                    //    title: msg,
+                    //    showConfirmButton: true,
+                    //    timer: 7000
+                    //})
+                    //$('#hdnStateID').val(response.ApiStateId);
+                    //alert($('#hdnStateID').val())
+                    //$("#AddRemitter").click();
+                    $('#btnsubmit').removeClass('has-spinner1').removeClass('activeSpin');
+                    $('#btnsubmit').html('');
+                    $('#btnsubmit').html('<i class="fa fa-check"></i> Verify');
+
+
+                    window.location.href = GetglobalDomain() + "/Category/MoneyTransfer?MobileNo=" + no;
+                }
+                else {
+
+                    $('#btnsubmit').removeClass('has-spinner1').removeClass('activeSpin');
+                    $('#btnsubmit').html('');
+                    $('#btnsubmit').html('<i class="fa fa-check"></i> Verify');
+
+                    $('#hdnStateID').val(response.ApiStateId);
+                    alert($('#hdnStateID').val())
+                    $("#AddRemitter").click();
+
+                    //var msg = response.msg;
+                    //Swal.fire({
+                    //    position: 'center',
+                    //    icon: 'warning',
+                    //    title: msg,
+                    //    showConfirmButton: true,
+                    //    timer: 7000
+                    //})
+                    //$("#MobileNo").val('');
+                    //return false;
+                }
+                /* location.reload();*/
+
+            }
+        });
+
+    });
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+
+</script>
+

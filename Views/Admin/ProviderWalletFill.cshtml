@@ -1,0 +1,401 @@
+﻿@using NewZapures_V2.Models
+@model List<PRVWALFILL>
+@{
+    ViewBag.Title = "Service Provider Wallet Fill";
+    ViewBag.Create = "Wallet_Fill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<CustomMaster> ServiceProvider = new List<CustomMaster>();
+    if (ViewBag.ServiceProvide != null)
+    {
+        ServiceProvider = (List<CustomMaster>)ViewBag.ServiceProvide;
+    }
+}
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: cadetblue;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 10px;
+        border: 3px solid #888;
+        width: 29%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+
+
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mt-0 header-title float-left">Service Provider Wallet Fill</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("ProviderWalletFill", "Admin", FormMethod.Post, new { @class = "formcreateupdate", @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group  is-empty row">
+                        <div class="col-sm-6">
+                            <select class="singleselect" id="ServiceProviderId" name="iFk_ServId" required>
+                                <option value="0">Select Provider Name</option>
+                                @{
+                                    foreach (var item in ServiceProvider)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+                            <input type="hidden" id="sServName" name="sServName" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input name="sTrnFillAmut" id="sTrnFillAmut" type="number" value="" class="form-control" placeholder="Transaction Amount" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            @*@Html.TextBoxFor(model => model.Fromdate, new { @Value = Model.Fromdate, @style = "width:100%", type = "date" })*@
+                            @*@Html.TextBox("FromDate", Model.Fromdate.ToString(), "{0:yyyy-MM-dd}", new { @style = "width:100%", type = "date" })*@
+                            <input type="date" class="form-control" name="dtTrnsctnDt" value="" id="dtTrnsctnDt" required />
+                            <small id="msgshow" class="col-sm-12 control-label" style="color:red;text-align: unset;">Transaction Date</small>
+                        </div>
+                    </div>
+                    <div class="form-group  is-empty row">
+                        <div class="col-sm-6">
+
+                            <input class="form-control" type="file" id="walletimg" onchange="return encodeImageFileAsURL(this)">
+                            <input type="hidden" id="Uploadedwalletimg" name="Image" />
+                        </div>
+                        <div class="col-md-3">
+                            @*@Html.TextBoxFor(model => model.Fromdate, new { @Value = Model.Fromdate, @style = "width:100%", type = "date" })*@
+                            @*@Html.TextBox("FromDate", Model.Fromdate.ToString(), "{0:yyyy-MM-dd}", new { @style = "width:100%", type = "date" })*@
+                            <input type="text" class="form-control" name="sRefval" value="" id="srefval" required />
+                            <small id="msgshow" class="col-sm-12 control-label" style="color:red;text-align: unset;">Reference no</small>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <button id="reset" type="reset" class="btn btn-primary">Reset</button>
+                            <button id="save" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                    <footer class="form-footer">
+                        <div class="pull-right" style="text-align: end;">
+                            <input type="submit" style="display:none;" class="btn btn-primary" id="savedata" value="save" />
+
+                        </div>
+                    </footer>
+                }
+
+                <div class="form-group is-empty row">
+                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th>Service Provider</th>
+                                <th>Transaction Date</th>
+                                <th>Reference no</th>
+                                <th>Transaction Amount </th>
+                                <th>Reciept Preview </th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="DataSlabMaster">
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr id="tr_@item.iPk_WalFilId">
+                                        <td>@item.sServName</td>
+                                        <td>@item.startDate1</td>
+                                        <td>@item.sRefval</td>
+                                        <td>@item.sTrnFillAmut</td>
+                                        <td><div style="background-image: url('@item.sUplodDcumntUrl');background-size: contain;background-repeat:no-repeat;background-position: center;width: 80px;height: 60px;border-radius: 28px;display:flex;place-content:end;align-items:end" onclick="download(@item.iPk_WalFilId)"><a href="@item.sUplodDcumntUrl" id="imglink_@item.iPk_WalFilId" target="_blank" download><i class="fa fa-download" /></a></div></td>
+                                        <td>  <a id="btnDeactive_@item.iPk_WalFilId" class="Deleteclass" name="2" data-id="@item.iPk_WalFilId" onclick="DeleteData(@item.iPk_WalFilId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <header class="w3-container w3-teal">
+            <span class="close">&times;</span>
+            <h2 style="text-align:center;color:aqua;">Check Information</h2>
+        </header>
+        <div class="row" id="modal-bodyfirst" style="
+    padding: inherit;
+    background: azure;
+">
+            <div class="col-sm-6">
+                Service Provider:- <label id="name" style="font-weight:bold;"></label>
+            </div>
+            <div class="col-sm-6">
+                Amount:-<label id="FillAmut1" style="font-weight:bold;"></label> @*<input id="FillAmut1" value="">*@
+            </div>
+            <div class="col-sm-6">
+                Date:-<label id="Date1" style="font-weight:bold;"></label>@*<input id="Date1" value="">*@
+            </div>
+            <div class="col-sm-6">
+                Reference No:-<label id="refval" style="font-weight:bold;"></label>@*<input id="refval" value="">*@
+            </div>
+        </div>
+        <footer class="w3-container w3-teal" style="text-align: center; padding-top: 10px;">
+            <button type="button" id="ok" class="btn btn-primary">Ok</button>
+            <button type="button" id="Close" class="btn btn-primary">Close</button>
+        </footer>
+    </div>
+
+</div>
+<div id="myModaldelete" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <header class="w3-container w3-teal">
+            <span class="close1">&times;</span>
+            <h2 style="text-align:center;color:aqua;">Are you sure to remove record?</h2>
+        </header>
+        <div class="row" id="modal-bodyfirstdelete" style="padding: inherit;background: azure;">
+            <div class="col-sm-12">
+                <label style="font-weight:bold;">Narration</label>
+            </div>
+            <div class="col-sm-12">
+
+                <textarea rows="3" id="narration" style="font-weight: bold; width: 100%; "></textarea>
+                <input type="hidden" id="deleteid" value="" />
+            </div>
+
+        </div>
+        <footer class="w3-container w3-teal" style="text-align: center; padding-top: 10px;">
+            <button type="button" id="deleteok" class="btn btn-primary">Ok</button>
+            <button type="button" id="deleteclose" class="btn btn-primary">Close</button>
+        </footer>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(".singleselect").select2();
+        var imagebase64 = "";
+        $("#ServiceProviderId").change(function () {
+            debugger;
+            var sername = $(this).find('option:selected').text();
+            $("#name").text(sername);
+            $("#sServName").val(sername);
+        });
+        $("#sTrnFillAmut").blur(function () {
+            debugger;
+            var sTrnFillAmut = $("#sTrnFillAmut").val();
+            $("#FillAmut1").text(sTrnFillAmut);
+        });
+        $("#dtTrnsctnDt").change(function () {
+            var TrnsctnDt = $("#dtTrnsctnDt").val();
+            $("#Date1").text(TrnsctnDt);
+        });
+        $("#srefval").blur(function () {
+            debugger;
+            var refval = $("#srefval").val();
+            $("#refval").text(refval);
+        });
+        //$("#save").click(function () {
+        //    var modal = document.getElementById("myModal");
+        //    modal.style.display = "block";
+        //});
+        var modal = document.getElementById("myModal");
+        var modaldelete = document.getElementById("myModaldelete");
+        // Get the button that opens the modal
+        var btn = document.getElementById("save");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        var span1 = document.getElementsByClassName("close1")[0];
+        // When the user clicks on the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        span1.onclick = function () {
+            modaldelete.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+
+        }
+        $("#savedata").click(function () {
+            debugger;
+
+
+            modal.style.display = "none";
+        });
+        $("#ok").click(function () {
+            $("#savedata").click();
+        });
+        $("#Close").click(function () {
+            modal.style.display = "none";
+        });
+        function DeleteData(Id) {
+            $("#deleteid").val(Id);
+            $("#narration").val('');
+            modaldelete.style.display = "block";
+        }
+        $("#deleteclose").click(function () {
+            modaldelete.style.display = "none";
+        });
+        $("#deleteok").click(function () {
+            debugger;
+            var id = $("#deleteid").val();
+            var narration = $("#narration").val();
+            if (narration.trim() == '') {
+                $.confirm({
+
+                    title: 'Remove Confirmation',
+                    content: 'Please Enter Narration',
+                    type: 'red',
+                    typeAnimated: true,
+                    animation: 'rotate',
+                    closeAnimation: 'scale'
+                });
+                /* alert("Please Enter Narration");*/
+                return false;
+            }
+            var Params = JSON.stringify({
+                Id: id,
+                type: 2,
+                narration: narration
+
+
+            });
+            $.ajax({
+                url: GetglobalDomain() + "/Admin/ProviderWalletDelete",//globaUserProperties.domain +
+                type: 'POST',
+                dataType: "json",
+                data: Params,
+                contentType: "application/json",
+                success: function (response) {
+
+
+                    debugger;
+                    if (response.IsValid = 1) {
+                        modaldelete.style.display = "none";
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Record Deleted Successfully!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        $("#tr_" + id).remove();
+                    }
+
+                },
+
+            });
+
+        });
+
+
+        $("#reset").click(function () {
+            $("#ServiceProviderId").select2("val", "0");
+        });
+
+
+        function encodeImageFileAsURL(element) {
+
+            var elementID = element.id;
+            var file = element.files[0];
+            console.log(file);
+            console.log(elementID);
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                imagebase64 = reader.result;
+                if (elementID == 'walletimg') {
+                    debugger;
+                    console.log(imagebase64);
+                    //$('#Uploadedwalletimg').val(imagebase64);
+                    var Image = imagebase64.split(',')[1];
+                    //console.log(Image);
+                    //$('#Uploadewalletimg').val('');
+                    //if (Image != null) {
+                    $('#Uploadedwalletimg').val(Image);
+                    //}
+                    /* console.log('csd : ' + $('#Uploadedwalletimg').val());  */
+                    //uploadedPan = imagebase64;
+                    //console.log("Converted Pan " + c)
+                }
+
+            }
+            reader.readAsDataURL(file);
+            return imagebase64;
+
+            //var panImage = $('#UploadedPanImage').val().split(",");
+            //var aadharImage = $('#UploadedAadharImage').val().split(",");
+        }
+
+        function download(imgLinkdata) {
+
+            $('#imglink_' + imgLinkdata).click();
+        }
+
+    </script>
+
+}
