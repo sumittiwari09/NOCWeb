@@ -82,7 +82,7 @@
     $(".singleselect").select2();
     $("#datatable-buttons_info").css('display', 'none');
     function validateForm() {
-        debugger;
+      
         let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;
         let iParCatId = document.forms["myForm"]["iParCatId"].value;
         let iParCatSubId = document.forms["myForm"]["iParCatSubId"].value;
@@ -90,9 +90,11 @@
         let sParmetNam = document.forms["myForm"]["sParmetNam"].value;
         let iPk_ParmCateId = document.forms["myForm"]["iPk_ParmCateId"].value;
 
-        if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" || sParmetNam.trim() == "") {
+        if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" ) {
             return false;
         }
+        sParmetNam = $("#iFk_Deptid option:selected").text() + "-" + $("#iParCatId option:selected").text() + "-" + $("#iParCatSubId option:selected").text() + "-" + $("#iParUomid option:selected").text();
+  
         var Params = JSON.stringify({
             iPk_ParmCateId: iPk_ParmCateId,
             iFk_Deptid: iFk_Deptid,
@@ -101,6 +103,7 @@
             iParUomid: iParUomid,
             sParmetNam: sParmetNam
         });
+
         $("#bodyid").css('display', 'none');
         $("#loader").css('display', 'block');
         $.ajax({
@@ -118,8 +121,9 @@
                         icon: 'success',
                         title: response.msg,
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 6000
                     })
+              
                     Generatepartialpage(0);
                 }
 
