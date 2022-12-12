@@ -7,7 +7,7 @@ namespace NewZapures_V2.Models
 {
     public class StaffBO
     {
-        public class Staff :ErrorBO
+        public class Staff : ErrorBO
         {
             public string Id { get; set; }
             public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace NewZapures_V2.Models
             public string Profile { get; set; }
             public string Experience { get; set; }
 
-            public string Type { get; set; }           
+            public string Type { get; set; }
             public string AadhaarExtension { get; set; }
             public string AadhaarContentType { get; set; }
             public string PanExtension { get; set; }

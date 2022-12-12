@@ -90,8 +90,8 @@ namespace NewZapures_V2.Controllers
                             Session["notificationList"] = notificationsData;
 
                             //}
-                            return RedirectToAction("WelcomeNoc", "Dashboard");
-                            //return RedirectToAction("Index", "Dashboard");
+                            //return RedirectToAction("WelcomeNoc", "Dashboard");
+                            return RedirectToAction("Index", "Dashboard");
                         }
                         else if (userModel.IsActive == "0")
                         {

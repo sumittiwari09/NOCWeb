@@ -19,7 +19,7 @@ namespace NewZapures_V2.Controllers
         }
        
         [HttpPost]
-        public ActionResult SaveDetails(BasicDetailsBO trg)
+        public ActionResult SaveDetails(LandDetailsBO trg)
         {
             try
             {
