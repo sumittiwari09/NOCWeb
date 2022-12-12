@@ -23,6 +23,11 @@ namespace Metrica.Controllers
             return View();
         }
 
+        public ActionResult WelcomeNoc()
+        {
+            return View();
+        }
+
         [ActionName("crypto-index")]
         public ActionResult CryptoIndex() => View();
 

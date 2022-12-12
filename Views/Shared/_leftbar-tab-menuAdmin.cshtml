@@ -43,6 +43,7 @@
         <div class="topbar-left">
             <a href="@Url.Action("Index", "Dashboard")" class="logo">
                 <span>
+
                     <img src="~/images/NOCIMAGE.png" alt="logo-large" class="logo-lg logo-dark" style="width: 50%;height: auto;margin-top: 10%;">
                     <img src="~/images/NOCIMAGE.png" alt="logo-large" class="logo-lg logo-light">
                 </span>
@@ -66,11 +67,11 @@
                     <h6 class="menu-title active">Master</h6>
                 </div>
                 <ul class="nav">
-
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Department</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","User")">Add Role</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Setting","Admin")">Custom Field</a></li>
+
                 </ul>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
@@ -82,6 +83,10 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Master</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Parameter Master</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","SSODeptMapping")">SSO Department Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" TrusteeGeneralInfo","Trustee")">Role Access Rights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index","Trustee")">NOC Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" CreateDetails","BasicDetails")">Parameter Master</a></li>
+                    
 
                 </ul>
             </div>
@@ -96,6 +101,7 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action(" GstApplicable", "Admin" )">GST Applicable</a></li>*@
                     @*
                     <li class="nav-item"><a class="nav-link" href="@Url.Action(" Detail", "Admin" )">Service Master</a></li>*@
+
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "DocumentLibrary" )">Document Library</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Geographical" )">Geographical Data</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("AddSystemUser", "Role" )">Add System User</a></li>
@@ -165,6 +171,49 @@
                 </ul>
             </div>-->
             <!-- end Dashboards -->
+
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PaymentPendingCollection", "Home" )">Payment Collection</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearedList", "Home" )">Cheque Cleared List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearenceList", "Home" )">Clear Cheque</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Home" )">Client Change Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" NotificationIndex", "Role" )">Notification</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "MobileRecharge" )">Mobile Recharge</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRecharge", "Client" )">Wallet Refill</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRechargeHistory", "Client" )">Wallet Request history</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" LedgerReport", "Client" )">Ledger Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientWalletRechargeRequets", "Support" )">Pending Wallet Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequestList", "Home" )">Change Request List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Admin" )">Pending Change Request List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderIndex", "Commission" )">Service Provider</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderRateMaster", "Commission" )">Service Provider Rate Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" CommissionMasterIndex", "Commission" )">Commission Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserCommission", "Commission" )">User Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeCommissionIndex", "Commission" )">Recharge Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeUserCommission", "Commission" )">Recharge User Commission</a></li>*@
+
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceWiseTrans", "Report" )">Service Wise Transation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" SerwisePartnerCount", "Report" )">Service Wise Partner Count</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PartWiseStaDetails", "Report" )">Party Wise Statement Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserProfileReport", "Report" )">User Profile Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserPartyWiseProfileReport", "Report" )">Party Wise Profile Report</a></li>*@
+             
+                </ul>
+            </div>--><!-- end Dashboards -->
 
             <div id="MetricaApps" class="main-icon-menu-pane">
                 <div class="title-box">
@@ -410,6 +459,7 @@
                     <h6 class="menu-title">Pages</h6>
                 </div>
                 <ul class="nav">
+
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("profile", "pages" )">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("tour", "pages" )">Tour</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("timeline", "pages" )">Timeline</a></li>
@@ -419,6 +469,7 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("blogs", "pages" )">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("faq", "pages" )">FAQs</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("gallery", "pages" )">Gallery</a></li>
+
                 </ul>
             </div><!-- end Pages -->
             <div id="MetricaAuthentication" class="main-icon-menu-pane">
@@ -438,6 +489,7 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("404-alt", "authentication" )">Error 404-alt</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("500", "authentication" )">Error 500</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("500-alt", "authentication" )">Error 500-alt</a></li>
+
                 </ul>
             </div><!-- end Authentication-->
         </div><!--end menu-body-->

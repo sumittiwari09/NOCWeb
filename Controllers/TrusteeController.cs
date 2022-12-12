@@ -19,9 +19,9 @@ namespace NewZapures_V2.Controllers
         public ActionResult Index()
         {
             List<CustomMaster> TrustList = new List<CustomMaster>();
+
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
-
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
@@ -272,7 +272,6 @@ namespace NewZapures_V2.Controllers
             #region Registration Document
             if (registrationnofile != null)
             {
-
                 extension = Path.GetExtension(registrationnofile.FileName);
                 ContentType = registrationnofile.ContentType;
                 using (Stream inputStream = registrationnofile.InputStream)

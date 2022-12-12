@@ -28,14 +28,13 @@ namespace NewZapures_V2.Models
             public string TrusteeContentType { get; set; }
 
         }
+
         public class Trustee : ErrorBO
         {
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
             public string Name { get; set; }
-
             public string RoleId { get; set; }
-
             public string Mobile { get; set; }
             public string Email { get; set; }
             public string AadhaarNo { get; set; }
