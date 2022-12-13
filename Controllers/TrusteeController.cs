@@ -19,11 +19,11 @@ namespace NewZapures_V2.Controllers
         public ActionResult Index()
         {
             List<CustomMaster> TrustList = new List<CustomMaster>();
-            TrustList = GetTrustDropDownList(24);
-            ViewBag.TrustList = TrustList;
 
+            TrustList = GetTrustDropDownList(28);
+            ViewBag.TrustList = TrustList;
             List<CustomMaster> RoleType = new List<CustomMaster>();
-            RoleType = Common.GetCustomMastersList(25);
+            RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
 
             #region List Trustee
@@ -218,7 +218,7 @@ namespace NewZapures_V2.Controllers
             //#endregion
 
             List<CustomMaster> TrusteeType = new List<CustomMaster>();
-            TrusteeType = Common.GetCustomMastersList(24);
+            TrusteeType = Common.GetCustomMastersList(28);
             ViewBag.TrusteeType = TrusteeType;
             return View();
         }
@@ -244,14 +244,14 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile,HttpPostedFileBase registrationnofile,HttpPostedFileBase trustfile)
+        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile)
         {
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
             #region Certified Document
             if (Ceritifiedbyfile != null)
-            {                
+            {
                 extension = Path.GetExtension(Ceritifiedbyfile.FileName);
                 ContentType = Ceritifiedbyfile.ContentType;
                 using (Stream inputStream = Ceritifiedbyfile.InputStream)
@@ -272,7 +272,6 @@ namespace NewZapures_V2.Controllers
             #region Registration Document
             if (registrationnofile != null)
             {
-               
                 extension = Path.GetExtension(registrationnofile.FileName);
                 ContentType = registrationnofile.ContentType;
                 using (Stream inputStream = registrationnofile.InputStream)

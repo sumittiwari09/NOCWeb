@@ -1,31 +1,32 @@
 ﻿@using NewZapures_V2.Models;
 @{
-Layout = null;
 
-//var mobileVerified = "";
-//var PanVerified = "";
-//var AadharVerified = "";
-//var EmailVerified = "";
+    Layout = null;
 
-//var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
-//var data = ViewBag.AllData as Data;
-//var id = (string)ViewBag.id;
-//var Username = (string)ViewBag.UserName;
-//var UserType = (string)ViewBag.UserType;
-//if (data != null)
-//{
+    //var mobileVerified = "";
+    //var PanVerified = "";
+    //var AadharVerified = "";
+    //var EmailVerified = "";
 
-//    var details = data.userDetails;
+    //var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    //var data = ViewBag.AllData as Data;
+    //var id = (string)ViewBag.id;
+    //var Username = (string)ViewBag.UserName;
+    //var UserType = (string)ViewBag.UserType;
+    //if (data != null)
+    //{
 
-//    mobileVerified = details.mobileVerified == 0 ? "Pending" : "Done";
+    //    var details = data.userDetails;
 
-//    PanVerified = details.panVerified == 0 ? "Pending" : "Done";
+    //    mobileVerified = details.mobileVerified == 0 ? "Pending" : "Done";
 
-//    AadharVerified = details.adhaarVerified == 0 ? "Pending" : "Done";
+    //    PanVerified = details.panVerified == 0 ? "Pending" : "Done";
 
-//    EmailVerified = details.emailVerified == 0 ? "Pending" : "Done";
-//}
+    //    AadharVerified = details.adhaarVerified == 0 ? "Pending" : "Done";
 
+    //    EmailVerified = details.emailVerified == 0 ? "Pending" : "Done";
+    //}
+    
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -39,9 +40,8 @@ Layout = null;
     <link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-
-    <style>        
-        .sub-form {           
+    <style>
+        .sub-form {
             border: 2px solid #615f5f;
             padding: 20px 10px;
         }
@@ -57,8 +57,6 @@ Layout = null;
         span.red {
             color: #ef0808 !important;
         }
-
-        
 
         .sub-inrhead h5 {
             color: #ef0b0b;
@@ -141,6 +139,7 @@ Layout = null;
 </head>
 <body>
 
+    @*@Html.Partial("_top-bar")*@
     <div class="main-form">
         <div class="container">
             <div class="row">
@@ -158,79 +157,77 @@ Layout = null;
                                         <div class="sub-inrhead">
                                             <h5>Your Selected Services</h5>
                                         </div>-->
-                                        @*@if (data != null)
+                        @*@if (data != null)
+                            {
+                                string str = "";
+                                foreach (var item in data.serviceName)
                                 {
-                                    string str = "";
-                                    foreach (var item in data.serviceName)
-                                    {
-                                        str = str + "," + item.serviceName;
-                                        <input type="button" id="service" value='@item.serviceName'>
-                                    }
-                                    <input type="hidden" id="serviceNames" value='@str' />
-                                }*@
+                                    str = str + "," + item.serviceName;
+                                    <input type="button" id="service" value='@item.serviceName'>
+                                }
+                                <input type="hidden" id="serviceNames" value='@str' />
+                            }*@
 
 
-                                    <!--</div>
-                                    <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Services</a>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="rght-subfrm">
-                                        <div class="sub-inrhead">
-                                            <h5>Your Selected Devices</h5>
-                                        </div>-->
-                                        @*@if (data != null)
+                        <!--</div>
+                            <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Services</a>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="rght-subfrm">
+                                <div class="sub-inrhead">
+                                    <h5>Your Selected Devices</h5>
+                                </div>-->
+                        @*@if (data != null)
+                            {
+                                foreach (var item in data.harwareName)
                                 {
-                                    foreach (var item in data.harwareName)
-                                    {
-                                        <input type="button" value='@item.hardwareName' class="red">
-                                    }
-                                }*@
-                                    <!--</div>
-
+                                    <input type="button" value='@item.hardwareName' class="red">
+                                }
+                            }*@
+                        <!--</div>
                                     <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Devices</a>
 
                                 </div>
                             </div>
                         </div>-->
                         @*<div class="row">
-                            <div class="col-lg-12 col-md-6">
-                                <div class="verify-box">
-                                    <h2>Verification Process</h2>
-                                    <div class="table-in">
-                                        <table class="table table-bordered" id="tblverify">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Item</th>
-                                                    <th scope="col">Verification Status</th>
-                                                    <th scope="col">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                <div class="col-lg-12 col-md-6">
+                                    <div class="verify-box">
+                                        <h2>Verification Process</h2>
+                                        <div class="table-in">
+                                            <table class="table table-bordered" id="tblverify">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Item</th>
+                                                        <th scope="col">Verification Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
 
-                                        <div class="third-txt">
-                                            <span class="upld-doc">Uploaded Document [ Only For Manual Verification ]</span>
-                                        </div>
-                                        <div class="two-servctxt">
-                                            <div class="row col-lg-12 mt-4">
-
+                                            <div class="third-txt">
+                                                <span class="upld-doc">Uploaded Document [ Only For Manual Verification ]</span>
+                                            </div>
+                                            <div class="two-servctxt">
+                                                <div class="row col-lg-12 mt-4">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                         @*<div class="disclmr">
-                            <h4>Disclaimer: <span class="dis-txt">If verification is not completed you can't get access to the system</span></h4>
-                        </div>*@
-                    <div class="contn-btn text-center">
+                                <h4>Disclaimer: <span class="dis-txt">If verification is not completed you can't get access to the system</span></h4>
+                            </div>*@
+                        <div class="contn-btn text-center">
 
-                        @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
+                            @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
 
-                        <input type="submit" value="Prceeed to enter Trust Details" id="continue" style="display:block" onclick="Countinue();">
-                        @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
-                    </div>
+                            <input type="submit" value="Prceeed to enter Trust Details" id="continue" style="display:block" onclick="Countinue();">
+                            @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-1"></div>

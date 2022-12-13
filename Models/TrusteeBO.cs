@@ -7,7 +7,7 @@ namespace NewZapures_V2.Models
 {
     public class TrusteeBO
     {
-        public class TrusteeInfo:ErrorBO
+        public class TrusteeInfo : ErrorBO
         {
             public string TrusteeInfoId { get; set; }
             public string ApplicantId { get; set; }
@@ -28,7 +28,8 @@ namespace NewZapures_V2.Models
             public string TrusteeContentType { get; set; }
 
         }
-        public class Trustee :ErrorBO
+
+        public class Trustee : ErrorBO
         {
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
@@ -42,9 +43,9 @@ namespace NewZapures_V2.Models
             public string Pan { get; set; }
             public string ProfileImg { get; set; }
             public string AadhaarExtension { get; set; }
-            public string AadhaarContentType { get; set; }           
+            public string AadhaarContentType { get; set; }
             public string PanExtension { get; set; }
-            public string PanContentType { get; set; }            
+            public string PanContentType { get; set; }
             public string ProfileExtension { get; set; }
             public string ProfileContentType { get; set; }
             public byte[] DocumentByte { get; set; }

@@ -49,28 +49,68 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Trustee Members</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","BasicDetails")">Your Colleges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("project-index","Dashboard")">Add Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","AddCourse")">Add Courses</a></li>
                 </ul>
             </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Draft Application</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="#">Application List</a></li>                    
+                </ul>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Apply For NOC</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Finance")">Finance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","LandBuildingInfo")">Land Infomation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Vertinary")">Vertinary Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("index","Staff")">Staff Details</a></li>
+                </ul>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Applied Application</h6>
+                </div>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Track My Application</h6>
+                </div>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Statics</h6>
+                </div>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Notification</h6>
+                </div>
+            </div>
             @*@{
-                if (permissions != null)
-                {
-                    foreach (var item in permissions.Select(p => new { p.Menu, p.MenuId }).Distinct())
+        if (permissions != null)
+        {
+            foreach (var item in permissions.Select(p => new { p.Menu, p.MenuId }).Distinct())
+            {
+                <div id="MetricaDashboard" class="main-icon-menu-pane active">
+                    <div class="title-box">
+                        <h6 class="menu-title active">@item.Menu</h6>
+                    </div>
+                    @foreach (var item1 in permissions.Where(p => p.MenuId == item.MenuId).ToList())
                     {
-                        <div id="MetricaDashboard" class="main-icon-menu-pane active">
-                            <div class="title-box">
-                                <h6 class="menu-title active">@item.Menu</h6>
-                            </div>
-                            @foreach (var item1 in permissions.Where(p => p.MenuId == item.MenuId).ToList())
-                            {
-                                <ul class="nav">
-                                    <li class="nav-item"><a class="nav-link" href="@Url.Action(item1.ActionMethod, item1.Controller)">@item1.SubMenu</a></li>
-                                </ul>
-                            }
-                        </div>
-                        }
+                        <ul class="nav">
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action(item1.ActionMethod, item1.Controller)">@item1.SubMenu</a></li>
+                        </ul>
                     }
-                }*@
+                </div>
+                }
+            }
+        }*@
+
 
         </div><!--end menu-body-->
     </div><!-- end main-menu-inner-->

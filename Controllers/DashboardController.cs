@@ -18,6 +18,10 @@ namespace Metrica.Controllers
             }
         }
 
+        public ActionResult WelcomeNoc()
+        {
+            return View();
+        }
 
         public ActionResult WelcomeNoc()
         {

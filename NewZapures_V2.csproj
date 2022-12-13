@@ -139,7 +139,11 @@
   <ItemGroup>
     <Compile Include="Controllers\AddCourseController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
+    <Compile Include="Controllers\SSODeptMappingController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -211,6 +215,8 @@
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
+    <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
     <Compile Include="Models\ListRequest.cs" />
@@ -3560,6 +3566,12 @@
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
     <Content Include="Views\AddCourse\CreateDetails.cshtml" />
     <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Trustee\Index.cshtml" />
+    <Content Include="Views\Trustee\TrusteeGeneralInfo.cshtml" />
+    <Content Include="Views\Trustee\TrustList.cshtml" />
+    <Content Include="Views\Dashboard\WelcomeNoc.cshtml" />
+    <Content Include="Views\SSODeptMapping\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
