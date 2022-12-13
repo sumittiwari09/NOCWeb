@@ -45,7 +45,8 @@ namespace NewZapures_V2.Models
             TaxType = 10,
             CommissionType = 19,
             OperaterName = 20,
-            ServiceProvider = 21
+            ServiceProvider = 21,
+            UOM=24
         }
 
         public class ResponseDataBO

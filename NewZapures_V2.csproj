@@ -3559,6 +3559,7 @@
     <Content Include="Views\Vertinary\Index.cshtml" />
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
     <Content Include="Views\AddCourse\CreateDetails.cshtml" />
+    <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
