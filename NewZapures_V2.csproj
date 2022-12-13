@@ -3565,13 +3565,14 @@
     <Content Include="Views\Vertinary\Index.cshtml" />
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
     <Content Include="Views\AddCourse\CreateDetails.cshtml" />
-    <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Trustee\Index.cshtml" />
     <Content Include="Views\Trustee\TrusteeGeneralInfo.cshtml" />
     <Content Include="Views\Trustee\TrustList.cshtml" />
     <Content Include="Views\Dashboard\WelcomeNoc.cshtml" />
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
+    <Content Include="Views\Trustee\CollageListForApply.cshtml" />
+    <Content Include="Views\BasicDetails\CollageList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

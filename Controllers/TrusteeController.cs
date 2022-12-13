@@ -22,6 +22,7 @@ namespace NewZapures_V2.Controllers
 
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
+
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
@@ -119,6 +120,7 @@ namespace NewZapures_V2.Controllers
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
             request.AddParameter("application/json", _JsonSerializer.Serialize(obj), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
@@ -199,6 +201,21 @@ namespace NewZapures_V2.Controllers
         [HttpGet]
         public ActionResult TrusteeGeneralInfo()
         {
+            var client = new RestClient("https://api.sewadwaar.rajasthan.gov.in/app/live/master/getmasterdata/service?client_id=88d28d9b-408d-4b41-ab9e-5f704825ce4c");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("UserName","Doit");
+            request.AddHeader("Password","Doit@123");
+            request.AddHeader("ProjectCode","WSKANBZATL");
+            request.AddHeader("MasterDataID","1");
+            request.AddHeader("IsNew","1");
+            request.AddHeader("IsActive","1");
+            request.AddHeader("ModificationDate", "01-01-2017");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+
             //#region List Trustee
             //var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
             //var request = new RestRequest(Method.GET);
@@ -246,6 +263,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile)
         {
+            
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -272,6 +290,7 @@ namespace NewZapures_V2.Controllers
             #region Registration Document
             if (registrationnofile != null)
             {
+
                 extension = Path.GetExtension(registrationnofile.FileName);
                 ContentType = registrationnofile.ContentType;
                 using (Stream inputStream = registrationnofile.InputStream)
@@ -315,6 +334,7 @@ namespace NewZapures_V2.Controllers
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
             request.AddParameter("application/json", _JsonSerializer.Serialize(obj), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
@@ -336,6 +356,9 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+            List<CustomMaster> TrusteeType = new List<CustomMaster>();
+            TrusteeType = Common.GetCustomMastersList(31);
+            ViewBag.TrusteeType = TrusteeType;
             return View();
         }
 
@@ -347,6 +370,7 @@ namespace NewZapures_V2.Controllers
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
@@ -361,5 +385,30 @@ namespace NewZapures_V2.Controllers
             #endregion
             return View();
         }
+
+        [HttpGet]
+        public ActionResult CollageListForApply()
+        {
+            #region List Collage Apply List
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/CollageListApply");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.CollageList> _result = _JsonSerializer.Deserialize<List<TrusteeBO.CollageList>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.CollageApplyList = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            return View();
+        }
+
+
     }
 }

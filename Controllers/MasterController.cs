@@ -163,6 +163,9 @@ namespace NewZapures_V2.Controllers
             ViewBag.Department = departmentList;
             List<Dropdown> PerameterCategorylst = new List<Dropdown>();
             PerameterCategorylst = GetPerameterCategorylst(0,0,3);
+            List<CustomMaster> UOM = new List<CustomMaster>();
+            UOM = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.UOM));
+            ViewBag.UOM = UOM;
             ViewBag.PerameterCategorylst = PerameterCategorylst;
             ViewBag.Id = id;
             ViewBag.UOM = UOM;

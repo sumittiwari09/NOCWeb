@@ -21,10 +21,6 @@
             <a href="#MetricaDashboard" class="nav-link active" data-toggle="tooltip-custom" data-placement="right" data-trigger="hover" title="" data-original-title="Dashboard">
                 <i data-feather="home" class="align-self-center menu-icon icon-dual"></i>
             </a><!--end MetricaDashboards-->
-
-
-
-
         </nav><!--end nav-->
     </div><!--end main-icon-menu-->
 
@@ -46,9 +42,10 @@
                     <h6 class="menu-title active">My Profile</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrustList","Trustee")">Trustee Details List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")"> Add Trustee Details</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Trustee Members</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","BasicDetails")">Your Colleges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Your Colleges</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","AddCourse")">Add Courses</a></li>
                 </ul>
             </div>
@@ -56,15 +53,18 @@
                 <div class="title-box">
                     <h6 class="menu-title active">Draft Application</h6>
                 </div>
-                <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="#">Application List</a></li>                    
-                </ul>
+                @*<ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrustList","Trustee")">Trustee Detail List</a></li>
+                    
+                    
+                </ul>*@
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
                     <h6 class="menu-title active">Apply For NOC</h6>
                 </div>
                 <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Application List</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Finance")">Finance</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","LandBuildingInfo")">Land Infomation</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Vertinary")">Vertinary Details</a></li>
@@ -110,7 +110,6 @@
                 }
             }
         }*@
-
 
         </div><!--end menu-body-->
     </div><!-- end main-menu-inner-->

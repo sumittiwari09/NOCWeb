@@ -1,0 +1,157 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Collage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> collagelist = ViewBag.CollageList as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+
+
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Collage</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">Collage Details</h4>
+        <a href="@Url.Action("CreateDetails","BasicDetails")" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add Collage</a>
+    </div>
+    <div class="row col-lg-12" style="margin-top:20px">
+        <div class="form-group col-lg-12">
+            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                <thead class="dark">
+                    <tr>
+                        <th>SNo</th>
+                        <th>CollageLogo</th>
+                        <th>Trust Name</th>
+                        <th>Trust Registration number</th>
+                        <th>Collage Name</th>
+                        <th>Mobile No</th>
+                        <th>Email</th>
+                        <th>Other Mobile No</th>
+                        <th>Other Phone No</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (collagelist != null)
+                    {
+                        int i = 1;
+                        foreach (var item in collagelist)
+                        {
+                    <tr>
+                        <td>@i</td>
+                        <td><img src="data:@item.CollageContectType;base64,@item.CollageLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                        <td>@item.TrustName</td>
+                        <td>@item.TrustRegistrationNo</td>
+                        <td>@item.CollageName</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.Email</td>
+                        <td>@item.AddMobileNo</td>
+                        <td>@item.AddPhoneNo</td>
+                        <td>
+                            <a id="@item.CollageId" class="fas fa-edit text-info font-16" name="2" data-id="@item.CollageId" title="Edit" onclick="EditDepartment(@item.CollageId);"></a>
+                            <a id="btnDeactive_@item.CollageId" class="Deleteclass" name="2" data-id="@item.CollageId" onclick="DeleteData(@item.CollageId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                        </td>
+
+                    </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+   
+</div>
+
+
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}
+

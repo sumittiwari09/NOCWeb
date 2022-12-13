@@ -34,7 +34,9 @@ namespace NewZapures_V2.Models
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
             public string Name { get; set; }
+
             public string RoleId { get; set; }
+
             public string Mobile { get; set; }
             public string Email { get; set; }
             public string AadhaarNo { get; set; }
@@ -50,6 +52,24 @@ namespace NewZapures_V2.Models
             public string ProfileContentType { get; set; }
             public byte[] DocumentByte { get; set; }
             public string Profilefile { get; set; }
+        }
+
+        public class CollageList
+        {
+            public string CollageId { get; set; }
+            public string TrustInfoId { get; set; }
+            public string TrustName { get; set; }
+            public string TrustRegistrationNo { get; set; }
+            public string CollageName { get; set; }
+            public string MobileNo { get; set; }
+            public string Email { get; set; }
+            public string CollageLogo { get; set; }
+            public string CollageContectType { get; set; }
+            public string AddMobileNo { get; set; }
+            public string AddPhoneNo { get; set; }
+            public string WebsiteURL { get; set; }
+            public string Degree { get; set; }
+            public string Courses { get; set; }
         }
     }
 }

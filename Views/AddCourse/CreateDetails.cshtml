@@ -102,7 +102,7 @@
                         <div class="form-group col-lg-6">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
                             <div class="is-empty  removehidde" id="collegetypedata">
-                                <select class="form-control" name="TrustInfoId"  id="TrustName">
+                                <select class="form-control" name="TrustInfoId" id="TrustName">
                                     <option value="0">Select Trust</option>
                                     @{
                                         foreach (var item in TrustList)
@@ -178,7 +178,7 @@
                                         {
                                             <tr>
                                                 <td>@i</td>
-                                                
+
                                                 <td>@item.TrustInfoId</td>
                                                 <td>@item.iCollegeId</td>
                                                 <td>@item.TagDegrees</td>
@@ -263,7 +263,7 @@
         debugger
             var strHtml = "";
             strHtml += "<option value=''>Select College</option>";
-       
+
         var Params = JSON.stringify(
             {
                 TrustInfoId: parseInt(Type),
@@ -281,7 +281,7 @@
                         strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
                     }
                     console.log("strHtml"+JSON.stringify("strHtml"));
-                  
+
                     $("#IsdefaultCollegeId").html(strHtml);
                     //$("#IsdefaultCollegeId").select2();
                     //$("#collegetypedata").removeClass('removehidden');
@@ -320,7 +320,7 @@
             $('#txtTagCourse').val('');
              status = false;
          }
-      
+
         if (status) {
             $('#btnsubmitDetails').click();
         }
