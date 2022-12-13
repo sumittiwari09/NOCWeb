@@ -7,6 +7,8 @@ namespace NewZapures_V2.Models
 {
     public class BasicDetailsBO
     {
+        public int? Id { get; set; }
+        public string TrustInfoId { get; set; }
         public string CollegeName { get; set; }
         public int UniverSity { get; set; }
         public string MobileNumber { get; set; }

@@ -28,6 +28,7 @@ namespace NewZapures_V2.Models
             public string TrusteeContentType { get; set; }
 
         }
+
         public class Trustee : ErrorBO
         {
             public string Id { get; set; }

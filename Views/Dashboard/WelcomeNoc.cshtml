@@ -64,7 +64,7 @@
             font-family: cursive;
             font-weight: 800;
         }
-
+    
         #divUsernamInitials {
             height: 35px;
             width: 35px;
@@ -75,7 +75,18 @@
             color: white;
             font-size: 20px;
             background: linear-gradient(135deg, #478bb8 0%, #9cb347 100%);
-        }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
         .enlarge-menu .topbar .navbar-custom {
             margin-left: 70px !important;
@@ -179,6 +190,7 @@
         }
     </style>
 </head>
+<body>
 
 <body style="overflow: visible !important;">
     <!-- leftbar-tab-menu -->
@@ -416,20 +428,20 @@
         <div class="page-content-tab" style=" width:calc(100% - 70px);">
             <!-- main container -->
             <div class="container-fluid">
-                <div class="main-form">
-                    <div class="container">
+    <div class="main-form">
+        <div class="container">
                         <div class="row" style="margin-top:50px">
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-10 col-md-8 col">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10 col-md-8 col">
                                 <div class="sub-form" style="background:#fff">
-                                    <div class="welcm-txt">
-                                        <h2>Welcome to NOC Rajasthan ,follow following steps<span class="red"></span></h2>
-                                        <p>You are successfully logged in to the system.</p>
-                                    </div>
+                        <div class="welcm-txt">
+                            <h2>Welcome to NOC Rajasthan ,follow following steps<span class="red"></span></h2>
+                            <p>You are successfully logged in to the system.</p>
+                        </div>
                                     <div class="card-body row">
                                         <div class="col-lg-3"></div>
                                         <div class="col-6">
-                                            <div class="row">
+                            <div class="row">
                                                 <div class="form-group col-lg-12">
                                                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px; color:#000">Trust Registration No.</label>
                                                     <div>
@@ -448,38 +460,72 @@
                                                     <div>
                                                         <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtName" name="TrustName" value="Krishna Charitable Trust" readonly>
                                                     </div>
-                                                </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="rght-subfrm">
+                                <div class="sub-inrhead">
+                                    <h5>Your Selected Devices</h5>
+                                </div>-->
+                        @*@if (data != null)
+                            {
+                                foreach (var item in data.harwareName)
+                                {
+                                    <input type="button" value='@item.hardwareName' class="red">
+                                }
+                            }*@
+                        <!--</div>
+                                    <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Devices</a>
 
+                                </div>
+                            </div>
+                        </div>-->
+                        @*<div class="row">
+                                <div class="col-lg-12 col-md-6">
+                                    <div class="verify-box">
+                                        <h2>Verification Process</h2>
+                                        <div class="table-in">
+                                            <table class="table table-bordered" id="tblverify">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Item</th>
+                                                        <th scope="col">Verification Status</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+
+                                            <div class="third-txt">
+                                                <span class="upld-doc">Uploaded Document [ Only For Manual Verification ]</span>
                                             </div>
-
-                                        </div>
                                         <div class="col-lg-3"></div>
                                         <div class="row col-lg-12" style="margin-top:20px">
                                             <div class="col-lg-12 loat-right">
                                                 @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
                                                 <button class="btn" id="btnCapitalAdd" style="color:white!important;float:right;background: #f953c6;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #b91d73, #f953c6);" onclick="Verify()">Verify</button>
-                                            </div>
+                                                </div>
                                             @*</div>*@
-                                        </div>
+                                            </div>
                                         <div class="row col-lg-12" style="margin-top:20px">
                                             <div class="col-lg-12 contn-btn">
                                                 @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
                                                 <input class="btn btn-success" type="submit" value="proceed to enter Trust Details" id="continue" style="display:none;float:right" onclick="Countinue();">
-                                            </div>
-                                            @*</div>*@
                                         </div>
-                                    </div>
-                                    <div class=" text-center">
-
-                                        @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
-                                        
-                                        
-                                        @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
+                                            @*</div>*@
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-1"></div>
+                                    <div class=" text-center">
+
+                            @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
+
+                                        
+                            @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
                     </div>
                 </div>
                 @*@RenderBody()*@
@@ -534,6 +580,9 @@
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Content/select2/js/select2.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
     @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
 
@@ -578,12 +627,12 @@
                     $('#btnCapitalAdd').css("display", "block");
                 }
             });
-        }
+                    }
         function Countinue() {
             var url = GetglobalDomain() + "/Trustee/TrusteeGeneralInfo";//
             window.location.href = url;
 
-        }
+                    }
     </script>
     @if (TempData["StatusMsg"] != null)
     {
@@ -602,7 +651,7 @@
                         onOpen: function (toast) {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
+                }
                 })
                     Toast.fire({
                         icon: '@StatusMsg.ToString()' ,
@@ -612,7 +661,7 @@
                     //    icon: 'error',
                     //    icon: 'info',
                     //    icon: 'warning',
-                });
+            });
                 //$(document).bind("contextmenu", function (e) {
                 //    e.preventDefault();
                 //});
@@ -643,9 +692,12 @@
 
                 });
             </script>
-        }
+            }
+            else {
 
-    }
+                $('#verification').css('display', 'none');
+                $('#continue').css('display', 'block');
+            }
     <script src="~/Content/LoginSignUp/js/jquery.js"></script>
     <script src="~/Content/globalDomain.js"></script>
     <script>
@@ -711,7 +763,7 @@
                 });
             });
         }
-    }
+        }
 
 
     function ReadNotification(rowID,Type) {
@@ -723,7 +775,7 @@
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
+                },
             url: globaUserProperties.domain + "/Role/ReadNotification",
             dataType: 'json',
             type: 'Post',
@@ -736,13 +788,13 @@
                 if (data.StatusCode == 1) {
                     location.reload();
                 }
-            },
+                },
             error: function (d) {
                 console.log(d);
                 //alert("404. Please wait until the File is Loaded.");
             }
         });
-    }
+        }
 
 
     $('#btnLogout').on('click', function () {

@@ -55,9 +55,52 @@ namespace NewZapures_V2.Models
         public string sDeptName { get; set; }
     }
 
-    public class ServiceTypeDocumentData
+    public class PARMTVALUCONFMST
     {
-        
+           public int iPK_ParValId {get;set;}
+           public int iFk_Deptid {get;set;}
+           public int iCourseId {get;set;}
+           public int iParCatId {get;set;}
+           public int iParCatSubId {get;set;}
+           public int iParUomid {get;set;}
+           public int iMin {get;set;}
+           public int iMax {get;set;}
+           public int iField {get;set;}
+           public int iValue {get;set;}
+           public int iminlength {get;set;}
+           public int iminwidth {get;set;}
+           public long iminval {get;set;}
+           public int imaxlength  {get;set;}
+           public int imaxwidth {get;set;}
+           public long imaxval {get;set;}
+           public int iStts { get; set; }
     }
+    public class PARMTVALUCONFMSTView : PARMTVALUCONFMST
+    {
+        public string sDeptName { get; set; }
+        public string sCateName { get; set; }
+        public string sCateSubName { get; set; }
+        public string UomName { get; set; }
+       
+        public string CouresName
+        {
+            get
+            {
+                switch (iCourseId)
+                {
+                    case 1:
+                        return "PH.D";
+                    case 2:
+                        return "MCA";
+                    case 3:
+                        return "MBA";
+                    case 4:
+                        return "MBBS";
 
+                    default:
+                        return "";
+                }
+            }
+        }
+    }
 }

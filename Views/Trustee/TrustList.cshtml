@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.TrusteeBO.TrusteeInfo> trustlist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.TrusteeInfo>;
     var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
-
+  
+    
 }
 @section styles {
 
@@ -90,7 +91,7 @@
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Trustee Details</h4>
-    </div>
+    </div>  
     <div class="row col-lg-12" style="margin-top:20px">
         <div class="form-group col-lg-12">
             <table class="table table-borderless table-striped table-hover" id="tblCapital">
@@ -105,7 +106,7 @@
                         <th>Registration Date</th>
                         <th>Election Comm Date</th>
                         <th style="text-align:center">Certification Proof</th>
-                        <th style="text-align:center">Registration Prrof</th>
+                        <th style="text-align:center">Registration Prrof</th>                       
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -115,25 +116,25 @@
                         int i = 1;
                         foreach (var item in trustlist)
                         {
-                    <tr>
-                        <td>@i</td>
+                            <tr>
+                                <td>@i</td>
                         @if (item.TrusteeLogo != "")
                         {
-                            <td><img src="data:@item.TrusteeContentType;base64,@item.TrusteeLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                                <td><img src="data:@item.TrusteeContentType;base64,@item.TrusteeLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
                         }
                         else
                         {
                             <td></td>
                         }
-                        <td>@item.Name</td>
-                        <td>@item.TrustType</td>
-                        <td>@item.CertiFiedBy</td>
-                        <td>@item.RegistrationNo</td>
-                        <td>@item.RegistrationDate</td>
-                        <td>@item.ElectionDate</td>
+                                <td>@item.Name</td>
+                                <td>@item.TrustType</td>
+                                <td>@item.CertiFiedBy</td>
+                                <td>@item.RegistrationNo</td>
+                                <td>@item.RegistrationDate</td>
+                                <td>@item.ElectionDate</td>
                         @if (item.Certified != "")
                         {
-                            <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Certified })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Certified })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
                         }
                         else
                         {
@@ -141,7 +142,7 @@
                         }
                         @if (item.Registration != "")
                         {
-                    <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Registration })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Registration })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
                         }
                         else
                         {
@@ -153,11 +154,11 @@
                             <a id="@item.TrusteeInfoId" class="fas fa-edit text-info font-16" name="2" data-id="@item.TrusteeInfoId" title="Edit" onclick="EditDepartment(@item.TrusteeInfoId);"></a>
                             <a id="btnDeactive_@item.TrusteeInfoId" class="Deleteclass" name="2" data-id="@item.TrusteeInfoId" onclick="DeleteData(@item.TrusteeInfoId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
                         </td>
-                        @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
+                                @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
-                        @*<td></td>*@
+                                @*<td></td>*@
 
-                    </tr>
+                            </tr>
                             i++;
                         }
                     }
@@ -171,7 +172,20 @@
             </table>
         </div>
     </div>
+    <div class="row col-lg-12" style="margin-bottom:10px">
+        <div class="col-lg-12 float-right">
+            @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
 
+            <button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
+            <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase; float:right"><i class="fa fa-arrow-left"></i> Previous</button>
+            @*</div>*@
+        </div>
+    </div>
+    @*<div class="row col-lg-12 float-right">
+            <div class="form-group col-lg-12 float-right" style="display: flex;align-items: end;gap:10px;">
+
+            </div>
+        </div>*@
 </div>
 
 

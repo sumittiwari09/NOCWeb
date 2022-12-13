@@ -21,6 +21,7 @@ namespace NewZapures_V2.Controllers
         // GET: AddCourse
         public ActionResult CreateDetails()
         {
+
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
@@ -33,7 +34,7 @@ namespace NewZapures_V2.Controllers
             CourseList = Common.GetCustomMastersList(30);
             ViewBag.CourseList = CourseList;
 
-            ViewBag.AddCourseList = GetDetailsList();
+            ViewBag.AddCourseList = GetDetailsList(); 
             return View();
         }
         public List<CustomMaster> GetCourseDropDownList(int Enum)
@@ -172,34 +173,6 @@ namespace NewZapures_V2.Controllers
             return objUsermaster;
         }
 
-        public static List<Dropdown> GetServicesAllDetails()
-        {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "AddCourseData/GetDetails");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("cache-control", "no-cache");
-            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request.AddParameter("application/json", "", ParameterType.RequestBody);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Accept", "application/json");
-            IRestResponse response = client.Execute(request);
-            List<GetservicesetailsAndroidNew> serviceDetails = new List<GetservicesetailsAndroidNew>();
-            ResponseData objResponse = new ResponseData();
-            if (response.StatusCode.ToString() == "OK")
-            {
-                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse.Data != null)
-                    serviceDetails = JsonConvert.DeserializeObject<List<GetservicesetailsAndroidNew>>(objResponse.Data.ToString());
-            }
-
-            var serviceList = serviceDetails.Select(s => new Dropdown
-            {
-                Id = s.CategoryId,
-                Text = s.CategoryName
-            }).ToList();
-
-            return serviceList;
-        }
-
-
+       
     }
 }
