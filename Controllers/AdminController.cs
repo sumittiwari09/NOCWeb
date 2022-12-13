@@ -1095,9 +1095,12 @@ namespace NewZapures_V2.Controllers
             var UserDetails = (UserModelSession)Session["UserDetails"];
             if (UserDetails != null)
             {
+                var departmentList = GetDepartments();               
                 var groups = GetGroups(UserDetails.PartyId);
                 var Menus = ZapurseCommonlist.GetMenusList();
 
+                ViewBag.departmentList =departmentList;
+                ViewBag.departmentList = departmentList;
                 ViewBag.groups = groups;
                 ViewBag.Menus = Menus;
 

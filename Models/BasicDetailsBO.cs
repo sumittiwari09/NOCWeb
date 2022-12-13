@@ -29,5 +29,8 @@ namespace NewZapures_V2.Models
         public string AddiMobileNumber { get; set; }
         public string Websiteurl { get; set; }
         public string LandlineNumber { get; set; }
+        public string CollageLogo { get; set; }
+        public string CollageLogoExtension { get; set; }
+        public string CollageLogoContenttype { get; set; }
     }
 }

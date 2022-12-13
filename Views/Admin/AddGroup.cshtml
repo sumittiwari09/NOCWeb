@@ -3,7 +3,7 @@
     ViewBag.Title = "Manage Groups";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-
+    var departmentList = ViewBag.departmentList as List<AddDepartment>;
     var groups = ViewBag.groups as List<AddGroup>;
     var Menus = ViewBag.Menus as List<Dropdown>;
 }
@@ -49,9 +49,9 @@
                                     @{
                                         if (groups != null)
                                         {
-                                            foreach (var item in groups.Select(s => new { s.GroupID, s.GroupName }).Distinct().ToList())
+                                            foreach (var item in groups.Select(s => new { s.ID,s.GroupName }).Distinct().ToList())
                                             {
-                                                <option value=@item.GroupID>@item.GroupName</option>
+                                                <option value=@item.ID>@item.GroupName</option>
                                             }
                                         }
 

@@ -5,11 +5,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var university = ViewBag.universityCollection as List<Dropdown>;
-
+    List<CustomMaster> TrustList = new List<CustomMaster>();
+    if (ViewBag.TrustList != null)
+    {
+        TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    }
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
 <style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
     .table thead {
         background-color: #646d91 !important;
     }
@@ -70,259 +96,301 @@
 </div>
 
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header fsi">
-                <h4 class="mt-0 header-title float-left">Basic Information</h4>
-            </div>
-            <div class="card-body">
-                @using (Html.BeginForm("SaveDetails", "BasicDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name</label>
-                            <div>
-                                <input class="form-control col-sm-12" type="text" id="txtCollegeName" oninput="charecterOnly(id)" name="CollegeName" autocomplete="off">
-                            </div>
+
+
+@using (Html.BeginForm("SaveDetails", "BasicDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card">
+        <div class="card-header fsc">
+            <h4 class="mt-0 header-title float-left">Basic Details</h4>
+        </div>
+        <div class="card-body row">
+
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
+                        <div>
+                            <select class="form-control" name="TrustInfoId" id="TrustInfoId">
+
+                                <option value="0">Select Trust</option>
+                                @{
+                                    foreach (var item in TrustList)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }
+                            </select>
+
                         </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">UniverSity</label>
-                            <div>
-                                <select class="form-control" id="txtUniverSity" name="UniverSity">
-                                    <option value="">--UniverSity --</option>
-                                    @{
-                                        if (university != null)
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" id="txtCollegeName" oninput="charecterOnly(id)" name="CollegeName" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">UniverSity</label>
+                        <div>
+                            <select class="form-control" id="txtUniverSity" name="UniverSity">
+                                <option value="">--UniverSity --</option>
+                                @{
+                                    if (university != null)
+                                    {
+                                        foreach (var item in university)
                                         {
-                                            foreach (var item in university)
-                                            {
-                                                <option value="@item.Id">@item.Text</option>
-                                            }
+                                            <option value="@item.Id">@item.Text</option>
                                         }
                                     }
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
-                            <div>
-                                <input class="form-control col-sm-12" type="text" id="txtMobileNumber" oninput="numberOnly(this.id);" name="MobileNumber" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
-                            <div>
-                                <input class="form-control col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Division</label>
-                            <div>
-                                <select class="form-control" id="txtdistrict" name="Division">
-                                    <option value="">--Divison --</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Sub Division</label>
-                            <div>
-                                <select class="form-control" id="txtdistrict" name="District">
-                                    <option value="">--Sub Divison --</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District</label>
-                            <div>
-                                <select class="form-control" id="txtdistrict" name="District">
-                                    <option value="">--District--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil</label>
-                            <div>
-                                <select class="form-control" id="txttehsil" name="Tehsil">
-                                    <option value="">--Sub Divison --</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Parliment Area</label>
-                            <div>
-                                <select class="form-control" id="txtParlimentArea" name="ParliamentArea">
-                                    <option value="">--Parliament Area--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Assemble Area</label>
-                            <div>
-                                <select class="form-control" id="txtAssembleArea" name="AssembleArea">
-                                    <option value="">--Assemble Area--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City Town Village</label>
-                            <div>
-                                <select class="form-control" id="txtCityTownVillage" name="CityTownVillage">
-                                    <option value="">--City Town Village--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Urban/Rural</label>
-                            <div>
-                                <select class="form-control" id="txtUrbanRural" name="UrbanRural">
-                                    <option value="">--Urban Rural--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Panchayat Simiti</label>
-                            <div>
-                                <select class="form-control" id="txtPanchayatSimiti" name="PanchayatSimiti" required="required">
-                                    <option value="">--Panchayat Simiti--</option>
-                                    <option value="1">Jaipur</option>
-                                    <option value="2">Jodhpur</option>
-                                    <option value="3">Kota
-                                    <option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website URL</label>
-                            <div>
-                                <input type="text" class="form-control" name="Websiteurl" placeholder="Website URL" id="txtWebsiteurl" autocomplete="off" />
-                            </div>
+                                }
+                            </select>
                         </div>
                     </div>
 
-                    <div class="card-header fsi">
-                        <h4 class="header-title">Permanent Address</h4>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line1</label>
-                            <div>
-                                <input type="text" class="form-control" name="AddressLine1" id="txtAddressLine1" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line2</label>
-                            <div>
-                                <input type="text" class="form-control" name="AddressLine2" id="txtAddressLine2" autocomplete="off" />
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" id="txtMobileNumber" oninput="numberOnly(this.id);" name="MobileNumber" autocomplete="off">
                         </div>
                     </div>
-                    <div class="card-header fsi">
-                        <h4 class="header-title">Track Geo Location</h4>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Latitude </label>
-                            <div>
-                                <input type="text" class="form-control" name="Latitudedd" id="txtLatitude" autocomplete="off" readonly="readonly" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Longituted</label>
-                            <div>
-                                <input type="text" class="form-control" name="Longitudedd" id="txtLongitude" autocomplete="off" readonly="readonly" />
-                            </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off">
                         </div>
                     </div>
 
-                    <div class="card-header fsi">
-                        <h4 class="header-title">Additional Contact</h4>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
-                            <div>
-                                <input type="text" class="form-control" oninput="numberOnly(this.id);" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">LandLine Number</label>
-                            <div>
-                                <input type="text" class="form-control" oninput="numberOnly(this.id);" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Division</label>
+                        <div>
+                            <select class="form-control" id="txtdistrict" name="Division">
+                                <option value="">--Divison --</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-12" style="text-align:center">
-                            <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
-                            <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
-                            @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
-
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Sub Division</label>
+                        <div>
+                            <select class="form-control" id="txtdistrict" name="District">
+                                <option value="">--Sub Divison --</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
                         </div>
                     </div>
-                }
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District</label>
+                        <div>
+                            <select class="form-control" id="txtdistrict" name="District">
+                                <option value="">--District--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil</label>
+                        <div>
+                            <select class="form-control" id="txttehsil" name="Tehsil">
+                                <option value="">--Sub Divison --</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Parliment Area</label>
+                        <div>
+                            <select class="form-control" id="txtParlimentArea" name="ParliamentArea">
+                                <option value="">--Parliament Area--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Assemble Area</label>
+                        <div>
+                            <select class="form-control" id="txtAssembleArea" name="AssembleArea">
+                                <option value="">--Assemble Area--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City Town Village</label>
+                        <div>
+                            <select class="form-control" id="txtCityTownVillage" name="CityTownVillage">
+                                <option value="">--City Town Village--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Urban/Rural</label>
+                        <div>
+                            <select class="form-control" id="txtUrbanRural" name="UrbanRural">
+                                <option value="">--Urban Rural--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Panchayat Simiti</label>
+                        <div>
+                            <select class="form-control" id="txtPanchayatSimiti" name="PanchayatSimiti" required="required">
+                                <option value="">--Panchayat Simiti--</option>
+                                <option value="1">Jaipur</option>
+                                <option value="2">Jodhpur</option>
+                                <option value="3">Kota
+                                <option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website URL</label>
+                        <div>
+                            <input type="text" class="form-control" name="Websiteurl" placeholder="Website URL" id="txtWebsiteurl" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 text-center d-flex align-items-center justify-content-center" style="align-items:flex-start !important">
+                <div class="">
+                    <h4 class="mt-0 header-title">Collage Logo</h4>
+                    @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
+                    <input type="file" id="input-file-now" class="dropify" name="collageLogo" />
+                </div>
+            </div>
+
+        </div>
+        <div class="card-header fsc">
+            <h4 class="mt-0 header-title float-left">Permanent Address</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line1</label>
+                        <div>
+                            <input type="text" class="form-control" name="AddressLine1" id="txtAddressLine1" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line2</label>
+                        <div>
+                            <input type="text" class="form-control" name="AddressLine2" id="txtAddressLine2" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-header fsc">
+            <h4 class="mt-0 header-title float-left">Track Geo Location</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Latitude </label>
+                        <div>
+                            <input type="text" class="form-control" name="Latitudedd" id="txtLatitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Longituted</label>
+                        <div>
+                            <input type="text" class="form-control" name="Longitudedd" id="txtLongitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header fsc">
+            <h4 class="mt-0 header-title float-left">Additional Contact</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                        <div>
+                            <input type="text" class="form-control" oninput="numberOnly(this.id);" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">LandLine Number</label>
+                        <div>
+                            <input type="text" class="form-control" oninput="numberOnly(this.id);" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12" style="text-align:center">
+                <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
+                <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
+                @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
+
             </div>
         </div>
     </div>
+}
 
 
-</div>
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}
+@*<script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
 
-
-<script src="~/Content/jquery/jquery.js"></script>
-<script src="~/Content/select2/js/select2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-<script src="~/Content/globalDomain.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>*@
 <script type="text/javascript">
-
 
     $(document).ready(function () {
         getLocation()
