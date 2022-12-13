@@ -156,6 +156,8 @@ namespace NewZapures_V2.Controllers
         //[ChildActionOnly]
         public ActionResult AddParameterCategoryMapping(int id=0)
         {
+            List<CustomMaster> UOM = new List<CustomMaster>();
+            UOM = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.UOM));
             List<AddDepartment> departmentList = new List<AddDepartment>();
             departmentList = GetDepartments();
             ViewBag.Department = departmentList;
@@ -163,7 +165,7 @@ namespace NewZapures_V2.Controllers
             PerameterCategorylst = GetPerameterCategorylst(0,0,3);
             ViewBag.PerameterCategorylst = PerameterCategorylst;
             ViewBag.Id = id;
-
+            ViewBag.UOM = UOM;
             return PartialView("_AddParameterCategoryMapping");
         }
         public ActionResult InsertPerametertable(int Deptid = 0)
@@ -298,6 +300,148 @@ namespace NewZapures_V2.Controllers
             };
         }
 
+        #endregion
+        #region ParameterValueConfiguration
+        /// <summary>
+        /// This method use to set parameter value
+        /// Date:08/12/2022
+        /// Created by:Abhishek Rohil   
+        /// </summary>
+
+        public ActionResult ParameterValueConfiguration()
+        {
+            List<AddDepartment> departmentList = new List<AddDepartment>();
+            departmentList = GetDepartments();
+            ViewBag.Department = departmentList;
+            List<Dropdown> PerameterCategorylst = new List<Dropdown>();
+            PerameterCategorylst = GetPerameterCategorylst(0, 0, 3);
+            ViewBag.PerameterCategorylst = PerameterCategorylst;
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist();
+            return View(lst);
+        }
+        
+
+            public JsonResult FillPerameterValue(int Deptid = 0, int CrtgId = 0, int SubCrtgId = 0)
+        {
+            List<Dropdown> departments = new List<Dropdown>();
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetCategorySubUOM?Deptid=" + Deptid + "&Category=" + CrtgId + "&SubCategory=" + SubCrtgId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    departments = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+                if (objResponse.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponse.ResponseCode == "000" && objResponse.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public ActionResult ParameterConfigCreate(PARMTVALUCONFMST Master)
+        {
+            try
+            {
+                Master.iStts = 1;
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertParameterValueConfiguration");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+
+                request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
+                    if (objResponseData.ResponseCode == "001")
+                    {
+                        return RedirectToAction("SignOut", "Home");
+                    }
+                    else
+                    if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "Success!";
+                        return RedirectToAction("ParameterValueConfiguration");
+                    }
+                    else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "warning!";
+                        return RedirectToAction("ParameterValueConfiguration");
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "error";
+                        TempData["SwalMessage"] = "Something wrong";
+                        TempData["SwalTitleMsg"] = "error!";
+                        return RedirectToAction("ParameterValueConfiguration");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+                return RedirectToAction("ParameterValueConfiguration");
+            }
+            return RedirectToAction("ParameterValueConfiguration");
+        }
+
+        public List<PARMTVALUCONFMSTView>ParameterValueConfigurationlist(int Id=0)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id="+Id);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<PARMTVALUCONFMSTView> departments = new List<PARMTVALUCONFMSTView>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    departments = JsonConvert.DeserializeObject<List<PARMTVALUCONFMSTView>>(objResponse.Data.ToString());
+                }
+            }
+            return departments;
+        }
+       
         #endregion
     }
 }

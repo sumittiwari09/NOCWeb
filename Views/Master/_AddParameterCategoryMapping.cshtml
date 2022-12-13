@@ -10,6 +10,11 @@
     {
         PerameterCategorylst = (List<Dropdown>)ViewBag.PerameterCategorylst;
     }
+    List<CustomMaster> UOM = new List<CustomMaster>();
+    if (ViewBag.UOM != null)
+    {
+        UOM = (List<CustomMaster>)ViewBag.UOM;
+    }
 }
 <style>
     .hidden {
@@ -54,7 +59,12 @@
         <div class="col-sm-3">
             <select class="singleselect" data-tags="true" id="iParUomid" name="iParUomid" required>
                 <option value="" disabled selected hidden>Select UOM</option>
-
+                @{
+                    foreach (var item in UOM)
+                    {
+                        <option value="@item.Id">@item.text</option>
+                    }
+                }
             </select>
         </div>
     </div>
@@ -209,53 +219,53 @@
                 $("#iParCatSubId").html(strHTML);
                 $("#iParCatSubId").select2();
 
-                $("#iParUomid").select2("destroy");
-                $("#iParUomid").html("<option value=''>Select</option>");
-                $("#iParUomid").select2();
+                //$("#iParUomid").select2("destroy");
+                //$("#iParUomid").html("<option value=''>Select</option>");
+                //$("#iParUomid").select2();
 
 
             }
         });
     });
-    $("#iParCatSubId").change(function () {
+    //$("#iParCatSubId").change(function () {
 
-        var strHTML = "";
-        strHTML += "<option value=''>Select UOM</option>"
+    //    var strHTML = "";
+    //    strHTML += "<option value=''>Select UOM</option>"
 
-        var Params = JSON.stringify({ Deptid: 0, iFk_SelfId: $(this).val(), Typid: 5 });
+    //    var Params = JSON.stringify({ Deptid: 0, iFk_SelfId: $(this).val(), Typid: 5 });
 
-        if ($(this).val() == "") {
-            $("#iParUomid").select2("destroy");
-            $("#iParUomid").html(strHTML);
-            $("#iParUomid").select2();
+    //    if ($(this).val() == "") {
+    //        $("#iParUomid").select2("destroy");
+    //        $("#iParUomid").html(strHTML);
+    //        $("#iParUomid").select2();
 
-        }
+    //    }
       
-        $.ajax({
-            url: "/Master/FillDataPerameter",
-            type: 'POST',
-            dataType: "json",
-            contentType: "application/json",
-            data: Params,
-            success: function (response) {
+    //    $.ajax({
+    //        url: "/Master/FillDataPerameter",
+    //        type: 'POST',
+    //        dataType: "json",
+    //        contentType: "application/json",
+    //        data: Params,
+    //        success: function (response) {
 
-                console.log(response);
+    //            console.log(response);
 
-                if (response.isvalid == 1) {
-                    for (var i = 0; i < response.Data.length; i++) {
-                        strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
-                    }
-                }
+    //            if (response.isvalid == 1) {
+    //                for (var i = 0; i < response.Data.length; i++) {
+    //                    strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+    //                }
+    //            }
 
-                $("#iParUomid").select2("destroy");
-                $("#iParUomid").html(strHTML);
-                $("#iParUomid").select2();
+    //            $("#iParUomid").select2("destroy");
+    //            $("#iParUomid").html(strHTML);
+    //            $("#iParUomid").select2();
 
 
 
-            }
-        });
-    });
+    //        }
+    //    });
+    //});
     $("#iFk_Deptid").change(function () {
         Generatepartialtable($(this).val());
     });
