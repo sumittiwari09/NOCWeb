@@ -20,7 +20,7 @@ namespace NewZapures_V2.Controllers
         }
        
         [HttpPost]
-        public ActionResult SaveDetails(LandInfoBO trg, HttpPostedFileBase LandAreaProof, HttpPostedFileBase CertificateDoc, HttpPostedFileBase UploadDocument)
+        public ActionResult SaveDetails(LandInfoBO trg, HttpPostedFileBase LandAreaProof, HttpPostedFileBase LandConvertProof, HttpPostedFileBase OwnBuildingProof)
         {
             byte[] Documentbyte;
             string extension = string.Empty;
@@ -47,11 +47,11 @@ namespace NewZapures_V2.Controllers
             #endregion
 
             #region Upload Document 
-            if (CertificateDoc != null)
+            if (LandConvertProof != null)
             {
-                extension = Path.GetExtension(CertificateDoc.FileName);
-                ContentType = CertificateDoc.ContentType;
-                using (Stream inputStream = CertificateDoc.InputStream)
+                extension = Path.GetExtension(LandConvertProof.FileName);
+                ContentType = LandConvertProof.ContentType;
+                using (Stream inputStream = LandConvertProof.InputStream)
                 {
                     MemoryStream memoryStream = inputStream as MemoryStream;
                     if (memoryStream == null)
@@ -60,19 +60,19 @@ namespace NewZapures_V2.Controllers
                         inputStream.CopyTo(memoryStream);
                     }
                     Documentbyte = memoryStream.ToArray();
-                    trg.CertificateDoc = Convert.ToBase64String(Documentbyte);
-                    trg.CertificateDocExtension = extension;
-                    trg.LandAreaProofDocumentContent = ContentType;
+                    trg.LandConvertProof = Convert.ToBase64String(Documentbyte);
+                    trg.LandConvertProofExtension = extension;
+                    trg.LandConvertProofDocumentContent = ContentType;
                 }
             }
             #endregion
 
             #region Certificate Doc
-            if (UploadDocument != null)
+            if (OwnBuildingProof != null)
             {
-                extension = Path.GetExtension(UploadDocument.FileName);
-                ContentType = UploadDocument.ContentType;
-                using (Stream inputStream = UploadDocument.InputStream)
+                extension = Path.GetExtension(OwnBuildingProof.FileName);
+                ContentType = OwnBuildingProof.ContentType;
+                using (Stream inputStream = OwnBuildingProof.InputStream)
                 {
                     MemoryStream memoryStream = inputStream as MemoryStream;
                     if (memoryStream == null)
@@ -81,13 +81,12 @@ namespace NewZapures_V2.Controllers
                         inputStream.CopyTo(memoryStream);
                     }
                     Documentbyte = memoryStream.ToArray();
-                    trg.UploadDocument = Convert.ToBase64String(Documentbyte);
-                    trg.UploadDocumentExtension = extension;
-                    trg.UploadDocumentContent = ContentType;
+                    trg.OwnBuildingProof = Convert.ToBase64String(Documentbyte);
+                    trg.OwnBuildingProofExtension = extension;
+                    trg.OwnBuildingProofDocumentContent = ContentType;
                 }
             }
             #endregion
-
             try
             {
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
@@ -106,13 +105,13 @@ namespace NewZapures_V2.Controllers
 
                     TempData["isSaved"] = 1;
                     TempData["msg"] = " Details Saved...";
-                    return RedirectToAction("CreateDetails", "BasicDetails");
+                    return RedirectToAction("Index", "LandBuildingInfo");
                 }
                 else
                 {
                     TempData["isSaved"] = 0;
                     TempData["msg"] = " Details Not Saved...";
-                    return RedirectToAction("CreateDetails", "BasicDetails");
+                    return RedirectToAction("Index", "LandBuildingInfo");
                 }               
             }
             catch (Exception ex)
