@@ -25,27 +25,17 @@ namespace NewZapures_V2.Models
 
     public class LandInfoBO
     {
-        public string OrderNo { get; set; }
         public string CollageId { get; set; }
         public string IsLandConvert { get; set; }
         public string OwnerName { get; set; }
         public string OwnerBuildNo { get; set; }
         public string OrderDate { get; set; }
         public string LandDetail { get; set; }
-        public string KhasraNo { get; set; }
         public string LandNo { get; set; }
-        public int? RadioSocity { get; set; }
         public string IsAnyOtherInfo { get; set; }
         public string LandAreaProof { get; set; }
         public string OwnBuildingProof { get; set; }
-        public string CertificateDoc { get; set; }
-        public string CertificateDocExtension { get; set; }
-        public string CertificateDocumentContent { get; set; } 
-        public string UploadDocument { get; set; }
-        public string UploadDocumentExtension { get; set; }
-        public string UploadDocumentContent { get; set; }
-
-        public string LandConvertProof { get; set; }        
+        public string LandConvertProof { get; set; }
         public string LandAreaProofExtension { get; set; }
         public string LandAreaProofDocumentContent { get; set; }
         public string OwnBuildingProofExtension { get; set; }
