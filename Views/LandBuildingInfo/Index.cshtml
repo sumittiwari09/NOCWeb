@@ -112,13 +112,13 @@
                 <h4 class="mt-0 header-title float-left">Land And Building Information</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("SaveDetails", "BasicDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("SaveDetails", "LandBuildingInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" />
+                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" name="LandAreaProof" />
                                 <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>
                             </div>
                         </div>
@@ -130,19 +130,13 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-                            @*<div>
-
-            <label for="html">Yes</label>
-            <input class="form-group col-sm-2" type="radio" id="html" name="fav_language" value="YES">
-            <label for="NOhtml">No</label>
-            <input class="form-group col-sm-2" type="radio" id="NOhtml" name="fav_language" value="NO">
-        </div>*@
+                      
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-primary" type="radio" name="iFK_TypeConvert" id="customRadioYes" value="yes" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="iFK_TypeConvert" id="customRadioYes" value="yes" name="RadioYES">
                                 <label for="customRadioYes" class="custom-control-label">YES</label>
                             </div>
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-danger" type="radio" name="iFK_TypeConvert" id="customRadioNo" value="no" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" name="iFK_TypeConvert" id="customRadioNo" value="no" name="RadioYES">
                                 <label for="customRadioNo" class="custom-control-label">No</label>
                             </div>
                         </div>
@@ -156,9 +150,9 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
+                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Certificate Document</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" name="LandArea" type="file" id="fupFile" />
+                                <input class="form-group col-sm-6" placeholder="Certificate Doc" name="CertificateDoc" type="file" id="certficateDocuFile" />
                                 <span id="LandArea"></span>
                                 <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Certificate Doc</button>
                             </div>
@@ -187,7 +181,7 @@
                         <div class="form-group col-lg-4">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Details Of Land</label>
                             <div>
-                                <input type="text" class="form-control" name="DetailsLand" id="txtDetailsOfLand" autocomplete="off" />
+                                <input type="text" class="form-control" name="LandDetail" id="txtDetailsOfLand" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group col-lg-4">
@@ -203,20 +197,13 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
 
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-                            @*<div>
-                                <label for="html">Yes</label>
-                                <input class="form-group col-sm-2" type="radio" id="html" name="fav_language" value="YES">
-                                <label for="NOhtml">No</label>
-                                <input class="form-group col-sm-2" type="radio" id="NOhtml" name="fav_language" value="NO">
-                            </div>*@
-                           
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>                                                      
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="yes" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="1" name="RadioSocity">
                                 <label for="customRadioYes" class="custom-control-label">YES</label>
                             </div>
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-danger" type="radio" id="customRadioNo" value="no" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="customRadioNo" value="0" name="RadioSocity">
                                 <label for="customRadioNo" class="custom-control-label">No</label>
                             </div>
 
@@ -225,7 +212,7 @@
 
                             <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">If Yes Upload</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" />
+                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="UploadFile" name="UploadDocument"/>
                                 <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>
                             </div>
                         </div>
@@ -372,38 +359,38 @@
 
         //});
 
-        $('#txtMobileNumber').blur(function () {
-            if ($("#txtMobileNumber").val().length > 0) {
-                if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
-                        allowOutsideClick: false,
-                        showCloseButton: true,
-                        showConfirmButton: false,
+        //$('#txtMobileNumber').blur(function () {
+        //    if ($("#txtMobileNumber").val().length > 0) {
+        //        if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
+        //            Swal.fire({
+        //                position: 'center',
+        //                icon: 'error',
+        //                title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+        //                allowOutsideClick: false,
+        //                showCloseButton: true,
+        //                showConfirmButton: false,
 
-                    });
-                    $("#txtMobileNumber").val('');
-                    // $('#txtUsername').val('');
-                }
-            }
-            if ($("#txtAddiMobileNumber").val().length > 0) {
-                if ($("#txtAddiMobileNumber").val().substr(0, 1) == 0 || $("#txtAddiMobileNumber").val().length < 10) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
-                        allowOutsideClick: false,
-                        showCloseButton: true,
-                        showConfirmButton: false,
+        //            });
+        //            $("#txtMobileNumber").val('');
+        //            // $('#txtUsername').val('');
+        //        }
+        //    }
+        //    if ($("#txtAddiMobileNumber").val().length > 0) {
+        //        if ($("#txtAddiMobileNumber").val().substr(0, 1) == 0 || $("#txtAddiMobileNumber").val().length < 10) {
+        //            Swal.fire({
+        //                position: 'center',
+        //                icon: 'error',
+        //                title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+        //                allowOutsideClick: false,
+        //                showCloseButton: true,
+        //                showConfirmButton: false,
 
-                    });
-                    $("#txtAddiMobileNumber").val('');
-                    // $('#txtUsername').val('');
-                }
-            }
-        })
+        //            });
+        //            $("#txtAddiMobileNumber").val('');
+        //            // $('#txtUsername').val('');
+        //        }
+        //    }
+        //})
     });
 
     function getLocation() {

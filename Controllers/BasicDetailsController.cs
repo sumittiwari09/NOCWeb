@@ -113,7 +113,7 @@ namespace NewZapures_V2.Controllers
             {
                 throw ex;
             }
-            return RedirectToAction("CreateDetails");
+            //return RedirectToAction("CreateDetails");
         }
 
         [HttpGet]

@@ -17,21 +17,10 @@ namespace Metrica.Controllers
                 return RedirectToAction("SignOut", "Home");
             }
         }
-
         public ActionResult WelcomeNoc()
         {
             return View();
         }
-
-        public ActionResult WelcomeNoc()
-        {
-            return View();
-        }
-        public ActionResult WelcomeNoc()
-        {
-            return View();
-        }
-
         public ActionResult WelcomeNocNew()
         {
             return View();
