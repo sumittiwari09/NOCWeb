@@ -233,7 +233,7 @@
                 "sMobileNO": mobile,
                 "sLocation": location,
                 "sEmailId": email,
-                "IsOnBoard": parseInt(isBoard),
+                "IsOnBoard": parseInt(isadmin),
                 "sNameOfAdmin": adminName,
                 "iFk_DesgntnId": parseInt(designation),
                 "sRelWithInst": relation,
@@ -247,7 +247,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: "/Vertinary/SaveDetails",
+                url: GetglobalDomain() + "/Vertinary/SaveDetails",
                 dataType: 'json',
                 type: 'Post',
                 cache: false,

@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -137,8 +137,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AddCourseController.cs" />
+    <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="Controllers\IconController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageMenuOrderController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\MapsController.cs" />
     <Compile Include="Controllers\MobileRechargeController.cs" />
     <Compile Include="Controllers\MyPaymentsController.cs" />
@@ -208,9 +214,13 @@
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
+    <Compile Include="Models\LandDetailsBO.cs" />
+    <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
     <Compile Include="Models\ListRequest.cs" />
+    <Compile Include="Models\Master.cs" />
     <Compile Include="Models\MenuMasters.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Others\GetCommonResponseMessage_DMT.cs" />
@@ -2332,6 +2342,7 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\globalDomain.js" />
+    <Content Include="Content\loader.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -2384,6 +2395,7 @@
     <Content Include="images\404.png" />
     <Content Include="images\500.png" />
     <Content Include="images\60337402_2259898487424112_4875445474812755968_n.jpg" />
+    <Content Include="images\atishay.png" />
     <Content Include="images\BankIcon\Aadhaar_Logo.svg_.png" />
     <Content Include="images\BankIcon\Allahabad_Bank.png" />
     <Content Include="images\BankIcon\Allahabad_UP_Gramin_Bank.png" />
@@ -2410,6 +2422,7 @@
     <Content Include="images\cards\card-3.png" />
     <Content Include="images\cards\card-4.png" />
     <Content Include="images\cards\paypal.png" />
+    <Content Include="images\cccf04b7-d5be-4d27-852a-d5dfe66fef66.jfif" />
     <Content Include="images\close.png" />
     <Content Include="images\coins\btc.png" />
     <Content Include="images\coins\dash.png" />
@@ -2453,6 +2466,8 @@
     <Content Include="images\MobileOperators\VI.png" />
     <Content Include="images\MobileOperators\Videocon.png" />
     <Content Include="images\MobileOperators\Vodafone.png" />
+    <Content Include="images\NOCIMAGE.png" />
+    <Content Include="images\NOCIMAGE1.jpeg" />
     <Content Include="images\open.png" />
     <Content Include="images\pattern.png" />
     <Content Include="images\pattern2.png" />
@@ -2499,6 +2514,8 @@
     <Content Include="images\small\sm-1.jpg" />
     <Content Include="images\small\sm-2.jpg" />
     <Content Include="images\small\sm-3.jpg" />
+    <Content Include="images\Stopwatch.gif" />
+    <Content Include="images\testing.jpg" />
     <Content Include="images\user-4.jpg" />
     <Content Include="images\users\dr-1.jpg" />
     <Content Include="images\users\dr-2.jpg" />
@@ -2711,12 +2728,11 @@
     <Content Include="packages\Newtonsoft.Json.11.0.1\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.xml" />
     <Content Include="packages\WebGrease.1.6.0\lib\WebGrease.dll" />
     <Content Include="packages\WebGrease.1.6.0\tools\WG.EXE" />
-    <Content Include="plugins\fullcalendar\packages\luxon\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\luxon\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\luxon\main.js" />
-    <Content Include="plugins\fullcalendar\packages\luxon\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\luxon\package.json" />
-    <Content Include="plugins\fullcalendar\packages\luxon\README.md" />
+    <Content Include="plugins\pace\pace-theme-center-atom.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-circle.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-radar.tmpl.css" />
+    <Content Include="plugins\pace\pace-theme-center-simple.tmpl.css" />
+    <Content Include="plugins\pace\pace.min.js" />
     <Content Include="Scripts\aeps.js" />
     <Content Include="Scripts\pages\jquery.agents.init.js" />
     <Content Include="Scripts\pages\jquery.analytics_customers.init.js" />
@@ -2917,122 +2933,6 @@
     <Content Include="plugins\flot-chart\jquery.js" />
     <Content Include="plugins\footable\css\footable.bootstrap.css" />
     <Content Include="plugins\footable\js\footable.js" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\main.css" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\main.js" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\main.min.css" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\core\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\core\locales-all.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales-all.min.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\af.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-dz.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-kw.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-ly.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-ma.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-sa.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar-tn.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ar.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\bg.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\bs.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ca.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\cs.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\da.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\de.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\el.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\en-au.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\en-gb.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\en-nz.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\es-us.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\es.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\et.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\eu.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\fa.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\fi.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\fr-ca.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\fr-ch.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\fr.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\gl.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\he.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\hi.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\hr.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\hu.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\id.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\is.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\it.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ja.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ka.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\kk.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ko.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\lb.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\lt.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\lv.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\mk.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ms.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\nb.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\nl.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\nn.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\pl.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\pt-br.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\pt.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ro.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\ru.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sk.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sl.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sq.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sr-cyrl.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sr.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\sv.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\th.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\tr.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\uk.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\vi.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\zh-cn.js" />
-    <Content Include="plugins\fullcalendar\packages\core\locales\zh-tw.js" />
-    <Content Include="plugins\fullcalendar\packages\core\main.css" />
-    <Content Include="plugins\fullcalendar\packages\core\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\core\main.js" />
-    <Content Include="plugins\fullcalendar\packages\core\main.min.css" />
-    <Content Include="plugins\fullcalendar\packages\core\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\main.css" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\main.js" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\main.min.css" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\main.js" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\interaction\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\interaction\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\interaction\main.js" />
-    <Content Include="plugins\fullcalendar\packages\interaction\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\list\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\list\main.css" />
-    <Content Include="plugins\fullcalendar\packages\list\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\list\main.js" />
-    <Content Include="plugins\fullcalendar\packages\list\main.min.css" />
-    <Content Include="plugins\fullcalendar\packages\list\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\main.js" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\moment\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\moment\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\moment\main.js" />
-    <Content Include="plugins\fullcalendar\packages\moment\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\rrule\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\rrule\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\rrule\main.js" />
-    <Content Include="plugins\fullcalendar\packages\rrule\main.min.js" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\LICENSE.txt" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\main.css" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\main.esm.js" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\main.js" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\main.min.css" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\main.min.js" />
     <Content Include="plugins\gmaps\gmaps.js" />
     <Content Include="plugins\gmaps\gmaps.min.js" />
     <Content Include="plugins\gmaps\lib\gmaps.controls.js" />
@@ -3658,8 +3558,22 @@
     <Content Include="Views\BasicDetails\CreateDetails.cshtml" />
     <Content Include="Views\BasicDetails\ShowDetails.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
+    <Content Include="Views\Master\DepartmentMapping.cshtml" />
+    <Content Include="Views\Master\ParameterCategoryMapping.cshtml" />
+    <Content Include="Views\Master\_AddParameterCategoryMapping.cshtml" />
+    <Content Include="Views\Master\_InsertPerametertable.cshtml" />
     <Content Include="Views\Vertinary\Index.cshtml" />
+    <Content Include="Views\LandBuildingInfo\Index.cshtml" />
+    <Content Include="Views\AddCourse\CreateDetails.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Trustee\Index.cshtml" />
+    <Content Include="Views\Trustee\TrusteeGeneralInfo.cshtml" />
+    <Content Include="Views\Trustee\TrustList.cshtml" />
+    <Content Include="Views\Dashboard\WelcomeNoc.cshtml" />
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
+    <Content Include="Views\Trustee\CollageListForApply.cshtml" />
+    <Content Include="Views\BasicDetails\CollageList.cshtml" />
+    <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3936,26 +3850,6 @@
     <Content Include="plugins\dropify\fonts\dropify.eot" />
     <Content Include="plugins\dropify\fonts\dropify.ttf" />
     <Content Include="plugins\dropify\fonts\dropify.woff" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\package.json" />
-    <Content Include="plugins\fullcalendar\packages\bootstrap\README.md" />
-    <Content Include="plugins\fullcalendar\packages\core\package.json" />
-    <Content Include="plugins\fullcalendar\packages\core\README.md" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\package.json" />
-    <Content Include="plugins\fullcalendar\packages\daygrid\README.md" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\package.json" />
-    <Content Include="plugins\fullcalendar\packages\google-calendar\README.md" />
-    <Content Include="plugins\fullcalendar\packages\interaction\package.json" />
-    <Content Include="plugins\fullcalendar\packages\interaction\README.md" />
-    <Content Include="plugins\fullcalendar\packages\list\package.json" />
-    <Content Include="plugins\fullcalendar\packages\list\README.md" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\package.json" />
-    <Content Include="plugins\fullcalendar\packages\moment-timezone\README.md" />
-    <Content Include="plugins\fullcalendar\packages\moment\package.json" />
-    <Content Include="plugins\fullcalendar\packages\moment\README.md" />
-    <Content Include="plugins\fullcalendar\packages\rrule\package.json" />
-    <Content Include="plugins\fullcalendar\packages\rrule\README.md" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\package.json" />
-    <Content Include="plugins\fullcalendar\packages\timegrid\README.md" />
     <Content Include="plugins\ion-rangeslider\less\irs.less" />
     <Content Include="plugins\ion-rangeslider\less\skins\big.less" />
     <Content Include="plugins\ion-rangeslider\less\skins\flat.less" />
@@ -4211,17 +4105,6 @@
     <Content Include="packages\Newtonsoft.Json.11.0.1\Newtonsoft.Json.11.0.1.nupkg" />
     <Content Include="packages\WebGrease.1.6.0\.signature.p7s" />
     <Content Include="packages\WebGrease.1.6.0\WebGrease.1.6.0.nupkg" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\bootstrap\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\core\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\daygrid\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\google-calendar\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\interaction\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\list\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\moment-timezone\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\rrule\main.d.ts" />
-    <TypeScriptCompile Include="plugins\fullcalendar\packages\timegrid\main.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -3,7 +3,7 @@
     <div class="main-icon-menu slimscroll-menu">
         <a href="@Url.Action("Index", "Dashboard")" class="logo logo-metrica d-block text-center">
             <span>
-                <img src="~/images/atishay.png" alt="logo-small" class="logo-sm">
+                <img src="~/images/NOCIMAGE.png" alt="logo-small" class="logo-sm">
             </span>
         </a>
         <nav class="nav">
@@ -43,79 +43,176 @@
         <div class="topbar-left">
             <a href="@Url.Action("Index", "Dashboard")" class="logo">
                 <span>
-                    <img src="~/images/atishay.png" alt="logo-large" class="logo-lg logo-dark" style="
-    width: 50%;
-    height: auto;
-    margin-top: 10%;
-">
-                    <img src="~/images/atishay.png" alt="logo-large" class="logo-lg logo-light">
+                    <img src="~/images/NOCIMAGE.png" alt="logo-large" class="logo-lg logo-dark" style="width: 50%;height: auto;margin-top: 10%;">
+                    <img src="~/images/NOCIMAGE.png" alt="logo-large" class="logo-lg logo-light">
                 </span>
             </a>
         </div>
         <!--end logo-->
         <div class="menu-body slimscroll">
-            <div id="MetricaDashboard" class="main-icon-menu-pane active">
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">My Profile</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Application List</a></li>
+                </ul>
+                @*<ul class="nav">
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index","Trustee")">Trustee Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" CreateDetails","BasicDetails")">Your Colleges</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" project-index","Dashboard")">Add Courses</a></li>
+                    </ul>*@
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Master</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("menuindex", "Role" )">Add Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("SubMenuIndex", "Role" )">Add Submenu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RoleMappingDepartmentandGroupIndex", "Role" )">Role Group Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Department</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","User")">Add Role</a></li>*@
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Setting","Admin")">Custom Field</a></li>
+                </ul>
+            </div>
+            <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">Configuration</h6>
+                </div>
+                <ul class="nav">
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Role Access Rights</a></li>*@
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Parameter Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","SSODeptMapping")">SSO Department Mapping</a></li>
+
+                </ul>
+            </div>
+            <!--<div id="MetricaDashboard" class="main-icon-menu-pane active">
                 <div class="title-box">
                     <h6 class="menu-title active">Dashboard</h6>
                 </div>
                 <ul class="nav">
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("RateMaster", "Admin")">Rate Master</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("GstApplicable", "Admin")">GST Applicable</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("Detail", "Admin")">Service Master</a></li>*@
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails", "BasicDetails")">Basic Details</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "DocumentLibrary")">Document Library</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Geographical")">Geographical Data</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddSystemUser", "Role")">Add System User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RegistratedUser", "Home")">User List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "UserDetails")">Active Inactive user</a></li>
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "MyPayments")">My Payments</a></li>*@
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "ContentPage")">New Template</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("List", "ContentPage")">Template List</a></li>
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RateMaster", "Admin" )">Rate Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("GstApplicable", "Admin" )">GST Applicable</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Detail", "Admin" )">Service Master</a></li>*@
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "DocumentLibrary" )">Document Library</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Geographical" )">Geographical Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddSystemUser", "Role" )">Add System User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RegistratedUser", "Home" )">User List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "UserDetails" )">Active Inactive user</a></li>
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "MyPayments" )">My Payments</a></li>*@
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "ContentPage" )">New Template</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" List", "ContentPage" )">Template List</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Addgroup", "Admin")">Add Group</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("adddepartment", "Admin")">Add Department</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("rolemasterindex", "Role")">Add Role</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("menuindex", "Role")">Add Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("SubMenuIndex", "Role")">Add Submenu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RoleMappingDepartmentandGroupIndex", "Role")">Role Group Mapping</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Finance")">Finance</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Vertinary")">Vertinary Details</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "SSODeptMapping")">SSO-Department Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Addgroup", "Admin" )">Add Group</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" adddepartment", "Admin" )">Add Department</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" rolemasterindex", "Role" )">Add Role</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" menuindex", "Role" )">Add Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" SubMenuIndex", "Role" )">Add Submenu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RoleMappingDepartmentandGroupIndex", "Role" )">Role Group Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "Finance" )">Finance</a></li>
 
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("PaymentPendingCollection", "Home")">Payment Collection</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ChequeClearedList", "Home")">Cheque Cleared List</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ChequeClearenceList", "Home")">Clear Cheque</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ClientChangeRequest", "Home")">Client Change Request</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("NotificationIndex", "Role")">Notification</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "MobileRecharge")">Mobile Recharge</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("WalletRecharge", "Client")">Wallet Refill</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("WalletRechargeHistory", "Client")">Wallet Request history</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("LedgerReport", "Client")">Ledger Report</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ClientWalletRechargeRequets", "Support")">Pending Wallet Request</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ClientChangeRequestList", "Home")">Change Request List</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ClientChangeRequest", "Admin")">Pending Change Request List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ServiceProviderIndex", "Commission")">Service Provider</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ServiceProviderRateMaster", "Commission")">Service Provider Rate Master</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("CommissionMasterIndex", "Commission")">Commission Master</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("UserCommission", "Commission")">User Commission</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("RechargeCommissionIndex", "Commission")">Recharge Commission</a></li>*@
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("RechargeUserCommission", "Commission")">Recharge User Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PaymentPendingCollection", "Home" )">Payment Collection</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearedList", "Home" )">Cheque Cleared List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearenceList", "Home" )">Clear Cheque</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Home" )">Client Change Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" NotificationIndex", "Role" )">Notification</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "MobileRecharge" )">Mobile Recharge</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRecharge", "Client" )">Wallet Refill</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRechargeHistory", "Client" )">Wallet Request history</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" LedgerReport", "Client" )">Ledger Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientWalletRechargeRequets", "Support" )">Pending Wallet Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequestList", "Home" )">Change Request List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Admin" )">Pending Change Request List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderIndex", "Commission" )">Service Provider</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderRateMaster", "Commission" )">Service Provider Rate Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" CommissionMasterIndex", "Commission" )">Commission Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserCommission", "Commission" )">User Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeCommissionIndex", "Commission" )">Recharge Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeUserCommission", "Commission" )">Recharge User Commission</a></li>*@
 
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ServiceWiseTrans", "Report")">Service Wise Transation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("SerwisePartnerCount", "Report")">Service Wise Partner Count</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("PartWiseStaDetails", "Report")">Party Wise Statement Details</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("UserProfileReport", "Report")">User Profile Report</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("UserPartyWiseProfileReport", "Report")">Party Wise Profile Report</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceWiseTrans", "Report" )">Service Wise Transation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" SerwisePartnerCount", "Report" )">Service Wise Partner Count</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PartWiseStaDetails", "Report" )">Party Wise Statement Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserProfileReport", "Report" )">User Profile Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserPartyWiseProfileReport", "Report" )">Party Wise Profile Report</a></li>*@
 
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Dashboard")">Analytics</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("crypto-index", "Dashboard")">Crypto</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("crm-index", "Dashboard")">CRM</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("project-index", "Dashboard")">Project</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ecommerce-index", "Dashboard")">Ecommerce</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("helpdesk-index", "Dashboard")">Helpdesk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("hospital-index", "Dashboard")">Hospital</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "Dashboard" )">Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" crypto-index", "Dashboard" )">Crypto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" crm-index", "Dashboard" )">CRM</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" project-index", "Dashboard" )">Project</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ecommerce-index", "Dashboard" )">Ecommerce</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" helpdesk-index", "Dashboard" )">Helpdesk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" hospital-index", "Dashboard" )">Hospital</a></li>*@
                 </ul>
-            </div><!-- end Dashboards -->
+            </div>-->
+            <!-- end Dashboards -->
+
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PaymentPendingCollection", "Home" )">Payment Collection</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearedList", "Home" )">Cheque Cleared List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ChequeClearenceList", "Home" )">Clear Cheque</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Home" )">Client Change Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" NotificationIndex", "Role" )">Notification</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index", "MobileRecharge" )">Mobile Recharge</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRecharge", "Client" )">Wallet Refill</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" WalletRechargeHistory", "Client" )">Wallet Request history</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" LedgerReport", "Client" )">Ledger Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientWalletRechargeRequets", "Support" )">Pending Wallet Request</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequestList", "Home" )">Change Request List</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ClientChangeRequest", "Admin" )">Pending Change Request List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderIndex", "Commission" )">Service Provider</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceProviderRateMaster", "Commission" )">Service Provider Rate Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" CommissionMasterIndex", "Commission" )">Commission Master</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserCommission", "Commission" )">User Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeCommissionIndex", "Commission" )">Recharge Commission</a></li>*@
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" RechargeUserCommission", "Commission" )">Recharge User Commission</a></li>*@
+
+                    @*
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" ServiceWiseTrans", "Report" )">Service Wise Transation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" SerwisePartnerCount", "Report" )">Service Wise Partner Count</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" PartWiseStaDetails", "Report" )">Party Wise Statement Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserProfileReport", "Report" )">User Profile Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" UserPartyWiseProfileReport", "Report" )">Party Wise Profile Report</a></li>*@
+             
+                </ul>
+            </div>--><!-- end Dashboards -->
 
             <div id="MetricaApps" class="main-icon-menu-pane">
                 <div class="title-box">
@@ -125,58 +222,58 @@
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Analytics</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("customers", "analytics")">Customers</a></li>
-                            <li><a href="@Url.Action("reports", "analytics")">Reports</a></li>
+                            <li><a href="@Url.Action(" customers", "analytics" )">Customers</a></li>
+                            <li><a href="@Url.Action(" reports", "analytics" )">Reports</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Crypto</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("exchange", "crypto")">Exchange</a></li>
-                            <li><a href="@Url.Action("wallet", "crypto")">Wallet</a></li>
-                            <li><a href="@Url.Action("news", "crypto")">Crypto News</a></li>
-                            <li><a href="@Url.Action("ico", "crypto")">ICO List</a></li>
-                            <li><a href="@Url.Action("settings", "crypto")">settings</a></li>
+                            <li><a href="@Url.Action(" exchange", "crypto" )">Exchange</a></li>
+                            <li><a href="@Url.Action(" wallet", "crypto" )">Wallet</a></li>
+                            <li><a href="@Url.Action(" news", "crypto" )">Crypto News</a></li>
+                            <li><a href="@Url.Action(" ico", "crypto" )">ICO List</a></li>
+                            <li><a href="@Url.Action(" settings", "crypto" )">settings</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">CRM</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("contacts","crm")">Contacts</a></li>
-                            <li><a href="@Url.Action("opportunities","crm")">Opportunities</a></li>
-                            <li><a href="@Url.Action("leads","crm")">Leads</a></li>
-                            <li><a href="@Url.Action("customers","crm")">Customers</a></li>
+                            <li><a href="@Url.Action(" contacts","crm")">Contacts</a></li>
+                            <li><a href="@Url.Action(" opportunities","crm")">Opportunities</a></li>
+                            <li><a href="@Url.Action(" leads","crm")">Leads</a></li>
+                            <li><a href="@Url.Action(" customers","crm")">Customers</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Projects</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("clients", "projects")">Clients</a></li>
-                            <li><a href="@Url.Action("team", "projects")">Team</a></li>
-                            <li><a href="@Url.Action("project", "projects")">Project</a></li>
-                            <li><a href="@Url.Action("task", "projects")">Task</a></li>
-                            <li><a href="@Url.Action("kanban-board", "projects")">Kanban Board</a></li>
-                            <li><a href="@Url.Action("chat", "projects")">Chat</a></li>
-                            <li><a href="@Url.Action("users", "projects")">Users</a></li>
-                            <li><a href="@Url.Action("create", "projects")">Project Create</a></li>
+                            <li><a href="@Url.Action(" clients", "projects" )">Clients</a></li>
+                            <li><a href="@Url.Action(" team", "projects" )">Team</a></li>
+                            <li><a href="@Url.Action(" project", "projects" )">Project</a></li>
+                            <li><a href="@Url.Action(" task", "projects" )">Task</a></li>
+                            <li><a href="@Url.Action(" kanban-board", "projects" )">Kanban Board</a></li>
+                            <li><a href="@Url.Action(" chat", "projects" )">Chat</a></li>
+                            <li><a href="@Url.Action(" users", "projects" )">Users</a></li>
+                            <li><a href="@Url.Action(" create", "projects" )">Project Create</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Ecommerce</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("products", "ecommerce")">Products</a></li>
-                            <li><a href="@Url.Action("product-list", "ecommerce")">Product List</a></li>
-                            <li><a href="@Url.Action("product-detail", "ecommerce")">Product Detail</a></li>
-                            <li><a href="@Url.Action("cart", "ecommerce")">Cart</a></li>
-                            <li><a href="@Url.Action("checkout", "ecommerce")">Checkout</a></li>
+                            <li><a href="@Url.Action(" products", "ecommerce" )">Products</a></li>
+                            <li><a href="@Url.Action(" product-list", "ecommerce" )">Product List</a></li>
+                            <li><a href="@Url.Action(" product-detail", "ecommerce" )">Product Detail</a></li>
+                            <li><a href="@Url.Action(" cart", "ecommerce" )">Cart</a></li>
+                            <li><a href="@Url.Action(" checkout", "ecommerce" )">Checkout</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Helpdesk</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("teckets", "helpdesk")">Tickets</a></li>
-                            <li><a href="@Url.Action("reports", "helpdesk")">Reports</a></li>
-                            <li><a href="@Url.Action("agents", "helpdesk")">Agents</a></li>
+                            <li><a href="@Url.Action(" teckets", "helpdesk" )">Tickets</a></li>
+                            <li><a href="@Url.Action(" reports", "helpdesk" )">Reports</a></li>
+                            <li><a href="@Url.Action(" agents", "helpdesk" )">Agents</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
@@ -185,58 +282,58 @@
                             <li>
                                 <a href="javascript:void(0);">Appointments <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("doctor-shedule", "hospital")">Dr. Shedule</a></li>
-                                    <li><a href="@Url.Action("all-appointments", "hospital")">All Appointments</a></li>
+                                    <li><a href="@Url.Action(" doctor-shedule", "hospital" )">Dr. Shedule</a></li>
+                                    <li><a href="@Url.Action(" all-appointments", "hospital" )">All Appointments</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);">Doctors <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("all-doctors", "hospital")">All Doctors</a></li>
-                                    <li><a href="@Url.Action("add-doctor", "hospital")">Add Doctor</a></li>
-                                    <li><a href="@Url.Action("edit-doctor", "hospital")">Doctor Edit</a></li>
-                                    <li><a href="@Url.Action("doctor-profile", "hospital")">Doctor Profile</a></li>
+                                    <li><a href="@Url.Action(" all-doctors", "hospital" )">All Doctors</a></li>
+                                    <li><a href="@Url.Action(" add-doctor", "hospital" )">Add Doctor</a></li>
+                                    <li><a href="@Url.Action(" edit-doctor", "hospital" )">Doctor Edit</a></li>
+                                    <li><a href="@Url.Action(" doctor-profile", "hospital" )">Doctor Profile</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);">Patients <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("all-patients", "hospital")">All Patients</a></li>
-                                    <li><a href="@Url.Action("add-patient", "hospital")">Add Patient</a></li>
-                                    <li><a href="@Url.Action("edit-patient", "hospital")">Patient Edit</a></li>
-                                    <li><a href="@Url.Action("patient-profile", "hospital")">Patient Profile</a></li>
+                                    <li><a href="@Url.Action(" all-patients", "hospital" )">All Patients</a></li>
+                                    <li><a href="@Url.Action(" add-patient", "hospital" )">Add Patient</a></li>
+                                    <li><a href="@Url.Action(" edit-patient", "hospital" )">Patient Edit</a></li>
+                                    <li><a href="@Url.Action(" patient-profile", "hospital" )">Patient Profile</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);">Payments <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("all-payments", "hospital")">All Payments</a></li>
-                                    <li><a href="@Url.Action("payment-invoice", "hospital")">Payment Invoice</a></li>
-                                    <li><a href="@Url.Action("cashless-payments", "hospital")">Cashless Payments</a></li>
+                                    <li><a href="@Url.Action(" all-payments", "hospital" )">All Payments</a></li>
+                                    <li><a href="@Url.Action(" payment-invoice", "hospital" )">Payment Invoice</a></li>
+                                    <li><a href="@Url.Action(" cashless-payments", "hospital" )">Cashless Payments</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);">Staff <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("all-staff", "hospital")">All Staff</a></li>
-                                    <li><a href="@Url.Action("add-member", "hospital")">Add Member</a></li>
-                                    <li><a href="@Url.Action("edit-member", "hospital")">Edit Member</a></li>
-                                    <li><a href="@Url.Action("member-profile", "hospital")">Member Profile</a></li>
-                                    <li><a href="@Url.Action("salary", "hospital")">Staff Salary</a></li>
+                                    <li><a href="@Url.Action(" all-staff", "hospital" )">All Staff</a></li>
+                                    <li><a href="@Url.Action(" add-member", "hospital" )">Add Member</a></li>
+                                    <li><a href="@Url.Action(" edit-member", "hospital" )">Edit Member</a></li>
+                                    <li><a href="@Url.Action(" member-profile", "hospital" )">Member Profile</a></li>
+                                    <li><a href="@Url.Action(" salary", "hospital" )">Staff Salary</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);">General <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
-                                    <li><a href="@Url.Action("all-rooms", "hospital")">Room Allotments</a></li>
-                                    <li><a href="@Url.Action("expenses", "hospital")">Expenses Report</a></li>
-                                    <li><a href="@Url.Action("departments", "hospital")">Departments</a></li>
-                                    <li><a href="@Url.Action("insurance-company", "hospital")">Insurance Co.</a></li>
-                                    <li><a href="@Url.Action("events", "hospital")">Events</a></li>
-                                    <li><a href="@Url.Action("leaves", "hospital")">Leaves</a></li>
-                                    <li><a href="@Url.Action("holidays", "hospital")">Holidays</a></li>
-                                    <li><a href="@Url.Action("attendance", "hospital")">Attendance</a></li>
-                                    <li><a href="@Url.Action("chat", "hospital")">Chat</a></li>
+                                    <li><a href="@Url.Action(" all-rooms", "hospital" )">Room Allotments</a></li>
+                                    <li><a href="@Url.Action(" expenses", "hospital" )">Expenses Report</a></li>
+                                    <li><a href="@Url.Action(" departments", "hospital" )">Departments</a></li>
+                                    <li><a href="@Url.Action(" insurance-company", "hospital" )">Insurance Co.</a></li>
+                                    <li><a href="@Url.Action(" events", "hospital" )">Events</a></li>
+                                    <li><a href="@Url.Action(" leaves", "hospital" )">Leaves</a></li>
+                                    <li><a href="@Url.Action(" holidays", "hospital" )">Holidays</a></li>
+                                    <li><a href="@Url.Action(" attendance", "hospital" )">Attendance</a></li>
+                                    <li><a href="@Url.Action(" chat", "hospital" )">Chat</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -244,14 +341,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Email</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("inbox", "email")">Inbox</a></li>
-                            <li><a href="@Url.Action("email-read", "email")">Read Email</a></li>
+                            <li><a href="@Url.Action(" inbox", "email" )">Inbox</a></li>
+                            <li><a href="@Url.Action(" email-read", "email" )">Read Email</a></li>
                         </ul>
                     </li><!--end nav-item-->
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("chat", "apps")">Chat</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("contacts", "apps")">Contact List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("calendar", "apps")">Calendar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("invoice", "apps")">Invoice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" chat", "apps" )">Chat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" contacts", "apps" )">Contact List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" calendar", "apps" )">Calendar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" invoice", "apps" )">Invoice</a></li>
                 </ul>
             </div><!-- end Crypto -->
 
@@ -263,94 +360,94 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">UI Elements</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("bootstrap", "UI")">Bootstrap</a></li>
-                            <li><a href="@Url.Action("animation", "UI")">Animation</a></li>
-                            <li><a href="@Url.Action("avatar", "UI")">Avatar</a></li>
-                            <li><a href="@Url.Action("clipboard", "UI")">Clip Board</a></li>
-                            <li><a href="@Url.Action("files", "UI")">File Manager</a></li>
-                            <li><a href="@Url.Action("ribbons", "UI")">Ribbons</a></li>
-                            <li><a href="@Url.Action("dragula", "UI")">Dragula</a></li>
-                            <li><a href="@Url.Action("check-radio", "UI")">Check & Radio</a></li>
+                            <li><a href="@Url.Action(" bootstrap", "UI" )">Bootstrap</a></li>
+                            <li><a href="@Url.Action(" animation", "UI" )">Animation</a></li>
+                            <li><a href="@Url.Action(" avatar", "UI" )">Avatar</a></li>
+                            <li><a href="@Url.Action(" clipboard", "UI" )">Clip Board</a></li>
+                            <li><a href="@Url.Action(" files", "UI" )">File Manager</a></li>
+                            <li><a href="@Url.Action(" ribbons", "UI" )">Ribbons</a></li>
+                            <li><a href="@Url.Action(" dragula", "UI" )">Dragula</a></li>
+                            <li><a href="@Url.Action(" check-radio", "UI" )">Check & Radio</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Advanced UI</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("rangeslider", "UI")">Range Slider</a></li>
-                            <li><a href="@Url.Action("sweetalerts", "UI")">Sweet Alerts</a></li>
-                            <li><a href="@Url.Action("nestable", "UI")">Nestable List</a></li>
-                            <li><a href="@Url.Action("ratings", "UI")">Ratings</a></li>
-                            <li><a href="@Url.Action("highlight", "UI")">Highlight</a></li>
-                            <li><a href="@Url.Action("session", "UI")">Session Timeout</a></li>
-                            <li><a href="@Url.Action("idle-timer", "UI")">Idle Timer</a></li>
+                            <li><a href="@Url.Action(" rangeslider", "UI" )">Range Slider</a></li>
+                            <li><a href="@Url.Action(" sweetalerts", "UI" )">Sweet Alerts</a></li>
+                            <li><a href="@Url.Action(" nestable", "UI" )">Nestable List</a></li>
+                            <li><a href="@Url.Action(" ratings", "UI" )">Ratings</a></li>
+                            <li><a href="@Url.Action(" highlight", "UI" )">Highlight</a></li>
+                            <li><a href="@Url.Action(" session", "UI" )">Session Timeout</a></li>
+                            <li><a href="@Url.Action(" idle-timer", "UI" )">Idle Timer</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Forms</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("elements","Forms")">Basic Elements</a></li>
-                            <li><a href="@Url.Action("advanced","Forms")">Advance Elements</a></li>
-                            <li><a href="@Url.Action("validation","Forms")">Validation</a></li>
-                            <li><a href="@Url.Action("wizard","Forms")">Wizard</a></li>
-                            <li><a href="@Url.Action("editors","Forms")">Editors</a></li>
-                            <li><a href="@Url.Action("repeater","Forms")">Repeater</a></li>
-                            <li><a href="@Url.Action("x-editable","Forms")">X Editable</a></li>
-                            <li><a href="@Url.Action("uploads","Forms")">File Upload</a></li>
-                            <li><a href="@Url.Action("img-crop", "Forms")">Image Crop</a></li>
+                            <li><a href="@Url.Action(" elements","Forms")">Basic Elements</a></li>
+                            <li><a href="@Url.Action(" advanced","Forms")">Advance Elements</a></li>
+                            <li><a href="@Url.Action(" validation","Forms")">Validation</a></li>
+                            <li><a href="@Url.Action(" wizard","Forms")">Wizard</a></li>
+                            <li><a href="@Url.Action(" editors","Forms")">Editors</a></li>
+                            <li><a href="@Url.Action(" repeater","Forms")">Repeater</a></li>
+                            <li><a href="@Url.Action(" x-editable","Forms")">X Editable</a></li>
+                            <li><a href="@Url.Action(" uploads","Forms")">File Upload</a></li>
+                            <li><a href="@Url.Action(" img-crop", "Forms" )">Image Crop</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Charts</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("apex", "Chart")">Apex</a></li>
-                            <li><a href="@Url.Action("morris", "Chart")">Morris</a></li>
-                            <li><a href="@Url.Action("chartist", "Chart")">Chartist</a></li>
-                            <li><a href="@Url.Action("flot", "Chart")">Flot</a></li>
-                            <li><a href="@Url.Action("peity", "Chart")">Peity</a></li>
-                            <li><a href="@Url.Action("chartjs", "Chart")">Chartjs</a></li>
-                            <li><a href="@Url.Action("sparkline", "Chart")">Sparkline</a></li>
-                            <li><a href="@Url.Action("knob", "Chart")">Jquery Knob</a></li>
-                            <li><a href="@Url.Action("justgage", "Chart")">JustGage</a></li>
+                            <li><a href="@Url.Action(" apex", "Chart" )">Apex</a></li>
+                            <li><a href="@Url.Action(" morris", "Chart" )">Morris</a></li>
+                            <li><a href="@Url.Action(" chartist", "Chart" )">Chartist</a></li>
+                            <li><a href="@Url.Action(" flot", "Chart" )">Flot</a></li>
+                            <li><a href="@Url.Action(" peity", "Chart" )">Peity</a></li>
+                            <li><a href="@Url.Action(" chartjs", "Chart" )">Chartjs</a></li>
+                            <li><a href="@Url.Action(" sparkline", "Chart" )">Sparkline</a></li>
+                            <li><a href="@Url.Action(" knob", "Chart" )">Jquery Knob</a></li>
+                            <li><a href="@Url.Action(" justgage", "Chart" )">JustGage</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Tables</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("basic", "Table")">Basic</a></li>
-                            <li><a href="@Url.Action("datatables", "Table")">Datatables</a></li>
-                            <li><a href="@Url.Action("responsive", "Table")">Responsive</a></li>
-                            <li><a href="@Url.Action("footable", "Table")">Footable</a></li>
-                            <li><a href="@Url.Action("jsgrid", "Table")">Jsgrid</a></li>
-                            <li><a href="@Url.Action("dragger", "Table")">Dragger</a></li>
-                            <li><a href="@Url.Action("editable", "Table")">Editable</a></li>
+                            <li><a href="@Url.Action(" basic", "Table" )">Basic</a></li>
+                            <li><a href="@Url.Action(" datatables", "Table" )">Datatables</a></li>
+                            <li><a href="@Url.Action(" responsive", "Table" )">Responsive</a></li>
+                            <li><a href="@Url.Action(" footable", "Table" )">Footable</a></li>
+                            <li><a href="@Url.Action(" jsgrid", "Table" )">Jsgrid</a></li>
+                            <li><a href="@Url.Action(" dragger", "Table" )">Dragger</a></li>
+                            <li><a href="@Url.Action(" editable", "Table" )">Editable</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Icons</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("materialdesign", "icon")">Material Design</a></li>
-                            <li><a href="@Url.Action("dripicons", "icon")">Dripicons</a></li>
-                            <li><a href="@Url.Action("fontawesome", "icon")">Font awesome</a></li>
-                            <li><a href="@Url.Action("themify", "icon")">Themify</a></li>
-                            <li><a href="@Url.Action("feather", "icon")">Feather</a></li>
-                            <li><a href="@Url.Action("typicons", "icon")">Typicons</a></li>
-                            <li><a href="@Url.Action("emoji", "icon")">Emoji <i class="em em-ok_hand"></i></a></li>
+                            <li><a href="@Url.Action(" materialdesign", "icon" )">Material Design</a></li>
+                            <li><a href="@Url.Action(" dripicons", "icon" )">Dripicons</a></li>
+                            <li><a href="@Url.Action(" fontawesome", "icon" )">Font awesome</a></li>
+                            <li><a href="@Url.Action(" themify", "icon" )">Themify</a></li>
+                            <li><a href="@Url.Action(" feather", "icon" )">Feather</a></li>
+                            <li><a href="@Url.Action(" typicons", "icon" )">Typicons</a></li>
+                            <li><a href="@Url.Action(" emoji", "icon" )">Emoji <i class="em em-ok_hand"></i></a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Maps</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("google", "maps")">Google Maps</a></li>
-                            <li><a href="@Url.Action("leaflet", "maps")">Leaflet Maps</a></li>
-                            <li><a href="@Url.Action("vector", "maps")">Vector Maps</a></li>
+                            <li><a href="@Url.Action(" google", "maps" )">Google Maps</a></li>
+                            <li><a href="@Url.Action(" leaflet", "maps" )">Leaflet Maps</a></li>
+                            <li><a href="@Url.Action(" vector", "maps" )">Vector Maps</a></li>
                         </ul>
                     </li><!--end nav-item-->
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Email Templates</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
-                            <li><a href="@Url.Action("basic", "email")">Basic Action Email</a></li>
-                            <li><a href="@Url.Action("alert", "email")">Alert Email</a></li>
-                            <li><a href="@Url.Action("billing", "email")">Billing Email</a></li>
+                            <li><a href="@Url.Action(" basic", "email" )">Basic Action Email</a></li>
+                            <li><a href="@Url.Action(" alert", "email" )">Alert Email</a></li>
+                            <li><a href="@Url.Action(" billing", "email" )">Billing Email</a></li>
                         </ul>
                     </li><!--end nav-item-->
                 </ul><!--end nav-->
@@ -361,15 +458,15 @@
                     <h6 class="menu-title">Pages</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("profile", "pages")">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("tour", "pages")">Tour</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("timeline", "pages")">Timeline</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("treeview", "pages")">Treeview</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("starter", "pages")">Starter Page</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("pricing", "pages")">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("blogs", "pages")">Blogs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("faq", "pages")">FAQs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("gallery", "pages")">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("profile", "pages" )">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("tour", "pages" )">Tour</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("timeline", "pages" )">Timeline</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("treeview", "pages" )">Treeview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("starter", "pages" )">Starter Page</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("pricing", "pages" )">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("blogs", "pages" )">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("faq", "pages" )">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("gallery", "pages" )">Gallery</a></li>
                 </ul>
             </div><!-- end Pages -->
             <div id="MetricaAuthentication" class="main-icon-menu-pane">
@@ -377,18 +474,18 @@
                     <h6 class="menu-title">Authentication</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("login", "authentication")">Log in</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("login-alt", "authentication")">Log in alt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("register", "authentication")">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("register-alt", "authentication")">Register-alt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("recover-pw", "authentication")">Re-Password</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("recover-pw-alt", "authentication")">Re-Password-alt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("lock-screen", "authentication")">Lock Screen</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("lock-screen-alt", "authentication")">Lock Screen-alt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("404", "authentication")">Error 404</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("404-alt", "authentication")">Error 404-alt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("500", "authentication")">Error 500</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("500-alt", "authentication")">Error 500-alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("login", "authentication" )">Log in</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("login-alt", "authentication" )">Log in alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("register", "authentication" )">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("register-alt", "authentication" )">Register-alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("recover-pw", "authentication" )">Re-Password</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("recover-pw-alt", "authentication" )">Re-Password-alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("lock-screen", "authentication" )">Lock Screen</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("lock-screen-alt", "authentication" )">Lock Screen-alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("404", "authentication" )">Error 404</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("404-alt", "authentication" )">Error 404-alt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("500", "authentication" )">Error 500</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("500-alt", "authentication" )">Error 500-alt</a></li>
                 </ul>
             </div><!-- end Authentication-->
         </div><!--end menu-body-->

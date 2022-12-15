@@ -1,0 +1,1022 @@
+﻿@model NewZapures_V2.Models.AEPSTransaction.AEPSRequest
+@{
+    ViewBag.Title = "AEPS Fund Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btn-round {
+        border-radius: 30px;
+        font-weight: 600;
+        border: 2px solid #0094ff;
+    }
+
+    .btn:hover {
+        color: #fff;
+        background-color: #6c70a7;
+    }
+
+    .btn-dark {
+        color: #fff;
+        background-color: #506ee4;
+        border-color: #121215;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Wallet</li>
+                    @*<li class="breadcrumb-item active">@ViewBag.Create</li>*@
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading text-bold text-center font-weight-bold" style="border-bottom:0px !important">
+                CASH WITHDRAWAL
+            </div>
+            @using (Html.BeginForm("FPRDService", "AEPSTransfer", FormMethod.Post, new { id = "frmActivation", name = "frmActivation", @data_parsley_validate = "" }))
+            {
+                <div class="panel-body">
+                    <div class="row col-lg-12 text-center" style="margin-bottom:40px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-dark btn-round waves-effect waves-light" id="btnCashwithdrawal">CASH WITHDRAWAL</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-dark btn-round waves-effect waves-light" id="balanceenquiry">BALANCE ENQUIRY</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-dark btn-round waves-effect waves-light" id="btnministatement">MINI STATEMENT</button>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row col-lg-8" id="areaDemographic" name="areaDemographic">
+                        @Html.HiddenFor(model => model.tranType, new { @Value = "010000" })
+                        <div class="row col-lg-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>BANK NAME</label>
+                                    <span style="color:red;">*</span>
+                                    <div id="To" class="">
+                                        @Html.DropDownListFor(model => model.BankIINno, new SelectList(Model.BankDetailsList, "iINNo", "bankName"), "-- Select Bank Name --", new { @class = "form-control", @required = "required" })
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                        <label for="username">BANK NAME</label>
+                                        <input type="text" class="form-control" id="username" required="">
+                                    </div>*@
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <input type="hidden" id="hdnscanner" name="hdnscanner" />
+                                    <input type="hidden" id="hdndata" name="hdndata" />
+                                    <input type="hidden" id="EncryAadhaarNo" name="EncryAadhaarNo" />
+                                    <input type="hidden" id="hdn_deviceinfo" name="hdn_deviceinfo" />
+                                    <label for="useremail">AADHAR NUMBER *</label>
+                                    <div>
+                                        @Html.TextBoxFor(m => Model.AadhaarNo, new
+                                   {
+                                       @maxlength = "14",
+                                       @class = "form-control allow_numeric",
+                                       @placeholder = "Enter Your Aadhar Number ",
+                                       @required = "required",
+                                       //@data_masked = "",
+                                       //@data_inputmask = "'mask': '9999-9999-9999-9999'",
+                                       //@data_type = "adhaar-number"
+
+                                   })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <lable>Mobile Number</lable>
+                                    <span style="color:red;">*</span>
+                                    <div id="To" class="">
+                                        @Html.TextBoxFor(m => Model.mobileNumber, new { @maxlength = "10", @class = "form-control required allow_numeric", @placeholder = "Enter Mobile Number", @required = "required" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-md-4" id="divamt">
+                                <div class="form-group">
+                                    <label for="subject">AMOUNT</label>
+                                    <span style="color:red;">*</span>
+                                    <div id="To" class="">
+                                        @Html.TextBoxFor(m => Model.Amount, new { @maxlength = "5", @class = "form-control required allow_numeric", @placeholder = "Enter Amount Rs.", @required = "required", @Value = "0" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" hidden id="txtEnckey" name="txtEnckey" value="8080808080808085" />
+                                    <input type="text" hidden id="txtEncIv" name="txtEncIv" value="8040804080408085" />
+                                    <input type="text" id="latitude" name="latitude" hidden />
+                                    <input type="text" id="longitude" name="longitude" hidden />
+                                    <input type="text" id="txtPotNo" style="display:none;" />
+                                    <label for="exampleFormControlSelect1">BIOMETRIC MACHINE</label>
+                                    <select class="form-control" id="exampleFormControlSelect1">
+                                        <option>Mantra Scanner</option>
+                                        <option>Secugen Scanner</option>
+                                        <option>Tatvik Scanner</option>
+                                        <option>Morpho Scanner</option>
+                                    </select>
+                                </div>
+                                @*<div class="form-group">
+                                        <label for="username">CHOOSE BIOMETRIC MACHINE</label>
+                                        <input type="text" class="form-control" id="username" required="">
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-md-12" style="margin-left:20px">
+
+                                <div class="checkbox checkbox-primary form-check-inline">
+                                    <input type="checkbox" id="chkRememberMe" name="chkRememberMe">
+                                    <label for="chkRememberMe" style="color:green;" id="lblUserConsent" name="lblUserConsent"> I Agree that Zapurse/Bank/UIDAI may share my details with each other for the purpose of authenticating my Aadhar Number. </label>
+                                </div>
+
+                                @*<div class="checkbox c-checkbox">
+                                        <label style="color:green;" id="lblUserConsent" name="lblUserConsent">
+                                            <input type="checkbox" required="required" id="chkRememberMe" name="chkRememberMe" />
+                                            <span class="fa fa-check"></span>I Agree that Zapurse/Bank/UIDAI may share my details with each other for the purpose of authenticating my Aadhar Number.
+                                        </label>
+                                    </div>*@
+                                <span style="color:red;" id="TermCondition"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            @*<div class="col-md-6">
+                                    <a href="@Url.Action("BackAction", "AEPSTransfer")" class="btn  btn-warning" title="Back">
+                                        Back
+                                    </a>
+                                </div>*@
+                            <div class="col-md-12 text-right">
+
+                            </div>
+                        </div>
+                        @*<div class="row col-lg-12">
+                                <div class="col-md-4">
+                                    <a href="@Url.Action("BackAction", "AEPSTransfer")" class="btn  btn-warning" title="Back">
+                                        Back
+                                    </a>
+                                    <input type="button" onclick="VerifyValues(); return true;" name="" id="btnVerify" class="btn btn-success btn-lg" value="Validate">
+                                </div>
+                            </div>*@
+                    </div>
+                    <div class="row col-lg-4" id="areaFingerPrint" name="areaFingerPrint">
+
+                        <div id="areaFingerPrint" name="areaFingerPrint" style="border-left: 0px solid #acacac;">
+                            <div class="col-lg-12 text-center">
+                                <label>Finger Print</label>
+
+                                <div id="Fingerblack" class="text-center">
+                                    <img src="~/images/FingercaptureBlack.jpg" id="imgFinger" width="150" height="160" class="well" />
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div id="FingerSuccess" class="text-center">
+                                    <img src="~/images/success.png" id="imgFingerSuc" width="150" height="160" class="well" />
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12 text-center">
+                                <input type="button" onclick="VerifyValues(); return true;" name="" id="btnVerify" class="btn btn-primary" value="Capture Fingerprint">
+                                @*<button type="button" id="btnLThumb" class="btn btn-success" value="Capture FingurePrint" onclick="DeviceInfo(); return true; return true;">&nbsp;Capture </button>*@
+                            </div>
+
+                            <div class="col-lg-12 text-center">
+                                <input type="submit" name="btnSubmit" id="btnsubmit" class="btn btn-primary" style="display:none" value="submit">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="Loding" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSmall" aria-hidden="true" class="modal fade" style="margin-top:25%;">
+    <div class="modal-dialog modal-sm whirl traditional">
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/timepicker/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <link href="~/plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="~/Content/LoginSignUp/css/bootstrap.min.css" rel="stylesheet" />
+    @*@Styles.Render("~/Content/css")
+        @Styles.Render("~/bundles/datatablesCss")
+        @Styles.Render("~/bundles/SweetAlertCss")*@
+}
+
+@section Scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/Scripts/aeps.js"></script>
+    <script>
+        $(document).ready(function () {
+            url = "";
+            //$("#areaFingerPrint").addClass('hidden');
+            $("#FingerSuccess").addClass('hidden');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+            $("#btnCashwithdrawal").click(function () {
+                alert("btnCashwithdrawal");
+                $("#divamt").removeClass('hidden');
+                $("#tranType").val("010000");
+
+            });
+            $("#balanceenquiry").click(function () {
+                alert("balanceenquiry");
+                $("#divamt").addClass('hidden');
+                $("#tranType").val("310000");
+            });
+            $("#btnministatement").click(function () {
+                alert("btnministatement");
+                $("#divamt").removeAttr('hidden');
+            });
+            $(".allow_numeric").on("input", function (evt) {
+                var self = $(this);
+                self.val(self.val().replace(/\D/g, ""));
+                if ((evt.which < 48 || evt.which > 57)) {
+                    evt.preventDefault();
+                }
+            });
+            $('#AadhaarNo').keyup(function () {
+                var value = $(this).val();
+                value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+                $(this).val(value);
+            });
+            $('#AadhaarNo').on("change, blur", function () {
+                var value = $(this).val();
+                var maxLength = $(this).attr("maxLength");
+                if (value.length != maxLength) {
+                    $(this).addClass("highlight-error");
+                } else {
+                    $(this).removeClass("highlight-error");
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        var x = document.getElementById("demo");
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            $("#latitude").val(position.coords.latitude);
+            $("#longitude").val(position.coords.longitude);
+        }
+    </script>
+    <script type="text/javascript">
+        //Verhoeff algorithm
+        // multiplication table d
+        var d = [
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+            [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+            [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+            [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+            [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+            [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+            [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+            [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+            [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]];
+        // permutation table p
+        var p = [
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+            [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+            [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+            [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+            [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+            [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+            [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]];
+        // inverse table inv
+        var inv = [0, 4, 3, 2, 1, 5, 6, 7, 8, 9];
+        // converts string or number to an array and inverts it
+        function invArray(array) {
+            if (Object.prototype.toString.call(array) === "[object Number]") {
+                array = String(array);
+            }
+            if (Object.prototype.toString.call(array) === "[object String]") {
+                array = array.split("").map(Number);
+            }
+            return array.reverse();
+        }
+        // generates checksum
+        function generate(array) {
+            var c = 0;
+            var invertedArray = invArray(array);
+            for (var i = 0; i < invertedArray.length; i++) {
+                c = d[c][p[((i + 1) % 8)][invertedArray[i]]];
+            }
+            return inv[c];
+        }
+        // validates checksum
+        function validate(array) {
+            var c = 0;
+            var invertedArray = invArray(array);
+            for (var i = 0; i < invertedArray.length; i++) {
+                c = d[c][p[(i % 8)][invertedArray[i]]];
+            }
+            return (c === 0);
+        }
+        function VerifyValues() {
+            //if ($('#frmActivation').parsley().validate()) {
+            alert("in");
+            var flag = 0;
+            $('#MobileNo').css('border-color', '');
+            $('#AadhaarNo').css('border-color', '');
+            $('#tranType').css('border-color', '');
+            $('#BankIINno').css('border-color', '');
+            $('#Amount').css('border-color', '');
+            $('#lblUserConsent').css('color', 'green');
+            //$("#Loding").modal({ backdrop: "static" });
+
+            var ScannerValue = $('#exampleFormControlSelect1 option:selected').val();
+            alert(ScannerValue);
+            if (ScannerValue == null) {
+                alert("Please Select the Scanner.");
+                //$("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+                return false;
+            }
+            else {
+                $('#hdnscanner').val(ScannerValue);
+                //document.getElementById("hdnscanner").value = ScannerValue;
+            }
+            //var Scanner = $("input[name='ScannerDevice']:checked");
+            //var ScannerValue = $("input[name='ScannerDevice']:checked").val();
+            //if (Scanner.length == 1) {
+            //    document.getElementById("hdnscanner").value = ScannerValue;
+            //}
+            //else {
+            //    alert("Please Select the Scanner.");
+            //    $("#Loding").modal().hide();
+            //    $('.modal-backdrop').remove();
+            //    return false;
+            //}
+            if ($("#AadhaarNo").val().replace('_', '').length != 14) {
+                flag = flag + 1;
+                $('#AadhaarNo').css('border-color', 'red');
+                Swal.fire(
+                    'info',
+                    'Aadhar Number should be 12 Digits, Please try Again with valid Aadhaar number!',
+                    'info'
+                )
+                //$("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+            if (validate($("#AadhaarNo").val().replace('-', '').replace('-', '')) == false) {
+                $('#AadhaarNo').css('border-color', 'red');
+                flag = flag + 1;
+                Swal.fire(
+                    'info',
+                    'Invalid Aadhaar Number, Please try Again with valid Aadhaar number!',
+                    'info'
+                )
+                // $("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+            if ($("#MobileNo").val() == "") {
+                $('#MobileNo').css('border-color', 'red');
+                flag = flag + 1;
+                Swal.fire(
+                    'info',
+                    'Mobile Number mandatory!',
+                    'info'
+                )
+                //$("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+            if ($("#tranType").val() == "") {
+                flag = flag + 1;
+                $('#tranType').css('border-color', 'red');
+                $("#Amount").val('0');
+            }
+            if ($("#BankIINno").val() == "") {
+                flag = flag + 1;
+                $('#BankIINno').css('border-color', 'red');
+            }
+
+            if ($("#tranType").val() == "010000") {
+                var amt = $("#Amount").val();
+                if (parseFloat(amt) >= 100 && parseFloat(amt) <= 10000) {
+                    if (parseFloat(parseFloat($("#Amount").val()) % 10) != 0) {
+                        flag = flag + 1;
+                        Swal.fire(
+                            '',
+                            'Amount Should be multiple of 10 Rs, Please try again!',
+                            'error'
+                        )
+                        //$("#Loding").modal().hide();
+                        //$('.modal-backdrop').remove();
+                        return false;
+                    }
+                }
+                else {
+                    $('#Amount').css('border-color', 'red');
+                    Swal.fire(
+                        '',
+                        'Amount Should be less than or equal to 10000 Rs. and greater than 100 Rs. Please try Again!',
+                        'error'
+                    )
+                    //$("#Loding").modal().hide();
+                    // $('.modal-backdrop').remove();
+                    return false;
+                }
+            }
+
+            if ($("#chkRememberMe").is(":checked") == false) {
+                flag = flag + 1;
+                $('#lblUserConsent').css('color', 'red');
+                Swal.fire(
+                    'info',
+                    'Please accept user consent to send aadhar data to UIDAI server!',
+                    'info'
+                )
+                //$("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+
+            if (flag == 0) {
+                //$('#areaDemographic').addClass('hidden');
+                //$('#areaFingerPrint').removeClass('hidden');
+                var xmlhttp = new XMLHttpRequest();
+                var AdData = xmlhttp.responseText;
+                var enckey = CryptoJS.enc.Utf8.parse($("#txtEnckey").val());
+                var encIv = CryptoJS.enc.Utf8.parse($("#txtEncIv").val());
+                AdData = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($("#AadhaarNo").val()), enckey,
+                    { keySize: 128 / 8, iv: encIv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+                AdData = AdData.ciphertext.toString(CryptoJS.enc.Base64);
+                $("#EncryAadhaarNo").val(AdData);
+                Swal.fire(
+                    'success',
+                    'Verified Successfully!!',
+                    'success'
+                )
+                $('#imgFinger').prop('href', '/images/process.gif');
+                DeviceInfo();
+                //$("#AadhaarNo").val('0000-0000-0000');
+                //$("#Loding").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+            // }
+
+        }
+
+
+    </script>
+    <script type="text/javascript">
+        function DeviceInfo() {
+            var Scannerall = $('#hdnscanner').val();
+            //$("#LodingSub").modal({ backdrop: "static" });
+            //$('#Loding').addClass('in');
+            //$('<div class="modal-backdrop fade in"></div>').appendTo(document.body);
+            if (Scannerall == "Tatvik Scanner") {
+                //var uri = "https://127.0.0.1:11100/rd/info";
+                var uri = "http://localhost:11102/rd/info"
+            }
+            else {
+                //var uri = "http://127.0.0.1:11100/rd/info";
+                var uri = "http://localhost:11100/rd/info";
+            }
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("DEVICEINFO", uri, true);
+            xmlhttp.send();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState != 4) {
+                    // $("#LodingSub").modal().hide();
+                    //$('.modal-backdrop').remove();
+                    return;
+                }
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var $MantraDevice = xmlhttp.responseText;
+                    var $xml = $($.parseXML(String($MantraDevice)));
+                    if (Scannerall == "Mantra Scanner") {
+                        if ($xml.find("DeviceInfo").attr("dpId") === 'MANTRA.MSIPL') {
+
+                            startCaptureRDMantra('mantra', 'auth', getCapturedData);
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Device not Found!',
+                                'error'
+                            )
+                            //$("#LodingSub").modal().hide();
+                            //$('.modal-backdrop').remove();
+                        }
+                    }
+                    else if (Scannerall == "Secugen") {
+                        if ($xml.find("DeviceInfo").attr("dpId") === 'SECUGEN.SGI') {
+                            debugger;
+                            startCaptureRDSecugen(Scannerall, 'auth', getCapturedData);
+                        }
+                        else {
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-center',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                onOpen: function (toast) {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Device not Found!'
+                            })
+                            //Messenger.options =
+                            //{
+                            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+                            //    theme: 'future'
+                            //}
+                            //Messenger().post({
+                            //    message: "Device not Found!",
+                            //    type: 'error',
+                            //    showCloseButton: true,
+                            //    hideAfter: 10
+                            //});
+                            //$("#LodingSub").modal().hide();
+                            //$('.modal-backdrop').remove();
+                        }
+                    }
+                    else if (Scannerall == "Tatvik Scanner") {
+                        if ($xml.find("DeviceInfo").attr("dpId") === 'TATVIK.TATVIK') {
+                            debugger;
+                            startCaptureRDTatvik(Scannerall, 'auth', getCapturedData);
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Device not Found!',
+                                'error'
+                            )
+                            //var Toast = Swal.mixin({
+                            //    toast: true,
+                            //    position: 'top-center',
+                            //    showConfirmButton: false,
+                            //    timer: 4000,
+                            //    timerProgressBar: true,
+                            //    onOpen: function (toast) {
+                            //        toast.addEventListener('mouseenter', Swal.stopTimer)
+                            //        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            //    }
+                            //})
+                            //Toast.fire({
+                            //    icon: 'error',
+                            //    title: 'Device not Found!'
+                            //})
+                            //Messenger.options =
+                            //{
+                            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+                            //    theme: 'future'
+                            //}
+                            //Messenger().post({
+                            //    message: "Device not Found!",
+                            //    type: 'error',
+                            //    showCloseButton: true,
+                            //    hideAfter: 10
+                            //});
+                            //$("#LodingSub").modal().hide();
+                            //$('.modal-backdrop').remove();
+                        }
+                    }
+                    else if (Scannerall == "Morpho Scanner") {
+                        //if ($xml.find("DeviceInfo").attr("dpId") === 'Morpho.SmartChip') {
+                        //    debugger;
+                        //    startCaptureRDMorpho(Scannerall, 'auth', getCapturedData);
+                        //}
+                        if (Scannerall == "Morpho Scanner") {
+
+                            startCaptureRDMorpho(Scannerall, 'auth', getCapturedData);
+                        }
+                        else {
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-center',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                onOpen: function (toast) {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Device not Found!'
+                            })
+                            //Messenger.options =
+                            //{
+                            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+                            //    theme: 'future'
+                            //}
+                            //Messenger().post({
+                            //    message: "Device not Found!",
+                            //    type: 'error',
+                            //    showCloseButton: true,
+                            //    hideAfter: 10
+                            //});
+                            //$("#LodingSub").modal().hide();
+                            //$('.modal-backdrop').remove();
+                        }
+                    }
+                }
+                else {
+                    Swal.fire(
+                        'error',
+                        'Select Scanner and Connect Scanner does not match!',
+                        'error'
+                    )
+                    //$("#LodingSub").modal().hide();
+                    //$('.modal-backdrop').remove();
+                }
+            }
+        }
+    </script>
+    <script>
+        //Mantra Device
+
+        function startCaptureRDMantra(fpdevice, authType, fcallback) {
+            //var uri = "http://127.0.0.1:11100/rd/"; //Non-Secure
+            var uri = "http://localhost:11100/rd/";
+            var error_msg = "Use following possible steps to resolve the issue:<br>1. Register your device from vendor or using Register Your Device link.<br>2. Download and install the latest registered device drivers.<br>3. Start/ restart the registered device service.";
+
+            rdCapture(uri + 'capture', authType, function (err, data) {
+
+                if (err != null) {
+                    fcallback({ type: "rd", status: "error", data: error_msg });
+                } else {
+                    var $xml = $($.parseXML(String(data)));
+                    if ($xml.find("Resp").attr("errCode") === '0') {
+                        fcallback({ type: "rd", status: "success", data: Base64.encode(String(data)) });
+
+                        $('#FingerSuccess').removeClass('hidden');
+                        $('#Fingerblack').addClass('hidden');
+                        $("#btnsubmit").show();
+                    }
+                    else if ($xml.find("Resp").attr("errCode") === '999') {
+                        fcallback({ type: "rd", status: "failed", data: error_msg });
+                    }
+                    else {
+                        fcallback({ type: "rd", status: "failed", data: "Error: " + $xml.find("Resp").attr("errInfo") + " (" + $xml.find("Resp").attr("errCode") + ")" });
+
+                    }
+                }
+            });
+        }
+        var rdCapture = function (url, authType, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('CAPTURE', url, true);
+            xhr.responseType = 'text';    //json
+            var wadh = "";
+            if (authType.toLowerCase() === "ekyc") { wadh = "RZ+k4w9ySTzOibQdDHPzCFqrKScZ74b3EibKYy1WyGw="; }
+            Swal.fire(
+                'info',
+                'light glow on Finger print Device put finger on to Capture......',
+                'info'
+            )
+            //var Toast = Swal.mixin({
+            //            toast: true,
+            //            position: 'top-center',
+            //            showConfirmButton: false,
+            //            timer: 4000,
+            //            timerProgressBar: true,
+            //            onOpen: function (toast) {
+            //            toast.addEventListener('mouseenter', Swal.stopTimer)
+            //            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            //            }
+            //    })
+            //        Toast.fire({
+            //            icon: 'info' ,
+            //            title: 'light glow on Finger print Device put finger on to Capture......'
+            //        })
+            //Messenger.options =
+            //{
+            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+            //    theme: 'future'
+            //}
+            //Messenger().post({
+            //    message: "light glow on Finger print Device put finger on to Capture......",
+            //    type: 'info',
+            //    showCloseButton: true,
+            //    hideAfter: 10
+            //});
+            $('#btnLThumb').css('display', 'none');
+            var pidXml = '<PidOptions ver="1.0"><Opts fCount="1" fType="0" format="0" pidVer="2.0" timeout="20000" posh="UNKNOWN" env="P" wadh="" /></PidOptions>';
+            //console.log(pidXml);
+            xhr.onload = function () {
+                if (xhr.status == 200) { callback(null, xhr.response); }
+                else { callback(xhr.status); }
+            };
+            xhr.onerror = function () {
+                callback(xhr.status);
+                // console.log(xhr.status);
+            };
+            xhr.ontimeout = function () {
+                callback(xhr.status);
+                //console.log(xhr.response);
+            };
+            xhr.abort = function () {
+                callback(xhr.status);
+                //console.log(xhr.response);
+            };
+            xhr.send(pidXml);
+        };
+
+        //Morpho device
+        function startCaptureRDMorpho(fpdevice, authType, fcallback) {
+            //var uri = "http://127.0.0.1:11100/rd/info";
+            var uri = "http://localhost:11100/rd/info";
+            debugger;
+            var error_msg = "Use following possible steps to resolve the issue:<br>1. Register your device from vendor or using Register Your Device link.<br>2. Download and install the latest registered device drivers.<br>3. Start/ restart the registered device service.";
+            rdCaptureMorpho(uri + 'capture', authType, function (err, data) {
+                debugger
+                if (err != null) {
+                    fcallback({ type: "rd", status: "error", data: error_msg });
+                } else {
+                    var $xml = $($.parseXML(String(data)));
+                    if ($xml.find("Resp").attr("errCode") === '0') {
+                        fcallback({ type: "rd", status: "success", data: Base64.encode(String(data)) });
+
+                        $('#FingerSuccess').removeClass('hidden');
+                        $('#Fingerblack').addClass('hidden');
+                        $("#btnsubmit").show();
+                    }
+                    else if ($xml.find("Resp").attr("errCode") === '999') {
+                        fcallback({ type: "rd", status: "failed", data: error_msg });
+                    }
+                    else {
+                        fcallback({ type: "rd", status: "failed", data: "Error: " + $xml.find("Resp").attr("errInfo") + " (" + $xml.find("Resp").attr("errCode") + ")" });
+
+                    }
+                }
+            });
+        }
+        var rdCaptureMorpho = function (url, authType, callback) {
+            var PortNumber = 11100;
+            //var url = "http://127.0.0.1:11100/rd/capture";
+            var url = "http://localhost:11100/rd/capture";
+            debugger;
+            var wadh = "";
+            var PIDOPTS = '<PidOptions ver="1.0"><Opts env="P" fCount="1" wadh="" fType="0" format="0" pidVer="2.0"></Opts><Demo></Demo><CustOpts></CustOpts><Bios></Bios></PidOptions>';
+            var xhr = new XMLHttpRequest();
+
+
+            if (authType.toLowerCase() === "ekyc") { wadh = "RZ+k4w9ySTzOibQdDHPzCFqrKScZ74b3EibKYy1WyGw="; }
+            Swal.fire(
+                'info',
+                'light glow on Finger print Device put finger on to Capture......',
+                'info'
+            )
+            //Messenger.options =
+            //{
+            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+            //    theme: 'future'
+            //}
+            //Messenger().post({
+            //    message: "light glow on Finger print Device put finger on to Capture......",
+            //    type: 'info',
+            //    showCloseButton: true,
+            //    hideAfter: 10
+            //});
+
+            xhr.open('CAPTURE', url, true);
+
+            xhr.onload = function () {
+
+                var status = xhr.status;
+
+
+                if (xhr.status == 200) {
+
+                    callback(null, xhr.response);
+                }
+                else { callback(xhr.status); }
+
+
+            };
+
+            xhr.onloadend = function () {
+                console.log(xhr.response);
+            };
+
+            xhr.onresponse = function () {
+                alert("On Response")
+                console.log(xhr.response);
+            };
+
+            xhr.onerror = function () {
+                alert("ONERROR");
+                console.log(xhr.response);
+            };
+
+            xhr.ontimeout = function () {
+                alert("ONTIMEOUT");
+                console.log(xhr.response);
+            };
+
+            xhr.abort = function () {
+                alert("ONABORT");
+                console.log(xhr.response);
+            };
+
+            xhr.oncompleted = function () {
+                alert("ONcompleted");
+                console.log(xhr.response);
+            };
+
+
+            xhr.send(PIDOPTS);
+
+        }
+
+        //Tatvik device
+        function startCaptureRDTatvik(fpdevice, authType, fcallback) {
+            var uri = "http://localhost:11102/rd/info";
+            //var uri = "https://127.0.0.1:11100/rd/info";
+            debugger;
+            var error_msg = "Use following possible steps to resolve the issue:<br>1. Register your device from vendor or using Register Your Device link.<br>2. Download and install the latest registered device drivers.<br>3. Start/ restart the registered device service.";
+            rdCaptureTatvik(uri + 'capture', authType, function (err, data) {
+                if (err != null) {
+                    fcallback({ type: "rd", status: "error", data: error_msg });
+                } else {
+                    var $xml = $($.parseXML(String(data)));
+                    if ($xml.find("Resp").attr("errCode") === '0') {
+                        fcallback({ type: "rd", status: "success", data: Base64.encode(String(data)) });
+
+                        $('#FingerSuccess').removeClass('hidden');
+                        $('#Fingerblack').addClass('hidden');
+                        $("#btnsubmit").show();
+                    }
+                    else if ($xml.find("Resp").attr("errCode") === '999') {
+                        fcallback({ type: "rd", status: "failed", data: error_msg });
+                    }
+                    else {
+                        fcallback({ type: "rd", status: "failed", data: "Error: " + $xml.find("Resp").attr("errInfo") + " (" + $xml.find("Resp").attr("errCode") + ")" });
+
+                    }
+                }
+            });
+        }
+        var rdCaptureTatvik = function (url, authType, callback) {
+            var uri = "http://localhost:11102/rd/capture";
+            //var url = "https://127.0.0.1:11100/rd/capture";
+            debugger;
+            //
+            var xhr = new XMLHttpRequest();
+            xhr.open('CAPTURE', url, true);
+            xhr.responseType = 'text';    //json
+            var wadh = "";
+            if (authType.toLowerCase() === "ekyc") { wadh = "RZ+k4w9ySTzOibQdDHPzCFqrKScZ74b3EibKYy1WyGw="; }
+            //Messenger.options =
+            //{
+            //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+            //    theme: 'future'
+            //}
+            //Messenger().post({
+            //    message: "light glow on Finger print Device put finger on to Capture......",
+            //    type: 'info',
+            //    showCloseButton: true,
+            //    hideAfter: 10
+            //});
+            Swal.fire(
+                'info',
+                'light glow on Finger print Device put finger on to Capture......',
+                'info'
+            )
+            $('#btnLThumb').css('display', 'none');
+            var pidOptionsXml = "<PidOptions ver='1.0'><Opts env='P' fCount='1' fType='0' format='0' pType='0' pCount='0' pgCount='0' pTimeout='20000' pidVer='2.0'>" +
+                "</Opts><Demo></Demo><CustOpts></CustOpts><Bios></Bios></PidOptions>";
+            //console.log(pidXml);
+            xhr.onload = function () {
+                if (xhr.status == 200) { callback(null, xhr.response); }
+                else { callback(xhr.status); }
+            };
+            xhr.onerror = function () {
+                callback(xhr.status);
+                // console.log(xhr.status);
+            };
+            xhr.ontimeout = function () {
+                callback(xhr.status);
+                //console.log(xhr.response);
+            };
+            xhr.abort = function () {
+                callback(xhr.status);
+                //console.log(xhr.response);
+            };
+            xhr.send(pidOptionsXml);
+        };
+
+        var Base64 = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", encode: function (e) { var t = ""; var n, r, i, s, o, u, a; var f = 0; e = Base64._utf8_encode(e); while (f < e.length) { n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++); s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63; if (isNaN(r)) { u = a = 64 } else if (isNaN(i)) { a = 64 } t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a) } return t }, decode: function (e) { var t = ""; var n, r, i; var s, o, u, a; var f = 0; e = e.replace(/[^A-Za-z0-9+/=]/g, ""); while (f < e.length) { s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++)); u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++)); n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a; t = t + String.fromCharCode(n); if (u != 64) { t = t + String.fromCharCode(r) } if (a != 64) { t = t + String.fromCharCode(i) } } t = Base64._utf8_decode(t); return t }, _utf8_encode: function (e) { e = e.replace(/rn/g, "n"); var t = ""; for (var n = 0; n < e.length; n++) { var r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r) } else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) } else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) } } return t }, _utf8_decode: function (e) { var t = ""; var n = 0; var r = c1 = c2 = 0; while (n < e.length) { r = e.charCodeAt(n); if (r < 128) { t += String.fromCharCode(r); n++ } else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 } else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 } } return t } }
+        function getCapturedData(fpData) {
+            debugger;
+            if (fpData.status == "error") {
+                $("#txtPotNo").val()
+            }
+            else if (fpData.status == "failed") {
+
+                Swal.fire(
+                    'error',
+                    'Capture fingerprint failed! Please try again....',
+                    'error'
+                )
+                $("#btnsubmit").hide();
+                $("#hdndata").val('');
+                ///$("#LodingSub").modal().hide();
+                //$('.modal-backdrop').remove();
+                $('#btnLThumb').css('display', 'block');
+            }
+            else {
+                $("#btnsubmit").show();
+                var xmlhttp = new XMLHttpRequest();
+                var PiData = xmlhttp.responseText;
+                var enckey = CryptoJS.enc.Utf8.parse($("#txtEnckey").val());
+                var encIv = CryptoJS.enc.Utf8.parse($("#txtEncIv").val());
+                PiData = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(fpData.data), enckey,
+                    { keySize: 128 / 8, iv: encIv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+                PiData = PiData.ciphertext.toString(CryptoJS.enc.Base64);
+                $("#hdndata").val(PiData);
+                $('#FingerSuccess').removeClass('hidden');
+                $('#Fingerblack').addClass('hidden');
+                Swal.fire(
+                    'success',
+                    'Finger Capture Successfuly!',
+                    'success'
+                )
+                //var Toast = Swal.mixin({
+                //    toast: true,
+                //    position: 'top-center',
+                //    showConfirmButton: false,
+                //    timer: 4000,
+                //    timerProgressBar: true,
+                //    onOpen: function (toast) {
+                //        toast.addEventListener('mouseenter', Swal.stopTimer)
+                //        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                //    }
+                //})
+                //Toast.fire({
+                //    icon: 'success',
+                //    title: 'Finger Capture Successfuly!'
+                //})
+                //Messenger.options = {
+                //    extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+                //    html: 'true',
+                //    theme: 'future'
+                //}
+                //Messenger().post({
+                //    message: 'Finger Capture Successfuly!',
+                //    type: 'success',
+                //    showCloseButton: true,
+                //    hideAfter: 4
+                //});
+
+                $('#btnLThumb').css('display', 'none');
+                //$("#LodingSub").modal().hide();
+                //$('.modal-backdrop').remove();
+            }
+        }
+
+    </script>
+}

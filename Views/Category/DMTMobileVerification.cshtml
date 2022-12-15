@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "DMTMobileVerification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+           
+            <div class="float-right">
+
+                <ol class="breadcrumb">
+
+
+                    <li class="breadcrumb-item active">@ViewBag.Create</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Money Transfer</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+       
+          
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mt-0 header-title float-left">Domestric Money Transfer</h4>
+                                       @*<button onclick="location.href='@Url.Action("Create")';return false;" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i> @ViewBag.Create</button>*@
+                </div>
+                <div class="card-body">
+                    
+                    <div class="form-group is-empty row">
+                        <label for="nameInput" class="col-sm-3 control-label">Mobile Number</label>
+                        <div class="col-sm-6">
+                            <input name="MobileNo" id="MobileNo" type="text" value="" class="form-control" placeholder="Enter Mobile No" required>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+            <footer class="form-footer">
+                <div class="pull-right" style="text-align: end;">
+                    @*<a href="@Url.Action("ServiceProviderIndex", "Commission")" class="btn btn-default">DISCARD</a>*@
+                    <button class="btn btn-primary " ><i class="fa fa-search"></i> Customer Exist</button>
+                    <button class="btn btn-primary "><i class="fa fa-history"></i>View History</button>
+                </div>
+            </footer>
+   
+
+    </div>
+</div>
+
