@@ -3573,6 +3573,7 @@
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
     <Content Include="Views\Trustee\CollageListForApply.cshtml" />
     <Content Include="Views\BasicDetails\CollageList.cshtml" />
+    <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

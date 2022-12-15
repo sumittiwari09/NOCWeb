@@ -201,19 +201,19 @@ namespace NewZapures_V2.Controllers
         [HttpGet]
         public ActionResult TrusteeGeneralInfo()
         {
-            var client = new RestClient("https://api.sewadwaar.rajasthan.gov.in/app/live/master/getmasterdata/service?client_id=88d28d9b-408d-4b41-ab9e-5f704825ce4c");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("UserName","Doit");
-            request.AddHeader("Password","Doit@123");
-            request.AddHeader("ProjectCode","WSKANBZATL");
-            request.AddHeader("MasterDataID","1");
-            request.AddHeader("IsNew","1");
-            request.AddHeader("IsActive","1");
-            request.AddHeader("ModificationDate", "01-01-2017");
-            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request.AddParameter("application/json", "", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            //var client = new RestClient("https://api.sewadwaar.rajasthan.gov.in/app/live/master/getmasterdata/service?client_id=88d28d9b-408d-4b41-ab9e-5f704825ce4c");
+            //var request = new RestRequest(Method.POST);
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddHeader("UserName","Doit");
+            //request.AddHeader("Password","Doit@123");
+            //request.AddHeader("ProjectCode","WSKANBZATL");
+            //request.AddHeader("MasterDataID","1");
+            //request.AddHeader("IsNew","1");
+            //request.AddHeader("IsActive","1");
+            //request.AddHeader("ModificationDate", "01-01-2017");
+            ////request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            //request.AddParameter("application/json", "", ParameterType.RequestBody);
+            //IRestResponse response = client.Execute(request);
 
 
             //#region List Trustee
@@ -235,7 +235,7 @@ namespace NewZapures_V2.Controllers
             //#endregion
 
             List<CustomMaster> TrusteeType = new List<CustomMaster>();
-            TrusteeType = Common.GetCustomMastersList(28);
+            TrusteeType = Common.GetCustomMastersList(31);
             ViewBag.TrusteeType = TrusteeType;
             return View();
         }
@@ -409,6 +409,41 @@ namespace NewZapures_V2.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult CollageFacilitys()
+        {
+            List<CustomMaster> TrustList = new List<CustomMaster>();
+            TrustList = GetTrustDropDownList(28);
+            ViewBag.TrustList = TrustList;
+
+            List<CustomMaster> RoleType = new List<CustomMaster>();
+            RoleType = Common.GetCustomMastersList(29);
+            ViewBag.RoleType = RoleType;
+
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.TrusteeList = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CollageFacilitys(TrusteeBO.CollageFacility obj)
+        {
+            return View();
+        }
 
     }
 }
