@@ -216,6 +216,7 @@
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
+    <Compile Include="Models\FeeMaster.cs" />
     <Compile Include="Models\StaffBO.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />

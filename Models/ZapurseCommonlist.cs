@@ -825,6 +825,26 @@ namespace NewZapures_V2.Models
             }
             return bankDetailsList;
         }
+
+        
+        public static List<Dropdown> GetFeeType(string MenuId = "0", string Type = "FeeType")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> modules = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                modules = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return modules;
+        }
         public enum ModalSize
         {
             Small,

@@ -1,6 +1,14 @@
-﻿@{
+﻿@using NewZapures_V2.Models
+@{
     ViewBag.Title = "Fee Master";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var lstDepart = (List<AddDepartment>)ViewBag.Department;
+    var feeTypes = (List<Dropdown>)ViewBag.feeType;
+    var feeDataList = (List<FeeMaster>)ViewBag.feeDataList;
+
+
+
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 
@@ -72,112 +80,190 @@
             </div>
             <div class="card-body">
                 <div class="row">
-
-                    <div class="col-md-3" style="display: flex;gap: 80px;">
-                        <div class="form-check-inline my-1">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" value="basic">
-                                <label class="custom-control-label" for="customRadio8" style="font-weight: 600;font-size: 14px;">Basic Fee</label>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Fee Model</label>
+                        <div class="col-md-12" style="display: flex;gap: 80px;">
+                            <div class="form-check-inline my-1">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio8" name="customRadio" class="custom-control-input" value="basic">
+                                    <label class="custom-control-label" for="customRadio8" style="font-weight: 600;font-size: 14px;">Basic Fee</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-check-inline my-1">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" value="late">
-                                <label class="custom-control-label" for="customRadio9" style="font-weight: 600;font-size: 14px;">Late Fee</label>
+                            <div class="form-check-inline my-1">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio9" name="customRadio" class="custom-control-input" value="late">
+                                    <label class="custom-control-label" for="customRadio9" style="font-weight: 600;font-size: 14px;">Late Fee</label>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Start Date</label>
+                        <input type="date" class="form-control" name="dtInsertStrDt" value="" id="dtInsertStrDt" required />
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select End Date</label>
+                        <input type="date" class="form-control" name="dtInsertEndDt" value="" id="dtInsertEndDt" disabled required />
+                    </div>
+
+                </div>
+                <div class="row">
+
+
+                    <div class="form-group col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Department</label>
                         <div>
                             <select class="singleselect" id="ddldept">
                                 <option value="0">Select Department</option>
-                                <option value="d1">Department 1</option>
-                                <option value="d2">Department 2</option>
+
+                                @{
+                                    if (lstDepart != null)
+                                    {
+                                        foreach (var item in lstDepart)
+                                        {
+                                            <option value=@item.DepartmentID>@item.DepartmentName</option>
+                                        }
+                                    }
+                                }
+
+
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select NOC Type</label>
                         <div>
                             <select class="singleselect" id="ddlNOC">
-                                <option value="0">Select NOC</option>
-                                <option value="n1">NOC 1</option>
-                                <option value="n2">NOC 2</option>
+                                @*<option value="0">Select NOC</option>
+                                    <option value="n1">NOC 1</option>
+                                    <option value="n2">NOC 2</option>*@
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Fee Type</label>
                         <div>
                             <select class="singleselect" id="ddlFeeType">
                                 <option value="0">Select Fee Type</option>
-                                <option value="ft1">Processing Fee</option>
-                                <option value="ft2">Inspection Fee</option>
+                                @{
+                                    if (feeTypes != null)
+                                    {
+                                        foreach (var item in feeTypes)
+                                        {
+                                            <option value=@item.Id>@item.Text</option>
+                                        }
+                                    }
+                                }
                             </select>
                         </div>
                     </div>
+
                 </div>
+
+
                 <div class="row">
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-4" id="divboys">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">For Boys</label>
                         <div>
                             <input class="form-control col-sm-12" type="text" oninput="numberOnly(this.id)" autocomplete="off" id="txtboysFee">
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-4" id="divgirls">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">For Girls</label>
                         <div>
                             <input class="form-control col-sm-12" type="text" oninput="numberOnly(this.id)" autocomplete="off" id="txtgirlsFee">
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-4" id="divcoEdu">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">For Co-Education</label>
                         <div>
                             <input class="form-control col-sm-12" type="text" oninput="numberOnly(this.id)" autocomplete="off" id="txtCoEDUFee">
                         </div>
                     </div>
+                    <div class="form-group col-lg-3" id="divcutoff" style="display:none">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Cut Off</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" oninput="numberOnly(this.id)" autocomplete="off" id="txtcutOff">
+                        </div>
+                    </div>
 
 
                     @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">
-                <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
-            </div>*@
+                            <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                        </div>*@
                 </div>
 
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                        <table class="table table-borderless table-striped table-hover">
                             <thead class="dark">
                                 <tr>
                                     <th>#</th>
+                                    <th>Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Data</th>
+                                    <th hidden>DepartmentID</th>
                                     <th>Department</th>
+                                    <th hidden>NOC Type ID</th>
                                     <th>NOC Type</th>
+                                    <th hidden>Fee TypeID</th>
                                     <th>Fee Type</th>
                                     <th>For Boys</th>
                                     <th>For Girls</th>
                                     <th>For Co-Education</th>
+                                    <th>Cut Off</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="8" style="text-align: center;">No Data Available</td>
-                                </tr>
+                                @{
+                                    if (feeDataList != null && feeDataList.Count > 0)
+                                    {
+                                        foreach (var item in feeDataList)
+                                        {
+                                            <tr>
+                                                <td>@item.iPK_ID</td>
+                                                <td>@item.Type</td>
+                                                <td>@item.StartDate</td>
+                                                <td>@item.EndDate</td>
+                                                <td hidden>@item.DeptID</td>
+                                                <td>@item.Deptname</td>
+                                                <td hidden>@item.NOCTypID</td>
+                                                <td>@item.nocTypeName</td>
+                                                <td hidden>@item.FeeTypID</td>
+                                                <td>@item.Feetype</td>
+                                                <td>@item.dBoys</td>
+                                                <td>@item.dGirls</td>
+                                                <td>@item.dCoEdu</td>
+                                                <td>@item.dCutOff</td>
+                                                <td><button id="btn_fee_@item.iPK_ID" class="btn btn-sm btn-primary"/><i class="fa fa-pencil"></i></td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="12" style="text-align: center;">No Data Available</td>
+                                        </tr>
+                                    }
+                                }
+
+
+
+
+
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-
-                <div class="row text-center">
+                <div class="row text-right">
                     <div class="form-group col-lg-12">
-                        <button class="btn col-sm-2 btnPrev" id="btnPrev"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>
+                        <button class="btn col-sm-1 btnPrev" id="btnPrev"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
             </div>
@@ -193,51 +279,76 @@
     var isAdmin = 1;
     $(document).ready(function () {
         $(".singleselect").select2();
+        $("#dtInsertStrDt").change(function () {
+            debugger;
+            var startdate = $(this).val();
+            $("#dtInsertEndDt").prop('disabled', false);
+            document.getElementById("dtInsertEndDt").min = startdate;
+
+        });
+        $('#ddldept').change(function () {
+            var id = $(this).val();
+            getNoCForDept(id);
+            return false;
+        });
+        $('input[name=customRadio]').change(function () {
+            var feeModal = $(this).val();
+            if (feeModal == 'late') {
+                $('#divboys').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divgirls').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divcoEdu').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divcutoff').css('display', 'block');
+            }
+            else {
+                $('#divboys').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divgirls').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divcoEdu').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divcutoff').css('display', 'none');
+            }
+        });
     });
 
-    $('#btnSaveNext').click(function () {
+    $('#btnPrev').click(function () {
         var status = validation();
         console.log(status);
 
         if (status) {
-            var vertinaryName = $('#txtvertinaryName').val();
-            var distance = $('#txtDistance').val();
-            var authPerson = $('#txtAuthPerson').val();
-            var mobile = $('#txtMobileNo').val();
-            var location = $('#txtLocation').val();
-            var email = $('#txtEmail').val();
-            var isBoard = ($("input[name=customRadio]").val() == "yes") ? 1 : 0;
-            var adminName = $('#txtAdminName').val();
-            var designation = $('#ddldesignation').val();
-            var relation = $('#txtRelation').val();
-            var remark = $('#txtRemark').val();
+            var feeModal = $('input[name=customRadio]:checked').val();
+            var startDate = $('#dtInsertStrDt').val();
+            var endDate = $('#dtInsertEndDt').val();
+            var dept = $('#ddldept').val();
+            var nocType = $('#ddlNOC').val();
+            var feeType = $('#ddlFeeType').val();
+            var boys = $('#txtboysFee').val();
+            var girls = $('#txtgirlsFee').val();
+            var coEdu = $('#txtCoEDUFee').val();
+            var cutOff = $('#txtcutOff').val();
 
-            var VertinaryModal = {
-                "sNameOfVtnry": vertinaryName,
-                "dDistance": parseFloat(distance),
-                "sPersnNm": authPerson,
-                "sMobileNO": mobile,
-                "sLocation": location,
-                "sEmailId": email,
-                "IsOnBoard": parseInt(isadmin),
-                "sNameOfAdmin": adminName,
-                "iFk_DesgntnId": parseInt(designation),
-                "sRelWithInst": relation,
-                "sRemark": remark
+            var feeModal = {
+                "Type": feeModal,
+                "DeptID": parseInt(dept),
+                "NOCTypID": parseInt(nocType),
+                "FeeTypID": parseInt(feeType),
+                "dBoys": parseFloat(boys),
+                "dGirls": parseFloat(girls),
+                "dCoEdu": parseFloat(coEdu),
+                "dCutOff": parseFloat(cutOff),
+                "StartDate": startDate,
+                "EndDate":endDate
             }
 
-            var d = JSON.stringify(VertinaryModal);
+            var d = JSON.stringify(feeModal);
             console.log(d);
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: GetglobalDomain() + "/Vertinary/SaveDetails",
+                url: GetglobalDomain() + "/Fee/SaveDetails",
                 dataType: 'json',
                 type: 'Post',
                 cache: false,
-                data: JSON.stringify(VertinaryModal),
+                data: JSON.stringify(feeModal),
                 success: function (data) {
                     console.log('ajax');
                     console.log(data);
@@ -256,7 +367,7 @@
                     }
 
                     setTimeout(function () {
-                        window.location.href = '@Url.Action("Index", "Vertinary")';
+                        window.location.href = '@Url.Action("Index", "Fee")';
                     }, 2500);
 
                 },
@@ -283,149 +394,141 @@
     function validation() {
         var status = true;
 
-        var vertinaryName = $('#txtvertinaryName').val();
-        var distance = $('#txtDistance').val();
-        var authPerson = $('#txtAuthPerson').val();
-        var mobile = $('#txtMobileNo').val();
-        var location = $('#txtLocation').val();
-        var email = $('#txtEmail').val();
-        var isBoard = parseInt(isAdmin);
-        var adminName = $('#txtAdminName').val();
-        var designation = $('#ddldesignation').val();
-        var relation = $('#txtRelation').val();
-        var remark = $('#txtRemark').val();
+        var feeModal = $('input[name=customRadio]:checked').val()//$('input[name=customRadio]').val();
+        var startDate = $('#dtInsertStrDt').val();
+        var endDate = $('#dtInsertEndDt').val();
+        var dept = $('#ddldept').val();
+        var nocType = $('#ddlNOC').val();
+        var feeType = $('#ddlFeeType').val();
+        var boys = $('#txtboysFee').val();
+        var girls = $('#txtgirlsFee').val();
+        var coEdu = $('#txtCoEDUFee').val();
+        var cutOff = $('#txtcutOff').val();
 
-        if (vertinaryName.length <= 0) {
+        if (typeof feeModal === 'undefined' || feeModal === null) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter vertinary name...!',
+                html: 'Please Select Fee Model...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
         }
-        else if (distance.length <= 0) {
+        else if (startDate.length <= 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter distance...!',
+                html: 'Please Select Start Date...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
         }
-        else if (authPerson.length <= 0) {
+        else if (endDate.length <= 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter the authorize person name...!',
+                html: 'Please Select End Date...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
         }
-        else if (mobile.length <= 0) {
+        else if (dept == 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter mobile number...!',
+                html: 'Please Select Department...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
         }
-        else if (location.length <= 0) {
+        else if (nocType == 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter location...!',
+                html: 'Please Select NOC Type...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
         }
-        else if (email.length <= 0) {
+        else if (feeType == 0) {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
                 title: 'Error...!',
-                html: 'Please enter email address...!',
+                html: 'Please Select Fee Type...!',
                 allowOutsideClick: false,
                 showCloseButton: true,
                 showConfirmButton: false,
             })
             status = false;
+        }
+        else if (boys.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Boys...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (girls.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Girls...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (coEdu.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Co Education...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (feeModal == 'late') {
+            if (cutOff.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Cut Off Fee...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
         }
 
-        else if (isBoard == 1)
-        {
-
-        if (adminName.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error...!',
-                html: 'Please enter admin name...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            status = false;
-        }
-        else if (designation == 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error...!',
-                html: 'Please select any designation...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            status = false;
-        }
-        else if (relation.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error...!',
-                html: 'Please enter relation...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            status = false;
-        }
-
-        }
-
-
-        else if (remark.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error...!',
-                html: 'Please enter remark...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            status = false;
-        }
         return status;
-
-
     }
 
     function numberOnly(id) {
@@ -441,7 +544,6 @@
 
 
     });
-
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -471,6 +573,46 @@
         //console.log("lat : " + $('#hdf_longitudeData').val());
         //console.log("long : " + $('#hdf_latitudeData').val());
     }
+
+    function getNoCForDept(deptID) {
+
+         var NOCReq = {
+                "MenuId": parseInt(deptID),
+            }
+
+        var d = JSON.stringify(NOCReq);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Fee/GetDepartmentNOC",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(NOCReq),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+                    var NOCData = data.Data;
+                    var NocSelectData = `<option value=0>Select NOC Type</option>`;
+                    if (NOCData.length > 0) {
+
+                        NOCData.forEach(function (item) {
+                            NocSelectData += `<option value=${item.Id}>${item.Text}</option>`;
+                        })
+                    }
+                    $('#ddlNOC').html('');
+                    $('#ddlNOC').html(NocSelectData);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+    }
+
 </script>
 
 
