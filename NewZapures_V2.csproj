@@ -138,9 +138,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AddCourseController.cs" />
+    <Compile Include="Controllers\DeptCourseMapController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\SubjectMasterController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
+    <Compile Include="Models\DeptCourseMapMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
     <Compile Include="Models\FeeMaster.cs" />
@@ -3575,8 +3578,11 @@
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
     <Content Include="Views\Trustee\CollageListForApply.cshtml" />
     <Content Include="Views\BasicDetails\CollageList.cshtml" />
+    <Content Include="Views\DeptCourseMap\Index.cshtml" />
+    <Content Include="Views\SubjectMaster\CreateData.cshtml" />
     <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
     <Content Include="Views\Fee\Index.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,6 +23,7 @@ namespace NewZapures_V2.Models
 
     }
 
+
     public class LandInfoBO
     {
         public string CollageId { get; set; }
@@ -42,5 +43,27 @@ namespace NewZapures_V2.Models
         public string OwnBuildingProofDocumentContent { get; set; }
         public string LandConvertProofExtension { get; set; }
         public string LandConvertProofDocumentContent { get; set; }
+
+        //Add Parameter
+        public string OrderNoCurrent { get; set; }
+        public string OrderDateCurrent { get; set; }
+        public string pwcNoc { get; set; }
+        public string fireNoc { get; set; }
+        //image
+        public string UploadDocumentCurrent { get; set; }
+        public string UploadDocumentCurrentExtension { get; set; }
+        public string UploadDocumentCurrentContent { get; set; }
+        //image
+        public string FrontBuildingImage { get; set; }
+        public string FrontBuildingImageExtension { get; set; }
+        public string FrontBuildingImageContent { get; set; }
+        //image
+        public string UploadDocumentFireNoc { get; set; }
+        public string UploadDocumentFireNocExtension { get; set; }
+        public string UploadDocumentFireNocContent { get; set; }
+        //image
+        public string UploadDocumentPwcNoc { get; set; }
+        public string UploadDocumentPwcNocExtension { get; set; }
+        public string UploadDocumentPwcNocContent { get; set; }
     }
 }
