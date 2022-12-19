@@ -34,5 +34,8 @@ namespace NewZapures_V2.Models
         public string CollageLogo { get; set; }
         public string CollageLogoExtension { get; set; }
         public string CollageLogoContenttype { get; set; }
+        public string Boys { get; set; }
+        public string Girls { get; set; }
+        public string CoEducation { get; set; }
     }
 }
