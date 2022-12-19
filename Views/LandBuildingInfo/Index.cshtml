@@ -119,7 +119,7 @@
                             <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
                             <div style="display:flex">
                                 <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" name="LandAreaProof" />
-                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>*@
+                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>*@
                             </div>
                         </div>
 
@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-                      
+
                             <div class="custom-control custom-radio col-sm-4">
                                 <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="IsLandConvert" id="IsLandConvertYes" value="yes">
                                 <label for="IsLandConvertYes" class="custom-control-label">YES</label>
@@ -140,13 +140,12 @@
                                 <label for="IsLandConvertNo" class="custom-control-label">No</label>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row">                        
+                    <div class="row">
                         <div class="form-group col-lg-6">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Owner Name</label>
                             <div>
-                                <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off"  />
+                                <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group col-lg-12">
@@ -158,7 +157,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <div class="card-header fsc">
                         <h4 class="header-title">Own Building</h4>
                     </div>
@@ -190,14 +189,18 @@
                                 <input type="text" class="form-control" name="LandNo" id="txtKhasraNo" autocomplete="off" />
                             </div>
                         </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Front Building Image</label>
+                            <button class="btn col-sm-10 locationBTN" id="btnfrontImage">
+                                <input type="file" placeholder="Upload Doc" name="FrontBuildingImage" id="txtfrontBuildingImage" />
+                            </button>
+                        </div>
                     </div>
                     <div class="card-header fsc">
                         <h4 class="header-title">If any Other Institute by the socity /trust/company</h4>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>                                                      
                             <div class="custom-control custom-radio col-sm-4">
                                 <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="yes" name="IsAnyOtherInfo">
                                 <label for="customRadioYes" class="custom-control-label">YES</label>
@@ -209,19 +212,93 @@
 
                         </div>
                         <div class="form-group col-lg-12">
-
                             <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">If Yes Upload</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="UploadFile" name="OwnBuildingProof"/>
-                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>
+                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="UploadFile" name="OwnBuildingProof" />
+                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>
                             </div>
+                        </div>
+                    </div>
+                    <div class="card-header fsc">
+                        <h4 class="header-title">Current year Building saftey</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>
+                            <div>
+                                <input type="text" class="form-control" name="OrderNoCurrent" id="txtOrderNo" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>
+                            <div>
+                                <input type="date" class="form-control" name="OrderDateCurrent" id="txtOrderDateCurrent" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="btnUploadDocumentCurrent">
+                                <input type="file" placeholder="Upload Doc" name="UploadDocumentCurrent" id="txtUploadDocumentCurrent" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsc">
+                        <h4 class="header-title">Fire NOC</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="fireNocYes" value="yes" name="fireNoc">
+                                <label for="fireNocYes" class="custom-control-label">YES</label>
+                            </div>
+                        </div>
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="fireNocNo" value="no" name="fireNoc">
+                                <label for="fireNocNo" class="custom-control-label">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
+                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentFireNoc" id="txtFireNoc" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsc">
+                        <h4 class="header-title">PWC NOC</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="pwcNocYes" value="yes" name="pwcNoc">
+                                <label for="pwcNocYes" class="custom-control-label">YES</label>
+                            </div>
+                        </div>
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="pwcNocNo" value="no" name="pwcNoc">
+                                <label for="pwcNocNo" class="custom-control-label">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
+                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentPwcNoc" id="txtPwcNoc" />
+                            </button>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-lg-12" style="text-align:center">
                             <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button"  id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
+                            <button class="btn btn col-sm-2" type="button" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
                             <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
                             @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
 
@@ -244,7 +321,7 @@
 
 
     $(document).ready(function () {
-      
+
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
         if (isuserExists == 1 && message.length> 0) {
@@ -277,7 +354,7 @@
 
     });
 
-    
+
 
     //function CheckValidation() {
     //    var status = true;

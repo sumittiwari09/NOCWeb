@@ -13,6 +13,8 @@
 }
 @section styles {
 
+
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
 <style type="text/css">
@@ -156,7 +158,7 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" id="txtMobileNumber" oninput="numberOnly(this.id);" name="MobileNumber" autocomplete="off">
+                            <input class="form-control col-sm-12" type="text" maxlength="10" id="txtMobileNumber" oninput="numberOnly(this.id);" name="MobileNumber" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
@@ -353,15 +355,36 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
                         <div>
-                            <input type="text" class="form-control" oninput="numberOnly(this.id);" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
+                            <input type="text" class="form-control" maxlength="10" numberOnly(this.id);" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">LandLine Number</label>
                         <div>
-                            <input type="text" class="form-control" oninput="numberOnly(this.id);" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
+                            <input type="text" class="form-control" maxlength="10" oninput="numberOnly(this.id);" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-header fsc">
+            <h4 class="mt-0 header-title float-left">College Type</h4>
+        </div>
+
+        <div class="row example-text-input">
+            <div class=" row form-group col-sm-12" style="text-align:center">
+                <div class="form-group custom-control custom-radio col-sm-3">
+                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="Girls" id="txtGirls" value="girls">
+                    <label for="txtGirls" class="custom-control-label">Girls</label>
+                </div>
+                <div class=" form-group custom-control custom-radio col-sm-3">
+                    <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" name="Boys" id="txtBoy" value="boys">
+                    <label for="txtBoy" class="custom-control-label">Boys</label>
+                </div>
+                <div class="form-group custom-control custom-radio col-sm-3">
+                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CoEducation" id="txtCoEducation" value="girlsboyBoth">
+                    <label for="txtCoEducation" class="custom-control-label">CoEducation</label>
                 </div>
             </div>
         </div>
@@ -381,6 +404,7 @@
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
 }
 @*<script src="~/Content/jquery/jquery.js"></script>
     <script src="~/Content/select2/js/select2.js"></script>
@@ -393,7 +417,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        getLocation()
+        getLocation();
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
         if (isuserExists == 1 && message.length> 0) {
