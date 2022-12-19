@@ -3584,7 +3584,9 @@
     <Content Include="Views\SubjectMaster\CreateData.cshtml" />
     <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
     <Content Include="Views\Fee\Index.cshtml" />
-    <Content Include="Views\AcdmcMst\index.cshtml" />
+    <Content Include="Views\Trustee\DraftApplication.cshtml" />
+    <Content Include="Views\Trustee\EditApplication.cshtml" />
+    <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
