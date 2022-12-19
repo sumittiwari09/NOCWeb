@@ -76,8 +76,8 @@ namespace NewZapures_V2.Models
 
         public class CollageFacility
         {
-            public string TrustId { get; set; }
-            public string CollageId { get; set; }
+            public int? TrustId { get; set; }
+            public int? CollageId { get; set; }
             public List<Facilty> list { get; set; }
         }
 
@@ -85,7 +85,30 @@ namespace NewZapures_V2.Models
         {
             public string FacilityId { get; set; }
             public bool IsSelect { get; set; }
-            public HttpPostedFileBase uploadFile { get; set; }
+            public string uploadFile { get; set; }
+        }
+
+        public class CollageFeeMst
+        {
+            public string TrustId { get; set; }
+            public string CollageId { get; set; }
+            public string DepartmentId { get; set; }
+            public string CourseId { get; set; }
+            public string FinancialYear { get; set; }
+
+            public List<RateList> rateLists { get; set; }
+            //public string Id { get; set; }
+            //public decimal Rate { get; set; }
+            //public string RateName { get; set; }
+            //public int IsActive { get; set; }
+        }
+
+        public class RateList
+        {
+            public string RateId { get; set; }
+            public string RateName { get; set; }
+            public bool IsSelect { get; set; }
+            public decimal Rate { get; set; }
         }
 
 

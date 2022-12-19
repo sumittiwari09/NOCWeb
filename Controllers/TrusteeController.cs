@@ -427,9 +427,16 @@ namespace NewZapures_V2.Controllers
         [HttpGet]
         public ActionResult CollageFacilitys()
         {
+            //Collage Faciliy Master from Enum
+            List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
+            CollageFacilityMster = Common.GetCustomMastersList(35);
+            ViewBag.CollageFacilityMster = CollageFacilityMster;
+
+            //Trust List 
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
+
 
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
@@ -455,9 +462,69 @@ namespace NewZapures_V2.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult CollageFacilitys(TrusteeBO.CollageFacility obj)
+        public JsonResult CollageFacilitys(TrusteeBO.CollageFacility modal)
         {
-            return View();
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageFacility");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            request.AddParameter("application/json",_JsonSerializer.Serialize(modal), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+                if (objResponseData.ResponseCode == "1")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { failure = true, msg = "Success" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else
+                {
+                    return new JsonResult
+                    {
+                        Data = new { failure = false, msg = "Failed" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            #endregion
+            return new JsonResult
+            {
+                Data = new { failure = true, msg = "Failed" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult GetCollegeDropDownList(int TrustInfoId)
+        {
+            ResponseData objResponse = new ResponseData();
+            List<CustomMaster> objUsermaster = new List<CustomMaster>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                    objUsermaster = JsonConvert.DeserializeObject<List<CustomMaster>>(objResponse.Data.ToString());
+            }
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         public JsonResult SaveApplicationDetails(TrusteeBO.SaveApplicationModal applicationModal)
@@ -486,5 +553,28 @@ namespace NewZapures_V2.Controllers
         }
 
 
+        public JsonResult GetCollageFaciltyList(int TrustInfoId)
+        {
+            ResponseData objResponse = new ResponseData();
+            List<CustomMaster> objUsermaster = new List<CustomMaster>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                    objUsermaster = JsonConvert.DeserializeObject<List<CustomMaster>>(objResponse.Data.ToString());
+            }
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }
