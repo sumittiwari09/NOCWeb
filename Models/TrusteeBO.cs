@@ -71,5 +71,19 @@ namespace NewZapures_V2.Models
             public string Degree { get; set; }
             public string Courses { get; set; }
         }
+
+        public class CollageFacility
+        {
+            public string TrustId { get; set; }
+            public string CollageId { get; set; }
+            public List<Facilty> list { get; set; }
+        }
+
+        public class Facilty
+        {
+            public string FacilityId { get; set; }
+            public bool IsSelect { get; set; }
+            public HttpPostedFileBase uploadFile { get; set; }
+        }
     }
 }
