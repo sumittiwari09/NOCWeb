@@ -142,6 +142,7 @@
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\SubjectMasterController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
@@ -3576,6 +3577,7 @@
     <Content Include="Views\Trustee\CollageListForApply.cshtml" />
     <Content Include="Views\BasicDetails\CollageList.cshtml" />
     <Content Include="Views\DeptCourseMap\Index.cshtml" />
+    <Content Include="Views\SubjectMaster\CreateData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
