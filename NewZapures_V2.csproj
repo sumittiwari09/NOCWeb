@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AddCourseController.cs" />
+    <Compile Include="Controllers\FeeDetailsController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
@@ -3574,6 +3575,7 @@
     <Content Include="Views\Trustee\CollageListForApply.cshtml" />
     <Content Include="Views\BasicDetails\CollageList.cshtml" />
     <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
+    <Content Include="Views\FeeDetails\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
