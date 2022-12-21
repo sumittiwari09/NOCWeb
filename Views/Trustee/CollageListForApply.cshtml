@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.TrusteeBO.CollageList> trustlist = ViewBag.CollageApplyList as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
     var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
-    
+
 }
 @section styles {
 
@@ -37,6 +37,11 @@
 
     .table th {
         color: #ffffff !important;
+    }
+
+    #tblsummery th {
+        color: black !important;
+        font-weight: 500;
     }
 
     .fsc {
@@ -93,21 +98,25 @@
     </div>
     <div class="row col-lg-12" style="margin-top:20px">
         <div class="form-group col-lg-12">
-            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+            <table class="table table-borderless table-striped table-hover" id="CollegeList">
                 <thead class="dark">
                     <tr>
                         <th>SNo</th>
                         <th>CollageLogo</th>
                         <th>Trust Name</th>
+                        <th hidden>Trust ID</th>
                         <th>Trust RegistrationNo</th>
                         <th>Collage Name</th>
+                        <th hidden>CollageID</th>
                         <th>Mobile</th>
                         <th>Email</th>
                         <th>Other Contact No</th>
                         <th>PhoneNo</th>
-                        <th>WebSite URL</th>
+                        @*<th>WebSite URL</th>*@
                         <th>Degree</th>
+                        <th hidden>DegreeID</th>
                         <th>Courses</th>
+                        <th hidden>CoursesID</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -122,22 +131,29 @@
                                 <td>@i</td>
                                 <td><img src="data:@item.CollageContectType;base64,@item.CollageLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
                                 <td>@item.TrustName</td>
+                                <td hidden>@item.TrustInfoId</td>
                                 <td>@item.TrustRegistrationNo</td>
                                 <td>@item.CollageName</td>
+                                <td hidden>@item.CollageId</td>
                                 <td>@item.MobileNo</td>
                                 <td>@item.Email</td>
                                 <td>@item.AddMobileNo</td>
                                 <td>@item.AddPhoneNo</td>
-                                <td>@item.WebsiteURL</td>
+                                @*<td>@item.WebsiteURL</td>*@
                                 <td>@item.Degree</td>
+                                <td hidden>@item.DegreeID</td>
                                 <td>@item.Courses</td>
+                                <td hidden>@item.CoursesID</td>
                                 @if (servicesCollectiondata.PartyId == "A000001")
                                 {
                                     <td><a id="btnDeactive_@item.CollageId" class="btn btn-primary" name="2" data-id="@item.CollageId" onclick="DeleteData(@item.CollageId)" title="Delete" style="color:#fff">View</a></td>
                                 }
                                 else
                                 {
-                                    <td><a id="btnDeactive_@item.CollageId" class="btn btn-primary" name="2" data-id="@item.CollageId" onclick="DeleteData(@item.CollageId)" title="Delete" style="color:#fff">Apply</a></td>
+                                    <td>
+                                        <a id="btnApply_@item.CollageId" class="btn btn-primary apply" onclick="openModal('@item.TrustName', '@item.CollageName', '@item.Degree', '@item.Courses',@i-1)" style="color:#fff">Apply</a>
+                                        <a href="#" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal" style="display:none">Terms and Condition</a>
+                                    </td>
                                 }
                                 @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
@@ -157,6 +173,46 @@
             </table>
         </div>
     </div>
+
+
+
+    <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="appSummary">Application Summary</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 20px !important;">
+                    <p style="font-size: 15px;font-weight: 500;color: black;">Your Application is processed for following selection : </p>
+                    <table class="table table-bordered" id="tblsummery" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+                        <tr><th>Trust</th><td><span id="spnTrust"></span></td><th>College</th><td><span id="spnCollege"></span></td></tr>
+                        <tr><th>Degree</th><td><span id="spnDegree"></span></td><th>Course</th><td><span id="spnCourse"></span></td></tr>
+                        <tr><th>District</th><td>NA</td><th>Tehsil</th><td>NA</td></tr>
+                        <tr><th>SSO</th><td>NA</td><th>Username</th><td>NA</td></tr>
+                    </table>
+                    <div style="    display: flex;    gap: 10px;    align-items: baseline;">
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" id="customCheck1" name="customCheck" class="custom-control-input">
+                            <label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to continue for application</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>
+                    <button type="button" class="btn btn-primary" onclick="SaveDetails();">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     @*<div class="row col-lg-12" style="margin-bottom:10px">
             <div class="col-lg-12 float-right">
                 <button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
@@ -176,6 +232,155 @@
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 }
+<script type="text/javascript">
 
- vC XXX C               ccC
+    var applicationDetails = {
+        appltrustID: "",
+        applcollegeID: "",
+        appldegreeID: "",
+        applCourseID: ""
+    };
+
+    function openModal(trustName, CollegeName, Degree, Course, rowNum) {
+        $('#spnTrust').html('');
+        $('#spnCollege').html('');
+        $('#spnDegree').html('');
+        $('#spnCourse').html('');
+
+
+        $('#spnTrust').html(trustName);
+        $('#spnCollege').html(CollegeName);
+        $('#spnDegree').html(Degree);
+        $('#spnCourse').html(Course);
+
+        $('#openModal').click();
+
+        $('#CollegeList > tbody  > tr:eq(' + rowNum + ')').each(function () {
+
+            var trusName = $(this).find('td:eq(2)').html();
+            var trustID = $(this).find('td:eq(3)').html()
+            var collegeID = $(this).find('td:eq(6)').html()
+            var degreeID = $(this).find('td:eq(12)').html()
+            var CourseID = $(this).find('td:eq(14)').html()
+            console.log(trusName, trustID, collegeID, degreeID, CourseID);
+
+
+            applicationDetails.appltrustID = trustID;
+            applicationDetails.applcollegeID = collegeID;
+            applicationDetails.appldegreeID = degreeID;
+            applicationDetails.applCourseID = CourseID;
+
+        });
+
+
+
+
+    }
+
+
+    function SaveDetails() {
+
+        if ($("#customCheck1").is(':checked')) {
+
+            var applicationModal = {
+                "iFKTst_ID": applicationDetails.appltrustID,
+                "iFKCLG_ID": applicationDetails.applcollegeID,
+                "iFKDEPT_ID": applicationDetails.appldegreeID,
+                "iFK_CORS_ID": applicationDetails.applCourseID,
+            }
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: globaUserProperties.domain + "/SaveApplicationDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(applicationModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    console.log(data);
+
+                    setTimeout(function () {
+                        location.href = '@Url.Action("DraftApplication", "Trustee")';
+                    }, 2000)
+
+                 /*   $('#btnClose').click();*/
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+
+
+        else {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Error`,
+                html: `<p style="font-size: 18px;">Kindly Tick the checkbox for application confirmation..</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+
+
+    }
+
+
+
+//    $('.apply').click(function () {
+
+
+
+////        swal.fire({
+////            title: 'Application Form Summary',
+////            html: `<hr/><p style='text-align:left'>Your Application is proceed for following section</p><br/><table class="table table-bordered" id="tblsummery" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+////<tr><th>Trust</th><td>{Trust}</td></tr>
+////<tr><th>College</th><td>{College}</td></tr>
+////<tr><th>Degree</th><td>{Degree}</td></tr>
+////<tr><th>Course</th><td>{Course}</td></tr>
+////<tr><th>District</th><td>{District}</td></tr>
+////<tr><th>Tehsil</th><td>{Tehsil}</td></tr>
+////<tr><th>SSO</th><td>{SSO}</td></tr>
+////<tr><th>Username</th><td>{username}</td></tr>
+////</table>`,
+////            type: 'warning',
+////            showCancelButton: true,
+////            confirmButtonText: 'Confirm!',
+////            cancelButtonText: 'No!',
+////            reverseButtons: true
+////        }).then(function (result) {
+////            if (result.value) {
+////                swal.fire(
+////                    'Confirm!',
+////                    `your details has been saved`,
+////                    'success'
+////                )
+
+
+
+
+////                /* doRecharge();*/
+
+////            } else if (
+////                // Read more about handling dismissals
+////                result.dismiss === Swal.DismissReason.cancel
+////            ) {
+////                swal.fire(
+////                    'Cancelled',
+////                    'I am not sure',
+////                    'error'
+////                )
+////            }
+////        })
+//    })
+
+</script>

@@ -546,7 +546,7 @@
         var globaUserProperties = new Object();
 
         var base_url = window.location;
-        globaUserProperties.domain = base_url.origin + "/" + window.location.pathname.split('/')[1];  // Stagging where we have domain in front of URL
+        globaUserProperties.domain = base_url.origin;// + "/" + window.location.pathname.split('/')[1];  // Stagging where we have domain in front of URL
 
         window.history.forward();
         function noBack() {

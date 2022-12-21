@@ -1,0 +1,438 @@
+﻿@{
+    ViewBag.Title = "Architecture Detail";
+}
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+<style>
+    .noneactive {
+        margin: 10px;
+        border: solid;
+        width: 200px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 23px;
+    }
+
+    .invoicetabs {
+        list-style: none;
+        display: flex;
+    }
+
+    .active1 {
+        background: red;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .hiddenactive {
+        display: block;
+        display: contents;
+    }
+
+    .card-title {
+        padding: 10px;
+        background: cadetblue;
+        font-weight: bold;
+    }
+</style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    @*<li class="breadcrumb-item active">Architecture Detail</li>*@
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+
+        <ul class="invoicetabs">
+            <li class="noneactive" data-id="infrastructure">
+                infrastructure
+            </li>
+            @*<li class="noneactive" data-id="PracticalRoom">
+                    Practical Room
+                </li>*@
+            <li class="noneactive" data-id="OtherRoom">
+                Others Room
+            </li>
+            @*<li class="noneactive" data-id="Libraryroom">
+                    Library room
+                </li>*@
+        </ul>
+        <section class="hidden intersection" id="infrastructure">
+            <div class="card Card--shadow--medium radiuscard reversecard">
+                <header class="card-heading card-default">
+                    <h6 class="card-title">
+                        Infrature Information
+                    </h6>
+                </header>
+                <div class="card-body">
+
+                    <div class="form-group is-empty borderbottom row">
+                        <label class="col-sm-3 control-label">No Of Rooms</label>
+                        <div class="col-sm-9">
+                            <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+            <div class="card Card--shadow--medium radiuscard reversecard">
+                <header class="card-heading card-default">
+                    <h6 class="card-title">
+                        Room Information
+                    </h6>
+                </header>
+                <div class="card-body">
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2">
+                            <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+
+                        </div>
+
+                        <div class="col-sm-2">
+                            <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+
+                        </div>
+                        <div class="col-sm-2">
+                            <input id="Infrature_RoomCapacity" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control" required>
+
+                        </div>
+                        <button class="btn btn-primary col-sm-2">Add</button>
+                    </div>
+
+                    <div class="form-group is-empty row" id="showtable">
+                        <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead style="background-color: darkgray;">
+
+                                <tr>
+                                    @*<th>
+                                            #
+                                        </th>*@
+
+
+                                    <th>Width</th>
+                                    <th>Height</th>
+                                    <th>Qty</th>
+
+                                    <th>Action</th>
+
+
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="pull-right" style="text-align: end;">
+
+                <button class="btn btn-primary"> Save </button>
+            </div>
+
+        </section>
+
+        <section class="hidden intersection" id="OtherRoom">
+            <div class="card Card--shadow--medium radiuscard reversecard">
+                <header class="card-heading card-default">
+                    <h6 class="card-title">
+                        Other Room Information
+                    </h6>
+                </header>
+                <div class="card-body">
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="PracticalRooms" id="PracticalRooms" value="0">
+                            <label class="form-check-label" for="PracticalRooms">Practical Rooms</label>
+                        </div>
+                        <div id="1_PracticalRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="SportRooms" id="SportRooms" value="0">
+                            <label class="form-check-label" for="SportRooms">Sport Rooms</label>
+                        </div>
+                        <div id="1_SportRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="libraryRooms" id="libraryRooms" value="0">
+                            <label class="form-check-label" for="libraryRooms">library Rooms</label>
+                        </div>
+                        <div id="1_libraryRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="StoreRooms" id="StoreRooms" value="0">
+                            <label class="form-check-label" for="StoreRooms">Store Rooms</label>
+                        </div>
+                        <div id="1_StoreRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="PrincipalRooms" id="PrincipalRooms" value="0">
+                            <label class="form-check-label" for="PrincipalRooms">Principal Rooms</label>
+                        </div>
+                        <div id="1_PrincipalRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="GirlsRooms" id="GirlsRooms" value="0">
+                            <label class="form-check-label" for="GirlsRooms">Girls Common Rooms</label>
+                        </div>
+                        <div id="1_GirlsRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="StaffRooms" id="StaffRooms" value="0">
+                            <label class="form-check-label" for="StaffRooms">Staff Rooms</label>
+                        </div>
+                        <div id="1_StaffRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
+
+
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    $('.noneactive').click(function () {
+        $('.noneactive').removeClass('active1');
+        var id = $(this).data('id');
+        $('.intersection').addClass('hidden');
+        $("#" + id).removeClass('hidden');
+
+        $(this).addClass('active1');
+    });
+    $('.checkbox').click(function () {
+        debugger;
+        var id = $(this).data('id');
+        $("#1_" + id).addClass('hidden');
+        $("#1_" + id).removeClass('hiddenactive');
+        var val = $(this).val();
+        if (val == '0') {
+            $(this).val('1');
+            $("#1_" + id).removeClass('hidden');
+            $("#1_" + id).addClass('hiddenactive');
+        }
+        else {
+            $(this).val('0');
+        }
+
+    });
+
+</script>

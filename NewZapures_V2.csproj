@@ -137,6 +137,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AcdmcMstController.cs" />
     <Compile Include="Controllers\AddCourseController.cs" />
     <Compile Include="Controllers\FeeDetailsController.cs" />
     <Compile Include="Controllers\DeptCourseMapController.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -3584,6 +3586,11 @@
     <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
     <Content Include="Views\FeeDetails\Index.cshtml" />
     <Content Include="Views\Fee\Index.cshtml" />
+    <Content Include="Views\Trustee\DraftApplication.cshtml" />
+    <Content Include="Views\Trustee\EditApplication.cshtml" />
+    <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
+    <Content Include="Views\AcdmcMst\index.cshtml" />
+    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

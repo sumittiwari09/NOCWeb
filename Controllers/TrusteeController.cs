@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 
 namespace NewZapures_V2.Controllers
 {
@@ -197,6 +198,20 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
+        public ActionResult DraftApplication()
+        {
+            return View();
+        }
+
+        public ActionResult EditApplication()
+        {
+            return View();
+        }
+
+        public ActionResult ApplicationPreview()
+        {
+            return View();
+        }
 
         [HttpGet]
         public ActionResult TrusteeGeneralInfo()
@@ -263,7 +278,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile)
         {
-            
+
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -511,6 +526,32 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+        public JsonResult SaveApplicationDetails(TrusteeBO.SaveApplicationModal applicationModal)
+        {
+            var json = JsonConvert.SerializeObject(applicationModal);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/SaveApplication");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+
+            }
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Message = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
 
         public JsonResult GetCollageFaciltyList(int TrustInfoId)
         {

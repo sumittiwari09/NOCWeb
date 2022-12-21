@@ -69,7 +69,9 @@ namespace NewZapures_V2.Models
             public string AddPhoneNo { get; set; }
             public string WebsiteURL { get; set; }
             public string Degree { get; set; }
+            public int DegreeID { get; set; }
             public string Courses { get; set; }
+            public int CoursesID { get; set; }
         }
 
         public class CollageFacility
@@ -108,5 +110,27 @@ namespace NewZapures_V2.Models
             public bool IsSelect { get; set; }
             public decimal Rate { get; set; }
         }
+
+
+        #region Vivek Add Application Modal
+
+        public class SaveApplicationModal
+        {
+            public int iPK_ID { get; set; }
+            public string sApplNo { get; set; }
+            public string iFK_Finyr { get; set; }
+            public int iFKTst_ID { get; set; }
+            public int iFKCLG_ID { get; set; }
+            public int iFKDEPT_ID { get; set; }
+            public int iFK_CORS_ID { get; set; }
+            public int sSSO_ID { get; set; }
+            public DateTime? dtCRT_On { get; set; }
+            public DateTime? dtSubOn { get; set; }
+            public string iSts { get; set; }
+
+        }
+
+        #endregion
+
     }
 }
