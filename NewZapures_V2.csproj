@@ -3589,6 +3589,8 @@
     <Content Include="Views\Trustee\DraftApplication.cshtml" />
     <Content Include="Views\Trustee\EditApplication.cshtml" />
     <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
+    <Content Include="Views\AcdmcMst\index.cshtml" />
+    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

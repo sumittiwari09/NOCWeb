@@ -78,7 +78,8 @@
 
                                 <select id="ddlFromYear">
                                     <option value="0" role=separator>From Year</option>
-                                    @{
+                                    <option value="11" role=separator>2022</option>
+                                    @*@{
                                         if (FromYear != null)
                                         {
                                             foreach (var item in FromYear)
@@ -89,7 +90,7 @@
 
                                             }
                                         }
-                                    }
+                                    }*@
                                 </select>
 
                             </div>
@@ -101,7 +102,9 @@
 
                                 <select id="ddlToYear">
                                     <option value="0" role=separator>To Year</option>
-                                    @{
+                                    <option value="21" role=separator>2023</option>
+                                    
+                                    @*@{
                                         if (ToYear != null)
                                         {
                                             foreach (var item in ToYear)
@@ -112,7 +115,7 @@
 
                                             }
                                         }
-                                    }
+                                    }*@
                                 </select>
 
                             </div>
@@ -133,16 +136,15 @@
 
 
                                     <select id="ddlResult">
+                                        @*<option value="0" role=separator>Select Result</option>
                                         <option value="0" role=separator>Select Result</option>
+                                        <option value="0" role=separator>Select Result</option>*@
                                         @{
                                             if (Result != null)
                                             {
                                                 foreach (var item in Result)
                                                 {
                                                     <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
-
-
-
                                                 }
                                             }
                                         }
