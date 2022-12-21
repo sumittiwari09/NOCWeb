@@ -1,0 +1,349 @@
+﻿
+@{
+    ViewBag.Title = "Financial Document";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+}
+<style type="text/css">
+
+                        .fsc {
+                            background: #6441A5;
+                            background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+                            background: linear-gradient(to left, #506ee4, #5b3a96);
+                            border-radius: 12px;
+                        }
+
+                            .fsc h4 {
+                                color: white !important;
+                            }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    /*.custom-radio input:checked {
+        width: 20px;
+        height: 15px;
+    }*/
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Financial Document</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box--> 
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">Finacial Documents</h4>
+            </div>
+            <div class="card-body">
+@using (Html.BeginForm("FinanceDocumentUpload", "FinanceDocument", FormMethod.Post, new { id = "FinancialForm", enctype = "multipart/form-data" }))
+{
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="file" title="Upload Affidavit of non-PF account" id="fupFile" name="Affidavit" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" > Upload Doc</label>
+                        </div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="file"  title="Salary Payment through by Bank" id="fupFile" name="Salary"  data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" > Upload Doc</label>
+                        </div>
+                    </div>
+                </div>
+               <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="file"  title="upload last 6 Monthbank Statement"  name="Bank"  data-input="true" id="fupFile">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUpload"> Upload Doc</label>
+                            <span id="Doc1"></span>
+                        </div>
+                    </div>
+                </div>
+                   <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="file"  title="Annexure 16" id="fupFile"  name="Annexure" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" > Upload Doc</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display:flex">
+                            <input class="form-control col-sm-8" type="file"  title="esi Deduction" id="fupFile"  name="ESI"  data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" > Upload Doc</label>
+                        </div>
+                    </div>
+                </div>
+            <div class="card-header fsc">
+                        <h4 class="header-title">Company Documents</h4>
+                    </div>
+                <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px;font-weight: bold">Do You Have Gol/Supreme Court/Gor/VCI/Concerned University Guidline& Direction:</label>
+                            <div class="custom-control custom-radio col-sm-4" >
+                                 <input type="radio" name="IsConcerned" id="IsConcernedYes" value="1" checked="checked"  style="margin-left: -4px">
+                                 <label for="IsConcernedYes"  style="margin-right: 35px" >YES</label>
+                                 <input type="radio" name="IsConcerned" id="IsConcernedNo" value="0">
+                                 <label for="IsConcernedNo" >No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file"  id="IsConcernedfupFile" name="VCI" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="btnUploadIsConcerned" > Upload Doc</label>
+                        </div>
+                    </div>
+                </div>
+
+<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px; font-weight: bold">Do You Have Time Frame For establishment Of liveStock assistant training school:</label>
+                            <div class="custom-control custom-radio col-sm-4" >
+                                <input  type="radio"  name="IsFrame" id="IsFrameYes" value="1"  checked="checked"  style="margin-left: -4px">
+                                <label for="IsFrameYes" style="margin-right: 35px">YES</label>
+                                <input  type="radio" name="IsFrame" id="IsFrameNo" value="0">
+                                <label for="IsFrameNo">No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file"  id="IsFramefupFile" name="Frame" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="IsFramebtnUpload"> Upload Docs</label>
+                        </div>
+                    </div>
+                </div>
+<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px; font-weight: bold">As You Have Selection/Admission Criteria to be laid Down by affilated University:</label>
+                            <div class="custom-control custom-radio col-sm-4" >
+                                <input  type="radio" name="IsAdmission" id="IsAdmissionYes" value="1"  checked="checked" style="margin-left: -4px">
+                                <label for="IsAdmissionYes" style="margin-right: 35px" >YES</label>
+                                <input  type="radio" name="IsAdmission" id="IsAdmissionNo" value="0">
+                                <label for="IsAdmissionNo">No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file" id="IsAdmissionfupFile" name="Admission" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="IsAdmissionbtnUpload"> Upload Docs</label>
+                        </div>
+                    </div>
+                </div>
+
+<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px; font-weight: bold">Have You Sufficient Land for development and bank Gauntee if yes enclose undertaking on a non-judicial stamp of rs 500 duly attested by the magistrate/public notary:</label>
+                            <div class="custom-control custom-radio col-sm-4" >
+                                <input type="radio" name="IsSufficient" id="IsSufficientYes" value="1"  checked="checked" style="margin-left: -4px">
+                                <label for="IsSufficientYes" style="margin-right: 35px" >YES</label>
+                                <input type="radio" name="IsSufficient" id="IsSufficientNo" value="0">
+                                <label for="IsSufficientNo">No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file" id="IsSufficientfupFile" name="Land" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="IsSufficientbtnUpload"> Upload Docs</label>
+                        </div>
+                    </div>
+                </div>
+
+<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px; font-weight: bold">To Submit Affidavit as Per Point No.4 oF guideline:</label>
+                            <div class="custom-control custom-radio col-sm-4" >
+                                <input  type="radio"  name="IsAffidavit" id="IsAffidavityes"  checked="checked" value="1" style="margin-left: -4px">
+                                <label for="IsAffidavityes"  style="margin-right: 35px" >YES</label>
+                                <input  type="radio" name="IsAffidavit" id="IsAffidavitno" value="0">
+                                <label for="IsAffidavitno" >No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file" id="IsAffidavitfupFile" name="SubmitAffidavit" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="IsAffidavitbtnUpload"> Upload Docs</label>
+                        </div>
+                    </div>
+                </div>
+<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left: -10px; margin-top: 10px; font-weight: bold">Other Documents To Be Added:</label>
+                            <div class="custom-control custom-radio col-sm-6" >
+                                <input  type="radio"  name="IsOther" id="IsOtheryes" checked="checked"  value="1" style="margin-left: -4px">
+                                <label for="IsOtheryes" style="margin-right: 35px" >YES</label>
+                                <input  type="radio" name="IsOther" id="IsOtherno" value="0">
+                                <label for="IsOtherno" >No</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div style="display: flex; margin-top: -16px">
+                            <input class="form-control col-sm-8" type="file" id="IsOtherfupFile"  title="Remarks" name="Other" data-input="true" class="form-control filestyle">
+                            <label class="btn btn-sm col-sm-4 locationBTN" id="IsOtherbtnUpload"> Upload Docs</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="form-group col-lg-12">
+                       <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 134px;"> Save</button>                       
+                    </div>
+                </div>
+}              
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    }
+<script type="text/javascript">
+
+
+$(document).ready(function () {
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+
+    $('input:radio[name=IsConcerned]').click(function () {
+        var checkval = $('input:radio[name=IsConcerned]:checked').val();
+        if (checkval == '1') {
+            $('#IsConcernedfupFile').removeAttr('disabled');
+            $('#btnUploadIsConcerned').removeAttr('disabled');
+        }
+        else {
+            $('#IsConcernedfupFile').attr('disabled', 'disabled');
+            $('#btnUploadIsConcerned').attr('disabled', 'disabled');
+        }
+    });
+
+    $('input:radio[name=IsFrame]').click(function () {
+        var checkval = $('input:radio[name=IsFrame]:checked').val();
+        if (checkval == '1') {
+            $('#IsFramefupFile').removeAttr('disabled');
+            $('#IsFramebtnUpload').removeAttr('disabled');
+        }
+        else {
+            $('#IsFramefupFile').attr('disabled', 'disabled');
+            $('#IsFramebtnUpload').attr('disabled', 'disabled');
+        }
+    });
+
+    $('input:radio[name=IsAdmission]').click(function () {
+        var checkval = $('input:radio[name=IsAdmission]:checked').val();
+        if (checkval == '1') {
+            $('#IsAdmissionfupFile').removeAttr('disabled');
+            $('#IsAdmissionbtnUpload').removeAttr('disabled');
+        }
+        else {
+            $('#IsAdmissionfupFile').attr('disabled', 'disabled');
+            $('#IsAdmissionbtnUpload').attr('disabled', 'disabled');
+        }
+    });
+
+    $('input:radio[name=IsSufficient]').click(function () {
+        var checkval = $('input:radio[name=IsSufficient]:checked').val();
+        if (checkval == '1') {
+            $('#IsSufficientfupFile').removeAttr('disabled');
+            $('#IsSufficientbtnUpload').removeAttr('disabled');
+        }
+        else {
+            $('#IsSufficientfupFile').attr('disabled', 'disabled');
+            $('#IsSufficientbtnUpload').attr('disabled', 'disabled');
+        }
+    });
+
+    $('input:radio[name=IsAffidavit]').click(function () {
+        var checkval = $('input:radio[name=IsAffidavit]:checked').val();
+        if (checkval == '1') {
+            $('#IsAffidavitfupFile').removeAttr('disabled');
+            $('#IsAffidavitbtnUpload').removeAttr('disabled');
+        }
+        else {
+            $('#IsAffidavitfupFile').attr('disabled', 'disabled');
+            $('#IsAffidavitbtnUpload').attr('disabled', 'disabled');
+        }
+    });
+
+    $('input:radio[name=IsOther]').click(function () {
+        var checkval = $('input:radio[name=IsOther]:checked').val();
+        if (checkval == '1') {
+            $('#IsOtherfupFile').removeAttr('disabled');
+            $('#IsOtherbtnUpload').removeAttr('disabled');
+        }
+        else {
+            $('#IsOtherfupFile').attr('disabled', 'disabled');
+            $('#IsOtherbtnUpload').attr('disabled', 'disabled');
+        }
+    });
+});
+</script>
