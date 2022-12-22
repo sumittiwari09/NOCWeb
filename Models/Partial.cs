@@ -46,7 +46,8 @@ namespace NewZapures_V2.Models
             CommissionType = 19,
             OperaterName = 20,
             ServiceProvider = 21,
-            UOM=24
+            UOM=37,
+            Course=30
         }
 
         public class ResponseDataBO
