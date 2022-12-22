@@ -1,0 +1,399 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "collage Facility";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.TrusteeBO.Trustee> FacilityList = ViewBag.FacilityList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+    List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
+    if (ViewBag.CollageFacilityMster != null)
+    {
+        CollageFacilityMster = (List<CustomMaster>)ViewBag.CollageFacilityMster;
+    }
+
+    List<CustomMaster> TrustList = new List<CustomMaster>();
+    if (ViewBag.TrustList != null)
+    {
+        TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    }
+    List<CustomMaster> RoleType = new List<CustomMaster>();
+    if (ViewBag.RoleType != null)
+    {
+        RoleType = (List<CustomMaster>)ViewBag.RoleType;
+    }
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Collage Facility</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header fsc">
+        <h4 class="mt-0 header-title float-left">Trustee Details</h4>
+    </div>
+    @*@using (Html.BeginForm("CollageFacilitys", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
+        {*@
+    <div class="card-body row">
+        <div class="col-8">
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
+                    <div>
+                        <select class="form-control" name="TrustId" id="TrustId">
+                            <option value="0">Select Trust</option>
+                            @{
+                                foreach (var item in TrustList)
+                                {
+                                    <option value="@item.Id">@item.text</option>
+                                }
+                            }
+                        </select>
+                        @*<select class="form-control" id="txtrole" name="TrustType">
+                                <option value="0">Type</option>
+                            </select>*@
+                    </div>
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
+                    <div>
+                        <select class="form-control" id="CollageId" name="CollageId">
+                            <option value="">Select College</option>
+                            @*@{
+                                    foreach (var item in RoleType)
+                                    {
+                                        <option value="@item.Id">@item.text</option>
+                                    }
+                                }*@
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <table class="table table-borderless table-striped table-hover" id="tblFacility">
+                        <thead class="dark">
+                            <tr>
+                                @*<th>SNo</th>*@
+                                <th>
+                                    <label class="containercheckbox">
+                                        &nbsp;
+                                        <input type="checkbox" id="chkAll">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>Facility Name</th>
+                                <th>Action</th>
+                                @*<th style="text-align:center">Profile</th>*@
+                                @*<th>Action</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (CollageFacilityMster != null)
+                            {
+                                int i = 1;
+                                foreach (var item in CollageFacilityMster)
+                                {
+                                    <tr>
+                                        @*<td>@i</td>*@
+                                        <td style="display:none">
+                                            @item.Id
+                                        </td>
+                                        <td>
+                                            <label class="containercheckbox">
+                                                &nbsp;
+                                                <input type="checkbox" id="select_@item.Id" name="IsSelect" class="chk">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            @item.text
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id="Upbase64_@item.Id" />
+                                            <input type="file" id="up_@item.Id" style="border: 0px solid #e8ebf3" name="uploadFile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                            <span id="uploadFile"></span>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+                    <button class="btn" id="btnupload" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ ">Upload</button>
+                    <button class="btn btn-gradient-success" id="btnSave" style="display:none">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*}*@
+
+    <!--<div class="row col-lg-12" style="margin-bottom:10px">
+        <div class="col-lg-12 float-right">-->
+    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+
+    <!--<button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
+    <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase; float:right"><i class="fa fa-arrow-left"></i> Previous</button>-->
+    @*</div>*@
+    <!--</div>
+    </div>-->
+    @*<div class="row col-lg-12 float-right">
+            <div class="form-group col-lg-12 float-right" style="display: flex;align-items: end;gap:10px;">
+
+            </div>
+        </div>*@
+</div>
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $('#chkAll').click(function () {
+            $('.chk').prop('checked', this.checked)
+        });
+
+        //$("#up_1119").change(function () {
+        //    debugger;
+        //    var size = this.files[0].size;
+
+        //    if (typeof (FileReader) != "undefined") {
+        //        //$("#dvPreview2").show();
+        //        //$("#dvPreview2").append("<img id='img1' class='img-preview-sm' style='width:200px;height:150px;' />");
+        //        var reader = new FileReader();
+        //        reader.onload = function (e) {
+        //            //$("#dvPreview2 img").attr("src", e.target.result);
+
+        //            var binaryString = this.result;
+        //            alert(binaryString);
+        //            //document.querySelector('#IDFilePath2').innerHTML = binaryString;
+        //            //$("#IDFilePath2").val(binaryString);
+
+        //        }
+        //        // }
+        //        reader.readAsDataURL($(this)[0].files[0]);
+        //        alert($(this)[0].files[0]);
+        //        //$.notify({
+        //        //    message: 'File added succesfully...',
+        //        //    status: 'success',
+        //        //    pos: 'top-right',
+        //        //    icon: 'fa fa-paw',
+        //        //});
+        //    }
+
+
+        //});
+
+        $(document).ready(function () {
+
+            $('#TrustId').change(function () {
+                alert("in");
+                var selectedVal = $(this).val();
+                if (selectedVal > 0) {
+                    AddCollegeData(selectedVal);
+                }
+                //alert(selectedVal);
+
+            })
+
+            $('#btnupload').click(function () {
+                var row_data = $('#tblFacility tbody tr').length;
+                $("#tblFacility tbody TR").each(function () {
+                    var row_data = $(this);
+                    var Idget = row_data.find("td").eq(0).html().trim();
+                    var Idupload = $('#up_' + Idget)[0].files;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        //$("#dvPreview2 img").attr("src", e.target.result);
+                        binaryString = this.result;
+                        //alert(binaryString);
+                        $('#Upbase64_' + Idget).val(binaryString);
+                        //document.querySelector('#IDFilePath2').innerHTML = binaryString;
+                        //$("#IDFilePath2").val(binaryString);
+
+                    }
+                    // ]
+                    reader.readAsDataURL(Idupload[0]);
+                });
+                $('#btnSave').attr("style", "display:block");
+            });
+            $("#btnSave").click(function () {
+                var tableData = new Array();
+                debugger;
+                var trustId = $('#TrustId').val();
+                var CollageId = $('#CollageId').val(); 
+                //var binaryString = "";
+                //var row_data = $('#tblFacility tbody tr').length;
+                $("#tblFacility tbody TR").each(function () {
+                    var row_data = $(this);
+                    var Idget = row_data.find("td").eq(0).html().trim();
+                    var select = false;
+                    if ($('#select_' + Idget).is(":checked")) {
+                        // it is checked
+                        //alert(true);
+                        select = true;
+                    }
+                    //else {
+                    //    alert(false);
+                    //}
+                    //console.log(Idupload[0]);
+                    debugger;
+                    var getdata = { FacilityId: Idget, IsSelect: select, uploadFile: $('#Upbase64_' + Idget).val() }
+                    tableData.push(getdata);
+                    //$("#tableTPOHead tbody").next(".validation").remove(); // remove it
+                });
+
+                var modal = {
+                    TrustId: trustId,
+                    CollageId: CollageId,
+                    list: tableData
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Trustee/CollageFacilitys",
+                    data: modal,
+                    success: function (data) {
+                        if (data.failure) {
+                            //alert("Successfully");
+
+                            var url = GetglobalDomain() + "/Trustee/CollageFacilitys";
+                            window.location.href = url;
+                            $('#btnSave').attr("style", "display:none");
+                            $('#btnupload').attr("style", "display:block");
+                            Swal.fire(
+                                'Success',
+                                'Success',
+                                'Data Save Successfully!!'
+                            )
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Failed',
+                                'Data not Saved'
+                            )
+                            $('#btnSave').attr("style", "display:none");
+                            $('#btnupload').attr("style", "display:block");
+                        }
+                        // alert(r + " record(s) inserted.");
+                    }
+                });
+            });
+        });
+
+        function AddCollegeData(Type) {
+            debugger
+            var strHtml = "";
+            strHtml += "<option value=''>Select College</option>";
+
+            var Params = JSON.stringify(
+                {
+                    TrustInfoId: parseInt(Type),
+                });
+
+            $.ajax({
+                url: GetglobalDomain() + "/Trustee/GetCollegeDropDownList",
+                type: 'POST',
+                data: Params,
+                dataType: "json",
+                contentType: "application/json",
+                success: function (response) {
+                    debugger;
+                    for (var i = 0; i < response.Data.length; i++) {
+                        strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
+                    }
+                    console.log("strHtml" + JSON.stringify("strHtml"));
+
+                    $("#CollageId").html(strHtml);
+                    //$("#IsdefaultCollegeId").select2();
+                    //$("#collegetypedata").removeClass('removehidden');
+                }
+            });
+        }
+    </script>
+}

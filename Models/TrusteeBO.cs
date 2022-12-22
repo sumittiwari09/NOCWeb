@@ -34,7 +34,9 @@ namespace NewZapures_V2.Models
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
             public string Name { get; set; }
+
             public string RoleId { get; set; }
+
             public string Mobile { get; set; }
             public string Email { get; set; }
             public string AadhaarNo { get; set; }
@@ -51,5 +53,84 @@ namespace NewZapures_V2.Models
             public byte[] DocumentByte { get; set; }
             public string Profilefile { get; set; }
         }
+
+        public class CollageList
+        {
+            public string CollageId { get; set; }
+            public string TrustInfoId { get; set; }
+            public string TrustName { get; set; }
+            public string TrustRegistrationNo { get; set; }
+            public string CollageName { get; set; }
+            public string MobileNo { get; set; }
+            public string Email { get; set; }
+            public string CollageLogo { get; set; }
+            public string CollageContectType { get; set; }
+            public string AddMobileNo { get; set; }
+            public string AddPhoneNo { get; set; }
+            public string WebsiteURL { get; set; }
+            public string Degree { get; set; }
+            public int DegreeID { get; set; }
+            public string Courses { get; set; }
+            public int CoursesID { get; set; }
+        }
+
+        public class CollageFacility
+        {
+            public int? TrustId { get; set; }
+            public int? CollageId { get; set; }
+            public List<Facilty> list { get; set; }
+        }
+
+        public class Facilty
+        {
+            public string FacilityId { get; set; }
+            public bool IsSelect { get; set; }
+            public string uploadFile { get; set; }
+        }
+
+        public class CollageFeeMst
+        {
+            public string TrustId { get; set; }
+            public string CollageId { get; set; }
+            public string DepartmentId { get; set; }
+            public string CourseId { get; set; }
+            public string FinancialYear { get; set; }
+
+            public List<RateList> rateLists { get; set; }
+            //public string Id { get; set; }
+            //public decimal Rate { get; set; }
+            //public string RateName { get; set; }
+            //public int IsActive { get; set; }
+        }
+
+        public class RateList
+        {
+            public string RateId { get; set; }
+            public string RateName { get; set; }
+            public bool IsSelect { get; set; }
+            public decimal Rate { get; set; }
+        }
+
+
+        #region Vivek Add Application Modal
+
+        public class SaveApplicationModal
+        {
+            public int iPK_ID { get; set; }
+            public string sApplNo { get; set; }
+            public string iFK_Finyr { get; set; }
+            public int iFKTst_ID { get; set; }
+            public int iFKCLG_ID { get; set; }
+            public int iFKDEPT_ID { get; set; }
+            public int iFK_CORS_ID { get; set; }
+            public int sSSO_ID { get; set; }
+            public DateTime? dtCRT_On { get; set; }
+            public DateTime? dtSubOn { get; set; }
+            public string iSts { get; set; }
+
+        }
+
+        #endregion
+
     }
 }

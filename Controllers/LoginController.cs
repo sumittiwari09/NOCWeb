@@ -16,5 +16,10 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         }
+
+        public ActionResult Handshake()
+        {
+            return View();
+        }
     }
 }

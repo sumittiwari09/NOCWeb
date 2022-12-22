@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -137,12 +137,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AcdmcMstController.cs" />
     <Compile Include="Controllers\AddCourseController.cs" />
+    <Compile Include="Controllers\FeeDetailsController.cs" />
+    <Compile Include="Controllers\DeptCourseMapController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\SubjectMasterController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
+    <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -213,8 +219,10 @@
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
+    <Compile Include="Models\DeptCourseMapMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
+    <Compile Include="Models\FeeMaster.cs" />
     <Compile Include="Models\StaffBO.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
@@ -3565,13 +3573,24 @@
     <Content Include="Views\Vertinary\Index.cshtml" />
     <Content Include="Views\LandBuildingInfo\Index.cshtml" />
     <Content Include="Views\AddCourse\CreateDetails.cshtml" />
-    <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Trustee\Index.cshtml" />
     <Content Include="Views\Trustee\TrusteeGeneralInfo.cshtml" />
     <Content Include="Views\Trustee\TrustList.cshtml" />
     <Content Include="Views\Dashboard\WelcomeNoc.cshtml" />
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
+    <Content Include="Views\Trustee\CollageListForApply.cshtml" />
+    <Content Include="Views\BasicDetails\CollageList.cshtml" />
+    <Content Include="Views\DeptCourseMap\Index.cshtml" />
+    <Content Include="Views\SubjectMaster\CreateData.cshtml" />
+    <Content Include="Views\Trustee\CollageFacilitys.cshtml" />
+    <Content Include="Views\FeeDetails\Index.cshtml" />
+    <Content Include="Views\Fee\Index.cshtml" />
+    <Content Include="Views\Trustee\DraftApplication.cshtml" />
+    <Content Include="Views\Trustee\EditApplication.cshtml" />
+    <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
+    <Content Include="Views\AcdmcMst\index.cshtml" />
+    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

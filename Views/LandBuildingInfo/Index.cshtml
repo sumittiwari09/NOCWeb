@@ -112,14 +112,14 @@
                 <h4 class="mt-0 header-title float-left">Land And Building Information</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("SaveDetails", "BasicDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("SaveDetails", "LandBuildingInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" />
-                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>
+                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" name="LandAreaProof" />
+                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>*@
                             </div>
                         </div>
 
@@ -130,25 +130,18 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-                            @*<div>
 
-            <label for="html">Yes</label>
-            <input class="form-group col-sm-2" type="radio" id="html" name="fav_language" value="YES">
-            <label for="NOhtml">No</label>
-            <input class="form-group col-sm-2" type="radio" id="NOhtml" name="fav_language" value="NO">
-        </div>*@
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-primary" type="radio" name="iFK_TypeConvert" id="customRadioYes" value="yes" name="RadioYES">
-                                <label for="customRadioYes" class="custom-control-label">YES</label>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="IsLandConvert" id="IsLandConvertYes" value="yes">
+                                <label for="IsLandConvertYes" class="custom-control-label">YES</label>
                             </div>
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-danger" type="radio" name="iFK_TypeConvert" id="customRadioNo" value="no" name="RadioYES">
-                                <label for="customRadioNo" class="custom-control-label">No</label>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" name="IsLandConvert" id="IsLandConvertNo" value="no">
+                                <label for="IsLandConvertNo" class="custom-control-label">No</label>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row">                        
+                    <div class="row">
                         <div class="form-group col-lg-6">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Owner Name</label>
                             <div>
@@ -156,15 +149,15 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
+                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Certificate Document</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" name="LandArea" type="file" id="fupFile" />
+                                <input class="form-group col-sm-6" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
                                 <span id="LandArea"></span>
-                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Certificate Doc</button>
+                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Certificate Doc</button>*@
                             </div>
                         </div>
                     </div>
-                   
+
                     <div class="card-header fsc">
                         <h4 class="header-title">Own Building</h4>
                     </div>
@@ -187,14 +180,20 @@
                         <div class="form-group col-lg-4">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Details Of Land</label>
                             <div>
-                                <input type="text" class="form-control" name="DetailsLand" id="txtDetailsOfLand" autocomplete="off" />
+                                <input type="text" class="form-control" name="LandDetail" id="txtDetailsOfLand" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Khasra No</label>
                             <div>
-                                <input type="text" class="form-control" name="KhasraNo" id="txtKhasraNo" autocomplete="off" />
+                                <input type="text" class="form-control" name="LandNo" id="txtKhasraNo" autocomplete="off" />
                             </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Front Building Image</label>
+                            <button class="btn col-sm-10 locationBTN" id="btnfrontImage">
+                                <input type="file" placeholder="Upload Doc" name="FrontBuildingImage" id="txtfrontBuildingImage" />
+                            </button>
                         </div>
                     </div>
                     <div class="card-header fsc">
@@ -202,39 +201,104 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-                            @*<div>
-                                <label for="html">Yes</label>
-                                <input class="form-group col-sm-2" type="radio" id="html" name="fav_language" value="YES">
-                                <label for="NOhtml">No</label>
-                                <input class="form-group col-sm-2" type="radio" id="NOhtml" name="fav_language" value="NO">
-                            </div>*@
-                           
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="yes" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="yes" name="IsAnyOtherInfo">
                                 <label for="customRadioYes" class="custom-control-label">YES</label>
                             </div>
                             <div class="custom-control custom-radio col-sm-4">
-                                <input class="custom-control-input custom-control-input-danger" type="radio" id="customRadioNo" value="no" name="RadioYES">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="customRadioNo" value="No" name="IsAnyOtherInfo">
                                 <label for="customRadioNo" class="custom-control-label">No</label>
                             </div>
 
                         </div>
                         <div class="form-group col-lg-12">
-
                             <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">If Yes Upload</label>
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" />
-                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Upload Doc</button>
+                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="UploadFile" name="OwnBuildingProof" />
+                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>
                             </div>
+                        </div>
+                    </div>
+                    <div class="card-header fsc">
+                        <h4 class="header-title">Current year Building saftey</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>
+                            <div>
+                                <input type="text" class="form-control" name="OrderNoCurrent" id="txtOrderNo" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>
+                            <div>
+                                <input type="date" class="form-control" name="OrderDateCurrent" id="txtOrderDateCurrent" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="btnUploadDocumentCurrent">
+                                <input type="file" placeholder="Upload Doc" name="UploadDocumentCurrent" id="txtUploadDocumentCurrent" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsc">
+                        <h4 class="header-title">Fire NOC</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="fireNocYes" value="yes" name="fireNoc">
+                                <label for="fireNocYes" class="custom-control-label">YES</label>
+                            </div>
+                        </div>
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="fireNocNo" value="no" name="fireNoc">
+                                <label for="fireNocNo" class="custom-control-label">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
+                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentFireNoc" id="txtFireNoc" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsc">
+                        <h4 class="header-title">PWC NOC</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="pwcNocYes" value="yes" name="pwcNoc">
+                                <label for="pwcNocYes" class="custom-control-label">YES</label>
+                            </div>
+                        </div>
+                        <div class="form-group custom-control custom-radio col-lg-3">
+                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
+                            <div>
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="pwcNocNo" value="no" name="pwcNoc">
+                                <label for="pwcNocNo" class="custom-control-label">No</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
+                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
+                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentPwcNoc" id="txtPwcNoc" />
+                            </button>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-lg-12" style="text-align:center">
                             <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
+                            <button class="btn btn col-sm-2" type="button" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
                             <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
                             @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
 
@@ -257,7 +321,7 @@
 
 
     $(document).ready(function () {
-        getLocation()
+
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
         if (isuserExists == 1 && message.length> 0) {
@@ -288,271 +352,117 @@
         //});
         $("#ddlUniverSity").select2();
 
-        //$('#ddlOperator').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var operatorval = parseInt($("#ddlOperator").val());
-        //    //getCommissions(operatorval);
-        //    //alert(operator)
-        //    //alert(operatorval)
-        //    if (operatorval <= 6) {
-        //        $('#divPlansForDTH').hide();
-        //        $('#divPlansForMobile').show();
-        //        $('#divCircle').show();
-        //        var selectedCircle = $('#ddlCircle').val();
-        //        if (selectedCircle != "0") {
-        //            $('#loadingDiv').css('display', 'block');
-        //        }
-
-        //        $('#txtRechargeAmount').attr('readonly', 'true');
-        //        $('#lblmobile').html('Enter Mobile Number');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlans(operator, selectedCircle);
-        //    }
-        //    if (operatorval >= 7) {
-        //        var operator = $("#ddlOperator option:selected").text();
-        //        $('#loadingDivnew').css('display', 'block');
-        //        $('#divPlansForDTH').show();
-        //        $('#divPlansForMobile').hide();
-        //        $('#PlansDivForDTH').show();
-        //        $('#txtRechargeAmount').removeAttr('readonly');
-        //        $('#lblmobile').html('Enter Subscriber ID');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
-        //        $('#divCircle').hide();
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlansForDTH(operator);
-        //    }
-
-        //});
-        //$('#ddlCircle').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var circle = $(this).val();
-
-        //    $('#txtRechargeAmount').attr('readonly', 'true');
-        //    $('#lblmobile').html('Enter Mobile Number');
-        //    $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //    $('#txtRechargeAmount').val('');
-        //    $('#txtplanDescription').html('');
-        //    $('#txtMobileNumer').val('');
-        //    $('#btnRecharge').attr('disabled', 'true');
-
-        //    if (operator == 'Select Operator') {
-        //        Swal.fire({
-        //            position: 'center',
-        //            icon: 'error',
-        //            title: 'Operator Not Selected',
-        //            text: 'Please select operator first...',
-        //            allowOutsideClick: false,
-        //            showCloseButton: false,
-        //            showConfirmButton: true,
-        //        });
-        //    }
-        //    else if (circle == 0) {
-        //        $('#divPlansForMobile').hide();
-
-
-        //    }
-        //    else {
-        //        $('#loadingDiv').css('display', 'block');
-        //        $('#divPlansForMobile').show();
-        //        getPlans(operator, circle);
-        //    }
-
-
-        //});
-
-        $('#txtMobileNumber').blur(function () {
-            if ($("#txtMobileNumber").val().length > 0) {
-                if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
-                        allowOutsideClick: false,
-                        showCloseButton: true,
-                        showConfirmButton: false,
-
-                    });
-                    $("#txtMobileNumber").val('');
-                    // $('#txtUsername').val('');
-                }
-            }
-            if ($("#txtAddiMobileNumber").val().length > 0) {
-                if ($("#txtAddiMobileNumber").val().substr(0, 1) == 0 || $("#txtAddiMobileNumber").val().length < 10) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
-                        allowOutsideClick: false,
-                        showCloseButton: true,
-                        showConfirmButton: false,
-
-                    });
-                    $("#txtAddiMobileNumber").val('');
-                    // $('#txtUsername').val('');
-                }
-            }
-        })
     });
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-         } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
-    function showPosition(position) {
-        //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
-        var data = {
-            lat:position.coords.latitude,
-            long:position.coords.longitude
-        }
 
-        console.log(JSON.stringify(data));
 
-        $('#txtLatitude').val(data.lat);
-        $('#txtLongitude').val(data.long);
+    //function CheckValidation() {
+    //    var status = true;
+    //   // var Bankname = $('#txtBankName').val().trim();
+    //    var MobileNumber = $('#txtMobileNumber').val().trim();
+    //    var Email = $('#txtEmail').val().trim();
+    //    var WebsiteUrl = $('#txtWebsiteurl').val().trim();
+    //    var Address1 = $('#txtAddressLine1').val().trim();
+    //    var Address2 = $('#txtAddressLine2').val().trim();
+    //    var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
+    //    var LandlineNumber = $('#txtLandlineNumber').val().trim();
 
-        //$('#hdf_longitudeData').val(position.coords.longitude)
-        //$('#hdf_latitudeData').val(position.coords.latitude)
-        //console.log('from inner');
-        //console.log("lat : " + $('#hdf_longitudeData').val());
-        //console.log("long : " + $('#hdf_latitudeData').val());
-    }
+    //    if (MobileNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Mobile Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtMobileNumber').focus();
+    //        $('#txtMobileNumber').val('');
+    //        status = false;
+    //     }
+    //    else if (Email.length <= 0) {
+    //         Swal.fire({
+    //             position: 'center',
+    //             icon: 'error',
+    //             title: 'Email Id Required...!',
+    //             allowOutsideClick: false,
+    //             showCloseButton: true,
+    //             showConfirmButton: false,
+    //         })
+    //         $('#txtEmail').focus();
+    //         $('#txtEmail').val('');
+    //         status = false;
+    //     }
+    //    else if (WebsiteUrl.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Website URL Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtWebsiteurl').focus();
+    //        $('#txtWebsiteurl').val('');
+    //        status = false;
+    //    }
+    //    else if (Address1.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Address1 is Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false,
+    //        })
+    //        $('#txtAddressLine1').focus();
+    //        $('#txtAddressLine1').val('');
+    //        status = false;
+    //    }
+    //    else if (Address2.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Address2 is Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false,
+    //        })
+    //        $('#txtAddressLine2').focus();
+    //        $('#txtAddressLine2').val('');
+    //        status = false;
+    //    }
+    //    else if (AdiMobileNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Additional Mobile Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtAddiMobileNumber').focus();
+    //        $('#txtAddiMobileNumber').val('');
+    //        status = false;
+    //    }
+    //    else if (LandlineNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Landline Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtLandlineNumber').focus();
+    //        $('#txtLandlineNumber').val('');
+    //        status = false;
+    //    }
 
-    function CheckValidation() {
-        var status = true;
-       // var Bankname = $('#txtBankName').val().trim();
-        var MobileNumber = $('#txtMobileNumber').val().trim();
-        var Email = $('#txtEmail').val().trim();
-        var WebsiteUrl = $('#txtWebsiteurl').val().trim();
-        var Address1 = $('#txtAddressLine1').val().trim();
-        var Address2 = $('#txtAddressLine2').val().trim();
-        var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
-        var LandlineNumber = $('#txtLandlineNumber').val().trim();
-
-        //if (Bankname.length <= 0) {
-        //    Swal.fire({
-        //        position: 'center',
-        //        icon: 'error',
-        //        title: 'Bank Name Required...!',
-        //        allowOutsideClick: false,
-        //        showCloseButton: true,
-        //        showConfirmButton: false,
-        //    })
-        //    $('#txtBankName').focus();
-        //    $('#txtBankName').val('');
-        //    status = false;
-        //}
-        //else
-        if (MobileNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Mobile Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtMobileNumber').focus();
-            $('#txtMobileNumber').val('');
-            status = false;
-         }
-        else if (Email.length <= 0) {
-             Swal.fire({
-                 position: 'center',
-                 icon: 'error',
-                 title: 'Email Id Required...!',
-                 allowOutsideClick: false,
-                 showCloseButton: true,
-                 showConfirmButton: false,
-             })
-             $('#txtEmail').focus();
-             $('#txtEmail').val('');
-             status = false;
-         }
-        else if (WebsiteUrl.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Website URL Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtWebsiteurl').focus();
-            $('#txtWebsiteurl').val('');
-            status = false;
-        }
-        else if (Address1.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Address1 is Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAddressLine1').focus();
-            $('#txtAddressLine1').val('');
-            status = false;
-        }
-        else if (Address2.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Address2 is Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAddressLine2').focus();
-            $('#txtAddressLine2').val('');
-            status = false;
-        }
-        else if (AdiMobileNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Additional Mobile Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtAddiMobileNumber').focus();
-            $('#txtAddiMobileNumber').val('');
-            status = false;
-        }
-        else if (LandlineNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Landline Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtLandlineNumber').focus();
-            $('#txtLandlineNumber').val('');
-            status = false;
-        }
-
-        if (status) {
-            $('#btnsubmitDetails').click();
-        }
-    }
+    //    if (status) {
+    //        $('#btnsubmitDetails').click();
+    //    }
+    //}
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);

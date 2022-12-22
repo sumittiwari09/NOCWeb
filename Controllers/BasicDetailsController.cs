@@ -113,7 +113,30 @@ namespace NewZapures_V2.Controllers
             {
                 throw ex;
             }
-            return RedirectToAction("CreateDetails");
+            //return RedirectToAction("CreateDetails");
+        }
+
+        [HttpGet]
+        public ActionResult CollageList()
+        {
+            #region List Collage Apply List
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/CollageListApply");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.CollageList> _result = _JsonSerializer.Deserialize<List<TrusteeBO.CollageList>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.collagelist = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            return View();            
         }
 
     }
