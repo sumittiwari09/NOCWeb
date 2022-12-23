@@ -24,6 +24,7 @@ namespace NewZapures_V2.Controllers
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
 
+
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
@@ -428,9 +429,13 @@ namespace NewZapures_V2.Controllers
         public ActionResult CollageFacilitys()
         {
             //Collage Faciliy Master from Enum
-            List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
-            CollageFacilityMster = Common.GetCustomMastersList(35);
-            ViewBag.CollageFacilityMster = CollageFacilityMster;
+            //List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
+            //CollageFacilityMster = Common.GetCustomMastersList(35);
+            //ViewBag.CollageFacilityMster = CollageFacilityMster;
+            ViewData["TrustId"] = "0";
+            ViewData["CollageId"] = "0";
+
+            ViewBag.CollageFacilityMster = new List<CustomMaster>();
 
             //Trust List 
             List<CustomMaster> TrustList = new List<CustomMaster>();
@@ -461,8 +466,67 @@ namespace NewZapures_V2.Controllers
             #endregion
             return View();
         }
+
         [HttpPost]
-        public JsonResult CollageFacilitys(TrusteeBO.CollageFacility modal)
+        public ActionResult CollageFacilitys(TrusteeBO.CollageFacility modal)
+        {
+
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            request.AddParameter("application/json", _JsonSerializer.Serialize(modal), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                TrusteeBO.CollageFacility _result = _JsonSerializer.Deserialize<TrusteeBO.CollageFacility>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.CollageFacilityMster = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            //Collage Faciliy Master from Enum
+            //List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
+            //CollageFacilityMster = Common.GetCustomMastersList(35);
+            //ViewBag.CollageFacilityMster = CollageFacilityMster;
+
+            ViewData["TrustId"] = modal.TrustId;
+            ViewData["CollageId"] = modal.CollageId;
+            //Trust List 
+            List<CustomMaster> TrustList = new List<CustomMaster>();
+            TrustList = GetTrustDropDownList(28);
+            ViewBag.TrustList = TrustList;
+
+
+            List<CustomMaster> RoleType = new List<CustomMaster>();
+            RoleType = Common.GetCustomMastersList(29);
+            ViewBag.RoleType = RoleType;
+
+            #region List Trustee
+            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.TrusteeList = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+            return View();
+        }
+        [HttpPost]
+        public JsonResult CollageFacilitysAdd(TrusteeBO.CollageFacility modal)
         {
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageFacility");
@@ -470,13 +534,16 @@ namespace NewZapures_V2.Controllers
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             _JsonSerializer.MaxJsonLength = Int32.MaxValue;
-            request.AddParameter("application/json",_JsonSerializer.Serialize(modal), ParameterType.RequestBody);
+            request.AddParameter("application/json", _JsonSerializer.Serialize(modal), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalMessage"] = "Data saved sussessfully!";
+                    TempData["SwalTitleMsg"] = "Success...!";
                     return new JsonResult
                     {
                         Data = new { failure = true, msg = "Success" },
@@ -527,6 +594,151 @@ namespace NewZapures_V2.Controllers
             };
         }
 
+        public JsonResult GetCollageFaciltyList(int TrustInfoId)
+        {
+            ResponseData objResponse = new ResponseData();
+            List<CustomMaster> objUsermaster = new List<CustomMaster>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                    objUsermaster = JsonConvert.DeserializeObject<List<CustomMaster>>(objResponse.Data.ToString());
+            }
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult CollageAttachment(string TrustId,string CollageId,string CourseId)
+        {
+            ViewData["TrustId"] = TrustId;
+            ViewData["CollageId"] = CollageId;
+            ViewData["CourseId"] = CourseId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CollageAttachment(TrusteeBO.CollageAttachment obj)
+        {
+            List<TrusteeBO.DocumentsDetails> _DOCList = new List<TrusteeBO.DocumentsDetails>();
+
+            TrusteeBO.DocumentsDetails _DocDetails = getDocdetails(obj.affidavit, "affidavit",0,obj.iFk_TrstId,obj.iFk_ClgId,obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.SalaryPayment, "SalaryPayment", 0, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.Bankstatement, "Bankstatement", 0, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.Annexure, "Annexure", 0, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.EsiDoc, "EsiDoc", 0, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsCnnctUnvrctyDrctnfile, "bIsCnnctUnvrctyDrctnfile", obj.bIsCnnctUnvrctyDrctn, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsTimeFrmfile, "bIsTimeFrm", obj.bIsTimeFrm, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsLadDwnfile, "bIsLadDwn", obj.bIsLadDwn, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsSffcentLandfile, "bIsSffcentLand", obj.bIsSffcentLand, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsAffidvtAsprGuidfile, "bIsAffidvtAsprGuid", obj.bIsAffidvtAsprGuid, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+
+            _DocDetails = new TrusteeBO.DocumentsDetails();
+            _DocDetails = getDocdetails(obj.bIsOtherDocfile, "bIsOtherDoc", obj.bIsOtherDoc, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
+            _DOCList.Add(_DocDetails);
+
+            TrusteeBO.CollageattachmentAPI _rendmodal = new TrusteeBO.CollageattachmentAPI();
+            _rendmodal.bIsAffidvtAsprGuid = obj.bIsAffidvtAsprGuid;
+            _rendmodal.bIsCnnctUnvrctyDrctn = obj.bIsCnnctUnvrctyDrctn;
+            _rendmodal.bIsLadDwn = obj.bIsLadDwn;
+            _rendmodal.bIsOtherDoc = obj.bIsOtherDoc;
+            _rendmodal.bIsSffcentLand = obj.bIsSffcentLand;
+            _rendmodal.bIsTimeFrm = obj.bIsTimeFrm;
+            _rendmodal.iFk_TrstId = obj.iFk_TrstId;
+            _rendmodal.iFk_ClgId = obj.iFk_ClgId;
+            _rendmodal.iFk_CourseId = obj.iFk_CourseId;
+            _rendmodal.sSSOID = obj.sSSOID;
+
+            #region Adddata
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageAttachementMain");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            //var json = _JsonSerializer.Serialize(obj);
+            request.AddParameter("application/json", _JsonSerializer.Serialize(_rendmodal), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponseData = _JsonSerializer.Deserialize<ResponseData>(response.Content);
+                if (objResponseData.ResponseCode == "1")
+                {
+                    if(_DOCList != null)
+                    {
+                        foreach(TrusteeBO.DocumentsDetails item in _DOCList)
+                        {
+                            item.Id = objResponseData.ID;
+                            item.EnumNo = 40;
+                            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageAttachementFiles");
+                            request = new RestRequest(Method.POST);
+                            request.AddHeader("cache-control", "no-cache");
+                            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+                            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+
+                            request.AddParameter("application/json", _JsonSerializer.Serialize(item), ParameterType.RequestBody);
+                            response = client.Execute(request);
+                            if (response.StatusCode.ToString() == "OK")
+                            {
+                            }
+                        }
+                    } 
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalMessage"] = "Data saved sussessfully!";
+                    TempData["SwalTitleMsg"] = "Success...!";
+                    return RedirectToAction("CollageAttachment",new { TrustId=obj.iFk_TrstId, CollageId=obj.iFk_ClgId,CourseId=obj.iFk_CourseId });
+                }
+                else
+                {
+                    TempData["SwalStatusMsg"] = "error";
+                    TempData["SwalMessage"] = "Something wrong";
+                    TempData["SwalTitleMsg"] = "error!";
+                    //return RedirectToAction("Index");
+                }
+            }
+            #endregion
+
+            return View();
+        }
+
+
         public JsonResult SaveApplicationDetails(TrusteeBO.SaveApplicationModal applicationModal)
         {
             var json = JsonConvert.SerializeObject(applicationModal);
@@ -552,29 +764,38 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-
-        public JsonResult GetCollageFaciltyList(int TrustInfoId)
+        public TrusteeBO.DocumentsDetails getDocdetails(HttpPostedFileBase file,string Filetype,int Isyes,int TrustId,int CollageId,int CourseId)
         {
-            ResponseData objResponse = new ResponseData();
-            List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("cache-control", "no-cache");
-            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request.AddParameter("application/json", "", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-            if (response.StatusCode.ToString() == "OK")
+            TrusteeBO.DocumentsDetails _result = new TrusteeBO.DocumentsDetails();
+            byte[] Documentbyte;
+            string extension = string.Empty;
+            string ContentType = string.Empty;
+            #region Certified Document
+            if (file != null)
             {
-                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse.Data != null)
-                    objUsermaster = JsonConvert.DeserializeObject<List<CustomMaster>>(objResponse.Data.ToString());
+                extension = Path.GetExtension(file.FileName);
+                ContentType = file.ContentType;
+                using (Stream inputStream = file.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    _result.file = Convert.ToBase64String(Documentbyte);
+                    _result.Extension = extension;
+                    _result.Contenttype = ContentType;
+                    _result.Filetype = Filetype;
+                    _result.Isyes = Isyes;
+                    _result.TrustId = TrustId;
+                    _result.CollageId = CollageId;
+                    _result.CourseId = CourseId;
+                }
             }
-            return new JsonResult
-            {
-                Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
-                ContentEncoding = System.Text.Encoding.UTF8,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };
+            #endregion
+            return _result;
         }
     }
 }

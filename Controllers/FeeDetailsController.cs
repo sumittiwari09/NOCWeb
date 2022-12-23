@@ -15,7 +15,7 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: FeeDetails
-        public ActionResult Index(string CourseId)        
+        public ActionResult Index(string CourseId)
         {
             // department list
             //List<CustomMaster> DepartMentList = new List<CustomMaster>();
@@ -46,7 +46,7 @@ namespace NewZapures_V2.Controllers
             {
                 TrusteeBO.CollageFeeMst _result = _JsonSerializer.Deserialize<TrusteeBO.CollageFeeMst>(response.Content);
                 if (_result != null)
-                {                   
+                {
                     ViewBag.CollageFeeList = _result;
                     //return RedirectToAction("Index");
                 }
@@ -82,7 +82,7 @@ namespace NewZapures_V2.Controllers
             //ViewData["FinancialYearList"] = new SelectList(MyFinancialYearListList.ToList(), "ListID", "ListName");
 
 
-           
+
             return View();
         }
         public List<CustomMaster> GetCourseDropDownList(int Enum)
@@ -120,6 +120,9 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalMessage"] = "Data saved sussessfully!";
+                    TempData["SwalTitleMsg"] = "Success...!";
                     return new JsonResult
                     {
                         Data = new { failure = true, msg = "Success" },
@@ -129,6 +132,9 @@ namespace NewZapures_V2.Controllers
                 }
                 else
                 {
+                    TempData["SwalStatusMsg"] = "error";
+                    TempData["SwalMessage"] = "Something wrong";
+                    TempData["SwalTitleMsg"] = "error!";
                     return new JsonResult
                     {
                         Data = new { failure = false, msg = "Failed" },
