@@ -30,6 +30,7 @@
         font-family: cursive;
         font-weight: 800;
     }
+
     .CartItemCount {
         position: relative;
         top: -14px;
@@ -164,15 +165,15 @@
                     <a class="dropdown-item" href="@Url.Action("MyProfile","Home")"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
                     <a class="dropdown-item" href="@Url.Action("ProfileView","Home",new {Id= userdetails.PartyId,status=0})"><i class="fas fa-user-secret text-muted mr-2"></i> Profile View</a>
                     @*<a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
-        <a class="dropdown-item" href="@Url.Action("Index","MyPayments")"><i class="mdi mdi-credit-card text-muted mr-2"></i> My Payments</a>
-        <a class="dropdown-item" href="#"><i class="fas fa-money-bill text-muted mr-2"></i> My Earning</a>*@
+                        <a class="dropdown-item" href="@Url.Action("Index","MyPayments")"><i class="mdi mdi-credit-card text-muted mr-2"></i> My Payments</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-money-bill text-muted mr-2"></i> My Earning</a>*@
                     <a class="dropdown-item" href="@Url.Action("Setting","Admin")"><i class="dripicons-gear text-muted mr-2"></i> Settings</a>
                     <a class="dropdown-item" href="@Url.Action("Addpartner", "Role")"><i class="fas fa-user-plus text-muted mr-2"></i>Add Partner</a>
                     <a class="dropdown-item" href=""><i class="dripicons-lock text-muted mr-2"></i>Legal and Policies</a>
                     <a class="dropdown-item" href="#"><i class="fab fa-forumbee text-muted mr-2"></i>DashBoard</a>
                     @*<a class="dropdown-item" href="#"><i class="fas fa-cubes text-muted mr-2"></i>Add Commision</a>*@
                     @*<a class="dropdown-item" href="@Url.Action("ServiceWiseTrans", "Report")"><i class="fas fa-cubes text-muted mr-2"></i>Reports</a>
-                    <a class="dropdown-item" href="@Url.Action("GetHierarchyList", "Role")"><i class="fas fa-cubes text-muted mr-2"></i>View Hirarchy</a>*@
+                        <a class="dropdown-item" href="@Url.Action("GetHierarchyList", "Role")"><i class="fas fa-cubes text-muted mr-2"></i>View Hirarchy</a>*@
                     <a class="dropdown-item" href="@Url.Action("NotificationList", "Role")"><i class="mdi mdi-bell-ring text-muted mr-2"></i>Notification History</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" id="btnLogout" style="text-align:center;background: #506ee4;border-radius: 10px;color: white;display: flex;align-items: center;place-content: center;">
