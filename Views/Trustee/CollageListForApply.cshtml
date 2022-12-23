@@ -233,6 +233,7 @@
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
 }
 <script type="text/javascript">
 
@@ -296,7 +297,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: globaUserProperties.domain + "/SaveApplicationDetails",
+                url: GetglobalDomain() + "/Trustee/SaveApplicationDetails",
                 dataType: 'json',
                 type: 'Post',
                 cache: false,
