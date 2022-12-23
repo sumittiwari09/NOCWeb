@@ -119,12 +119,12 @@
             <ul>
                 <li><a href="@Url.Action("Index","LandBuildingInfo")">Add Land and Building Information</a> </li>
                 <li><a href="@Url.Action("CreateData","SubjectMaster")">Add Subject Covered</a> </li>
-                <li><a href="@Url.Action("Index","FeeDetails")">Add College Fee Structure</a></li>
+                <li><a href="@Url.Action("Index","FeeDetails",new { TrustId="8",CollageId="3",CourseId="1101" })">Add College Fee Structure</a></li>
                 <li><a href="@Url.Action("ArchitectureDetail","Master")">Add Architectrual Details</a> </li>
                 <li><a href="@Url.Action("CollageFacilitys","Trustee")">Add Other Facilites</a></li>
                 <li><a href="@Url.Action("Index","Staff")">Add Staff Details</a></li>
                 <li><a href="@Url.Action("Index","AcdmcMst")">Add Acadmy Information</a></li>
-                <li><a href="@Url.Action("CollageAttachment","Trustee",new { TrustId="1",CollageId="1",CourseId="1" })">Collage Attachments</a></li>
+                <li><a href="@Url.Action("CollageAttachment","Trustee",new { TrustId="8",CollageId="3",CourseId="1101" })">Collage Attachments</a></li>
                 @*<li><a href="#">Add Proof Document</a></li>*@
                 <li><a href="@Url.Action("ApplicationPreview","Trustee")">Application Preview</a></li>
             </ul>
@@ -132,7 +132,7 @@
             
             </div>
         </div>
-    </div>
+    </div>;[]
 </div>
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>

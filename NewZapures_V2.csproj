@@ -68,6 +68,9 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="RAJSSO">
+      <HintPath>..\..\Users\Lenovo\OneDrive\Desktop\RAJSSO.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
     </Reference>
@@ -221,8 +224,11 @@
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\DeptCourseMapMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
+    <Compile Include="Models\HandshakeModel.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
     <Compile Include="Models\FeeMaster.cs" />
+    <Compile Include="Models\SessionModel.cs" />
+    <Compile Include="Models\SSOUserDetail.cs" />
     <Compile Include="Models\StaffBO.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />

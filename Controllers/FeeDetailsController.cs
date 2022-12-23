@@ -15,8 +15,12 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: FeeDetails
-        public ActionResult Index(string CourseId)
+        public ActionResult Index(string TrustId, string CollageId, string CourseId)
         {
+
+            ViewData["TrustId"] = TrustId;
+            ViewData["CollageId"] = CollageId;
+            ViewData["CourseId"] = CourseId;
             // department list
             //List<CustomMaster> DepartMentList = new List<CustomMaster>();
             //DepartMentList = Common.GetCustomMastersList(37);
@@ -31,9 +35,11 @@ namespace NewZapures_V2.Controllers
             //List<CustomMaster> FinancialYearList = new List<CustomMaster>();
             //FinancialYearList = Common.GetCustomMastersList(37);
             //ViewBag.FinancialYearList = FinancialYearList;
-            CourseId = "1";
+            //CourseId = "1";
             TrusteeBO.CollageFeeMst obj = new TrusteeBO.CollageFeeMst();
             obj.CourseId = CourseId;
+            obj.TrustId = TrustId;
+            obj.CollageId = CollageId;
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetFeeDetailsList");
             var request = new RestRequest(Method.POST);
