@@ -190,6 +190,26 @@
                         <span id="panfile"></span>
                     </div>
                 </div>
+                
+                
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkIsPrime" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                            @*<input type="hidden" id="hdnchkGSTApplicable" name="IsGST_Applicable" value="@Model.IsGST_Applicable">*@
+                            <label class="custom-control-label" for="chkIsPrime">Is Primary</label>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkIsAuthorized" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                            @*<input type="hidden" id="hdnchkGSTApplicable" name="IsGST_Applicable" value="@Model.IsGST_Applicable">*@
+                            <label class="custom-control-label" for="chkIsAuthorized">Is Authorized</label>
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="col-3 text-center d-flex align-items-center justify-content-center">
