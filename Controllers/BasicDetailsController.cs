@@ -26,8 +26,10 @@ namespace NewZapures_V2.Controllers
             ViewBag.TrustList = TrustList;
 
             var universityList = ZapurseCommonlist.GetUniversities();
+            var collegeType = ZapurseCommonlist.GetCollegeType();
 
             ViewBag.universityCollection = universityList;
+            ViewBag.collegeTypeList = collegeType;
             return View();
         }
         public ActionResult ShowDetails()
@@ -39,7 +41,7 @@ namespace NewZapures_V2.Controllers
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
 
 
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/GetTrustDropDownList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -120,7 +122,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult CollageList()
         {
             #region List Collage Apply List
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/CollageListApply");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -136,7 +138,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-            return View();            
+            return View();
         }
 
     }

@@ -2,6 +2,16 @@
 @{
     ViewBag.Title = "Edit Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var eAppNo = (string)ViewBag.appNo;
+    var etrustName = (string)ViewBag.trustName;
+    var etrustID = (int)ViewBag.trustID;
+    var eclgname = (string)ViewBag.clgname;
+    var edept = (string)ViewBag.dept;
+    var ecours = (string)ViewBag.cours;
+    var deptID = (int)ViewBag.dptID;
+    var ecourseID = (int)ViewBag.courseID;
+    var eClgID = (int)ViewBag.clgID;
+    var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
@@ -91,46 +101,51 @@
         <h4 class="mt-0 header-title float-left">Edit Application Details</h4>
     </div>
     <div class="card-body ">
-        @*<div class="col-lg-12">
+        <div class="col-lg-12">
             <table class="table table-bordered">
                 <tr>
-                    <td>Application Number :</td><td>{Application Number}</td><td>Trust Name</td><td>{Application Number}</td>
+                    <td>Application Number :</td>
+                    <td>@eAppNo</td>
+                    <td>Trust Name</td>
+                    <td>@etrustName</td>
                 </tr>
-                
+                <tr><td colspan="4" style="background: #bdbdbd;">Trust Members</td></tr>
+                @{
+                    if (trusteeMember != null)
+                    {
+                        <tr><th>Member Name</th><th colspan="3">Is Primary</th></tr>
+                        foreach (var item in trusteeMember)
+                        {
+                            <tr><td>@item.sPrsnName</td><td colspan="3">@item.iisprimary</td></tr>
+                        }
+                    }
+                }
                 <tr>
-                    <td>College Name :</td><td>{College Name}</td><td rowspan="2">Trustee Members</td><td>{Application Number}</td>
+                    <td>College Name :</td>
+                    <td>@eclgname</td>
+                    <td>Course</td>
+                    <td>@ecours</td>
                 </tr>
+                <tr><td colspan="4" style="background: #bdbdbd;"><div style="display: flex;place-content: space-between;"><span>Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applicationNo=eAppNo,trustName=etrustName,trustID=etrustID,clgName=eclgname,dptname=edept,cours=ecours,deptID=deptID})" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="table table-striped">
+                            <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo", new {appNo=eAppNo,deptID=deptID})" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
+                            <tr><td><a href="@Url.Action("CreateData","SubjectMaster",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
+                            <tr><td><a href="@Url.Action("Index","FeeDetails",new {appNo=eAppNo,CourseId=ecourseID})" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
+                            <tr><td><a href="@Url.Action("ArchitectureDetail","Master",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Architectrual Details</a></td></tr>
+                            <tr><td><a href="@Url.Action("CollageFacilitys","Trustee",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","Staff",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","AcdmcMst",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
+                            <tr><td><a href="@Url.Action("CollageAttachment","Trustee",new {appNo=eAppNo,TrustId=etrustID,CourseId=ecourseID,CollageId=eClgID})" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
+                       
 
 
+                        </table>
+                    </td>
+                </tr>
 
             </table>
-        </div>*@
-
-
-        <div class="col-12">
-            <div class="col-2">Application Number : </div>
-            <div class="col-2">Trust Name : </div>
-            <div class="col-2">Trustee Members <span><table class="table table-bordered"><tr><th>Member Name</th><th>Isprimary</th></tr><tr><td>Test</td><td>yes</td></tr></table></span> </div>
-            <div class="col-2">College Name :</div>
-            <div class="col-2">Course :</div>
-            <div class="col-7">Forms
-            <br/>
-
-            <ul>
-                <li><a href="@Url.Action("Index","LandBuildingInfo")">Add Land and Building Information</a> </li>
-                <li><a href="@Url.Action("CreateData","SubjectMaster")">Add Subject Covered</a> </li>
-                <li><a href="@Url.Action("Index","FeeDetails")">Add College Fee Structure</a></li>
-                <li><a href="@Url.Action("ArchitectureDetail","Master")">Add Architectrual Details</a> </li>
-                <li><a href="@Url.Action("CollageFacilitys","Trustee")">Add Other Facilites</a></li>
-                <li><a href="@Url.Action("Index","Staff")">Add Staff Details</a></li>
-                <li><a href="@Url.Action("Index","AcdmcMst")">Add Acadmy Information</a></li>
-                <li><a href="@Url.Action("CollageAttachment","Trustee",new { TrustId="1",CollageId="1",CourseId="1" })">Collage Attachments</a></li>
-                @*<li><a href="#">Add Proof Document</a></li>*@
-                <li><a href="@Url.Action("ApplicationPreview","Trustee")">Application Preview</a></li>
-            </ul>
-            
-            
-            </div>
         </div>
     </div>
 </div>
