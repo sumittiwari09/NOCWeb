@@ -15,7 +15,7 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: FeeDetails
-        public ActionResult Index(string CourseId)
+        public ActionResult Index(string CourseId, string appNo)
         {
             // department list
             //List<CustomMaster> DepartMentList = new List<CustomMaster>();

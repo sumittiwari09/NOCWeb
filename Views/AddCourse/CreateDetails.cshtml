@@ -25,7 +25,6 @@
     List<NewZapures_V2.Models.AddCourseBO> trustlist = ViewBag.AddCourseList as List<NewZapures_V2.Models.AddCourseBO>;
 
 
-
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
@@ -148,11 +147,11 @@
                                 <select class="form-control" name="TagCourse" id="txtTagCourse">
                                     <option value="0">Select Course List</option>
                                     @*@{
-                                foreach (var item in CourseList)
-                                {
-                                    <option value="@item.Id">@item.text</option>
-                                }
-                            }*@
+                                            foreach (var item in CourseList)
+                                            {
+                                                <option value="@item.Id">@item.text</option>
+                                            }
+                                        }*@
                                 </select>
                             </div>
                         </div>
@@ -232,6 +231,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
        // (".singleselect").select2();
+        $('#txtTagDegree').change(function () {
+            var id = $(this).val();
+            bindCourse(id);
+        })
 
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
@@ -255,7 +258,7 @@
                     showCloseButton: true,
                     showConfirmButton: false,
                 });
-        }      
+        }
 
         $('#TrustName').change(function () {
             var selectedVal = $(this).val();
@@ -266,7 +269,42 @@
 
         })
     });
+    function bindCourse(deptID) {
+        var html = `<option value="0">Select Course List</option>`;
+        var VertinaryModal = {
+            "departID": parseInt(deptID),
+        }
 
+        var d = JSON.stringify(VertinaryModal);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/AddCourse/GetCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                var mainData = data.Data;
+
+                mainData.forEach(function (item) {
+                    html += `<option value=${item.Id}>${item.Text}</option>`
+                })
+
+                $('#txtTagCourse').html('');
+                $('#txtTagCourse').html(html);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
     function AddCollegeData(Type) {
         debugger
             var strHtml = "";

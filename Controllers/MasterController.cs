@@ -21,7 +21,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult DepartmentMapping()
         {
             int Id = Convert.ToInt32(Request.RequestContext.RouteData.Values["Id"]);
-            List<AddDepartment> departmentList = new List<AddDepartment>();            
+            List<AddDepartment> departmentList = new List<AddDepartment>();
             departmentList = GetDepartments();
             List<Dropdown> NocdeptName = new List<Dropdown>();
             NocdeptName = GetNOCDepartmentsName(1);
@@ -31,7 +31,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.Nocdepttype = Nocdepttype;
             ViewBag.Department = departmentList;
             List<NOCDEPMAP> lstMap = new List<NOCDEPMAP>();
-            lstMap = GetNOCDepartMaplst(0);           
+            lstMap = GetNOCDepartMaplst(0);
             return View(lstMap);
         }
         public ActionResult AddDepartmentMapping(NOCDEPMAP Master)
@@ -84,7 +84,7 @@ namespace NewZapures_V2.Controllers
                 return RedirectToAction("DepartmentMapping");
             }
             return View();
-         
+
         }
         public List<AddDepartment> GetDepartments(string Type = "DepartmentList")
         {
@@ -104,7 +104,7 @@ namespace NewZapures_V2.Controllers
             }
             return departments;
         }
-        public List<Dropdown> GetNOCDepartmentsName(int Type=0)
+        public List<Dropdown> GetNOCDepartmentsName(int Type = 0)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetNOCDepartmentsName?Type=" + Type);
             var request = new RestRequest(Method.GET);
@@ -155,7 +155,7 @@ namespace NewZapures_V2.Controllers
             return View();
         }
         //[ChildActionOnly]
-        public ActionResult AddParameterCategoryMapping(int id=0)
+        public ActionResult AddParameterCategoryMapping(int id = 0)
         {
             List<CustomMaster> UOM = new List<CustomMaster>();
             UOM = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.UOM));
@@ -163,7 +163,7 @@ namespace NewZapures_V2.Controllers
             departmentList = GetDepartments();
             ViewBag.Department = departmentList;
             List<Dropdown> PerameterCategorylst = new List<Dropdown>();
-            PerameterCategorylst = GetPerameterCategorylst(0,0,3);
+            PerameterCategorylst = GetPerameterCategorylst(0, 0, 3);
             //List<CustomMaster> UOM = new List<CustomMaster>();
             //UOM = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.UOM));
             ViewBag.UOM = UOM;
@@ -192,13 +192,13 @@ namespace NewZapures_V2.Controllers
                     departments = JsonConvert.DeserializeObject<List<PARAMCAT>>(objResponse.Data.ToString());
                 }
             }
-           ViewBag.parameterlst=departments;
+            ViewBag.parameterlst = departments;
             return PartialView("_InsertPerametertable");
         }
 
-        public List<Dropdown> GetPerameterCategorylst(int Deptid = 0,int iFk_SelfId=0,int Typid=0)
+        public List<Dropdown> GetPerameterCategorylst(int Deptid = 0, int iFk_SelfId = 0, int Typid = 0)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterCategoryList?Type=" + Typid + "&Deptid="+ Deptid+ "&iFk_SelfId=" + iFk_SelfId + "&EnumId="+ Convert.ToInt32(TypeDocument.UOM));
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterCategoryList?Type=" + Typid + "&Deptid=" + Deptid + "&iFk_SelfId=" + iFk_SelfId + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM));
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -270,7 +270,7 @@ namespace NewZapures_V2.Controllers
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                
+
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (objResponse.Data != null)
                 {
@@ -324,9 +324,9 @@ namespace NewZapures_V2.Controllers
             lst = ParameterValueConfigurationlist();
             return View(lst);
         }
-        
 
-            public JsonResult FillPerameterValue(int Deptid = 0, int CrtgId = 0, int SubCrtgId = 0)
+
+        public JsonResult FillPerameterValue(int Deptid = 0, int CrtgId = 0, int SubCrtgId = 0)
         {
             List<Dropdown> departments = new List<Dropdown>();
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetCategorySubUOM?Deptid=" + Deptid + "&Category=" + CrtgId + "&SubCategory=" + SubCrtgId);
@@ -424,10 +424,10 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("ParameterValueConfiguration");
         }
 
-        public List<PARMTVALUCONFMSTView>ParameterValueConfigurationlist(int Id=0)
+        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0)
         {
-          
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id="+Id+ "&EnumId="+ Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course));
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course));
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -449,11 +449,11 @@ namespace NewZapures_V2.Controllers
 
         #endregion
 
-        
-              public JsonResult FillCoursebyDepartment(int Deptid = 0)
+
+        public JsonResult FillCoursebyDepartment(int Deptid = 0)
         {
             List<Dropdown> departments = new List<Dropdown>();
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetCategorySubUOM?Deptid=" + Deptid + "&Category=" + Deptid + "&SubCategory=" + Convert.ToInt32(TypeDocument.Course)+ "&Table=Course");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetCategorySubUOM?Deptid=" + Deptid + "&Category=" + Deptid + "&SubCategory=" + Convert.ToInt32(TypeDocument.Course) + "&Table=Course");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -496,11 +496,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        public ActionResult ArchitectureDetail()
+        public ActionResult ArchitectureDetail(string appNo)
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
             lst = ParameterValueConfigurationlist();
-            ViewBag.Applicableid = "abc123";
+            ViewBag.Applicableid = appNo;
 
             return View(lst);
         }
@@ -547,7 +547,7 @@ namespace NewZapures_V2.Controllers
         public JsonResult BuildalltabelArchitecture(string item)
         {
             List<ArchiMstDetail> departments = new List<ArchiMstDetail>();
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/BuildalltabelArchitecture?sAppId=" + item );
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/BuildalltabelArchitecture?sAppId=" + item);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -593,11 +593,11 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult DeleteImage(int ipk_ArchiMstDetId)
         {
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id="+ ipk_ArchiMstDetId);
+            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request2.AddParameter("application/json","", ParameterType.RequestBody);
+            request2.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response2 = client2.Execute(request2);
             if (response2.StatusCode.ToString() == "OK")
             {
@@ -630,7 +630,7 @@ namespace NewZapures_V2.Controllers
             };
 
         }
-        public JsonResult UploadCsvFile(int iParamId,int iSubCatId,int iUomId,string Appid,string Type)
+        public JsonResult UploadCsvFile(int iParamId, int iSubCatId, int iUomId, string Appid, string Type)
         {
             var attachedFile = System.Web.HttpContext.Current.Request.Files["CsvDoc"];
             if (attachedFile == null || attachedFile.ContentLength <= 0)
@@ -646,18 +646,18 @@ namespace NewZapures_V2.Controllers
             if (!Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
-               
+
             }
-          
-            string gs = Server.MapPath("~/UploadFloder/"+ Appid+"/");
-            string FileName = Type +"-"+ iParamId + "-" + iSubCatId + "-" + iUomId + Path.GetExtension(attachedFile.FileName);
-            if (System.IO.File.Exists(gs+Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId))
+
+            string gs = Server.MapPath("~/UploadFloder/" + Appid + "/");
+            string FileName = Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId + Path.GetExtension(attachedFile.FileName);
+            if (System.IO.File.Exists(gs + Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId))
             {
                 System.IO.File.Delete(gs + Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId);
             }
 
             attachedFile.SaveAs(gs + FileName);
-            
+
             return new JsonResult
             {
                 Data = new { Data = "", failure = false, msg = "Import File Successfully", isvalid = 1 },

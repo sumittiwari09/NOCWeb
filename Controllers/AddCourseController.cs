@@ -26,17 +26,57 @@ namespace NewZapures_V2.Controllers
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
 
-            List<CustomMaster> DegreeList = new List<CustomMaster>();
-            DegreeList = Common.GetCustomMastersList(33);
-            ViewBag.DegreeList = DegreeList;
+            //List<CustomMaster> DegreeList = new List<CustomMaster>();
+            //DegreeList = Common.GetCustomMastersList(33);
+
+
+            ViewBag.Department = GetDept();
 
             List<CustomMaster> CourseList = new List<CustomMaster>();
             CourseList = Common.GetCustomMastersList(30);
             ViewBag.CourseList = CourseList;
 
-            ViewBag.AddCourseList = GetDetailsList(); 
+            ViewBag.AddCourseList = GetDetailsList();
             return View();
         }
+
+        public List<Dropdown> GetDept()
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetDept");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> data = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+
+        public JsonResult GetCourse(int departID)
+        {
+
+            var courses = ZapurseCommonlist.GetCourseForDept(departID);
+
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = courses, Failure = false, Message = "CourseList" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         public List<CustomMaster> GetCourseDropDownList(int Enum)
         {
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
