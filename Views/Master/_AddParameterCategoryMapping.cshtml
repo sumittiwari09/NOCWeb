@@ -104,7 +104,7 @@
             return false;
         }
         sParmetNam = $("#iFk_Deptid option:selected").text() + "-" + $("#iParCatId option:selected").text() + "-" + $("#iParCatSubId option:selected").text() + "-" + $("#iParUomid option:selected").text();
-  
+
         var Params = JSON.stringify({
             iPk_ParmCateId: iPk_ParmCateId,
             iFk_Deptid: 0,
@@ -133,7 +133,7 @@
                         showConfirmButton: false,
                         timer: 6000
                     })
-              
+
                     Generatepartialpage(0);
                 }
 
@@ -229,7 +229,7 @@
     //    Generatepartialtable($(this).val());
     //});
     function Generatepartialtable(Id) {
-      
+
         $.ajax({
             url: '/Master/InsertPerametertable?Deptid=' + Id,
             type: 'POST',

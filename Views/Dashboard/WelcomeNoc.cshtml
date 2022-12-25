@@ -1,50 +1,87 @@
 ﻿@using NewZapures_V2.Models;
 @{
+    Layout = "";
+    var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
 
-    Layout = null;
+    var servicesCollection = (Data)Session["UserAllDetails"];
+    var userdetails = (UserModelSession)Session["UserDetails"];
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    var profileImage = BaseURL + userdetails.profileImage;
 
-    //var mobileVerified = "";
-    //var PanVerified = "";
-    //var AadharVerified = "";
-    //var EmailVerified = "";
+    var userName = userdetails.Username.Substring(0, 1);
 
-    //var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
-    //var data = ViewBag.AllData as Data;
-    //var id = (string)ViewBag.id;
-    //var Username = (string)ViewBag.UserName;
-    //var UserType = (string)ViewBag.UserType;
-    //if (data != null)
-    //{
+    var NotificationOpRequest = new NotificationOperationRequest { PartyId = userdetails.PartyId, RowID = 0, Type = "View" };
 
-    //    var details = data.userDetails;
-
-    //    mobileVerified = details.mobileVerified == 0 ? "Pending" : "Done";
-
-    //    PanVerified = details.panVerified == 0 ? "Pending" : "Done";
-
-    //    AadharVerified = details.adhaarVerified == 0 ? "Pending" : "Done";
-
-    //    EmailVerified = details.emailVerified == 0 ? "Pending" : "Done";
-    //}
-    
+    var notificationData = (List<NotificationOperationData>)ZapurseCommonlist.NotificationOperation(NotificationOpRequest);
+    var notificationNumber = notificationData.Count();
+    var i = 1;
 }
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/&#64;sweetalert2/theme-material-ui&#64;5.0.10/material-ui.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <style>
-        .sub-form {
-            border: 2px solid #615f5f;
-            padding: 20px 10px;
+<head>
+    <meta charset="utf-8" />
+    <title>NOC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/images/NOCIMAGE.png">
+    @Styles.Render("~/Content/css")
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/loader.css" rel="stylesheet" />
+    @*@RenderSection("styles", false)*@
+    <style type="text/css">
+
+        .notificationNumber {
+            position: relative;
+            top: -14px;
+            font-size: 13px;
+            padding: 0px 7px;
+            background: red;
+            text-align: center;
+            color: white;
+            border-radius: 50%;
+            left: -14px;
+            font-family: cursive;
+            font-weight: 800;
         }
+
+        .CartItemCount {
+            position: relative;
+            top: -14px;
+            font-size: 13px;
+            padding: 0px 7px;
+            background: red;
+            text-align: center;
+            color: white;
+            border-radius: 50%;
+            left: -14px;
+            font-family: cursive;
+            font-weight: 800;
+        }
+
+        #divUsernamInitials {
+            height: 35px;
+            width: 35px;
+            margin-right: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            background: linear-gradient(135deg, #478bb8 0%, #9cb347 100%);
+        }
+
+        .enlarge-menu .topbar .navbar-custom {
+            margin-left: 70px !important;
+        }
+    </style>
+    <style>
         .welcm-txt h2 {
             color: #0000ff;
         }
@@ -56,6 +93,11 @@
 
         span.red {
             color: #ef0808 !important;
+        }
+
+        .sub-form {
+            border: 2px solid #615f5f;
+            padding: 20px 10px;
         }
 
         .sub-inrhead h5 {
@@ -137,197 +179,593 @@
         }
     </style>
 </head>
-<body>
 
-    @*@Html.Partial("_top-bar")*@
-    <div class="main-form">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-1"></div>
-                <div class="col-lg-10 col-md-8 col">
-                    <div class="sub-form">
-                        <div class="welcm-txt">
-                            <h2>Welcome to NOC Rajasthan ,follow following steps<span class="red"></span></h2>
-                            <p>You are successfully logged in to the system.</p>
+<body style="overflow: visible !important;">
+    <!-- leftbar-tab-menu -->
+    <div class="leftbar-tab-menu">
+        <div class="main-icon-menu slimscroll-menu">
+            <a href="@Url.Action("Index", "Dashboard")" class="logo logo-metrica d-block text-center">
+                <span>
+                    <img src="~/images/NOCIMAGE.png" alt="logo-small" class="logo-sm">
+                </span>
+            </a>
+            <nav class="nav">
+
+                <a href="#MetricaDashboard" class="nav-link active" data-toggle="tooltip-custom" data-placement="right" data-trigger="hover" title="" data-original-title="Dashboard">
+                    <i data-feather="home" class="align-self-center menu-icon icon-dual"></i>
+                </a><!--end MetricaDashboards-->
+
+
+
+
+            </nav><!--end nav-->
+        </div><!--end main-icon-menu-->
+    </div>
+    <!-- end leftbar-tab-menu-->
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- Navbar -->
+        <nav class="navbar-custom" style="margin-left:70px !important;">
+            <ul class="list-unstyled topbar-nav float-right mb-0">
+
+                @*<Cart Code>*@
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false" id="linkCartIcon">
+                        <i class="mdi mdi-cart" style="font-size:25px"></i> <span class="CartItemCount" style="display:none" id="CartItemCount"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:5px">
+                        <div class="row col-12" id="divCartItems">
+                            <p>No Item Available</p>
                         </div>
-                        <!--<div class="inner-form">
-                            <div class="row">
-                                <div class="col-lg-7 col-md-6">
-                                    <div class="left-subfrm">
-                                        <div class="sub-inrhead">
-                                            <h5>Your Selected Services</h5>
-                                        </div>-->
-                        @*@if (data != null)
-                            {
-                                string str = "";
-                                foreach (var item in data.serviceName)
-                                {
-                                    str = str + "," + item.serviceName;
-                                    <input type="button" id="service" value='@item.serviceName'>
-                                }
-                                <input type="hidden" id="serviceNames" value='@str' />
-                            }*@
+                    </div>
+                </li>
 
 
-                        <!--</div>
-                            <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Services</a>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="rght-subfrm">
-                                <div class="sub-inrhead">
-                                    <h5>Your Selected Devices</h5>
-                                </div>-->
-                        @*@if (data != null)
-                            {
-                                foreach (var item in data.harwareName)
-                                {
-                                    <input type="button" value='@item.hardwareName' class="red">
-                                }
-                            }*@
-                        <!--</div>
-                                    <a href="@Url.Action("OurServices","Welcome")" class="btn btn-success"><i class="fa fa-shopping-cart"></i> Buy More Devices</a>
-
+                @*<Notification Icon Code>*@
+                <li class="dropdown">
+                    @{
+                        if (notificationNumber <= 0)
+                        {
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="mdi mdi-bell-ring" style="font-size:25px"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:25px">
+                                <div class="row col-12" id="divnotificationMsg">
+                                    <p>No New Notification</p>
                                 </div>
-                            </div>
-                        </div>-->
-                        @*<div class="row">
-                                <div class="col-lg-12 col-md-6">
-                                    <div class="verify-box">
-                                        <h2>Verification Process</h2>
-                                        <div class="table-in">
-                                            <table class="table table-bordered" id="tblverify">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Item</th>
-                                                        <th scope="col">Verification Status</th>
-                                                        <th scope="col">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
 
-                                            <div class="third-txt">
-                                                <span class="upld-doc">Uploaded Document [ Only For Manual Verification ]</span>
-                                            </div>
-                                            <div class="two-servctxt">
-                                                <div class="row col-lg-12 mt-4">
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="mdi mdi-bell-ring" style="font-size:25px"></i> <span class="notificationNumber" id="notificationCount">@notificationNumber</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:15px">
+                                @foreach (var item in notificationData)
+                                {
+
+
+                                    <div class="row" id="divnotificationMsg" style="display: flex;place-content: center;justify-content: center;align-items: center;">
+                                        <span style="padding: 8px;color: black;font-size: 16px;border-radius: 50%;font-family: 'Poppins';font-weight: 600;">@i .</span>
+                                        <div class="col-lg-8">
+                                            @{
+                                                if (item.IsRead == 0)
+                                                {
+
+                                                    <p style="display: inline-block;width: 360px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;margin-top: 19px;font-weight:700">@item.Message</p>
+                                                }
+                                                else
+                                                {
+                                                    <p style="display: inline-block;width: 360px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;margin-top: 19px;">@item.Message</p>
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button href="#" class="btn btn-outline-primary" style="font-size: 12px;" onclick="ReadNotification('@item.NotificationUserListID','MarkasRead')">Mark as Read</button>
+                                        </div>
+
+
+                                    </div>
+
+                                    i++;
+
+                                }
+                            </div>
+                        }
+                    }
+
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" style="display: flex; justify-content: center; align-items: center;" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+
+                        @{
+                            if (!string.IsNullOrEmpty(userdetails.profileImage))
+                            {
+                                <img src="@profileImage" alt="profile-user" class="rounded-circle" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle" id="divUsernamInitials"></div>
+
+                                @*<img src="~/images/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
+                            }
+                        }
+
+
+
+                        @*<img src="@(!string.IsNullOrEmpty(userdetails.profileImage)?profileImage:"~/../images/users/user-4.jpg")" alt="profile-user" class="rounded-circle" />*@
+                        @*<img src="../images/users/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
+
+                        <span class="ml-1 nav-user-name hidden-sm">
+                            @(userdetails != null && userdetails.Username!=""? userdetails.Username  : "Amelia") <i class="mdi mdi-chevron-down"></i>
+                            @*Amelia<i class="mdi mdi-chevron-down"></i>*@
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="@Url.Action("MyProfile","Home")"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("ProfileView","Home",new {Id= userdetails.PartyId,status=0})"><i class="fas fa-user-secret text-muted mr-2"></i> Profile View</a>
+                        @*<a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
+                            <a class="dropdown-item" href="@Url.Action("Index","MyPayments")"><i class="mdi mdi-credit-card text-muted mr-2"></i> My Payments</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-money-bill text-muted mr-2"></i> My Earning</a>*@
+                        <a class="dropdown-item" href="@Url.Action("Setting","Admin")"><i class="dripicons-gear text-muted mr-2"></i> Settings</a>
+                        <a class="dropdown-item" href="@Url.Action("Addpartner", "Role")"><i class="fas fa-user-plus text-muted mr-2"></i>Add Partner</a>
+                        <a class="dropdown-item" href=""><i class="dripicons-lock text-muted mr-2"></i>Legal and Policies</a>
+                        <a class="dropdown-item" href="#"><i class="fab fa-forumbee text-muted mr-2"></i>DashBoard</a>
+                        @*<a class="dropdown-item" href="#"><i class="fas fa-cubes text-muted mr-2"></i>Add Commision</a>*@
+                        @*<a class="dropdown-item" href="@Url.Action("ServiceWiseTrans", "Report")"><i class="fas fa-cubes text-muted mr-2"></i>Reports</a>
+                            <a class="dropdown-item" href="@Url.Action("GetHierarchyList", "Role")"><i class="fas fa-cubes text-muted mr-2"></i>View Hirarchy</a>*@
+                        <a class="dropdown-item" href="@Url.Action("NotificationList", "Role")"><i class="mdi mdi-bell-ring text-muted mr-2"></i>Notification History</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" id="btnLogout" style="text-align:center;background: #506ee4;border-radius: 10px;color: white;display: flex;align-items: center;place-content: center;">
+                            <i class="dripicons-exit text-muted mr-2" style="color: white !important;display: flex;"></i> Logout
+                        </a>
+                    </div>
+                </li>
+
+                @*<li class="mr-2">
+                        <a href="#" class="nav-link" data-toggle="modal" data-animation="fade" data-target=".modal-rightbar">
+                            <i data-feather="align-right" class="align-self-center"></i>
+                        </a>
+                    </li>*@
+            </ul><!--end topbar-nav-->
+
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li>
+                    <a href="@Url.Action("Dashboard", "DashboardReport")">
+                        <span class="responsive-logo">
+                            <img src="~/images/logo-dark.png" alt="logo-small" class="logo-sm align-self-center" style="width: 40px;height: 35px;">
+                        </span>
+                    </a>
+                </li>
+                @*<li>
+                        <button class="button-menu-mobile nav-link waves-effect waves-light">
+                            <i data-feather="menu" class="align-self-center"></i>
+                        </button>
+                    </li>*@
+                @*    <li class="dropdown">
+                              <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+                                 aria-haspopup="false" aria-expanded="false">
+                                  <span class="ml-1 p-2 bg-soft-classic nav-user-name hidden-sm rounded">System <i class="mdi mdi-chevron-down"></i> </span>
+                              </a>
+                              <div class="dropdown-menu dropdown-xl dropdown-menu-left p-0">
+                                  <div class="row no-gutters">
+                                      <div class="col-12 col-lg-6">
+                                          <div class="text-center system-text">
+                                              <h4 class="text-white">The Poworfull Dashboard</h4>
+                                              <p class="text-white">See all the pages Metrica.</p>
+                                              <a href="https://mannatthemes.com/metrica/" class="btn btn-sm btn-pink mt-2">See Dashboard</a>
+                                          </div>
+                                          <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+                                              <div class="carousel-inner">
+                                                  <div class="carousel-item active">
+                                                      <img src="~/images/dashboard/dash-1.png" class="d-block img-fluid" alt="...">
+                                                  </div>
+                                                  <div class="carousel-item">
+                                                      <img src="~/images/dashboard/dash-4.png" class="d-block img-fluid" alt="...">
+                                                  </div>
+                                                  <div class="carousel-item">
+                                                      <img src="~/images/dashboard/dash-2.png" class="d-block img-fluid" alt="...">
+                                                  </div>
+                                                  <div class="carousel-item">
+                                                      <img src="~/images/dashboard/dash-3.png" class="d-block img-fluid" alt="...">
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div><!--end col-->
+                                      <div class="col-12 col-lg-6">
+                                          <div class="divider-custom mb-0">
+                                              <div class="divider-text bg-light">All Dashboard</div>
+                                          </div>
+                                          <div class="p-4 text-left">
+                                              <div class="row">
+                                                  <div class="col-6">
+                                                      <a class="dropdown-item mb-2" href="index.html"> Analytics</a>
+                                                      <a class="dropdown-item mb-2" href="crypto-index.html"> Crypto</a>
+                                                      <a class="dropdown-item mb-2" href="crm-index.html"> CRM</a>
+                                                      <a class="dropdown-item" href="projects-index.html"> Project</a>
+                                                  </div>
+                                                  <div class="col-6">
+                                                      <a class="dropdown-item mb-2" href="ecommerce-index.html"> Ecommerce</a>
+                                                      <a class="dropdown-item mb-2" href="helpdesk-index.html"> Helpdesk</a>
+                                                      <a class="dropdown-item" href="hospital-index.html"> Hospital</a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div><!--end col-->
+                                  </div><!--end row-->
+                              </div>
+                          </li>
+                    <li class="hide-phone app-search">
+                              <form role="search" class="">
+                                  <input type="text" id="AllCompo" placeholder="Search..." class="form-control">
+                                  <a href=""><i class="fas fa-search"></i></a>
+                              </form>
+                          </li>*@
+            </ul>
+        </nav>
+        <!-- end navbar-->
+    </div>
+    <!-- Top Bar End -->
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab" style=" width:calc(100% - 70px);">
+            <!-- main container -->
+            <div class="container-fluid">
+                <div class="main-form">
+                    <div class="container">
+                        <div class="row" style="margin-top:50px">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-10 col-md-8 col">
+                                <div class="sub-form" style="background:#fff">
+                                    <div class="welcm-txt">
+                                        <h2>Welcome to NOC Rajasthan ,follow following steps<span class="red"></span></h2>
+                                        <p>You are successfully logged in to the system.</p>
+                                    </div>
+                                    <div class="card-body row">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="form-group col-lg-12">
+                                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px; color:#000">Trust Registration No.</label>
+                                                    <div>
+                                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtReg" name="RegistationNo" value="RAJ1234KRI" readonly>
+                                                    </div>
                                                 </div>
+
                                             </div>
+                                            <div class="row">
+                                                <label for="example-text-input" class="col-sm-12" style="padding-left:215px; color:#000">OR</label>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="form-group col-lg-12">
+                                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px;color:#000">Trust Name</label>
+                                                    <div>
+                                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtName" name="TrustName" value="Krishna Charitable Trust" readonly>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-3"></div>
+                                        <div class="row col-lg-12" style="margin-top:20px">
+                                            <div class="col-lg-12 loat-right">
+                                                @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+                                                <button class="btn" id="btnCapitalAdd" style="color:white!important;float:right;background: #f953c6;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #b91d73, #f953c6);" onclick="Verify()">Verify</button>
+                                            </div>
+                                            @*</div>*@
+                                        </div>
+                                        <div class="row col-lg-12" style="margin-top:20px">
+                                            <div class="col-lg-12 contn-btn">
+                                                @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+                                                <input class="btn btn-success" type="submit" value="proceed to enter Trust Details" id="continue" style="display:none;float:right" onclick="Countinue();">
+                                            </div>
+                                            @*</div>*@
                                         </div>
                                     </div>
+                                    <div class=" text-center">
+
+                                        @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
+
+
+                                        @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
+                                    </div>
                                 </div>
-                            </div>*@
-                        @*<div class="disclmr">
-                                <h4>Disclaimer: <span class="dis-txt">If verification is not completed you can't get access to the system</span></h4>
-                            </div>*@
-                        <div class="contn-btn text-center">
-
-                            @*<a class="btn btn-success" href="@Url.Action("Finalpage", "Welcome")">Continue</a>*@
-
-                            <input type="submit" value="Prceeed to enter Trust Details" id="continue" style="display:block" onclick="Countinue();">
-                            @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
+                            </div>
+                            <div class="col-lg-1"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-1"></div>
+                @*@RenderBody()*@
             </div>
+            <div class="modal fade hide" id="progressModel" tabindex="-1" role="dialog" data-backdrop="static">
+                <div class="modal-dialog" style="margin-top:320px;">
+                    <div class="Loader float-right" style="width:500px;">
+                        <div class="row col-lg-12">
+                            <div class="col-lg-5">
+                                <h1 class="text-white"> Loading... </h1>
+                            </div>
+                            <div class="col-lg-6 float-right">
+                                <div class="sk-wave">
+                                    <div class="sk-wave-rect btn-gradient-info waves-effect waves-light"></div>
+                                    <div class="sk-wave-rect btn-gradient-primary waves-effect waves-light"></div>
+                                    <div class="sk-wave-rect btn-gradient-purple waves-effect waves-light"></div>
+                                    <div class="sk-wave-rect btn-gradient-success waves-effect waves-light "></div>
+                                    <div class="sk-wave-rect btn-gradient-warning waves-effect waves-light"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="" class="confirmBox" style="display:none;">
+                <h4><i class="fa fa-question-circle"></i> Confirm</h4>
+                <div class="fullWidth">
+                    <p> Click OK to confirm or Cancel to exit</p>
+                    <div class="fullWidth flr">
+                        <input id="yesConfirm" class="btn comBtn" type="button" value="OK" />
+                        <input id="noConfirm" class="btn whiteBtn" type="button" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+            <div class="overlay"></div>
+            <!-- end container -->
+            <!-- right bar -->
+            @Html.Partial("_right-bar")
+            <!-- end right bar -->
+            <!--footer-->
+            <footer class="footer text-center text-sm-left" style="background:#fff">
+                &copy; 2022 - 2023 NOC <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by </span>
+            </footer>
+            <!--end footer-->
         </div>
+        <!-- end page content -->
     </div>
+    <!-- end page-wrapper -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/select2/js/select2.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-    <script src="~/Content/globalDomain.js"></script>
+    @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
+
+    @Scripts.Render("~/bundles/scripts")
+
+    @*@RenderSection("scripts", false)*@
+    <!-- app.js -->
+    @Scripts.Render("~/Scripts/app.js")
     <script type="text/javascript">
+        var globaUserProperties = new Object();
 
-        var EmailAddress = "";
-        //$(document).ready(function () {
-        //    getverificationStatus();
-        //});
+        var base_url = window.location;
+        globaUserProperties.domain = base_url.origin;// + "/" + window.location.pathname.split('/')[1];  // Stagging where we have domain in front of URL
 
-        @*//tblverify
-        function getverificationStatus() {
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+        function confirmLoader() {
+            $("#progressModel").modal('show');
 
-            var PendingNames = "";
-            $('#tblverify > tbody  > tr ').each(function () {
+        };
 
-                var itemName = $(this).find('td:eq(0)').html();
-
-                var status = $(this).find('td:eq(1)').html()
-
-                if (status == 'Pending') {
-                    if (PendingNames == "") {
-                        PendingNames = itemName;
-                    }
-                    else {
-                        PendingNames += ", " + itemName;
-                    }
+        function Verify() {
+            Swal.fire({
+                title: 'Do you want to verify Trust?',
+                showDenyButton: true, showCancelButton: false,
+                confirmButtonText: 'Yes',
+                denyButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Verified Successfully', '', 'success')
+                    $('#continue').css("display", "block");
+                    $('#btnCapitalAdd').css("display", "none");
+                } else if (result.isDenied) {
+                    Swal.fire('Not Verified', '', 'info')
+                    $('#continue').css("display", "none");
+                    $('#btnCapitalAdd').css("display", "block");
                 }
             });
-
-            if (PendingNames !== "") {
-                var dic = '<div><h4>Your <b>' + PendingNames + '</b> Are Not Verified Please Process Them Before Continue</h4></div>';
-                sweetAlert(dic, 'center', 'warning', 0);
-                $('#verification').css('display', 'block');
-                $('#continue').css('display', 'none');
-            }
-            else {
-
-                $('#verification').css('display', 'none');
-                $('#continue').css('display', 'block');
-            }
-
         }
-
         function Countinue() {
-            var s = $('#serviceNames').val();
-            var url = GetglobalDomain() +"/Home/MyProfile?Id=" + '@id';//
+            var url = GetglobalDomain() + "/Trustee/TrusteeGeneralInfo";//
             window.location.href = url;
 
         }
+    </script>
+    @if (TempData["StatusMsg"] != null)
+    {
+        if (TempData["Message"] != null)
+        {
+            var Msg = TempData["Message"];
+            var StatusMsg = TempData["StatusMsg"];
+            <script type="text/javascript">
+                $(document).ready(function () {
+                var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: function (toast) {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                })
+                    Toast.fire({
+                        icon: '@StatusMsg.ToString()' ,
+                        title: '@Msg.ToString()'
+                    })
+                    //    icon: 'success',
+                    //    icon: 'error',
+                    //    icon: 'info',
+                    //    icon: 'warning',
+                });
+                //$(document).bind("contextmenu", function (e) {
+                //    e.preventDefault();
+                //});
+            </script>
+        }
+    }
 
-        function RedirectToVerfication() {
-            var url = GetglobalDomain() +"/LoginSignup/LoginSecurity";
 
+    @if (TempData["SwalStatusMsg"] != null)
+    {
+        if (TempData["SwalMessage"] != null)
+        {
+            var SwalMsg = TempData["SwalMessage"];
+            var SwalStatusMsg = TempData["SwalStatusMsg"];
+            var SwalTitle = TempData["SwalTitleMsg"];
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                        Swal.fire(
+                            '@SwalTitle.ToString()',
+                            '@SwalMsg.ToString()',
+                            '@SwalStatusMsg.ToString()'
+                        )
+                    //    SwalStatusMsg: 'success',
+                    //    SwalStatusMsg: 'question'
+                    //    SwalStatusMsg: 'error',
+                    //    SwalStatusMsg: 'warning',
+
+                });
+            </script>
+        }
+
+    }
+    <script src="~/Content/LoginSignUp/js/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script>
+
+    $(document).ready(function () {
+
+
+       if ('@userName' != "") {
+            $('#divUsernamInitials').html('');
+            $('#divUsernamInitials').html('@userName');
+        }
+        else {
+            var url = GetglobalDomain() + "/authentication/login-alt";
             window.location.href = url;
+        }
+        @*if ('@notificationCount' > 0) {
+
         }*@
 
-        function Countinue() {
-            //var s = $('#serviceNames').val();
-            //alert(GetglobalDomain);
-            var url = GetglobalDomain() +"/Trustee/TrusteeGeneralInfo";//
-            window.location.href = url;
+        //console.log(window.location.href);
+        //console.log(window.location.pathname);
 
+        var pathName = window.location.pathname.replace("/", '');
+
+        //console.log(pathName.trim());
+
+        if (pathName == "DashboardReport") {
+
+             //setInterval(function () {
+
+            getnotification();
+
+            //}, 5000);
         }
 
-        function sweetAlert(msg, position, icon, timer) {
-            Swal.fire({
-                position: position,
-                icon: icon,
-                title: msg,
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                },
-                timer: timer,
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-                //html: 'I will close in <b></b> milliseconds.',
-                //timer: 2000,
-                //timerProgressBar: true,
-                //background: '#fff url(/Content/LoginSignUp/img/midiumlogo.png)',
-                //backdrop: `rgba(0,0,123,0.4)
-                //        url("/Content/LoginSignUp/img/image1.gif")
-                //        left top
-                //        no-repeat`
-            })
-        }
 
+
+    });
+    function getnotification() {
+
+
+        if ('@notificationData' != null) {
+
+            var data = JSON.parse('@Html.Raw(Json.Encode(notificationData))');
+            //console.log(data);
+
+            data.forEach(function (item) {
+
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: false,
+                    onOpen: function (toast) {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'success',
+                    html: `<div><p>${item.Message}</p></div>`
+                });
+            });
+        }
+    }
+
+
+    function ReadNotification(rowID,Type) {
+        var Model = {
+            RowID: parseInt(rowID),
+            Type: Type
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: globaUserProperties.domain + "/Role/ReadNotification",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    location.reload();
+                }
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+    }
+
+
+    $('#btnLogout').on('click', function () {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain()+"/Home/SignOut1",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: '',
+            success: function (data) {
+
+                var url = GetglobalDomain()+ "/authentication/login-alt";
+                window.location.href = url;
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    });
     </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     if (Model != null)
     {
         lst = Model;
-    }
+}
     var appid = ViewBag.Applicableid;
     var j = 1;
 }
@@ -90,14 +90,14 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        
+
         <ul class="invoicetabs">
             @{
                 foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
                 {
                     <li class="noneactive @(j==1?"active1":"") " data-id="@item.sCateName">
                         @item.sCateName
-                    </li>
+            </li>
                     j = 0;
                 }
 
@@ -109,12 +109,12 @@
                         foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
                         {
                 <section class="@(j==1?"":"hidden")  intersection" id="@item.sCateName">
-                    <div class="card Card--shadow--medium radiuscard reversecard">
-                        <header class="card-heading card-default">
-                            <h6 class="card-title">
+            <div class="card Card--shadow--medium radiuscard reversecard">
+                <header class="card-heading card-default">
+                    <h6 class="card-title">
                                 @item.sCateName Information
-                            </h6>
-                        </header>
+                    </h6>
+                </header>
                     </div>
 
                     @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
@@ -143,7 +143,7 @@
                                                 <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="text" placeholder="Enter @inneritem.sCateSubName" value="" class="form-control col-sm-9 calculation" required>
 
 
-                                            </div>
+            </div>
                                             if (item.sCateName == "Assets")
                                             {
                                                 <div class="col-sm-4">
@@ -157,23 +157,23 @@
                                         {
                                             i = i + "-3";
                                             <br />
-                                            <div class="card-body">
+                <div class="card-body">
 
-                                                <div class="form-group is-empty borderbottom row">
+                    <div class="form-group is-empty borderbottom row">
 
-                                                    <div class="col-sm-2">
+                        <div class="col-sm-2">
                                                         <input id="Width-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Width" value="" min="@thirditem.iminlength" data-min="@thirditem.iminlength" title="width must be equal or greather than @thirditem.iminlength" class="form-control calculation">
 
-                                                    </div>
+                        </div>
 
-                                                    <div class="col-sm-2">
+                        <div class="col-sm-2">
                                                         <input id="Height-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Height" data-min="@thirditem.iminwidth" value="@thirditem.iminwidth" min="@thirditem.iminwidth" class="form-control">
 
-                                                    </div>
-                                                    <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-2">
                                                         <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control">
 
-                                                    </div>
+                        </div>
                                                     <div class="col-sm-3">
                                                         <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
                                                             @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
@@ -181,7 +181,7 @@
 
                                                             <input type="hidden" id="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
                                                             <input type="hidden" id="sProfileExtension-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" value="">
-                                                        </div>
+                    </div>
                                                     </div>
                                                     @*<img src=""  class="col-sm-2" style="
                                 height: 39px;
@@ -191,11 +191,11 @@
                                                     <button class="btn btn-primary col-sm-1 addclass" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">Add</button>
                                                 </div>
 
-                                                <div class="form-group is-empty row" id="showtable">
-                                                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                                        <thead style="background-color: darkgray;">
+                    <div class="form-group is-empty row" id="showtable">
+                        <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead style="background-color: darkgray;">
 
-                                                            <tr>
+                                <tr>
                                                                 <th>
                                                                     #No
                                                                 </th>
@@ -203,23 +203,24 @@
                                                                     file
                                                                 </th>
 
-                                                                <th>Width</th>
-                                                                <th>Height</th>
-                                                                <th>Qty</th>
 
-                                                                <th>Action</th>
+                                    <th>Width</th>
+                                    <th>Height</th>
+                                    <th>Qty</th>
+
+                                    <th>Action</th>
 
 
 
-                                                            </tr>
-                                                        </thead>
+                                </tr>
+                            </thead>
                                                         <tbody id="tbody-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">
                                                         </tbody>
-                                                    </table>
-                                                </div>
+                        </table>
+                    </div>
 
 
-                                            </div>
+                </div>
                                         }
                                     }
 
@@ -229,7 +230,7 @@
                                             <div class="pull-right">
 
                                                 <button class="btn btn-primary mainsave" data-id="@i" data-main="@inneritem.iParCatSubId-@item.iParCatId">SAVE</button>
-                                            </div>
+            </div>
                                         </footer>}
 
                                     j = 0;
@@ -240,8 +241,8 @@
                             </div>
                                             </div>
                                     }
-                </section>
-             
+        </section>
+
             }
         }
         @*<section class="hidden intersection" id="infrastructure">
@@ -258,36 +259,100 @@
                         <div class="col-sm-5">
                             <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
                         </div>
+                        <div id="1_PracticalRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
 
 
+
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
 
                     </div>
 
+                    <div class="form-group is-empty borderbottom row">
+
+
+                        </div>
+                        <div id="1_SportRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
 
 
 
-                </div>
-
-
-            </div>
+                            <div class="custom-file col-sm-2">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
 
         </section>*@
 
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="libraryRooms" id="libraryRooms" value="0">
+                            <label class="form-check-label" for="libraryRooms">library Rooms</label>
+                        </div>
+                        <div id="1_libraryRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
 
 
 
 
+                            </div>
+                            <button class="btn btn-primary col-sm-2" style="
+    margin-left: 30px;
+">
+                                Add
+                            </button>
+                        </div>
 
-    </div>
-
-</div>
+                    </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
 
-</div>
+                    <div class="form-group is-empty borderbottom row">
+
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="StoreRooms" id="StoreRooms" value="0">
+                            <label class="form-check-label" for="StoreRooms">Store Rooms</label>
+                        </div>
 <div class="hidden" id="preloadcreatepopupright">
     @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
-</div>
+                            </div>
 @section scripts {
     <script src="~/plugins/moment/moment.js"></script>
     <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
@@ -437,7 +502,21 @@
                         }
                     }
 
+                    <div class="form-group is-empty borderbottom row">
 
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="GirlsRooms" id="GirlsRooms" value="0">
+                            <label class="form-check-label" for="GirlsRooms">Girls Common Rooms</label>
+                        </div>
+                        <div id="1_GirlsRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
 
                 }
             });
@@ -456,6 +535,19 @@
                 dataType: "text",
                 success: function (response) {
 
+                        <div class="col-sm-2" style="
+                      margin-left: 49px;
+                             ">
+                            <input type="checkbox" class="form-check-input checkbox" data-id="StaffRooms" id="StaffRooms" value="0">
+                            <label class="form-check-label" for="StaffRooms">Staff Rooms</label>
+                        </div>
+                        <div id="1_StaffRooms" class="col-sm-10 hidden">
+                            <div class="col-sm-2">
+                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                            </div>
 
                     $("#tbody-" + iParamId + "-" + iSubCatId + "-" + iUomId).html(response);
                     return;
@@ -554,7 +646,8 @@
                                 //iSubCatId: iSubCatId,
                                 //iUomId: iUomId
 
-                            });
+        $(this).addClass('active1');
+    });
                             /* ShowBALoader("LoaderBASinup1");*/
                             $.ajax({
                                 url: "/Master/DeleteImage",
@@ -565,7 +658,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+        debugger;
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',
@@ -575,11 +668,11 @@
                                             timer: 3000
                                         })
                                         GenerateArchtable(iParamId, iSubCatId, iUomId,'@appid')
-                                    }
+        }
 
                                 },
 
-                            });
+    });
 
                         }
                     },
@@ -590,7 +683,7 @@
                 }
             });
         }
-    </script>
+</script>
     @*<script type="text/javascript">
             var imagebase64 = "";
             function encodeImageFileAsURL(element) {

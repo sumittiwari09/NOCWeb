@@ -1,7 +1,7 @@
-﻿@using NewZapures_V2.Models
+﻿@using NewZapures_V2.Models;
 @model AddCourseBO
 @{
-    ViewBag.Title = "Add Course";
+    ViewBag.Title = "Subject Master";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<CustomMaster> TrustList = new List<CustomMaster>();
@@ -22,7 +22,10 @@
         CourseList = (List<CustomMaster>)ViewBag.CourseList;
     }
 
-    List<NewZapures_V2.Models.AddCourseBO> trustlist = ViewBag.AddCourseList as List<NewZapures_V2.Models.AddCourseBO>;
+    var collegeList = (List<CustomEnum>)ViewBag.collegeListData;
+
+    //List<NewZapures_V2.Models.CustomMaster> collegelist = ViewBag.collegeListData as List<NewZapures_V2.Models.CustomMaster>;
+    List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
 
 
 }
@@ -80,7 +83,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     @*<li class="breadcrumb-item">Master</li>*@
-                    <li class="breadcrumb-item active">User Will Enter Course Against Enter College</li>
+                    <li class="breadcrumb-item active">Subject Master</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -93,42 +96,35 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header fsi">
-                <h4 class="mt-0 header-title float-left">Add Course</h4>
+                <h4 class="mt-0 header-title float-left">Subject Master</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("SaveDetails", "AddCourse", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                <input type="hidden" id="hdnPKID" />
+                @using (Html.BeginForm("SaveDetails", "SubjectMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
-                            <div class="is-empty  removehidde" id="collegetypedata">
-                                <select class="form-control" name="TrustInfoId" id="TrustName">
-                                    <option value="0">Select Trust</option>
-                                    @{
-                                        foreach (var item in TrustList)
-                                        {
-                                            <option value="@item.Id">@item.text</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
 
                         <div class="form-group col-lg-6">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
                             <div>
-                                <select class="form-control" id="IsdefaultCollegeId" name="iCollegeId">
+                                <select class="form-control" id="IsdefaultCollegeId" name="s">
                                     <option value="">Select College</option>
+                                    @{
+
+                                        if (collegeList != null)
+                                        {
+                                            foreach (var item in collegeList)
+                                            {
+                                                <option value=@item.Id>@item.Name</option>
+                                            }
+                                        }
+
+                                    }
                                 </select>
                             </div>
                         </div>
-
-                    </div>
-
-                    <div class="row">
                         <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tag Degrees</label>
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Degrees</label>
                             <div>
                                 <select class="form-control" name="TagDegrees" id="txtTagDegree">
                                     <option value="0">Select DegreeList</option>
@@ -141,8 +137,12 @@
                                 </select>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tag Course</label>
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Course</label>
                             <div>
                                 <select class="form-control" name="TagCourse" id="txtTagCourse">
                                     <option value="0">Select Course List</option>
@@ -155,6 +155,21 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Subject Name</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" inputmode="charecterOnly(id)" autocomplete="off" id="txtSubjectName" name="SubjectName" value="SubjectName">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row" style="text-align:center">
+                        <div class="form-group col-lg-3">
+                            <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                            <button class="btn btn col-sm-12" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -163,28 +178,31 @@
                                 <thead class="dark">
                                     <tr>
                                         <th>Sr</th>
-                                        <th>Trust Name</th>
-                                        <th>College Name</th>
-                                        <th>Degree</th>
+                                        <th>College</th>
+                                        <th>Degrees</th>
                                         <th>Course</th>
+                                        <th>Subject</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (trustlist != null)
+                                    @if (SubjectDataList != null)
                                     {
                                         int i = 1;
-                                        foreach (var item in trustlist)
+                                        foreach (var item in SubjectDataList)
                                         {
-                                            <tr>
+                                            <tr id="tr_@item.iPK_SubId">
                                                 <td>@i</td>
-
-                                                <td>@item.TrustInfoId</td>
-                                                <td>@item.iCollegeId</td>
-                                                <td>@item.TagDegrees</td>
+                                                @*<td>@item.TrustInfoId</td>*@
+                                                <td>@item.iFK_DeptId</td>
                                                 <td>@item.TagCourse</td>
-                                                <td></td>
-
+                                                <td>@item.TagCourse</td>
+                                                <td>@item.SubjectName</td>
+                                                <td>
+                                                    <button class="btn btn col-sm-6" type="button" id="btnEdit" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);">
+                                                        <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>Edit
+                                                    </button>
+                                                </td>
                                             </tr>
                                             i++;
                                         }
@@ -199,14 +217,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12" style="text-align:center">
-                            <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
-                            <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
-                            @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
-                        </div>
-                    </div>
+
                 }
             </div>
         </div>
@@ -247,7 +258,7 @@
                     showCloseButton: true,
                     showConfirmButton: false,
                 });
-        }      
+        }
 
         $('#TrustName').change(function () {
             var selectedVal = $(this).val();
@@ -260,7 +271,6 @@
     });
 
     function AddCollegeData(Type) {
-        debugger
             var strHtml = "";
             strHtml += "<option value=''>Select College</option>";
 
@@ -270,7 +280,7 @@
             });
 
             $.ajax({
-                url: GetglobalDomain() +"/AddCourse/GetCollegeDropDownList",
+                url: GetglobalDomain() +"/SubjectMaster/GetCollegeDropDownList",
                 type: 'POST',
                 data: Params,
                 dataType: "json",
@@ -283,17 +293,62 @@
                     console.log("strHtml"+JSON.stringify("strHtml"));
 
                     $("#IsdefaultCollegeId").html(strHtml);
-                    //$("#IsdefaultCollegeId").select2();
-                    //$("#collegetypedata").removeClass('removehidden');
+
                 }
             });
     }
 
+    function EditSubject(iPK_SubId, itemType,SubjectName) {
+        alert(iPK_SubId)
+        //var sub=$('#txtSubjectName').val(SubjectName);
+        var Model = {
+            type: itemType,
+            iPK_SubId: parseInt(iPK_SubId),
+            sub: SubjectName
+
+        }
+        var d = JSON.stringify(Model);
+        console.log(d);
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() +"/SubjectMaster/EditSubject",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+                if (data.StatusCode == 1) {
+                    var iPK_SubId = data.Data[0].iPK_SubId;
+                    var SubjectName = data.Data[0].SubjectName;
+                    console.log(SubjectName);
+                    $('#hdnPKID').val(iPK_SubId);
+                    if (itemType =='Get')
+                        $('#txtSubjectName').val(SubjectName);
+
+                    $('#btnSave').html('');
+                    $('#btnSave').html('Update');
+
+                }
+            },
+            error: function (d) {
+                console.log(d);
+                alert("404. Please wait until the File is Loaded.");
+
+            }
+        });
+    }
+
     function CheckValidation() {
         var status = true;
-       // var Bankname = $('#txtBankName').val().trim();
-        var TagDegree = $('#txtTagDegree').val().trim();
         var TagCourse = $('#txtTagCourse').val().trim();
+        var TagDegree = $('#txtTagDegree').val().trim();
+        var SubjectName = $('#txtSubjectName').val().trim();
         if (TagDegree.length <= 0) {
             Swal.fire({
                 position: 'center',
@@ -306,23 +361,44 @@
             $('#txtTagDegree').focus();
             $('#txtTagDegree').val('');
             status = false;
-         }
+        }
         else if (TagCourse.length <= 0) {
-             Swal.fire({
-                 position: 'center',
-                 icon: 'error',
-                 title: 'Tag Course Required...!',
-                 allowOutsideClick: false,
-                 showCloseButton: true,
-                 showConfirmButton: false,
-             })
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Tag Course Required...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
             $('#txtTagCourse').focus();
             $('#txtTagCourse').val('');
-             status = false;
-         }
-
+            status = false;
+        }
+        else if (SubjectName.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Subject Name Required..!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            $('#txtSubjectName').focus();
+            $('#txtSubjectName').val('');
+        }
         if (status) {
-            $('#btnsubmitDetails').click();
+            var btnText = $('#btnSave').text();
+            if (btnText == "Update") {
+                var pkid = $('#hdnPKID').val();
+               var sub = $('#txtSubjectName').val();
+                EditSubject(pkid, 'Update', sub);
+                    $('#txtSubjectName').val('');
+
+            }
+            else {
+                $('#btnsubmitDetails').click();
+            }
         }
     }
     function numberOnly(id) {

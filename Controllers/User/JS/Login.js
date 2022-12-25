@@ -25,7 +25,7 @@ var sendedOTP = 0;
 
 var globaUserProperties = new Object();
 var base_url = window.location;
-globaUserProperties.domain = base_url.origin + "/" + window.location.pathname.split('/')[1];
+globaUserProperties.domain = base_url.origin;// + "/" + window.location.pathname.split('/')[1];
 
 
 function Login() {

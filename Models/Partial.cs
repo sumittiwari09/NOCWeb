@@ -28,7 +28,7 @@ namespace NewZapures_V2.Models
             Active = 1,
             Deactive = 0,
             Deleted = 2,
-            TypeDocument=3,
+            TypeDocument = 3,
             Clone = 12,
             Draft = 13
         }
@@ -114,23 +114,7 @@ namespace NewZapures_V2.Models
         {
             public List<setting> ListRequest { get; set; }
         }
-        public class CustomEnum
-        {
-            public int CustomEnumId { get; set; }
-            public int? EnumNo { get; set; }
-            public string Name { get; set; }
-            public string CreatedBy { get; set; }
-            public DateTime? CreatedOn { get; set; }
-            public string UpdatedBy { get; set; }
-            public DateTime? UpdatedOn { get; set; }
-            public string PartyId { get; set; }
-            public int? Id { get; set; }
-            public int? IsActive { get; set; }
-        }
-        public class ListCustomEnum : ResponseData
-        {
-            public List<CustomEnum> ListRequest { get; set; }
-        }
+
         public partial class Commisssiondata
         {
             public string TableName { get; set; }
@@ -183,5 +167,22 @@ namespace NewZapures_V2.Models
         }
 
 
+    }
+    public class CustomEnum
+    {
+        public int CustomEnumId { get; set; }
+        public int? EnumNo { get; set; }
+        public string Name { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedOn { get; set; }
+        public string PartyId { get; set; }
+        public int? Id { get; set; }
+        public int? IsActive { get; set; }
+    }
+    public class ListCustomEnum : ResponseData
+    {
+        public List<CustomEnum> ListRequest { get; set; }
     }
 }
