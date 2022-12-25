@@ -34,10 +34,6 @@ namespace NewZapures_V2.Controllers
             lstMap = GetNOCDepartMaplst(0);           
             return View(lstMap);
         }
-        public ActionResult ArchitectureDetail()
-        {
-            return View();
-        }
         public ActionResult AddDepartmentMapping(NOCDEPMAP Master)
         {
             try

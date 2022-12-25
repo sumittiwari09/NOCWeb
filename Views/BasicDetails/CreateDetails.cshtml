@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var university = ViewBag.universityCollection as List<Dropdown>;
+    var collegeType = ViewBag.collegeTypeList as List<Dropdown>;
     List<CustomMaster> TrustList = new List<CustomMaster>();
     if (ViewBag.TrustList != null)
     {
@@ -104,7 +105,7 @@
 {
     <div class="card">
         <div class="card-header fsc">
-            <h4 class="mt-0 header-title float-left">Basic Details</h4>
+            <h4 class="mt-0 header-title float-left">College Details</h4>
         </div>
         <div class="card-body row">
 
@@ -131,18 +132,36 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Choose College type</label>
                         <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
-                            <div class="form-group custom-control custom-radio col-sm-3">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtGirls" value="girls">
-                                <label for="txtGirls" class="custom-control-label">Girls</label>
-                            </div>
-                            <div class=" form-group custom-control custom-radio col-sm-3">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtBoy" value="boys">
-                                <label for="txtBoy" class="custom-control-label">Boys</label>
-                            </div>
-                            <div class="form-group custom-control custom-radio col-sm-3">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtCoEducation" value="girlsboyBoth">
-                                <label for="txtCoEducation" class="custom-control-label">CoEducation</label>
-                            </div>
+
+                            @{
+                                if (collegeType != null)
+                                {
+                                    foreach (var item in collegeType)
+                                    {
+                                        <div class="form-group custom-control custom-radio col-sm-2">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollegeType" id="rbtn_@item.Text" value="@item.Id">
+                                            <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
+                                        </div>
+                                    }
+                                }
+                            }
+
+
+
+
+
+                            @*<div class="form-group custom-control custom-radio col-sm-3">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtGirls" value="girls">
+                                    <label for="txtGirls" class="custom-control-label">Girls</label>
+                                </div>
+                                <div class=" form-group custom-control custom-radio col-sm-3">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtBoy" value="boys">
+                                    <label for="txtBoy" class="custom-control-label">Boys</label>
+                                </div>
+                                <div class="form-group custom-control custom-radio col-sm-3">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtCoEducation" value="girlsboyBoth">
+                                    <label for="txtCoEducation" class="custom-control-label">CoEducation</label>
+                                </div>*@
                         </div>
                     </div>
 
@@ -349,13 +368,13 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 1</label>
                         <div>
-                            <input type="text" class="form-control" name="AddressLine1" id="txtcontact1" autocomplete="off" />
+                            <input type="text" class="form-control" name="ContactNo1" id="txtcontact1" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 1</label>
                         <div>
-                            <input type="text" class="form-control" name="AddressLine2" id="txtEmailAddress1" autocomplete="off" />
+                            <input type="text" class="form-control" name="EmailAddress1" id="txtEmailAddress1" autocomplete="off" />
                         </div>
                     </div>
                 </div>
@@ -364,13 +383,13 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 2</label>
                         <div>
-                            <input type="text" class="form-control" name="AddressLine1" id="txtcontact2" autocomplete="off" />
+                            <input type="text" class="form-control" name="ContactNo2" id="txtcontact2" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 2</label>
                         <div>
-                            <input type="text" class="form-control" name="AddressLine2" id="txtEmailAddress2" autocomplete="off" />
+                            <input type="text" class="form-control" name="EmailAddress2" id="txtEmailAddress2" autocomplete="off" />
                         </div>
                     </div>
                 </div>
@@ -407,7 +426,7 @@
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
                         <div>
-                            <input type="text" class="form-control" maxlength="10" numberOnly(this.id);" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
+                            <input type="text" class="form-control" oninput="numberOnly(this.id);" maxlength="10" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
@@ -451,6 +470,7 @@
             </div>
         </div>
     </div>
+
 }
 
 

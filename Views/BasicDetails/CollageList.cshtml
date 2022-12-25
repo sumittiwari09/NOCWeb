@@ -90,7 +90,9 @@
 <div class="card">
     <div class="card-header">
         <h4 class="mt-0 header-title float-left">Collage Details</h4>
-        <a href="@Url.Action("CreateDetails","BasicDetails")" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add Collage</a>
+        <div class="form-group" style="text-align:right">
+            <a href="@Url.Action("CreateDetails","BasicDetails")" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-primarynav-link btn btn-primary">Add College</a>
+        </div>
     </div>
     <div class="row col-lg-12" style="margin-top:20px">
         <div class="form-group col-lg-12">
@@ -115,22 +117,22 @@
                         int i = 1;
                         foreach (var item in collagelist)
                         {
-                    <tr>
-                        <td>@i</td>
-                        <td><img src="data:@item.CollageContectType;base64,@item.CollageLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
-                        <td>@item.TrustName</td>
-                        <td>@item.TrustRegistrationNo</td>
-                        <td>@item.CollageName</td>
-                        <td>@item.MobileNo</td>
-                        <td>@item.Email</td>
-                        <td>@item.AddMobileNo</td>
-                        <td>@item.AddPhoneNo</td>
-                        <td>
-                            <a id="@item.CollageId" class="fas fa-edit text-info font-16" name="2" data-id="@item.CollageId" title="Edit" onclick="EditDepartment(@item.CollageId);"></a>
-                            <a id="btnDeactive_@item.CollageId" class="Deleteclass" name="2" data-id="@item.CollageId" onclick="DeleteData(@item.CollageId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
-                        </td>
+                            <tr>
+                                <td>@i</td>
+                                <td><img src="data:@item.CollageContectType;base64,@item.CollageLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                                <td>@item.TrustName</td>
+                                <td>@item.TrustRegistrationNo</td>
+                                <td>@item.CollageName</td>
+                                <td>@item.MobileNo</td>
+                                <td>@item.Email</td>
+                                <td>@item.AddMobileNo</td>
+                                <td>@item.AddPhoneNo</td>
+                                <td>
+                                    <a id="@item.CollageId" class="fas fa-edit text-info font-16" name="2" data-id="@item.CollageId" title="Edit" onclick="EditDepartment(@item.CollageId);"></a>
+                                    <a id="btnDeactive_@item.CollageId" class="Deleteclass" name="2" data-id="@item.CollageId" onclick="DeleteData(@item.CollageId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                </td>
 
-                    </tr>
+                            </tr>
                             i++;
                         }
                     }
@@ -144,8 +146,8 @@
             </table>
         </div>
     </div>
-    
-   
+
+
 </div>
 
 
