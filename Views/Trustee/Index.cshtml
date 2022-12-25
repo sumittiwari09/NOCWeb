@@ -118,8 +118,8 @@
                                 }
                             </select>
                             @*<select class="form-control" id="txtrole" name="TrustType">
-                        <option value="0">Type</option>
-                    </select>*@
+                                    <option value="0">Type</option>
+                                </select>*@
                         </div>
                     </div>
 
@@ -161,8 +161,8 @@
                         </div>
                     </div>
                     @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">
-                <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
-            </div>*@
+                            <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                        </div>*@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
@@ -191,6 +191,28 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkIsPrime" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                            <input type="hidden" id="hdnchkIsPrime" name="isPrimary">
+                            <label class="custom-control-label" for="chkIsPrime">Is Primary</label>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6" id="filediv">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkIsAuthorized" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                            <input type="hidden" id="hdnchkIsAuthorized" name="isAuthorize">
+                            <label class="custom-control-label" for="chkIsAuthorized">Is Authorized</label>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
             </div>
             <div class="col-3 text-center d-flex align-items-center justify-content-center">
                 <div class="">
@@ -200,14 +222,16 @@
                 </div>
             </div>
             <div class="row col-lg-12" style="margin-top:20px">
-                <div class="col-lg-12 loat-right">
+                <div class="col-lg-12 float-left">
                     @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
-                    <button class="btn" id="btnCapitalAdd" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                    <button class="btn" id="btnCapitalAdd" style="color:white!important;float:left;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
                 </div>
                 @*</div>*@
             </div>
         </div>
     }
+
+
     <div class="row col-lg-12">
         <div class="form-group col-lg-12">
             <table class="table table-borderless table-striped table-hover" id="tblCapital">
@@ -222,6 +246,8 @@
                         <th>Email</th>
                         <th>AadhaarNo</th>
                         <th>PanNo</th>
+                        <th>Is Primary</th>
+                        <th>Is Authorize</th>
                         <th style="text-align:center">Aadhaar</th>
                         <th style="text-align:center">Pan</th>
                         <th>Action</th>
@@ -235,27 +261,29 @@
                         int i = 1;
                         foreach (var item in trusteelist)
                         {
-                    <tr>
-                        <td>@i</td>
-                        <td><img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
-                        <td>@item.TrustInfoId</td>
-                        <td>@item.Name</td>
-                        <td>@item.RoleId</td>
-                        <td>@item.Mobile</td>
-                        <td>@item.Email</td>
-                        <td>@item.AadhaarNo</td>
-                        <td>@item.PanNo</td>
-                        <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                        <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                        <td>
-                            <a id="@item.Id" class="fas fa-edit text-info font-16" name="2" data-id="@item.Id" title="Edit" onclick="EditDepartment(@item.Id);"></a>
-                            <a id="btnDeactive_@item.Id" class="Deleteclass" name="2" data-id="@item.Id" onclick="DeleteData(@item.Id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
-                        </td>
-                        @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
+                            <tr>
+                                <td>@i</td>
+                                <td><img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                                <td>@item.trustName</td>
+                                <td>@item.Name</td>
+                                <td>@item.RoleId</td>
+                                <td>@item.Mobile</td>
+                                <td>@item.Email</td>
+                                <td>@item.AadhaarNo</td>
+                                <td>@item.PanNo</td>
+                                <td>@item.isPrimary</td>
+                                <td>@item.isAuthorize</td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                <td>
+                                    <a id="@item.Id" class="fas fa-edit text-info font-16" name="2" data-id="@item.Id" title="Edit" onclick="EditDepartment(@item.Id);"></a>
+                                    <a id="btnDeactive_@item.Id" class="Deleteclass" name="2" data-id="@item.Id" onclick="DeleteData(@item.Id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                </td>
+                                @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
-                        @*<td></td>*@
+                                @*<td></td>*@
 
-                    </tr>
+                            </tr>
                             i++;
                         }
                     }
@@ -271,18 +299,18 @@
     </div>
     <!--<div class="row col-lg-12" style="margin-bottom:10px">
         <div class="col-lg-12 float-right">-->
-            @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
 
-            <!--<button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
-            <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase; float:right"><i class="fa fa-arrow-left"></i> Previous</button>-->
-            @*</div>*@
-        <!--</div>
+    <!--<button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase; float:right;margin-left:10px"> Next<i class="fa fa-arrow-right"></i></button>
+    <button class="btn" id="btnfinalSave" style="background: #bc4e9c; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase; float:right"><i class="fa fa-arrow-left"></i> Previous</button>-->
+    @*</div>*@
+    <!--</div>
     </div>-->
     @*<div class="row col-lg-12 float-right">
-        <div class="form-group col-lg-12 float-right" style="display: flex;align-items: end;gap:10px;">
-            
-        </div>
-    </div>*@
+            <div class="form-group col-lg-12 float-right" style="display: flex;align-items: end;gap:10px;">
+
+            </div>
+        </div>*@
 </div>
 
 
@@ -291,4 +319,48 @@
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
 }
+<script>
+    var isAlreadyPrimary = 0;
+    $(document).ready(function () {
+        $('#tblCapital > tbody  > tr ').each(function () {
 
+            var itemName = $(this).find('td:eq(9)').html();
+
+            if (itemName == 'Yes') {
+                isAlreadyPrimary = 1;
+            }
+
+
+            if (isAlreadyPrimary == 1) {
+                $('#chkIsPrime').attr('disabled', true);
+            }
+
+        });
+    });
+
+
+    $('#chkIsPrime').click(function () {
+        var status = $("#chkIsPrime").is(':checked');
+        if (status) {
+            $('#hdnchkIsPrime').val(1);
+
+        } else {
+            $('#hdnchkIsPrime').val(0);
+        }
+        //IsGSTApplicable
+        //IsTDSApplicable
+    });
+
+    $('#chkIsAuthorized').click(function () {
+        var status = $("#chkIsAuthorized").is(':checked');
+        //alert(status);
+        if (status) {
+            $('#hdnchkIsAuthorized').val(1);
+        } else {
+            $('#hdnchkIsAuthorized').val(0);
+        }
+
+        //alert($('#hdnchkTDSApplicable').val());
+
+    });
+</script>
