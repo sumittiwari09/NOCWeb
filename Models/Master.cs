@@ -68,6 +68,7 @@ namespace NewZapures_V2.Models
            public int iField {get;set;}
            public int iValue {get;set;}
            public int iminlength {get;set;}
+           public int? iFix { get; set; }
            public int iminwidth {get;set;}
            public long iminval {get;set;}
            public int imaxlength  {get;set;}
@@ -81,26 +82,23 @@ namespace NewZapures_V2.Models
         public string sCateName { get; set; }
         public string sCateSubName { get; set; }
         public string UomName { get; set; }
-       
-        public string CouresName
-        {
-            get
-            {
-                switch (iCourseId)
-                {
-                    case 1:
-                        return "PH.D";
-                    case 2:
-                        return "MCA";
-                    case 3:
-                        return "MBA";
-                    case 4:
-                        return "MBBS";
+        public string CourseName { get; set; }
+        
+    }
+    public class ArchiMstDetail
+    {
+        public int ipk_ArchiMstDetId { get; set; }
+        public int iParamId { get; set; }
+        public int iSubCatId { get; set; }
+        public int iUomId { get; set; }
+        public int iWid { get; set; }
+        public int iLen { get; set; }
+        public int iQty { get; set; }
+        public string sAppId { get; set; }
+        public string bAttachFile { get; set; }
+        public string sProfileExtension { get; set; }
+        public string ProfileContentType { get; set; }
 
-                    default:
-                        return "";
-                }
-            }
-        }
+
     }
 }

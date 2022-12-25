@@ -26,7 +26,7 @@
 
     <div class="form-group  is-empty row">
         <input type="hidden" name="iPk_ParmCateId" id="iPk_ParmCateId" value="0" />
-        <div class="col-sm-3">
+        @*<div class="col-sm-3">
             <select class="singleselect" id="iFk_Deptid" name="iFk_Deptid" required>
                 <option value="" disabled selected hidden>Select Department</option>
                 @{
@@ -37,7 +37,7 @@
                     }
                 }
             </select>
-        </div>
+        </div>*@
         <div class="col-sm-3">
             <select class="singleselect" data-tags="true" id="iParCatId" name="iParCatId" required>
                 <option value="" disabled selected hidden>Select Parameter Category</option>
@@ -93,21 +93,21 @@
     $("#datatable-buttons_info").css('display', 'none');
     function validateForm() {
       
-        let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;
+      /*  let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;*/
         let iParCatId = document.forms["myForm"]["iParCatId"].value;
         let iParCatSubId = document.forms["myForm"]["iParCatSubId"].value;
         let iParUomid = document.forms["myForm"]["iParUomid"].value;
         let sParmetNam = document.forms["myForm"]["sParmetNam"].value;
         let iPk_ParmCateId = document.forms["myForm"]["iPk_ParmCateId"].value;
 
-        if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" ) {
+        if (iParCatId == "" || iParCatSubId == "" || iParUomid == "" ) {
             return false;
         }
         sParmetNam = $("#iFk_Deptid option:selected").text() + "-" + $("#iParCatId option:selected").text() + "-" + $("#iParCatSubId option:selected").text() + "-" + $("#iParUomid option:selected").text();
   
         var Params = JSON.stringify({
             iPk_ParmCateId: iPk_ParmCateId,
-            iFk_Deptid: iFk_Deptid,
+            iFk_Deptid: 0,
             iParCatId: iParCatId,
             iParCatSubId: iParCatSubId,
             iParUomid: iParUomid,
@@ -141,49 +141,7 @@
             }
         });
     }
-    //$("#addbtn").click(function () {
-
-    //    let iFk_Deptid = document.forms["myForm"]["iFk_Deptid"].value;
-    //    let iParCatId = document.forms["myForm"]["iParCatId"].value;
-    //    let iParCatSubId = document.forms["myForm"]["iParCatSubId"].value;
-    //    let iParUomid = document.forms["myForm"]["iParUomid"].value;
-    //    let sParmetNam = document.forms["myForm"]["sParmetNam"].value;
-    //    let iPk_ParmCateId = document.forms["myForm"]["iPk_ParmCateId"].value;
-
-    //    if (iFk_Deptid == "" || iParCatId == "" || iParCatSubId == "" || iParUomid == "" || sParmetNam.trim() == "") {
-    //        return false;
-    //    }
-    //    var Params = JSON.stringify({
-    //        iPk_ParmCateId: iPk_ParmCateId,
-    //        iFk_Deptid: iFk_Deptid,
-    //        iParCatId: iParCatId,
-    //        iParCatSubId: iParCatSubId,
-    //        iParUomid: iParUomid,
-    //        sParmetNam: sParmetNam
-    //    });
-    //    $.ajax({
-    //        url: "/Master/InsertParameterCategoryMapping",
-    //        type: 'POST',
-    //        dataType: "json",
-    //        data: Params,
-    //        contentType: "application/json",
-    //        success: function (response) {
-    //            debugger;
-    //            if (response.IsValid = 1) {
-    //                Swal.fire({
-    //                    position: 'center',
-    //                    icon: 'success',
-    //                    title: response.msg,
-    //                    showConfirmButton: false,
-    //                    timer: 3000
-    //                })
-    //                Generatepartialpage(0);
-    //            }
-
-
-    //        }
-    //    });
-    //});
+    
     $("#iParCatId").change(function () {
 
         var strHTML = "";
@@ -240,7 +198,7 @@
     //        $("#iParUomid").select2();
 
     //    }
-      
+
     //    $.ajax({
     //        url: "/Master/FillDataPerameter",
     //        type: 'POST',
@@ -266,9 +224,10 @@
     //        }
     //    });
     //});
-    $("#iFk_Deptid").change(function () {
-        Generatepartialtable($(this).val());
-    });
+    Generatepartialtable(0);
+    //$("#iFk_Deptid").change(function () {
+    //    Generatepartialtable($(this).val());
+    //});
     function Generatepartialtable(Id) {
       
         $.ajax({

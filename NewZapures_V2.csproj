@@ -3572,11 +3572,15 @@
     <Content Include="Views\Trustee\TrustList.cshtml" />
     <Content Include="Views\Dashboard\WelcomeNoc.cshtml" />
     <Content Include="Views\SSODeptMapping\Index.cshtml" />
+    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\Testing.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\Docs\" />
     <Folder Include="images\WalletRecipts\" />
+    <Folder Include="UploadFloder\" />
     <Folder Include="Views\SwitchParty\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,622 @@
+﻿@using NewZapures_V2.Models
+@model List<PARMTVALUCONFMSTView>
+@{
+    ViewBag.Title = "Architecture Detail";
+    List<Dropdown> Categorylst = new List<Dropdown>();
+    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+    if (Model != null)
+    {
+        lst = Model;
+    }
+    var appid = ViewBag.Applicableid;
+    var j = 1;
+}
+
+
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+<style>
+    .noneactive {
+        margin: 10px;
+        border: solid;
+        width: 200px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+       /* border-radius: 23px;*/
+    }
+
+    .invoicetabs {
+        list-style: none;
+        display: flex;
+    }
+
+    .active1 {
+        background: cornflowerblue;
+        color: aliceblue;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .hiddenactive {
+        display: block;
+        display: contents;
+    }
+
+    .card-title {
+        padding: 10px;
+        background: cadetblue;
+        font-weight: bold;
+    }
+
+    .borderdesign {
+        border: solid;
+        margin: 9px;
+        border-radius: 18px;
+        border-width: thin;
+    }
+
+    .collspanh6 {
+        border: solid;
+        border-width: thin;
+        background: black;
+        color: beige;
+        padding: 7px;
+    }
+</style>
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">Master</li>
+                    @*<li class="breadcrumb-item active">Architecture Detail</li>*@
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        
+        <ul class="invoicetabs">
+            @{
+                foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+                {
+                    <li class="noneactive @(j==1?"active1":"") " data-id="@item.sCateName">
+                        @item.sCateName
+                    </li>
+                    j = 0;
+                }
+
+            }
+
+        </ul>
+        @{
+                        j = 1;
+                        foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+                        {
+                <section class="@(j==1?"":"hidden")  intersection" id="@item.sCateName">
+                    <div class="card Card--shadow--medium radiuscard reversecard">
+                        <header class="card-heading card-default">
+                            <h6 class="card-title">
+                                @item.sCateName Information
+                            </h6>
+                        </header>
+                    </div>
+
+                    @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
+                    {
+                        <h6 class="pull-left collspanh6" data-id="@item.iParCatId-@inneritem.iParCatSubId">
+                            <i class="fas fa-arrow-alt-circle-down" id="fa-@item.iParCatId-@inneritem.iParCatSubId"></i>
+                            @inneritem.sCateSubName
+                        </h6>
+
+                        <div class="card-body panel-group  borderdesign @(j==1?"":"hidden")" id="@item.iParCatId-@inneritem.iParCatSubId">
+
+
+                            <div class="form-group is-empty borderbottom row " style="padding: inherit;">
+                                @{
+                                    var i = "0";
+                                    //var list = Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Select(p => new { p.iParUomid, p.UomName }).Distinct().ToList();
+                                    foreach (var thirditem in Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Distinct().ToList())
+                                    {
+
+
+                                        if (thirditem.iParUomid == 1)
+                                        {
+                                            i = i + "-1";
+                                            <label class="col-sm-3 control-label" style="font-weight:bold;">@inneritem.sCateSubName Rooms</label>
+                                            <div class="col-sm-5">
+                                                <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="text" placeholder="Enter @inneritem.sCateSubName" value="" class="form-control col-sm-9 calculation" required>
+
+
+                                            </div>
+                                            if (item.sCateName == "Assets")
+                                            {
+                                                <div class="col-sm-4">
+                                                    <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control col-sm-12 filestyle">
+                                                </div>
+                                              
+
+                                            }
+                                        }
+                                        if (thirditem.iParUomid == 3)
+                                        {
+                                            i = i + "-3";
+                                            <br />
+                                            <div class="card-body">
+
+                                                <div class="form-group is-empty borderbottom row">
+
+                                                    <div class="col-sm-2">
+                                                        <input id="Width-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Width" value="" min="@thirditem.iminlength" data-min="@thirditem.iminlength" title="width must be equal or greather than @thirditem.iminlength" class="form-control calculation">
+
+                                                    </div>
+
+                                                    <div class="col-sm-2">
+                                                        <input id="Height-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Height" data-min="@thirditem.iminwidth" value="@thirditem.iminwidth" min="@thirditem.iminwidth" class="form-control">
+
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control">
+
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
+                                                            @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
+                                                            <input type="file" id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+
+                                                            <input type="hidden" id="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                                            <input type="hidden" id="sProfileExtension-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" value="">
+                                                        </div>
+                                                    </div>
+                                                    @*<img src=""  class="col-sm-2" style="
+                                height: 39px;
+                                width: 85px;
+                                border-radius: 39px;
+                            " id="img-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" />*@
+                                                    <button class="btn btn-primary col-sm-1 addclass" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">Add</button>
+                                                </div>
+
+                                                <div class="form-group is-empty row" id="showtable">
+                                                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                        <thead style="background-color: darkgray;">
+
+                                                            <tr>
+                                                                <th>
+                                                                    #No
+                                                                </th>
+                                                                <th>
+                                                                    file
+                                                                </th>
+
+                                                                <th>Width</th>
+                                                                <th>Height</th>
+                                                                <th>Qty</th>
+
+                                                                <th>Action</th>
+
+
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbody-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        }
+                                    }
+
+                                    if (i != "0")
+                                    {
+                                        <footer class="form-footer">
+                                            <div class="pull-right">
+
+                                                <button class="btn btn-primary mainsave" data-id="@i" data-main="@inneritem.iParCatSubId-@item.iParCatId">SAVE</button>
+                                            </div>
+                                        </footer>}
+
+                                    j = 0;
+                                }
+
+
+
+                            </div>
+                                            </div>
+                                    }
+                </section>
+             
+            }
+        }
+        @*<section class="hidden intersection" id="infrastructure">
+            <div class="card Card--shadow--medium radiuscard reversecard">
+                <header class="card-heading card-default">
+                    <h6 class="card-title">
+                        Infrature Information
+                    </h6>
+                </header>
+                <div class="card-body">
+
+                    <div class="form-group is-empty borderbottom row">
+                        <label class="col-sm-3 control-label">No Of Rooms</label>
+                        <div class="col-sm-5">
+                            <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+
+        </section>*@
+
+
+
+
+
+
+    </div>
+
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
+
+</div>
+<div class="hidden" id="preloadcreatepopupright">
+    @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
+</div>
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script type="text/javascript">
+
+
+        $('.noneactive').click(function () {
+            $('.noneactive').removeClass('active1');
+            var id = $(this).data('id');
+            $('.intersection').addClass('hidden');
+            $("#" + id).removeClass('hidden');
+
+            $(this).addClass('active1');
+        });
+        $('.checkbox').click(function () {
+            debugger;
+            var id = $(this).data('id');
+            $("#1_" + id).addClass('hidden');
+            $("#1_" + id).removeClass('hiddenactive');
+            var val = $(this).val();
+            if (val == '0') {
+                $(this).val('1');
+                $("#1_" + id).removeClass('hidden');
+                $("#1_" + id).addClass('hiddenactive');
+            }
+            else {
+                $(this).val('0');
+            }
+
+        });
+        $(".collspanh6").click(function () {
+            var id = $(this).data('id');
+            if ($("#" + id).hasClass("hidden")) {
+                $("#" + id).removeClass('hidden');
+                $("#fa-" + id).removeClass('fa-arrow-alt-circle-down');
+                $("#fa-" + id).addClass('fa-arrow-alt-circle-up');
+            }
+            else {
+                $("#" + id).addClass('hidden');
+                $("#fa-" + id).addClass('fa-arrow-alt-circle-down');
+                $("#fa-" + id).removeClass('fa-arrow-alt-circle-up');
+            }
+        });
+        $(".addclass").click(function () {
+            debugger;
+            var id = $(this).data('id');
+            var item = id.split('-');
+            var width = $("#Width-" + id).val();
+            var Height = $("#Height-" + id).val();
+            var Capacity = $("#Capacity-" + id).val();
+
+            if (width == '') {
+                alert('Please Enter Width');
+                $("#Width-" + id).focus();
+            }
+            var Detail = [];
+            var file = $("#filedata-" + id).val();
+            var bAttachFile = '';
+            var ProfileContentType = '';
+            var sProfileExtension = $("#sProfileExtension-" + id).val();
+            if (file != null) {
+                var datafile = file.split(';');
+                bAttachFile = datafile[1].split(",")[1];
+                ProfileContentType = datafile[0].split(":")[1];
+            }
+
+            var data = new FormData();
+            data.append('file', file);
+            Detail.push({
+                ipk_ArchiMstDetId: 0,
+                iWid: width,
+                iLen: Height,
+                iQty: Capacity,
+                iParamId: item[0],
+                iSubCatId: item[1],
+                iUomId: item[2],
+                sAppId: "abc123",
+                bAttachFile: bAttachFile,
+                ProfileContentType: ProfileContentType,
+                sProfileExtension: sProfileExtension
+            });
+            var Params = JSON.stringify({
+                Master: Detail,
+                data:data
+            });
+            $("#bodyid").css('display', 'none');
+            $("#loader").css('display', 'block');
+            $.ajax({
+                url: "/Master/InsertArchitectureDetail",
+                type: 'POST',
+                dataType: "json",
+                data: Params,
+                contentType: "application/json",
+                success: function (response) {
+                    $("#bodyid").css('display', 'block');
+                    $("#loader").css('display', 'none');
+                    if (response.IsValid = 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.msg,
+                            showConfirmButton: false,
+                            timer: 6000
+                        })
+                        $("#sProfileExtension-" + id).val('');
+                        $("#Width-" + id).val('');
+                        $("#Height-" + id).val('');
+                        $("#Capacity-" + id).val('');
+                        $("#filedata-" + id).val('');
+                        GenerateArchtable(item[0], item[1], item[2], "abc123");
+                    }
+
+
+                }
+            });
+        });
+        $(".mainsave").click(function () {
+            debugger;
+            var id = $(this).data('id');
+            var main = $(this).data('main');
+        });
+
+        buildalltabelArchitecture('@appid');
+        function buildalltabelArchitecture(item) {
+            debugger;
+            $.ajax({
+                url: '/Master/BuildalltabelArchitecture?item=' + item,
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                success: function (response) {
+                    debugger;
+                    console.log(response);
+
+                    if (response.isvalid == 1) {
+                        for (var i = 0; i < response.Data.length; i++) {
+                            GenerateArchtable(response.Data[i].iParamId, response.Data[i].iSubCatId, response.Data[i].iUomId,'@appid')
+                        }
+                    }
+
+
+
+                }
+            });
+            return false;
+
+        }
+
+        function myFunction(item) {
+            sum += item;
+        }
+        function GenerateArchtable(iParamId, iSubCatId, iUomId, sAppId) {
+
+            $.ajax({
+                url: '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+
+
+                    $("#tbody-" + iParamId + "-" + iSubCatId + "-" + iUomId).html(response);
+                    return;
+                    /*  $("#AddSection").html(response);*/
+
+                }
+            });
+            return false;
+        }
+
+        function encodeImageFileAsURL(element) {
+            debugger;
+            var imagebase64 = "";
+            var file = element.files[0];
+            var name = file.name;
+            var extension = "";
+            if (name != null) {
+                var data = name.split('.');
+                var len = data.length;
+                extension = data[len - 1];
+
+            }
+            var elementID = element.id;
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                console.log('RESULT', reader.result)
+                imagebase64 = reader.result;
+                console.log('converted');
+                console.log(imagebase64)
+                $("#filedata-" + elementID).val(imagebase64);
+                $("#sProfileExtension-"+elementID).val(extension);
+            }
+
+            reader.readAsDataURL(file);
+            //return
+        }
+        function uploadFileAsURL(element, iParamId, iSubCatId, iUomId,Type) {
+            debugger;
+            var elementID = element.id;
+            var uploadFile = new FormData();
+            var selectedText = $("#" + elementID).val();
+            var extension = selectedText.split('.');
+            var files = $("#" + elementID).get(0).files;
+            if (files.length > 0) {
+                debugger;
+                uploadFile.append("CsvDoc", files[0]);
+
+                $.ajax({
+                    url: "/Master/UploadCsvFile?iParamId=" + iParamId + "&iSubCatId=" + iSubCatId + "&iUomId=" + iUomId + "&Appid=" + '@appid' + "&Type=" + Type,
+                    contentType: false,
+                    processData: false,
+                    data: uploadFile,
+                    type: 'POST',
+                    success: function (response) {
+                        debugger;
+                        HideBALoader("LoaderBASinup")
+                        if (response.IsValid = 1) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Import File Save Successfully',
+                                showConfirmButton: false,
+                                timer: 6000
+                            })
+
+
+                        }
+
+
+
+                    }
+                });
+            }
+        }
+
+        function Delete(ipk_ArchiMstDetId,iParamId,iSubCatId,iUomId) {
+            $.confirm({
+
+                title: 'Remove Confirmation',
+                content: 'Are you sure to remove record',
+                type: 'red',
+                typeAnimated: true,
+                animation: 'rotate',
+                closeAnimation: 'scale',
+                buttons: {
+                    Confirm: {
+                        text: 'YES',
+                        btnClass: 'btn-red',
+                        action: function () {
+
+
+
+                            var Params = JSON.stringify({
+                                ipk_ArchiMstDetId: ipk_ArchiMstDetId
+                                //iParamId: iParamId,
+                                //iSubCatId: iSubCatId,
+                                //iUomId: iUomId
+
+                            });
+                            /* ShowBALoader("LoaderBASinup1");*/
+                            $.ajax({
+                                url: "/Master/DeleteImage",
+                                type: 'POST',
+                                dataType: "json",
+                                data: Params,
+                                contentType: "application/json",
+                                success: function (response) {
+
+
+                                    debugger;
+                                    if (response.IsValid = 1) {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'success',
+                                            title: 'Delete Successfully',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        })
+                                        GenerateArchtable(iParamId, iSubCatId, iUomId,'@appid')
+                                    }
+
+                                },
+
+                            });
+
+                        }
+                    },
+                    close: {
+                        text: 'NO',
+                        action: function () { }
+                    }
+                }
+            });
+        }
+    </script>
+    @*<script type="text/javascript">
+            var imagebase64 = "";
+            function encodeImageFileAsURL(element) {
+                /* debugger;*/
+                var elementID = element.id;
+                var file = element.files[0];
+                console.log(file);
+                /* console.log(elementID);*/
+                var reader = new FileReader();
+                console.log(reader);
+                reader.onloadend = function () {
+                    console.log('insied');
+                    imagebase64 = reader.result;
+                    //console.log(imagebase64)
+                    //console.log(hiddenItemField)
+
+
+                    //imagebase64 = imagebase64.split(',')[1];
+
+
+                    console.log(imagebase64);
+
+
+                }
+                //alert(imagebase64);
+                return imagebase64;
+            }
+        </script>*@
+}
