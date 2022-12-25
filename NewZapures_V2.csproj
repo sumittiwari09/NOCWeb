@@ -142,6 +142,7 @@
     <Compile Include="Controllers\FeeDetailsController.cs" />
     <Compile Include="Controllers\DeptCourseMapController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />
+    <Compile Include="Controllers\ProofOfDocumentController.cs" />
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\SubjectMasterController.cs" />
@@ -219,10 +220,15 @@
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\CompanyConsumption.cs" />
     <Compile Include="Models\CustomMaster.cs" />
+    <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DeptCourseMapMaster.cs" />
     <Compile Include="Models\DMT_ModelCollection.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
     <Compile Include="Models\FeeMaster.cs" />
+    <Compile Include="Models\ProofOfDocument.cs" />
+    <Compile Include="Models\Slot.cs" />
+    <Compile Include="Models\SlotDropdownBO.cs" />
+    <Compile Include="Models\SlotMaster.cs" />
     <Compile Include="Models\StaffBO.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
@@ -3592,6 +3598,7 @@
     <Content Include="Views\AcdmcMst\index.cshtml" />
     <Content Include="Views\Master\ArchitectureDetail.cshtml" />
     <Content Include="Views\Trustee\CollageAttachment.cshtml" />
+    <Content Include="Views\ProofOfDocument\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
