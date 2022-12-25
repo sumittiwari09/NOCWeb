@@ -8,6 +8,12 @@
     {
         lstDepart = (List<AddDepartment>)ViewBag.Department;
     }
+    List<Dropdown> Parcat = new List<Dropdown>();
+    if (ViewBag.PerameterCategorylst != null)
+    {
+        Parcat = (List<Dropdown>)ViewBag.PerameterCategorylst;
+    }
+
 }
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
 <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -61,17 +67,21 @@
 
                         <div class="col-sm-2">
                             <select class="singleselect" data-tags="true" id="iCourseId" name="iCourseId" required>
-                                <option value="" disabled selected hidden>Select Parameter Course</option>
-                                <option value="1">PH.D</option>
+                                @*<option value="" disabled selected hidden>Select Parameter Course</option>
+                                <option value="1">BSC</option>
                                 <option value="2">MCA</option>
                                 <option value="3">MBA</option>
-                                <option value="4">MBBS</option>
+                                <option value="4">MBBS</option>*@
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <select class="singleselect" data-tags="true" id="iParCatId" name="iParCatId" required>
                                 <option value="" disabled selected hidden>Select Parameter Category</option>
-
+                                @{ foreach(var item in Parcat)
+                {
+                                                                <option value="@item.Id">@item.Text </option>
+                }
+                                        }
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -104,16 +114,22 @@
 
                         </div>
                         <div class="col-sm-4 row">
-                            <div class="checkbox checkbox-success col-sm-6">
+                            <div class="checkbox checkbox-success col-sm-4" style=" margin-top:-27px">
                                 <input id="iField" name="iField" class="styled2" type="checkbox" value="0">
                                 <label for="iField" id="Fieldlabel" style="font-weight:bold;">
                                     Field Mandatory
                                 </label>
                             </div>
-                            <div class="checkbox checkbox-success col-sm-6">
+                            <div class="checkbox checkbox-success col-sm-4" style=" margin-top:-27px">
                                 <input id="iValue" name="iValue" class="styled2" type="checkbox" value="0">
                                 <label for="iValue" id="Valuelabel" style="font-weight:bold;">
-                                    Value Mandatory
+                                   Minimum Cutoff
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-success col-sm-4">
+                                <input id="iFix" name="iFix" class="styled2" type="checkbox" value="0">
+                                <label for="iFix" id="Fixlabel" style="font-weight:bold;">
+                                   Fix Mandatory
                                 </label>
                             </div>
                         </div>
@@ -188,7 +204,8 @@
                                 <th>Min</th>
                                 <th>Max</th>
                                 <th>Field M</th>
-                                <th>Value M</th>
+                                <th>Minimum Cutoff</th>
+                                <th>Fix Mandatory</th>
                                 <th>Active</th>
                                 <th>Action</th>
 
@@ -201,7 +218,7 @@
             {
                                                        <tr id="tr_@item.iPK_ParValId">
                                                            <td>@item.sDeptName</td>
-                                                           <td>@item.CouresName</td>
+                                                           <td>@item.CourseName</td>
                                                            <td>@item.sCateName</td>
                                                            <td>@item.sCateSubName</td>
                                                            <td>@item.UomName</td>
@@ -228,7 +245,7 @@
                                                                        @item.imaxval
                                                                    }
                                                                }
-                                                             
+
                                                            </td>
                                                            <td>
                                                                <div class="form-check form-switch">
@@ -270,6 +287,25 @@
                                                                <div class="form-check form-switch">
                                                                    @{
 
+                                                                       if (item.iFix == 1)
+                                                                       {
+                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix" checked>
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix">
+
+                                                                       }
+
+                                                                   }
+
+                                                               </div>
+                                                           </td>
+
+                                                           <td>
+                                                               <div class="form-check form-switch">
+                                                                   @{
+
                                                                        if (item.iStts == 1)
                                                                        {
                                                                            <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Status-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iStts" checked>
@@ -286,8 +322,8 @@
                                                            </td>
                                                            <td>
                                                                @*<a href="#" class="btn btn-success btn-sm padding5" title="Update">
-                                                                   <i class="fa fa-edit"></i>
-                                                               </a>*@
+                <i class="fa fa-edit"></i>
+            </a>*@
                                                                <a href="#" class="btn btn-danger btn-sm padding5" title="Delete">
                                                                    <i class="fa fa-times"></i>
                                                                </a>
@@ -321,23 +357,69 @@
 
         $(".singleselect").select2();
 
+        //$("#iFk_Deptid").change(function () {
+
+        //    var strHTML = "";
+        //    strHTML += "<option value=''>Select Parameter Category</option>"
+
+        //    var Params = JSON.stringify({ Deptid: $(this).val(), CrtgId:0, SubCrtgId: 0 });
+
+        //    if ($(this).val() == "") {
+        //        $("#iParCatId").select2("destroy");
+        //        $("#iParCatId").html(strHTML);
+        //        $("#iParCatId").select2();
+
+        //    }
+
+
+        //    $.ajax({
+        //        url: "/Master/FillPerameterValue",
+        //        type: 'POST',
+        //        dataType: "json",
+        //        contentType: "application/json",
+        //        data: Params,
+        //        success: function (response) {
+        //            debugger;
+        //            console.log(response);
+
+        //            if (response.isvalid == 1) {
+        //                for (var i = 0; i < response.Data.length; i++) {
+        //                    strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+        //                }
+        //            }
+
+        //            $("#iParCatId").select2("destroy");
+        //            $("#iParCatId").html(strHTML);
+        //            $("#iParCatId").select2();
+
+
+        //            $("#iParCatSubId").select2("destroy");
+        //            $("#iParCatSubId").html("<option value=''>Select Parameter</option>");
+        //            $("#iParCatSubId").select2();
+
+        //            $("#iParUomid").select2("destroy");
+        //            $("#iParUomid").html("<option value=''>Select UOM</option>");
+        //            $("#iParUomid").select2();
+        //            addvalidation();
+        //        }
+        //    });
+        //});
         $("#iFk_Deptid").change(function () {
-
             var strHTML = "";
-            strHTML += "<option value=''>Select Parameter Category</option>"
+            strHTML += "<option value=''>Select Course</option>"
 
-            var Params = JSON.stringify({ Deptid: $(this).val(), CrtgId:0, SubCrtgId: 0 });
+            var Params = JSON.stringify({ Deptid: $(this).val() });
 
             if ($(this).val() == "") {
-                $("#iParCatId").select2("destroy");
-                $("#iParCatId").html(strHTML);
-                $("#iParCatId").select2();
+                $("#iCourseId").select2("destroy");
+                $("#iCourseId").html(strHTML);
+                $("#iCourseId").select2();
 
             }
 
 
             $.ajax({
-                url: "/Master/FillPerameterValue",
+                url: "/Master/FillCoursebyDepartment",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
@@ -352,23 +434,14 @@
                         }
                     }
 
-                    $("#iParCatId").select2("destroy");
-                    $("#iParCatId").html(strHTML);
-                    $("#iParCatId").select2();
+                    $("#iCourseId").select2("destroy");
+                    $("#iCourseId").html(strHTML);
+                    $("#iCourseId").select2();
 
 
-                    $("#iParCatSubId").select2("destroy");
-                    $("#iParCatSubId").html("<option value=''>Select Parameter</option>");
-                    $("#iParCatSubId").select2();
-
-                    $("#iParUomid").select2("destroy");
-                    $("#iParUomid").html("<option value=''>Select UOM</option>");
-                    $("#iParUomid").select2();
-                    addvalidation();
                 }
             });
         });
-
         $("#iParCatId").change(function () {
             var deptid = $("#iFk_Deptid").val();
             var strHTML = "";
@@ -471,6 +544,12 @@
             $(this).val('0');
             if ($(this).is(':checked'))
             {
+                $(this).val('1');
+            }
+        });
+        $("#iFix").change(function () {
+            $(this).val('0');
+            if ($(this).is(':checked')) {
                 $(this).val('1');
             }
         });

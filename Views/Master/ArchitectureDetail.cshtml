@@ -1,6 +1,18 @@
-﻿@{
+﻿@using NewZapures_V2.Models
+@model List<PARMTVALUCONFMSTView>
+@{
     ViewBag.Title = "Architecture Detail";
+    List<Dropdown> Categorylst = new List<Dropdown>();
+    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+    if (Model != null)
+    {
+        lst = Model;
 }
+    var appid = ViewBag.Applicableid;
+    var j = 1;
+}
+
+
 
 @section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
 <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -18,7 +30,7 @@
         text-align: center;
         cursor: pointer;
         font-weight: bold;
-        border-radius: 23px;
+       /* border-radius: 23px;*/
     }
 
     .invoicetabs {
@@ -27,7 +39,8 @@
     }
 
     .active1 {
-        background: red;
+        background: cornflowerblue;
+        color: aliceblue;
     }
 
     .hidden {
@@ -43,6 +56,21 @@
         padding: 10px;
         background: cadetblue;
         font-weight: bold;
+    }
+
+    .borderdesign {
+        border: solid;
+        margin: 9px;
+        border-radius: 18px;
+        border-width: thin;
+    }
+
+    .collspanh6 {
+        border: solid;
+        border-width: thin;
+        background: black;
+        color: beige;
+        padding: 7px;
     }
 </style>
 }
@@ -64,77 +92,116 @@
     <div class="col-lg-12">
 
         <ul class="invoicetabs">
-            <li class="noneactive" data-id="infrastructure">
-                infrastructure
+            @{
+                foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+                {
+                    <li class="noneactive @(j==1?"active1":"") " data-id="@item.sCateName">
+                        @item.sCateName
             </li>
-            @*<li class="noneactive" data-id="PracticalRoom">
-                    Practical Room
-                </li>*@
-            <li class="noneactive" data-id="OtherRoom">
-                Others Room
-            </li>
-            @*<li class="noneactive" data-id="Libraryroom">
-                    Library room
-                </li>*@
+                    j = 0;
+                }
+
+            }
+
         </ul>
-        <section class="hidden intersection" id="infrastructure">
+        @{
+                        j = 1;
+                        foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+                        {
+                <section class="@(j==1?"":"hidden")  intersection" id="@item.sCateName">
             <div class="card Card--shadow--medium radiuscard reversecard">
                 <header class="card-heading card-default">
                     <h6 class="card-title">
-                        Infrature Information
+                                @item.sCateName Information
                     </h6>
                 </header>
-                <div class="card-body">
-
-                    <div class="form-group is-empty borderbottom row">
-                        <label class="col-sm-3 control-label">No Of Rooms</label>
-                        <div class="col-sm-9">
-                            <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
-
-                        </div>
                     </div>
 
+                    @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
+                    {
+                        <h6 class="pull-left collspanh6" data-id="@item.iParCatId-@inneritem.iParCatSubId">
+                            <i class="fas fa-arrow-alt-circle-down" id="fa-@item.iParCatId-@inneritem.iParCatSubId"></i>
+                            @inneritem.sCateSubName
+                        </h6>
+
+                        <div class="card-body panel-group  borderdesign @(j==1?"":"hidden")" id="@item.iParCatId-@inneritem.iParCatSubId">
 
 
+                            <div class="form-group is-empty borderbottom row " style="padding: inherit;">
+                                @{
+                                    var i = "0";
+                                    //var list = Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Select(p => new { p.iParUomid, p.UomName }).Distinct().ToList();
+                                    foreach (var thirditem in Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Distinct().ToList())
+                                    {
 
-                </div>
+
+                                        if (thirditem.iParUomid == 1)
+                                        {
+                                            i = i + "-1";
+                                            <label class="col-sm-3 control-label" style="font-weight:bold;">@inneritem.sCateSubName Rooms</label>
+                                            <div class="col-sm-5">
+                                                <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="text" placeholder="Enter @inneritem.sCateSubName" value="" class="form-control col-sm-9 calculation" required>
 
 
             </div>
-            <div class="card Card--shadow--medium radiuscard reversecard">
-                <header class="card-heading card-default">
-                    <h6 class="card-title">
-                        Room Information
-                    </h6>
-                </header>
+                                            if (item.sCateName == "Assets")
+                                            {
+                                                <div class="col-sm-4">
+                                                    <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control col-sm-12 filestyle">
+                                                </div>
+                                              
+
+                                            }
+                                        }
+                                        if (thirditem.iParUomid == 3)
+                                        {
+                                            i = i + "-3";
+                                            <br />
                 <div class="card-body">
 
                     <div class="form-group is-empty borderbottom row">
 
                         <div class="col-sm-2">
-                            <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+                                                        <input id="Width-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Width" value="" min="@thirditem.iminlength" data-min="@thirditem.iminlength" title="width must be equal or greather than @thirditem.iminlength" class="form-control calculation">
 
                         </div>
 
                         <div class="col-sm-2">
-                            <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
+                                                        <input id="Height-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Height" data-min="@thirditem.iminwidth" value="@thirditem.iminwidth" min="@thirditem.iminwidth" class="form-control">
 
                         </div>
                         <div class="col-sm-2">
-                            <input id="Infrature_RoomCapacity" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control" required>
+                                                        <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control">
 
                         </div>
-                        <button class="btn btn-primary col-sm-2">Add</button>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
+                                                            @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
+                                                            <input type="file" id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+
+                                                            <input type="hidden" id="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                                            <input type="hidden" id="sProfileExtension-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" value="">
                     </div>
+                                                    </div>
+                                                    @*<img src=""  class="col-sm-2" style="
+                                height: 39px;
+                                width: 85px;
+                                border-radius: 39px;
+                            " id="img-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" />*@
+                                                    <button class="btn btn-primary col-sm-1 addclass" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">Add</button>
+                                                </div>
 
                     <div class="form-group is-empty row" id="showtable">
                         <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead style="background-color: darkgray;">
 
                                 <tr>
-                                    @*<th>
-                                            #
-                                        </th>*@
+                                                                <th>
+                                                                    #No
+                                                                </th>
+                                                                <th>
+                                                                    file
+                                                                </th>
 
 
                                     <th>Width</th>
@@ -147,37 +214,50 @@
 
                                 </tr>
                             </thead>
+                                                        <tbody id="tbody-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">
+                                                        </tbody>
                         </table>
                     </div>
 
 
                 </div>
+                                        }
+                                    }
 
+                                    if (i != "0")
+                                    {
+                                        <footer class="form-footer">
+                                            <div class="pull-right">
 
+                                                <button class="btn btn-primary mainsave" data-id="@i" data-main="@inneritem.iParCatSubId-@item.iParCatId">SAVE</button>
             </div>
-            <div class="pull-right" style="text-align: end;">
+                                        </footer>}
 
-                <button class="btn btn-primary"> Save </button>
-            </div>
+                                    j = 0;
+                                }
 
+
+
+                            </div>
+                                            </div>
+                                    }
         </section>
 
-        <section class="hidden intersection" id="OtherRoom">
+            }
+        }
+        @*<section class="hidden intersection" id="infrastructure">
             <div class="card Card--shadow--medium radiuscard reversecard">
                 <header class="card-heading card-default">
                     <h6 class="card-title">
-                        Other Room Information
+                        Infrature Information
                     </h6>
                 </header>
                 <div class="card-body">
 
                     <div class="form-group is-empty borderbottom row">
-
-                        <div class="col-sm-2" style="
-                      margin-left: 49px;
-                             ">
-                            <input type="checkbox" class="form-check-input checkbox" data-id="PracticalRooms" id="PracticalRooms" value="0">
-                            <label class="form-check-label" for="PracticalRooms">Practical Rooms</label>
+                        <label class="col-sm-3 control-label">No Of Rooms</label>
+                        <div class="col-sm-5">
+                            <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
                         </div>
                         <div id="1_PracticalRooms" class="col-sm-10 hidden">
                             <div class="col-sm-2">
@@ -205,11 +285,7 @@
 
                     <div class="form-group is-empty borderbottom row">
 
-                        <div class="col-sm-2" style="
-                      margin-left: 49px;
-                             ">
-                            <input type="checkbox" class="form-check-input checkbox" data-id="SportRooms" id="SportRooms" value="0">
-                            <label class="form-check-label" for="SportRooms">Sport Rooms</label>
+
                         </div>
                         <div id="1_SportRooms" class="col-sm-10 hidden">
                             <div class="col-sm-2">
@@ -233,7 +309,7 @@
                             </button>
                         </div>
 
-                    </div>
+        </section>*@
 
                     <div class="form-group is-empty borderbottom row">
 
@@ -253,10 +329,7 @@
 
 
 
-                            <div class="custom-file col-sm-2">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+
                             </div>
                             <button class="btn btn-primary col-sm-2" style="
     margin-left: 30px;
@@ -266,6 +339,8 @@
                         </div>
 
                     </div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
 
                     <div class="form-group is-empty borderbottom row">
 
@@ -275,60 +350,157 @@
                             <input type="checkbox" class="form-check-input checkbox" data-id="StoreRooms" id="StoreRooms" value="0">
                             <label class="form-check-label" for="StoreRooms">Store Rooms</label>
                         </div>
-                        <div id="1_StoreRooms" class="col-sm-10 hidden">
-                            <div class="col-sm-2">
-                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
+<div class="hidden" id="preloadcreatepopupright">
+    @RenderPage("~/Views/Shared/Preloader/_createpopupright.cshtml")
                             </div>
-                            <div class="col-sm-2">
-                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
-                            </div>
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script type="text/javascript">
 
 
+        $('.noneactive').click(function () {
+            $('.noneactive').removeClass('active1');
+            var id = $(this).data('id');
+            $('.intersection').addClass('hidden');
+            $("#" + id).removeClass('hidden');
 
-                            <div class="custom-file col-sm-2">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                            </div>
-                            <button class="btn btn-primary col-sm-2" style="
-    margin-left: 30px;
-">
-                                Add
-                            </button>
-                        </div>
+            $(this).addClass('active1');
+        });
+        $('.checkbox').click(function () {
+            debugger;
+            var id = $(this).data('id');
+            $("#1_" + id).addClass('hidden');
+            $("#1_" + id).removeClass('hiddenactive');
+            var val = $(this).val();
+            if (val == '0') {
+                $(this).val('1');
+                $("#1_" + id).removeClass('hidden');
+                $("#1_" + id).addClass('hiddenactive');
+            }
+            else {
+                $(this).val('0');
+            }
 
-                    </div>
-                    <div class="form-group is-empty borderbottom row">
+        });
+        $(".collspanh6").click(function () {
+            var id = $(this).data('id');
+            if ($("#" + id).hasClass("hidden")) {
+                $("#" + id).removeClass('hidden');
+                $("#fa-" + id).removeClass('fa-arrow-alt-circle-down');
+                $("#fa-" + id).addClass('fa-arrow-alt-circle-up');
+            }
+            else {
+                $("#" + id).addClass('hidden');
+                $("#fa-" + id).addClass('fa-arrow-alt-circle-down');
+                $("#fa-" + id).removeClass('fa-arrow-alt-circle-up');
+            }
+        });
+        $(".addclass").click(function () {
+            debugger;
+            var id = $(this).data('id');
+            var item = id.split('-');
+            var width = $("#Width-" + id).val();
+            var Height = $("#Height-" + id).val();
+            var Capacity = $("#Capacity-" + id).val();
 
-                        <div class="col-sm-2" style="
-                      margin-left: 49px;
-                             ">
-                            <input type="checkbox" class="form-check-input checkbox" data-id="PrincipalRooms" id="PrincipalRooms" value="0">
-                            <label class="form-check-label" for="PrincipalRooms">Principal Rooms</label>
-                        </div>
-                        <div id="1_PrincipalRooms" class="col-sm-10 hidden">
-                            <div class="col-sm-2">
-                                <input id="Infrature_Width" type="number" placeholder="Enter Width" value="" class="form-control calculation" required>
-                            </div>
-                            <div class="col-sm-2">
-                                <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
-                            </div>
+            if (width == '') {
+                alert('Please Enter Width');
+                $("#Width-" + id).focus();
+            }
+            var Detail = [];
+            var file = $("#filedata-" + id).val();
+            var bAttachFile = '';
+            var ProfileContentType = '';
+            var sProfileExtension = $("#sProfileExtension-" + id).val();
+            if (file != null) {
+                var datafile = file.split(';');
+                bAttachFile = datafile[1].split(",")[1];
+                ProfileContentType = datafile[0].split(":")[1];
+            }
+
+            var data = new FormData();
+            data.append('file', file);
+            Detail.push({
+                ipk_ArchiMstDetId: 0,
+                iWid: width,
+                iLen: Height,
+                iQty: Capacity,
+                iParamId: item[0],
+                iSubCatId: item[1],
+                iUomId: item[2],
+                sAppId: "abc123",
+                bAttachFile: bAttachFile,
+                ProfileContentType: ProfileContentType,
+                sProfileExtension: sProfileExtension
+            });
+            var Params = JSON.stringify({
+                Master: Detail,
+                data:data
+            });
+            $("#bodyid").css('display', 'none');
+            $("#loader").css('display', 'block');
+            $.ajax({
+                url: "/Master/InsertArchitectureDetail",
+                type: 'POST',
+                dataType: "json",
+                data: Params,
+                contentType: "application/json",
+                success: function (response) {
+                    $("#bodyid").css('display', 'block');
+                    $("#loader").css('display', 'none');
+                    if (response.IsValid = 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.msg,
+                            showConfirmButton: false,
+                            timer: 6000
+                        })
+                        $("#sProfileExtension-" + id).val('');
+                        $("#Width-" + id).val('');
+                        $("#Height-" + id).val('');
+                        $("#Capacity-" + id).val('');
+                        $("#filedata-" + id).val('');
+                        GenerateArchtable(item[0], item[1], item[2], "abc123");
+                    }
 
 
+                }
+            });
+        });
+        $(".mainsave").click(function () {
+            debugger;
+            var id = $(this).data('id');
+            var main = $(this).data('main');
+        });
 
-                            <div class="custom-file col-sm-2">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                            </div>
-                            <button class="btn btn-primary col-sm-2" style="
-    margin-left: 30px;
-">
-                                Add
-                            </button>
-                        </div>
+        buildalltabelArchitecture('@appid');
+        function buildalltabelArchitecture(item) {
+            debugger;
+            $.ajax({
+                url: '/Master/BuildalltabelArchitecture?item=' + item,
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                success: function (response) {
+                    debugger;
+                    console.log(response);
 
-                    </div>
+                    if (response.isvalid == 1) {
+                        for (var i = 0; i < response.Data.length; i++) {
+                            GenerateArchtable(response.Data[i].iParamId, response.Data[i].iSubCatId, response.Data[i].iUomId,'@appid')
+                        }
+                    }
 
                     <div class="form-group is-empty borderbottom row">
 
@@ -346,22 +518,22 @@
                                 <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
                             </div>
 
+                }
+            });
+            return false;
 
+        }
 
-                            <div class="custom-file col-sm-2">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                            </div>
-                            <button class="btn btn-primary col-sm-2" style="
-    margin-left: 30px;
-">
-                                Add
-                            </button>
-                        </div>
+        function myFunction(item) {
+            sum += item;
+        }
+        function GenerateArchtable(iParamId, iSubCatId, iUomId, sAppId) {
 
-                    </div>
-                    <div class="form-group is-empty borderbottom row">
+            $.ajax({
+                url: '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
 
                         <div class="col-sm-2" style="
                       margin-left: 49px;
@@ -377,62 +549,167 @@
                                 <input id="Infrature_Height" type="number" placeholder="Enter Height" value="" max="30" class="form-control" required>
                             </div>
 
+                    $("#tbody-" + iParamId + "-" + iSubCatId + "-" + iUomId).html(response);
+                    return;
+                    /*  $("#AddSection").html(response);*/
+
+                }
+            });
+            return false;
+        }
+
+        function encodeImageFileAsURL(element) {
+            debugger;
+            var imagebase64 = "";
+            var file = element.files[0];
+            var name = file.name;
+            var extension = "";
+            if (name != null) {
+                var data = name.split('.');
+                var len = data.length;
+                extension = data[len - 1];
+
+            }
+            var elementID = element.id;
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                console.log('RESULT', reader.result)
+                imagebase64 = reader.result;
+                console.log('converted');
+                console.log(imagebase64)
+                $("#filedata-" + elementID).val(imagebase64);
+                $("#sProfileExtension-"+elementID).val(extension);
+            }
+
+            reader.readAsDataURL(file);
+            //return
+        }
+        function uploadFileAsURL(element, iParamId, iSubCatId, iUomId,Type) {
+            debugger;
+            var elementID = element.id;
+            var uploadFile = new FormData();
+            var selectedText = $("#" + elementID).val();
+            var extension = selectedText.split('.');
+            var files = $("#" + elementID).get(0).files;
+            if (files.length > 0) {
+                debugger;
+                uploadFile.append("CsvDoc", files[0]);
+
+                $.ajax({
+                    url: "/Master/UploadCsvFile?iParamId=" + iParamId + "&iSubCatId=" + iSubCatId + "&iUomId=" + iUomId + "&Appid=" + '@appid' + "&Type=" + Type,
+                    contentType: false,
+                    processData: false,
+                    data: uploadFile,
+                    type: 'POST',
+                    success: function (response) {
+                        debugger;
+                        HideBALoader("LoaderBASinup")
+                        if (response.IsValid = 1) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Import File Save Successfully',
+                                showConfirmButton: false,
+                                timer: 6000
+                            })
 
 
-                            <div class="custom-file col-sm-2">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                            </div>
-                            <button class="btn btn-primary col-sm-2" style="
-    margin-left: 30px;
-">
-                                Add
-                            </button>
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
+                        }
 
 
 
-        </section>
+                    }
+                });
+            }
+        }
+
+        function Delete(ipk_ArchiMstDetId,iParamId,iSubCatId,iUomId) {
+            $.confirm({
+
+                title: 'Remove Confirmation',
+                content: 'Are you sure to remove record',
+                type: 'red',
+                typeAnimated: true,
+                animation: 'rotate',
+                closeAnimation: 'scale',
+                buttons: {
+                    Confirm: {
+                        text: 'YES',
+                        btnClass: 'btn-red',
+                        action: function () {
 
 
 
-
-
-    </div>
-</div>
-<script type="text/javascript">
-    $('.noneactive').click(function () {
-        $('.noneactive').removeClass('active1');
-        var id = $(this).data('id');
-        $('.intersection').addClass('hidden');
-        $("#" + id).removeClass('hidden');
+                            var Params = JSON.stringify({
+                                ipk_ArchiMstDetId: ipk_ArchiMstDetId
+                                //iParamId: iParamId,
+                                //iSubCatId: iSubCatId,
+                                //iUomId: iUomId
 
         $(this).addClass('active1');
     });
-    $('.checkbox').click(function () {
+                            /* ShowBALoader("LoaderBASinup1");*/
+                            $.ajax({
+                                url: "/Master/DeleteImage",
+                                type: 'POST',
+                                dataType: "json",
+                                data: Params,
+                                contentType: "application/json",
+                                success: function (response) {
+
+
         debugger;
-        var id = $(this).data('id');
-        $("#1_" + id).addClass('hidden');
-        $("#1_" + id).removeClass('hiddenactive');
-        var val = $(this).val();
-        if (val == '0') {
-            $(this).val('1');
-            $("#1_" + id).removeClass('hidden');
-            $("#1_" + id).addClass('hiddenactive');
+                                    if (response.IsValid = 1) {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'success',
+                                            title: 'Delete Successfully',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        })
+                                        GenerateArchtable(iParamId, iSubCatId, iUomId,'@appid')
         }
-        else {
-            $(this).val('0');
-        }
+
+                                },
 
     });
 
+                        }
+                    },
+                    close: {
+                        text: 'NO',
+                        action: function () { }
+                    }
+                }
+            });
+        }
 </script>
+    @*<script type="text/javascript">
+            var imagebase64 = "";
+            function encodeImageFileAsURL(element) {
+                /* debugger;*/
+                var elementID = element.id;
+                var file = element.files[0];
+                console.log(file);
+                /* console.log(elementID);*/
+                var reader = new FileReader();
+                console.log(reader);
+                reader.onloadend = function () {
+                    console.log('insied');
+                    imagebase64 = reader.result;
+                    //console.log(imagebase64)
+                    //console.log(hiddenItemField)
+
+
+                    //imagebase64 = imagebase64.split(',')[1];
+
+
+                    console.log(imagebase64);
+
+
+                }
+                //alert(imagebase64);
+                return imagebase64;
+            }
+        </script>*@
+}

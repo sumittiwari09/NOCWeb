@@ -21,6 +21,31 @@ namespace NewZapures_V2.Controllers
         // GET: AdminAjaxRequestPage
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         CommonFunction objcf = new CommonFunction();
+
+       public ActionResult Testing(int Id)
+        {
+            return View();
+        }
+        public ActionResult GenerateArchtable(int iParamId,int iSubCatId,int iUomId,string sAppId= "abc123")
+        {
+            List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GenerateArchtable?iParamId=" + iParamId + "&iSubCatId="+ iSubCatId + "&iUomId="+ iUomId + "&sAppId="+ sAppId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (d.Data != null)
+                {
+                    LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(d.Data.ToString());
+                }
+
+            }
+            return View(LstApesData);
+        }
         public ActionResult GenerateAepslist(int Id, int CommissionMasterId)
         {
             List<UserCommission> LstApesData = new List<UserCommission>();

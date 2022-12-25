@@ -5,6 +5,7 @@ using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -178,7 +179,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult InsertPerametertable(int Deptid = 0)
         {
             List<PARAMCAT> PerameterCategorylst = new List<PARAMCAT>();
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterTableList?Type=" + 0 + "&Deptid=" + Deptid + "&iFk_SelfId=" + 0);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterTableList?Type=" + 0 + "&Deptid=" + Deptid + "&iFk_SelfId=" + 0 + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM));
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -201,7 +202,7 @@ namespace NewZapures_V2.Controllers
 
         public List<Dropdown> GetPerameterCategorylst(int Deptid = 0,int iFk_SelfId=0,int Typid=0)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterCategoryList?Type=" + Typid + "&Deptid="+ Deptid+ "&iFk_SelfId=" + iFk_SelfId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetPerameterCategoryList?Type=" + Typid + "&Deptid="+ Deptid+ "&iFk_SelfId=" + iFk_SelfId + "&EnumId="+ Convert.ToInt32(TypeDocument.UOM));
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -429,7 +430,8 @@ namespace NewZapures_V2.Controllers
 
         public List<PARMTVALUCONFMSTView>ParameterValueConfigurationlist(int Id=0)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id="+Id);
+          
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id="+Id+ "&EnumId="+ Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course));
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -448,7 +450,224 @@ namespace NewZapures_V2.Controllers
             }
             return departments;
         }
-       
+
         #endregion
+
+        
+              public JsonResult FillCoursebyDepartment(int Deptid = 0)
+        {
+            List<Dropdown> departments = new List<Dropdown>();
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetCategorySubUOM?Deptid=" + Deptid + "&Category=" + Deptid + "&SubCategory=" + Convert.ToInt32(TypeDocument.Course)+ "&Table=Course");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    departments = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+                if (objResponse.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponse.ResponseCode == "000" && objResponse.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public ActionResult ArchitectureDetail()
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist();
+            ViewBag.Applicableid = "abc123";
+
+            return View(lst);
+        }
+        public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
+        {
+
+            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureDetail");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", _JsonSerializer.Serialize(Master.FirstOrDefault()), ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
+            if (response2.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponseData = JsonConvert.DeserializeObject<ResponseData>(response2.Content);
+                if (objResponseData.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+
+        }
+        public JsonResult BuildalltabelArchitecture(string item)
+        {
+            List<ArchiMstDetail> departments = new List<ArchiMstDetail>();
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/BuildalltabelArchitecture?sAppId=" + item );
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    departments = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(objResponse.Data.ToString());
+                }
+                if (objResponse.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponse.ResponseCode == "000" && objResponse.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = departments, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult DeleteImage(int ipk_ArchiMstDetId)
+        {
+            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id="+ ipk_ArchiMstDetId);
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json","", ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
+            if (response2.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponseData = JsonConvert.DeserializeObject<ResponseData>(response2.Content);
+                if (objResponseData.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+
+        }
+        public JsonResult UploadCsvFile(int iParamId,int iSubCatId,int iUomId,string Appid,string Type)
+        {
+            var attachedFile = System.Web.HttpContext.Current.Request.Files["CsvDoc"];
+            if (attachedFile == null || attachedFile.ContentLength <= 0)
+            {
+                return new JsonResult
+                {
+                    Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                    ContentEncoding = System.Text.Encoding.UTF8,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+            string folder = Server.MapPath(string.Format("~/UploadFloder/{0}/", Appid));
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+               
+            }
+          
+            string gs = Server.MapPath("~/UploadFloder/"+ Appid+"/");
+            string FileName = Type +"-"+ iParamId + "-" + iSubCatId + "-" + iUomId + Path.GetExtension(attachedFile.FileName);
+            if (System.IO.File.Exists(gs+Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId))
+            {
+                System.IO.File.Delete(gs + Type + "-" + iParamId + "-" + iSubCatId + "-" + iUomId);
+            }
+
+            attachedFile.SaveAs(gs + FileName);
+            
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = false, msg = "Import File Successfully", isvalid = 1 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }

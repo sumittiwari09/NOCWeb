@@ -3597,6 +3597,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="images\Docs\" />
     <Folder Include="images\WalletRecipts\" />
+    <Folder Include="UploadFloder\" />
     <Folder Include="Views\SwitchParty\" />
   </ItemGroup>
   <ItemGroup>
