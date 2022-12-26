@@ -1,0 +1,283 @@
+﻿@{
+    ViewBag.Title = "Collage Attachments";
+}
+<style>
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .custom-file-button input[type=file] {
+        margin-left: -2px !important;
+    }
+
+        .custom-file-button input[type=file]::-webkit-file-upload-button {
+            display: none;
+        }
+
+        .custom-file-button input[type=file]::file-selector-button {
+            display: none;
+        }
+
+    .custom-file-button:hover label {
+        background-color: #dde0e3;
+        cursor: pointer;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Attachments</li>
+                </ol>
+            </div>
+            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card card-secondary">
+    <div class="card-header fsc">
+        <h4 class="card-title">@ViewBag.Title</h4>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body row">
+        @using(Html.BeginForm("CollageAttachment", "Trustee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <div class="col-8">
+            <div class="">
+                <h3 class="card-title">Financial Documents</h3>
+            </div>
+            <input type="hidden" name="iFk_TrstId" value="@ViewData["TrustId"]" />
+            <input type="hidden" name="iFk_ClgId" value="@ViewData["CollageId"]" />
+            <input type="hidden" name="iFk_CourseId" value="@ViewData["CourseId"]" />
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">upload affidavit of non PF account</label>
+                    <div>
+                        <div class="input-group custom-file-button">
+                            <input type="file" class="form-control" id="affidavit" name="affidavit">
+                            <label class="input-group-text" for="affidavit">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Salary payment through by bank</label>
+                    <div>
+                        <div class="input-group custom-file-button">
+                            <input type="file" class="form-control" id="SalaryPayment" name="SalaryPayment">
+                            <label class="input-group-text" for="SalaryPayment">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload last 6 month bank statements</label>
+                    <div>
+                        <div class="input-group custom-file-button">
+                            <input type="file" class="form-control" id="Bankstatement" name="Bankstatement">
+                            <label class="input-group-text" for="Bankstatement">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Annexure 16</label>
+                    <div>
+                        <div class="input-group custom-file-button">
+                            <input type="file" class="form-control" id="Annexure" name="Annexure">
+                            <label class="input-group-text" for="Annexure">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-12">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Esi Dudction</label>
+                    <div>
+                        <div class="input-group custom-file-button">
+                            <input type="file" class="form-control" id="EsiDoc" name="EsiDoc">
+                            <label class="input-group-text" for="EsiDoc">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-8">
+                <div class="">
+                    <h3 class="card-title">Company Documents</h3>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">DO you have Got/supreme Court/Gor/VCI/Concerned university guidline & direction</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="1" name="bIsCnnctUnvrctyDrctn" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio7">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="0" name="bIsCnnctUnvrctyDrctn" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio8">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsCnnctUnvrctyDrctnfile" name="bIsCnnctUnvrctyDrctnfile">
+                                <label class="input-group-text" for="bIsCnnctUnvrctyDrctnfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">DO you have Time fram for establishment of livestock assistant traning school</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio9" value="1" name="bIsTimeFrm" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio9">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio10" value="0" name="bIsTimeFrm" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio10">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsTimeFrmfile" name="bIsTimeFrmfile">
+                                <label class="input-group-text" for="bIsTimeFrmfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">As you have Selection/Addmission criteria to be laid down by affiliated university</label>
+                        <div class="form-check-inline my-2">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio11" value="1" name="bIsLadDwn" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio11">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-2">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio12" value="0" name="bIsLadDwn" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio12">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsLadDwnfile" name="bIsLadDwnfile">
+                                <label class="input-group-text" for="bIsLadDwnfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Have sufficient land for development and bank guarntee if yes enclose undertaking on a non-judicial stamp of rs 500 duty attested by the magistrate/public notary</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio13" value="1" name="bIsSffcentLand" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio13">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio14" value="0" name="bIsSffcentLand" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio14">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsSffcentLandfile" name="bIsSffcentLandfile">
+                                <label class="input-group-text" for="bIsSffcentLandfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">To submit affidavit as per point no 4 of guidelines</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio15" value="1" name="bIsAffidvtAsprGuid" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio15">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio16" value="0" name="bIsAffidvtAsprGuid" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio16">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsAffidvtAsprGuidfile" name="bIsAffidvtAsprGuidfile">
+                                <label class="input-group-text" for="bIsAffidvtAsprGuidfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Other Documents to be added</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio17" value="1" name="bIsOtherDoc" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio17">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio18" value="0" name="bIsOtherDoc" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio18">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="bIsOtherDocfile" name="bIsOtherDocfile">
+                                <label class="input-group-text" for="bIsOtherDocfile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-lg-12" style="margin-bottom:10px">
+                <div class="col-lg-12">
+                    <button class="btn" style="color: white !important; background: #00B4DB; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0083B0, #00B4DB); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; text-transform: uppercase;margin-left:10px"> Save</button>
+
+                    @*</div>*@
+                </div>
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+    <!-- /.card-body -->
+</div>
+

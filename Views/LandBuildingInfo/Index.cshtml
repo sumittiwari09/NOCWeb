@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     //var university = ViewBag.universityCollection as List<Dropdown>;
+    var courses = (List<Dropdown>)ViewBag.CourseList;
 
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
@@ -109,197 +110,249 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header fsi">
-                <h4 class="mt-0 header-title float-left">Land And Building Information</h4>
+                <h4 class="mt-0 header-title float-left">Land & Building Information</h4>
             </div>
             <div class="card-body">
                 @using (Html.BeginForm("SaveDetails", "LandBuildingInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Area</label>
+                    <div class="row col-lg-12">
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6">Name Of Building</label>
+                            <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="example-text-input" class="col-sm-6">Khasra No</label>
+                            <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="row col-lg-12 mt-3">
+
+                        <div class="col-lg-6">
+                            <div class="select2-purple">
+                                <label for="example-text-input" class="col-sm-6">Course Running</label>
+                                <select class="singleSelect" multiple="multiple" id="ddlrunningCourses" data-placeholder="Select Course">
+                                    @{
+                                        if (courses != null)
+                                        {
+                                            foreach (var item in courses)
+                                            {
+                                                <option value=@item.Id>@item.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        @*<div class="col-lg-6">
+                                <label for="example-text-input" class="col-sm-6">Course Running</label>
+                                <select class="form-control select2" name="courseRunning" id="ddlrunningCourses">
+                                    <option value="0">Select Course</option>
+                                    <option value="1">Course 1</option>
+                                    <option value="2">Course 2</option>
+                                </select>
+                            </div>*@
+
+                        <div class="col-lg-4">
                             <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="fupFile" name="LandAreaProof" />
-                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>*@
-                            </div>
-                        </div>
+                                <label for="example-text-input" class="col-sm-6">Other Course Building</label>
+                                <div class="form-group custom-control custom-radio col-sm-2">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="courseBuilding" id="rbtn_CourseBuildingyes" value="1">
+                                    <label for="rbtn_CourseBuildingyes" class="custom-control-label" style="width: max-content;">Yes</label>
+                                </div>
 
-                    </div>
-                    <div class="card-header fsc">
-                        <h4 class="header-title">Land Convert</h4>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
-
-                            <div class="custom-control custom-radio col-sm-4">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="IsLandConvert" id="IsLandConvertYes" value="yes">
-                                <label for="IsLandConvertYes" class="custom-control-label">YES</label>
+                                <div class="form-group custom-control custom-radio col-sm-2">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="courseBuilding" id="rbtn_CourseBuildingNo" value="0">
+                                    <label for="rbtn_CourseBuildingNo" class="custom-control-label" style="width: max-content;">No</label>
+                                </div>
                             </div>
-                            <div class="custom-control custom-radio col-sm-4">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" name="IsLandConvert" id="IsLandConvertNo" value="no">
-                                <label for="IsLandConvertNo" class="custom-control-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Owner Name</label>
-                            <div>
-                                <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Certificate Document</label>
-                            <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                                <span id="LandArea"></span>
-                                @*<button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-upload"></i> Certificate Doc</button>*@
+                            <div id="divOtherCourses" style="display: none; margin-top: -8px;">
+                                <div class="select2-purple">
+                                    <select class="singleSelect" multiple="multiple"  id="ddlotherCourses" data-placeholder="Select Course">
+                                       
+                                            @{
+                                                if (courses != null)
+                                                {
+                                                    foreach (var item in courses)
+                                                    {
+                                                        <option value=@item.Id>@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-header fsc">
-                        <h4 class="header-title">Own Building</h4>
-                    </div>
+                    <div class="row col-lg-12 mt-3">
+                        <div class="col-lg-2">
+                            <div style="display:flex; gap:50px">
+                                <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Building</label>
+                                <div class="form-group custom-control custom-radio col-sm-2">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="BuildingType" id="rbtn_Buildingowned" value="1">
+                                    <label for="rbtn_Buildingowned" class="custom-control-label" style="width: max-content;">Owned</label>
+                                </div>
 
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>
-                            <div>
-                                <input type="text" class="form-control" name="OrderNo" id="txtOrderNO" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>
-                            <div>
-                                <input type="date" class="form-control" name="OrderDate" id="txtOrderDate" autocomplete="off" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Details Of Land</label>
-                            <div>
-                                <input type="text" class="form-control" name="LandDetail" id="txtDetailsOfLand" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Khasra No</label>
-                            <div>
-                                <input type="text" class="form-control" name="LandNo" id="txtKhasraNo" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Front Building Image</label>
-                            <button class="btn col-sm-10 locationBTN" id="btnfrontImage">
-                                <input type="file" placeholder="Upload Doc" name="FrontBuildingImage" id="txtfrontBuildingImage" />
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-header fsc">
-                        <h4 class="header-title">If any Other Institute by the socity /trust/company</h4>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12">
-                            <div class="custom-control custom-radio col-sm-4">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="customRadioYes" value="yes" name="IsAnyOtherInfo">
-                                <label for="customRadioYes" class="custom-control-label">YES</label>
-                            </div>
-                            <div class="custom-control custom-radio col-sm-4">
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="customRadioNo" value="No" name="IsAnyOtherInfo">
-                                <label for="customRadioNo" class="custom-control-label">No</label>
-                            </div>
+                                <div class="form-group custom-control custom-radio col-sm-2">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="BuildingType" id="rbtn_BuildingRented" value="0">
+                                    <label for="rbtn_BuildingRented" class="custom-control-label" style="width: max-content;">Rented</label>
+                                </div>
 
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="example-text-input" class="col-sm-3" style="margin-left:-10px">If Yes Upload</label>
-                            <div style="display:flex">
-                                <input class="form-group col-sm-6" placeholder="Land Area" type="file" id="UploadFile" name="OwnBuildingProof" />
-                                <button class="btn col-sm-2 locationBTN" id="btnUpload"><i class="ti-angle-left"></i> Upload Doc</button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card-header fsc">
-                        <h4 class="header-title">Current year Building saftey</h4>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>
-                            <div>
-                                <input type="text" class="form-control" name="OrderNoCurrent" id="txtOrderNo" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>
-                            <div>
-                                <input type="date" class="form-control" name="OrderDateCurrent" id="txtOrderDateCurrent" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
-                            <button class="btn col-sm-10 locationBTN" id="btnUploadDocumentCurrent">
-                                <input type="file" placeholder="Upload Doc" name="UploadDocumentCurrent" id="txtUploadDocumentCurrent" />
-                            </button>
                         </div>
                     </div>
 
-                    <div class="card-header fsc">
-                        <h4 class="header-title">Fire NOC</h4>
-                    </div>
-                    <div class="row">
-                        <div class="form-group custom-control custom-radio col-lg-3">
-                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
-                            <div>
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="fireNocYes" value="yes" name="fireNoc">
-                                <label for="fireNocYes" class="custom-control-label">YES</label>
+
+                    <div class="row" id="divowned" style="display:none">
+                        <div class="col-lg-12">
+
+                            <div class="col-lg-2">
+                                <div style="display:flex; gap:50px">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Covered</label>
+                                    <div class="form-group custom-control custom-radio col-sm-2">
+                                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="LandCovered" id="rbtn_LandYes" value="1">
+                                        <label for="rbtn_LandYes" class="custom-control-label" style="width: max-content;">Yes</label>
+                                    </div>
+
+                                    <div class="form-group custom-control custom-radio col-sm-2">
+                                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="LandCovered" id="rbtn_LandNo" value="0">
+                                        <label for="rbtn_LandNo" class="custom-control-label" style="width: max-content;">No</label>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="form-group custom-control custom-radio col-lg-3">
-                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
-                            <div>
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="fireNocNo" value="no" name="fireNoc">
-                                <label for="fireNocNo" class="custom-control-label">No</label>
+
+                        <div class="col-lg-12">
+
+                            <div id="divlandYes" class="row col-lg-12" style="display: none;padding: 20px;background: #ebebeb;border-radius: 11px;">
+                                <div class="col-lg-3">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Owner Name</label>
+                                    <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Area</label>
+                                    <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label class="col-sm-12" style="margin-left:-10px">Certificate Document</label><br />
+                                    <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                                </div>
+
                             </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
-                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
-                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentFireNoc" id="txtFireNoc" />
-                            </button>
                         </div>
                     </div>
 
-                    <div class="card-header fsc">
-                        <h4 class="header-title">PWC NOC</h4>
-                    </div>
-                    <div class="row">
-                        <div class="form-group custom-control custom-radio col-lg-3">
-                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order No</label>*@
-                            <div>
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" id="pwcNocYes" value="yes" name="pwcNoc">
-                                <label for="pwcNocYes" class="custom-control-label">YES</label>
+                    <div id="divRented" style="display: none;padding: 20px;background: #ebebeb;border-radius: 11px;">
+                        <div class="row col-sm-12">
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">Agreement Expiry Date</label><br />
+                                <input class="col-sm-12 form-control" placeholder="dd.MM.yyyy" type="date" id="certficateDocuFile" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">Upload Agreement Copy</label><br />
+                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
                             </div>
                         </div>
-                        <div class="form-group custom-control custom-radio col-lg-3">
-                            @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Order Date</label>*@
-                            <div>
-                                <input class="form-group col-sm-2 custom-control-input custom-control-input-danger" type="radio" id="pwcNocNo" value="no" name="pwcNoc">
-                                <label for="pwcNocNo" class="custom-control-label">No</label>
+                        <br />
+                        <div class="row col-lg-12 mt-3">
+                            <div class="col-lg-6">
+                                <div class="form-group custom-control custom-checkbox col-sm-2">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="checkbox" name="LandCovered" id="chkAcceptantion" value="1">
+                                    <label for="chkAcceptantion" class="custom-control-label" style="width: max-content;">I am not running any other institions or courses in this building for other trust or society</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Upload Document</label>
-                            <button class="btn col-sm-10 locationBTN" id="UploadDocumentFireNoc">
-                                <input type="file" placeholder="Upload Doc Fire" name="UploadDocumentPwcNoc" id="txtPwcNoc" />
-                            </button>
+
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">Upload Affidivate</label><br />
+                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                            </div>
+
                         </div>
                     </div>
 
+                    <div style="padding: 10px;background: #999999;color: white;border-radius: 10px;font-size: 16px;font-weight: 100;margin-top:15px">
+                        Current year Building saftey
+                    </div>
+                    <div class="mt-3">
+                        <p style="font-size: 20px;text-decoration: underline;font-weight: 700;">Fire NOC Validity</p>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">From Date</label><br />
+                                <input class="col-sm-12 form-control" type="date" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">To Date</label><br />
+                                <input class="col-sm-12 form-control" type="date" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">Upload Fire NOC</label><br />
+                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                            </div>
+                        </div>
+
+                        <p style="font-size: 20px;text-decoration: underline;font-weight: 700;margin-top:30px">PWD NOC Validity</p>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">From Date</label><br />
+                                <input class="col-sm-12 form-control" type="date" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">To Date</label><br />
+                                <input class="col-sm-12 form-control" type="date" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="col-sm-12" style="margin-left:-10px">Upload PWD NOC</label><br />
+                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="padding: 10px;background: #999999;color: white;border-radius: 10px;font-size: 16px;font-weight: 100;margin-top:30px">
+                        Building Land Photos
+                    </div>
+                    <div class="row col-lg-12 mt-3">
+                        <div class="col-lg-6">
+                            <label class="col-sm-12" style="margin-left:-10px">Building Front Photo</label><br />
+                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="col-sm-12" style="margin-left:-10px">Building Right Side View</label><br />
+                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                        </div>
+                    </div>
+
+                    <div class="row col-lg-12 mt-3">
+                        <div class="col-lg-6">
+                            <label class="col-sm-12" style="margin-left:-10px">Building Left Side View</label><br />
+                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="col-sm-12" style="margin-left:-10px">Building Back Side View</label><br />
+                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                        </div>
+                    </div>
+                    <div class="row col-lg-12 mt-3">
+                        <div class="col-lg-12">
+                            <label class="col-sm-12" style="margin-left:-10px">Other Photos if Any</label><br />
+                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
+                        </div>
+
+                    </div>
+
+
+
                     <div class="row">
-                        <div class="form-group col-lg-12" style="text-align:center">
-                            <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
-                            <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
+                        <div class="form-group col-lg-12" style="text-align:right">
+                            @*<button type="submit" id="btnsubmitDetails" style="display:none"></button>*@
+                            <button class="btn" type="button" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
+                            @*<button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>*@
                             @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
 
                         </div>
@@ -321,6 +374,42 @@
 
 
     $(document).ready(function () {
+        $('.singleSelect').select2();
+
+
+
+        $("input[name='courseBuilding']").change(function () {
+            var s = $(this).val();
+            if (s == 1)
+                $('#divOtherCourses').css('display', 'block');
+            else
+                $('#divOtherCourses').css('display', 'none');
+        });
+
+        $("input[name='BuildingType']").change(function () {
+
+            var s = $(this).val();
+            if (s == 1) {
+                $('#divowned').css('display', 'block');
+                $('#divRented').css('display', 'none');
+            }
+            if (s == 0) {
+                $('#divowned').css('display', 'none');
+                $('#divRented').css('display', 'block');
+            }
+
+
+        });
+
+        $("input[name='LandCovered']").change(function () {
+
+            var s = $(this).val();
+            if (s == 1)
+                $('#divlandYes').css('display', 'flex');
+            else
+                $('#divlandYes').css('display', 'none');
+        });
+
 
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
