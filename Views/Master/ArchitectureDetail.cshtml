@@ -95,9 +95,9 @@
             @{
                 foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
                 {
-                    <li class="noneactive @(j==1?"active1":"") " data-id="@item.sCateName">
-                        @item.sCateName
-                    </li>
+                <li class="noneactive @(j==1?"active1":"") " data-id="@item.sCateName">
+                    @item.sCateName
+                </li>
                     j = 0;
                 }
 
@@ -105,143 +105,139 @@
 
         </ul>
         @{
-            j = 1;
-            foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
-            {
-                <section class="@(j==1?"":"hidden")  intersection" id="@item.sCateName">
-                    <div class="card Card--shadow--medium radiuscard reversecard">
-                        <header class="card-heading card-default">
-                            <h6 class="card-title">
-                                @item.sCateName Information
-                            </h6>
-                        </header>
-                    </div>
-
-                    @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
-                    {
-                        <h6 class="pull-left collspanh6" data-id="@item.iParCatId-@inneritem.iParCatSubId">
-                            <i class="fas fa-arrow-alt-circle-down" id="fa-@item.iParCatId-@inneritem.iParCatSubId"></i>
-                            @inneritem.sCateSubName
+                        j = 1;
+                        foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+                        {
+            <section class="@(j==1?"":"hidden")  intersection" id="@item.sCateName">
+                <div class="card Card--shadow--medium radiuscard reversecard">
+                    <header class="card-heading card-default">
+                        <h6 class="card-title">
+                            @item.sCateName Information
                         </h6>
+                    </header>
+                </div>
 
-                        <div class="card-body panel-group  borderdesign @(j==1?"":"hidden")" id="@item.iParCatId-@inneritem.iParCatSubId">
+                @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
+                    {
+                <h6 class="pull-left collspanh6" data-id="@item.iParCatId-@inneritem.iParCatSubId">
+                    <i class="fas fa-arrow-alt-circle-down" id="fa-@item.iParCatId-@inneritem.iParCatSubId"></i>
+                    @inneritem.sCateSubName
+                </h6>
+
+                <div class="card-body panel-group  borderdesign @(j==1?"":"hidden")" id="@item.iParCatId-@inneritem.iParCatSubId">
 
 
-                            <div class="form-group is-empty borderbottom row " style="padding: inherit;">
-                                @{
-                                    var i = "0";
-                                    //var list = Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Select(p => new { p.iParUomid, p.UomName }).Distinct().ToList();
-                                    foreach (var thirditem in Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Distinct().ToList())
+                    <div class="form-group is-empty borderbottom row " style="padding: inherit;">
+                        @{
+                            var i = 0;
+                            //var list = Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Select(p => new { p.iParUomid, p.UomName }).Distinct().ToList();
+                            foreach (var thirditem in Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Distinct().ToList())
+                            {
+
+
+                                if (thirditem.iParUomid != 3)
+                                {
+                                    i =  thirditem.iParUomid;
+                                    <label class="col-sm-3 control-label" style="font-weight:bold;">@inneritem.sCateSubName</label>
+                                    <div class="col-sm-5">
+                                        <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="text" placeholder="Enter @inneritem.sCateSubName" value="" class="form-control col-sm-9 calculation" required>
+                                    </div>
+                                    if (item.sCateName == "Assets")
                                     {
+                                        <div class="col-sm-4">
+                                            <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control col-sm-12 filestyle">
+                                        </div>
 
 
-                                        if (thirditem.iParUomid == 1)
-                                        {
-                                            i = i + "-1";
-                                            <label class="col-sm-3 control-label" style="font-weight:bold;">@inneritem.sCateSubName Rooms</label>
-                                            <div class="col-sm-5">
-                                                <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="text" placeholder="Enter @inneritem.sCateSubName" value="" class="form-control col-sm-9 calculation" required>
-
-
-                                            </div>
-                                            if (item.sCateName == "Assets")
-                                            {
-                                                <div class="col-sm-4">
-                                                    <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control col-sm-12 filestyle">
-                                                </div>
-
-
-                                            }
-                                        }
-                                        if (thirditem.iParUomid == 3)
-                                        {
-                                            i = i + "-3";
-                                            <br />
-                                            <div class="card-body">
-
-                                                <div class="form-group is-empty borderbottom row">
-
-                                                    <div class="col-sm-2">
-                                                        <input id="Width-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Width" value="" min="@thirditem.iminlength" data-min="@thirditem.iminlength" title="width must be equal or greather than @thirditem.iminlength" class="form-control calculation">
-
-                                                    </div>
-
-                                                    <div class="col-sm-2">
-                                                        <input id="Height-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Height" data-min="@thirditem.iminwidth" value="@thirditem.iminwidth" min="@thirditem.iminwidth" class="form-control">
-
-                                                    </div>
-                                                    <div class="col-sm-2">
-                                                        <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control">
-
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
-                                                            @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
-                                                            <input type="file" id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-
-                                                            <input type="hidden" id="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                                            <input type="hidden" id="sProfileExtension-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" value="">
-                                                        </div>
-                                                    </div>
-                                                    @*<img src=""  class="col-sm-2" style="
-                                                            height: 39px;
-                                                            width: 85px;
-                                                            border-radius: 39px;
-                                                        " id="img-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" />*@
-                                                    <button class="btn btn-primary col-sm-1 addclass" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">Add</button>
-                                                </div>
-
-                                                <div class="form-group is-empty row" id="showtable">
-                                                    <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                                        <thead style="background-color: darkgray;">
-
-                                                            <tr>
-                                                                <th>
-                                                                    #No
-                                                                </th>
-                                                                <th>
-                                                                    file
-                                                                </th>
-
-                                                                <th>Width</th>
-                                                                <th>Height</th>
-                                                                <th>Qty</th>
-
-                                                                <th>Action</th>
-
-
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tbody-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-
-                                            </div>
-                                        }
                                     }
+                                }
+                                if (thirditem.iParUomid == 3)
+                                {
+                                    //i = i + "-3";
+                                    <br />
+                                    <div class="card-body">
 
-                                    if (i != "0")
-                                    {
-                                        <footer class="form-footer">
-                                            <div class="pull-right">
+                                        <div class="form-group is-empty borderbottom row">
 
-                                                <button class="btn btn-primary mainsave" data-id="@i" data-main="@inneritem.iParCatSubId-@item.iParCatId">SAVE</button>
+                                            <div class="col-sm-2">
+                                                <input id="Width-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Width" value="" min="@thirditem.iminlength" data-min="@thirditem.iminlength" title="width must be equal or greather than @thirditem.iminlength" class="form-control calculation">
+
                                             </div>
-                                        </footer>}
 
-                                    j = 0;
+                                            <div class="col-sm-2">
+                                                <input id="Height-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Height" data-min="@thirditem.iminwidth" value="@thirditem.iminwidth" min="@thirditem.iminwidth" class="form-control">
+
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="300" class="form-control">
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
+                                                    @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
+                                                    <input type="file" id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+
+                                                    <input type="hidden" id="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="border: 0px solid #e8ebf3 ;" name="filedata-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                                    <input type="hidden" id="sProfileExtension-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" value="">
+                                                </div>
+                                            </div>
+                                            @*<img src=""  class="col-sm-2" style="
+                                height: 39px;
+                                width: 85px;
+                                border-radius: 39px;
+                            " id="img-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" />*@
+                                            <button class="btn btn-primary col-sm-1 addclass" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">Add</button>
+                                        </div>
+
+                                        <div class="form-group is-empty row" id="showtable">
+                                            <table id="datatable-buttons" class="table table-striped " style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead style="background-color: darkgray;">
+
+                                                    <tr>
+                                                        <th>
+                                                            #No
+                                                        </th>
+                                                        <th>
+                                                            file
+                                                        </th>
+
+                                                        <th>Width</th>
+                                                        <th>Height</th>
+                                                        <th>Qty</th>
+
+                                                        <th>Action</th>
+
+
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid">
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                }
+                                
+                            }
+
+
+                            if (i != 0)
+                            {
+                                <footer class="form-footer">
+                                    <div class="pull-right">
+
+                                        <button class="btn btn-primary mainsave" data-id="@i" data-main="@item.iParCatId-@inneritem.iParCatSubId">SAVE</button>
+                                    </div>
+                                </footer>
                                 }
 
-
-
-                            </div>
-                        </div>
-                    }
-                </section>
-
+                            j = 0;
+                        }
+                    </div>
+                </div>
+             }
+            </section>
             }
         }
         @*<section class="hidden intersection" id="infrastructure">
@@ -258,19 +254,9 @@
                             <div class="col-sm-5">
                                 <input id="Infrature_RoomNo" type="text" placeholder="Enter No of Room" value="" class="form-control calculation" required>
                             </div>
-
-
-
                         </div>
-
-
-
-
                     </div>
-
-
                 </div>
-
             </section>*@
 
 
@@ -302,6 +288,43 @@
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script type="text/javascript">
 
+        $(".mainsave").click(function () {
+            debugger;
+            var dataid = $(this).data('id');
+            var datamain = $(this).data('main');
+            var value = $("#" + datamain +"-" +dataid).val();
+            var datalst = datamain.split('-');
+            var Params = JSON.stringify({
+                value: value,
+                iParamId: datalst[0],
+                iSubCatId: datalst[1],
+                iUomId: dataid,
+                sAppId: '@appid'
+
+            });
+             $.ajax({
+                url: GetglobalDomain() + "/Master/InsertArchitectureMst",
+                type: 'POST',
+                dataType: "json",
+                data: Params,
+                contentType: "application/json",
+                success: function (response) {
+                   
+                    if (response.IsValid = 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.msg,
+                            showConfirmButton: false,
+                            timer: 6000
+                        })
+                        $("#" + datamain + "-" + dataid).val('');
+                    }
+
+
+                }
+            });
+        });
 
         $('.noneactive').click(function () {
             $('.noneactive').removeClass('active1');
@@ -373,7 +396,7 @@
                 iParamId: item[0],
                 iSubCatId: item[1],
                 iUomId: item[2],
-                sAppId: "abc123",
+                sAppId: '@appid',
                 bAttachFile: bAttachFile,
                 ProfileContentType: ProfileContentType,
                 sProfileExtension: sProfileExtension
@@ -385,7 +408,7 @@
             $("#bodyid").css('display', 'none');
             $("#loader").css('display', 'block');
             $.ajax({
-                url: "/Master/InsertArchitectureDetail",
+                url: GetglobalDomain() + "/Master/InsertArchitectureDetail",
                 type: 'POST',
                 dataType: "json",
                 data: Params,
@@ -406,7 +429,7 @@
                         $("#Height-" + id).val('');
                         $("#Capacity-" + id).val('');
                         $("#filedata-" + id).val('');
-                        GenerateArchtable(item[0], item[1], item[2], "abc123");
+                        GenerateArchtable(item[0], item[1], item[2],'@appid');
                     }
 
 
@@ -423,7 +446,7 @@
         function buildalltabelArchitecture(item) {
             debugger;
             $.ajax({
-                url: '/Master/BuildalltabelArchitecture?item=' + item,
+                url: GetglobalDomain() + '/Master/BuildalltabelArchitecture?item=' + item,
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
@@ -451,7 +474,7 @@
         function GenerateArchtable(iParamId, iSubCatId, iUomId, sAppId) {
 
             $.ajax({
-                url: '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
+                url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
                 type: 'POST',
                 dataType: "text",
                 success: function (response) {
@@ -504,7 +527,7 @@
                 uploadFile.append("CsvDoc", files[0]);
 
                 $.ajax({
-                    url: "/Master/UploadCsvFile?iParamId=" + iParamId + "&iSubCatId=" + iSubCatId + "&iUomId=" + iUomId + "&Appid=" + '@appid' + "&Type=" + Type,
+                    url: GetglobalDomain() + "/Master/UploadCsvFile?iParamId=" + iParamId + "&iSubCatId=" + iSubCatId + "&iUomId=" + iUomId + "&Appid=" + '@appid' + "&Type=" + Type,
                     contentType: false,
                     processData: false,
                     data: uploadFile,
@@ -557,7 +580,7 @@
                             });
                             /* ShowBALoader("LoaderBASinup1");*/
                             $.ajax({
-                                url: "/Master/DeleteImage",
+                                url: GetglobalDomain() + "/Master/DeleteImage",
                                 type: 'POST',
                                 dataType: "json",
                                 data: Params,

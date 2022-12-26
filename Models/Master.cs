@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -101,4 +102,17 @@ namespace NewZapures_V2.Models
 
 
     }
+    public class ArchitectureMst
+    {
+public int iPk_MasterId{ get; set; }
+public string iFK_AppId   { get; set; }
+public int iTrustId    { get; set; }
+public int iCollId     { get; set; }
+public int iParamId    { get; set; }
+public int iSubCatId   { get; set; }
+public string Value       { get; set; }
+public int iUom        { get; set; }
+
+
+}
 }
