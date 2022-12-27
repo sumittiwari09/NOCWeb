@@ -1,0 +1,250 @@
+﻿@using NewZapures_V2.Models
+@model UniversityMaster
+@{
+    ViewBag.Title = "University Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+}
+
+<style type="text/css">
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">University Master</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">University Master</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "UniverSityMaster", FormMethod.Post, new { id = "ProofOfDocumentForm", enctype = "multipart/form-data" }))
+                {
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University Type</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+
+
+                                <select class="form-control" name="UniversityType" id="TrustName">
+                                    <option value="0">State University</option>
+
+                                    <option value="101">State Universities </option>
+                                    <option value="101">Private Universities </option>
+                                    <option value="101">Deemed Universities </option>
+                                    <option value="101">Others Universities </option>
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter University Name</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Name" type="text" autocomplete="off" id="txtemail" name="UniversityName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website Link</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Link" type="text" autocomplete="off" id="txtemail" name="WebsiteLink">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Document</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Link" type="file" autocomplete="off" id="txtemail" name="Document">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-header fsc">
+                        <h4 class="mt-0 header-title">Contact Details</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Contact Number</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Number" type="text" autocomplete="off" id="txtemail" name="ContactNo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row col-lg-12" style="margin-top:20px">
+                            <div class="form-group col-lg-12">
+                                <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                                    <thead class="dark">
+                                        <tr>
+                                            <th>SNo</th>
+                                            <th>Number</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <td>1</td>
+                                            <td><input type="text" name="ContactNo"></td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit", null, new { @class = "classname" }, htmlAttributes: new { @class = "btn btn-default" })/
+                                                @Html.ActionLink("Delete", "Delete", null, new { @class = "classname" }, htmlAttributes: new { @class = "btn btn-default" })
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-header fsc">
+                        <h4 class="mt-0 header-title">Email Details</h4>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Email</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Email" type="text" autocomplete="off" id="txtemail" name="Mail">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row col-lg-12" style="margin-top:20px">
+                            <div class="form-group col-lg-12">
+                                <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                                    <thead class="dark">
+                                        <tr>
+                                            <th>SNo</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <td>1</td>
+                                            <td><input type="text" name="Mail"></td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit", null, new { @class = "classname" }, htmlAttributes: new { @class = "btn btn-default" })/
+                                                @Html.ActionLink("Delete", "Delete", null, new { @class = "classname" }, htmlAttributes: new { @class = "btn btn-default" })
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row text-center">
+                        <div class="form-group col-lg-12">
+                            <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+    @section scripts {
+        <script src="~/plugins/moment/moment.js"></script>
+        <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="~/plugins/select2/select2.min.js"></script>
+        <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+        <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+        <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+        <script src="~/Content/select2/js/select2.js"></script>
+        <script src="~/Content/jquery/jquery.js"></script>
+        <script src="~/Content/globalDomain.js"></script>
+
+        <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+        <script src="~/plugins/dropify/js/dropify.min.js"></script>
+        <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    }
+    <script type="text/javascript">
+
+
+$(document).ready(function () {
+
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+});
+    </script>
