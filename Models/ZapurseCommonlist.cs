@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Device.Location;
+using static NewZapures_V2.Models.TrusteeBO;
 
 namespace NewZapures_V2.Models
 {
@@ -845,6 +846,65 @@ namespace NewZapures_V2.Models
             }
             return modules;
         }
+
+        public static List<TrusteeBO.TrusteeMember> GetTrusteeMember(int MenuId, string Type = "TrusteeMember")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<TrusteeBO.TrusteeMember> trusteeList = new List<TrusteeBO.TrusteeMember>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                trusteeList = JsonConvert.DeserializeObject<List<TrusteeBO.TrusteeMember>>(objResponse.Data.ToString());
+            }
+            return trusteeList;
+        }
+
+        public static List<DraftApplication> GetDraftApplication()
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<DraftApplication> draftApplication = new List<DraftApplication>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    draftApplication = JsonConvert.DeserializeObject<List<DraftApplication>>(requestResponse.Data.ToString());
+            }
+            return draftApplication;
+        }
+
+        public static List<Dropdown> GetCourseForDept(int MenuId, string Type = "Course")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+
         public enum ModalSize
         {
             Small,

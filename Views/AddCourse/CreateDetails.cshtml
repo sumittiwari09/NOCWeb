@@ -10,10 +10,10 @@
         TrustList = (List<CustomMaster>)ViewBag.TrustList;
     }
 
-    List<CustomMaster> DegreeList = new List<CustomMaster>();
-    if (ViewBag.DegreeList != null)
+    List<Dropdown> DegreeList = new List<Dropdown>();
+    if (ViewBag.Department != null)
     {
-        DegreeList = (List<CustomMaster>)ViewBag.DegreeList;
+        DegreeList = (List<Dropdown>)ViewBag.Department;
     }
 
     List<CustomMaster> CourseList = new List<CustomMaster>();
@@ -128,33 +128,40 @@
 
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tag Degrees</label>
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tag Department</label>
                             <div>
                                 <select class="form-control" name="TagDegrees" id="txtTagDegree">
-                                    <option value="0">Select DegreeList</option>
+                                    <option value="0">Select Department</option>
                                     @{
                                         foreach (var item in DegreeList)
                                         {
-                                            <option value="@item.Id">@item.text</option>
+                                            <option value="@item.Id">@item.Text</option>
                                         }
                                     }
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-4">
                             <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tag Course</label>
                             <div>
                                 <select class="form-control" name="TagCourse" id="txtTagCourse">
                                     <option value="0">Select Course List</option>
-                                    @{
-                                        foreach (var item in CourseList)
-                                        {
-                                            <option value="@item.Id">@item.text</option>
-                                        }
-                                    }
+                                    @*@{
+                                            foreach (var item in CourseList)
+                                            {
+                                                <option value="@item.Id">@item.text</option>
+                                            }
+                                        }*@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group col-lg-2">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                            <button class="btn btn" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
+
+                        </div>
+
                     </div>
 
                     <div class="row">
@@ -165,7 +172,7 @@
                                         <th>Sr</th>
                                         <th>Trust Name</th>
                                         <th>College Name</th>
-                                        <th>Degree</th>
+                                        <th>Department</th>
                                         <th>Course</th>
                                         <th>Action</th>
                                     </tr>
@@ -200,10 +207,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-12" style="text-align:center">
+                        <div class="form-group col-lg-12" style="text-align:right">
                             <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                            <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
-                            <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
+                            @*<button class="btn btn" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>*@
+                            @* <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>*@
                             @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
                         </div>
                     </div>
@@ -224,6 +231,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
        // (".singleselect").select2();
+        $('#txtTagDegree').change(function () {
+            var id = $(this).val();
+            bindCourse(id);
+        })
 
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
@@ -247,7 +258,7 @@
                     showCloseButton: true,
                     showConfirmButton: false,
                 });
-        }      
+        }
 
         $('#TrustName').change(function () {
             var selectedVal = $(this).val();
@@ -258,7 +269,42 @@
 
         })
     });
+    function bindCourse(deptID) {
+        var html = `<option value="0">Select Course List</option>`;
+        var VertinaryModal = {
+            "departID": parseInt(deptID),
+        }
 
+        var d = JSON.stringify(VertinaryModal);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/AddCourse/GetCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                var mainData = data.Data;
+
+                mainData.forEach(function (item) {
+                    html += `<option value=${item.Id}>${item.Text}</option>`
+                })
+
+                $('#txtTagCourse').html('');
+                $('#txtTagCourse').html(html);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
     function AddCollegeData(Type) {
         debugger
             var strHtml = "";

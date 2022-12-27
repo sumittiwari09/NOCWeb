@@ -95,12 +95,12 @@
     @using (Html.BeginForm("TrusteeGeneralInfo", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
     {
         <div class="card-body row">
-            <div class="col-8">                
+            <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Trust</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="Krishna Charitable Trust"  required>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="Krishna Charitable Trust" required>
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
@@ -117,8 +117,8 @@
                                 }
                             </select>
                             @*<select class="form-control" id="txtrole" name="TrustType">
-                        <option value="0">Type</option>
-                    </select>*@
+                                    <option value="0">Type</option>
+                                </select>*@
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@
                     </div>
                     <div class="form-group col-lg-6" id="filediv">
                         <label for="file2">Registration No Proof</label>
-                        <input type="file" id="fileregistrationno" style="border: 0px solid #e8ebf3" name="registrationnofile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required/>
+                        <input type="file" id="fileregistrationno" style="border: 0px solid #e8ebf3" name="registrationnofile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
                         <span id="registrationnofile"></span>
                     </div>
                 </div>
@@ -157,15 +157,15 @@
                         <div class="input-group">
                             <input type="text" class="form-control" name="RegistrationDate" id="RegistrationDate" placeholder="DD/MM/YYYY" required>
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                                <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group col-lg-6" id="filediv">
                         <label for="file2">Trustee Member Proof</label>
-                        <input type="file" id="" style="border: 0px solid #e8ebf3" name="" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
-                        <span id=""></span>
+                        <input type="file" id="" style="border: 0px solid #e8ebf3" name="TMProfffile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
+                        <span id="TMProfffile"></span>
                     </div>
 
 
@@ -175,12 +175,12 @@
                         <div class="input-group">
                             <input type="text" class="form-control" name="ElectionDate" id="ElectionDate" placeholder="DD/MM/YYYY">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                                <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
                             </div>
                         </div>
                         @*<div>
-                <input class="form-control col-sm-12" type="date" autocomplete="off" id="txtDateElectionComm" name="DateElectionComm">
-            </div>*@
+                                <input class="form-control col-sm-12" type="date" autocomplete="off" id="txtDateElectionComm" name="DateElectionComm">
+                            </div>*@
                     </div>
                 </div>
 
@@ -218,6 +218,7 @@
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script type="text/javascript">
         $(function () {
+            $('#TrustType').select2();
             $("#RegistrationDate").datepicker({
                 dateFormat: 'dd/mm/yy',
                 changeMonth: true,

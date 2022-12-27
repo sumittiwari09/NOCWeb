@@ -55,7 +55,24 @@
                     <h6 class="menu-title active">My Profile</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Application List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Trust Details</a></li>
+                </ul>
+                
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Trustee</a></li>
+                </ul>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Trustee Members</a></li>
+                </ul>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Your Colleges</a></li>
+                </ul>
+                
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","AddCourse")">Add Courses</a></li>
+                </ul>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateData","SubjectMaster")">Add Subject</a></li>
                 </ul>
                 @*<ul class="nav">
                         <li class="nav-item"><a class="nav-link" href="@Url.Action(" TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
@@ -66,27 +83,28 @@
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Master</h6>
+                    <h6 class="menu-title active">NOC Configuration</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("menuindex", "Role" )">Add Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("SubMenuIndex", "Role" )">Add Submenu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RoleMappingDepartmentandGroupIndex", "Role" )">Role Group Mapping</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Department</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","User")">Add Role</a></li>*@
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Setting","Admin")">Custom Field</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ArchitectureDetail","Master")">Architecture Configuration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Application Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Application Parameter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterValueConfiguration","Master")">Application Value</a></li>
                 </ul>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Configuration</h6>
+                    <h6 class="menu-title active">System Configuration</h6>
                 </div>
                 <ul class="nav">
-                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Role Access Rights</a></li>*@
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Master</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Parameter Master</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","SSODeptMapping")">SSO Department Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Add Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Sub Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Menu Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Departement</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Role Group Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Custom Field</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ManageUserRights","Admin")">Manage User Right</a></li>
 
                 </ul>
             </div>
@@ -214,7 +232,7 @@
                 </ul>
             </div>--><!-- end Dashboards -->
 
-            <div id="MetricaApps" class="main-icon-menu-pane">
+            <!--<div id="MetricaApps" class="main-icon-menu-pane">
                 <div class="title-box">
                     <h6 class="menu-title">Apps</h6>
                 </div>
@@ -225,8 +243,8 @@
                             <li><a href="@Url.Action(" customers", "analytics" )">Customers</a></li>
                             <li><a href="@Url.Action(" reports", "analytics" )">Reports</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Crypto</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" exchange", "crypto" )">Exchange</a></li>
@@ -235,8 +253,8 @@
                             <li><a href="@Url.Action(" ico", "crypto" )">ICO List</a></li>
                             <li><a href="@Url.Action(" settings", "crypto" )">settings</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">CRM</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" contacts","crm")">Contacts</a></li>
@@ -244,8 +262,8 @@
                             <li><a href="@Url.Action(" leads","crm")">Leads</a></li>
                             <li><a href="@Url.Action(" customers","crm")">Customers</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Projects</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" clients", "projects" )">Clients</a></li>
@@ -257,8 +275,8 @@
                             <li><a href="@Url.Action(" users", "projects" )">Users</a></li>
                             <li><a href="@Url.Action(" create", "projects" )">Project Create</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Ecommerce</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" products", "ecommerce" )">Products</a></li>
@@ -267,16 +285,16 @@
                             <li><a href="@Url.Action(" cart", "ecommerce" )">Cart</a></li>
                             <li><a href="@Url.Action(" checkout", "ecommerce" )">Checkout</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Helpdesk</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" teckets", "helpdesk" )">Tickets</a></li>
                             <li><a href="@Url.Action(" reports", "helpdesk" )">Reports</a></li>
                             <li><a href="@Url.Action(" agents", "helpdesk" )">Agents</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Hospital</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li>
@@ -337,22 +355,22 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);"><span class="w-100">Email</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" inbox", "email" )">Inbox</a></li>
                             <li><a href="@Url.Action(" email-read", "email" )">Read Email</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action(" chat", "apps" )">Chat</a></li>
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item"><a class="nav-link" href="@Url.Action(" chat", "apps" )">Chat</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action(" contacts", "apps" )">Contact List</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action(" calendar", "apps" )">Calendar</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action(" invoice", "apps" )">Invoice</a></li>
                 </ul>
-            </div><!-- end Crypto -->
+            </div>--><!-- end Crypto -->
 
-            <div id="MetricaUikit" class="main-icon-menu-pane">
+            <!--<div id="MetricaUikit" class="main-icon-menu-pane">
                 <div class="title-box">
                     <h6 class="menu-title">UI Kit</h6>
                 </div>
@@ -369,8 +387,8 @@
                             <li><a href="@Url.Action(" dragula", "UI" )">Dragula</a></li>
                             <li><a href="@Url.Action(" check-radio", "UI" )">Check & Radio</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Advanced UI</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" rangeslider", "UI" )">Range Slider</a></li>
@@ -381,8 +399,8 @@
                             <li><a href="@Url.Action(" session", "UI" )">Session Timeout</a></li>
                             <li><a href="@Url.Action(" idle-timer", "UI" )">Idle Timer</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Forms</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" elements","Forms")">Basic Elements</a></li>
@@ -395,8 +413,8 @@
                             <li><a href="@Url.Action(" uploads","Forms")">File Upload</a></li>
                             <li><a href="@Url.Action(" img-crop", "Forms" )">Image Crop</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Charts</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" apex", "Chart" )">Apex</a></li>
@@ -409,8 +427,8 @@
                             <li><a href="@Url.Action(" knob", "Chart" )">Jquery Knob</a></li>
                             <li><a href="@Url.Action(" justgage", "Chart" )">JustGage</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Tables</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" basic", "Table" )">Basic</a></li>
@@ -421,8 +439,8 @@
                             <li><a href="@Url.Action(" dragger", "Table" )">Dragger</a></li>
                             <li><a href="@Url.Action(" editable", "Table" )">Editable</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Icons</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" materialdesign", "icon" )">Material Design</a></li>
@@ -433,27 +451,27 @@
                             <li><a href="@Url.Action(" typicons", "icon" )">Typicons</a></li>
                             <li><a href="@Url.Action(" emoji", "icon" )">Emoji <i class="em em-ok_hand"></i></a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Maps</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" google", "maps" )">Google Maps</a></li>
                             <li><a href="@Url.Action(" leaflet", "maps" )">Leaflet Maps</a></li>
                             <li><a href="@Url.Action(" vector", "maps" )">Vector Maps</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
+                    </li>--><!--end nav-item-->
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#"><span class="w-100">Email Templates</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="@Url.Action(" basic", "email" )">Basic Action Email</a></li>
                             <li><a href="@Url.Action(" alert", "email" )">Alert Email</a></li>
                             <li><a href="@Url.Action(" billing", "email" )">Billing Email</a></li>
                         </ul>
-                    </li><!--end nav-item-->
-                </ul><!--end nav-->
-            </div><!-- end Others -->
+                    </li>--><!--end nav-item-->
+                <!--</ul>--><!--end nav-->
+            <!--</div>--><!-- end Others -->
 
-            <div id="MetricaPages" class="main-icon-menu-pane">
+            <!--<div id="MetricaPages" class="main-icon-menu-pane">
                 <div class="title-box">
                     <h6 class="menu-title">Pages</h6>
                 </div>
@@ -468,8 +486,8 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("faq", "pages" )">FAQs</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("gallery", "pages" )">Gallery</a></li>
                 </ul>
-            </div><!-- end Pages -->
-            <div id="MetricaAuthentication" class="main-icon-menu-pane">
+            </div>--><!-- end Pages -->
+            <!--<div id="MetricaAuthentication" class="main-icon-menu-pane">
                 <div class="title-box">
                     <h6 class="menu-title">Authentication</h6>
                 </div>
@@ -487,7 +505,7 @@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("500", "authentication" )">Error 500</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("500-alt", "authentication" )">Error 500-alt</a></li>
                 </ul>
-            </div><!-- end Authentication-->
+            </div>--><!-- end Authentication-->
         </div><!--end menu-body-->
     </div><!-- end main-menu-inner-->
 </div>

@@ -101,12 +101,12 @@
                         <th>Logo</th>
                         <th>Trust Name</th>
                         <th>Type</th>
-                        <th>CertifiedBy No</th>
+                        <th>Registered In</th>
                         <th>Registration No</th>
                         <th>Registration Date</th>
-                        <th>Election Comm Date</th>
+                        <th hidden>Election Comm Date</th>
                         <th style="text-align:center">Certification Proof</th>
-                        <th style="text-align:center">Registration Prrof</th>
+                        <th style="text-align:center">Registration Proof</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -131,7 +131,7 @@
                                 <td>@item.CertiFiedBy</td>
                                 <td>@item.RegistrationNo</td>
                                 <td>@item.RegistrationDate</td>
-                                <td>@item.ElectionDate</td>
+                                <td hidden>@item.ElectionDate</td>
                                 @if (item.Certified != "")
                                 {
                                     <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Certified })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
