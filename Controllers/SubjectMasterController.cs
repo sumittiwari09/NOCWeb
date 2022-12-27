@@ -20,19 +20,19 @@ namespace NewZapures_V2.Controllers
         CommonFunction objcf = new CommonFunction();
         ResponseData objResponse;
         // GET: SubjectMaster
-        public ActionResult CreateData()
+        public ActionResult CreateData(string appNo)
         {
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
 
-            List<CustomMaster> DegreeList = new List<CustomMaster>();
-            DegreeList = Common.GetCustomMastersList(33);
-            ViewBag.DegreeList = DegreeList;
+            //List<CustomMaster> DegreeList = new List<CustomMaster>();
+            //DegreeList = Common.GetCustomMastersList(33);
+            ViewBag.DegreeList = GetDept();
 
-            List<CustomMaster> CourseList = new List<CustomMaster>();
-            CourseList = Common.GetCustomMastersList(30);
-            ViewBag.CourseList = CourseList;
+            //List<CustomMaster> CourseList = new List<CustomMaster>();
+            //CourseList = Common.GetCustomMastersList(30);
+            //ViewBag.CourseList = CourseList;
 
             ViewBag.AddCourseList = GetDetailsList();
 
@@ -40,13 +40,58 @@ namespace NewZapures_V2.Controllers
             collegeListData = GetCollegeList();
             ViewBag.collegeListData = collegeListData;
 
+            ViewBag.applNumber = appNo;
+
+
             GetSubjectDataList();
 
             return View();
         }
+
+        public List<Dropdown> GetDept()
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetDept");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> data = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+
+        public JsonResult GetCourse(int departID)
+        {
+
+            var courses = ZapurseCommonlist.GetCourseForDept(departID);
+
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = courses, Failure = false, Message = "CourseList" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
+
+
+
         public JsonResult GetSubjectDataList()
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "AddCourseData/GetSubjectList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "AddCourseData/GetSubjectList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -66,7 +111,7 @@ namespace NewZapures_V2.Controllers
         public List<CustomMaster> GetCourseDropDownList(int Enum)
         {
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/GetTrustDropDownList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -84,7 +129,7 @@ namespace NewZapures_V2.Controllers
         public List<CustomMaster> GetDegreeDropDownList(int Enum)
         {
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/GetTrustDropDownList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -102,7 +147,7 @@ namespace NewZapures_V2.Controllers
         public List<CustomMaster> GetTrustDropDownList(int Enum)
         {
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/GetTrustDropDownList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -120,7 +165,7 @@ namespace NewZapures_V2.Controllers
         public JsonResult GetCollegeDropDownList(int TrustInfoId)
         {
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -226,7 +271,7 @@ namespace NewZapures_V2.Controllers
         public JsonResult EditSubject(string type, int iPK_SubId, string sub)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "AddCourseData/GetSubjectListById?iPK_SubId=" + iPK_SubId + "&type=" + type + "&SubjectName=" + sub);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "AddCourseData/GetSubjectListById?iPK_SubId=" + iPK_SubId + "&type=" + type + "&SubjectName=" + sub);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

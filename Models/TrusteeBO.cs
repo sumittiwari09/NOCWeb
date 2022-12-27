@@ -33,6 +33,7 @@ namespace NewZapures_V2.Models
         {
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
+            public string trustName { get; set; }
             public string Name { get; set; }
 
             public string RoleId { get; set; }
@@ -52,6 +53,24 @@ namespace NewZapures_V2.Models
             public string ProfileContentType { get; set; }
             public byte[] DocumentByte { get; set; }
             public string Profilefile { get; set; }
+            public string isPrimary { get; set; }
+            public string isAuthorize { get; set; }
+        }
+        public class DraftApplication
+        {
+            public string ApplicationNumber { get; set; }
+            public string iFK_Finyr { get; set; }
+            public string FinancialYear { get; set; }
+            public int iFKTst_ID { get; set; }
+            public string TrustName { get; set; }
+            public string CollegeName { get; set; }
+            public int clgID { get; set; }
+            public int iFKDEPT_ID { get; set; }
+            public string DepartmentName { get; set; }
+            public int iFK_CORS_ID { get; set; }
+            public string CourseName { get; set; }
+            public string createdDate { get; set; }
+            public string Applicationstatus { get; set; }
         }
 
         public class CollageList
@@ -81,6 +100,12 @@ namespace NewZapures_V2.Models
             public List<Facilty> list { get; set; }
         }
 
+        public class TrusteeMember
+        {
+            public string sPrsnName { get; set; }
+            public string iisprimary { get; set; }
+            public string iisauthorize { get; set; }
+        }
         public class Facilty
         {
             public string FacilityId { get; set; }
@@ -98,6 +123,7 @@ namespace NewZapures_V2.Models
             public string DepartmentId { get; set; }
             public string CourseId { get; set; }
             public string FinancialYear { get; set; }
+            public string ApplicationNumber { get; set; }
 
             public List<RateList> rateLists { get; set; }          
         }

@@ -201,19 +201,50 @@ namespace NewZapures_V2.Controllers
         }
         public ActionResult DraftApplication()
         {
+            var draftApplications = ZapurseCommonlist.GetDraftApplication();
+            ViewBag.draftApplication = draftApplications;
             return View();
         }
 
-        public ActionResult EditApplication()
+        public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
         {
+            ViewBag.appNo = applicationNo;
+            ViewBag.trustName = trustName.Trim();
+            ViewBag.trustID = trustID;
+            ViewBag.clgname = clgName;
+            ViewBag.dept = dptname;
+            ViewBag.cours = cours;
+            ViewBag.dptID = deptID;
+            ViewBag.courseID = courseID;
+            ViewBag.clgID = clgID;
+
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(trustID);
+            ViewBag.trusteeMember = trusteeMember;
+
             return View();
         }
 
-        public ActionResult ApplicationPreview()
+        public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID,int courseID, int clgID)
         {
+            ViewBag.appNo = applicationNo;
+            ViewBag.trustName = trustName.Trim();
+            ViewBag.trustID = trustID;
+            ViewBag.clgname = clgName;
+            ViewBag.dept = dptname;
+            ViewBag.cours = cours;
+            ViewBag.dptID = deptID;
+            ViewBag.courseID = courseID;
+            ViewBag.clgID = clgID;
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(trustID);
+            ViewBag.trusteeMember = trusteeMember;
+
             return View();
         }
 
+        //public ActionResult CollageAttachment()
+        //{
+        //    return View();
+        //}
         [HttpGet]
         public ActionResult TrusteeGeneralInfo()
         {
@@ -426,7 +457,7 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpGet]
-        public ActionResult CollageFacilitys()
+        public ActionResult CollageFacilitys(string appNo)
         {
             //Collage Faciliy Master from Enum
             //List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
@@ -470,7 +501,6 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult CollageFacilitys(TrusteeBO.CollageFacility modal)
         {
-
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
             var request = new RestRequest(Method.POST);
@@ -618,7 +648,7 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public ActionResult CollageAttachment(string TrustId,string CollageId,string CourseId)
+        public ActionResult CollageAttachment(string TrustId,string CollageId,string CourseId, string appNo)
         {
             ViewData["TrustId"] = TrustId;
             ViewData["CollageId"] = CollageId;

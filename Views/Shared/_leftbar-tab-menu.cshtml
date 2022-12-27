@@ -42,15 +42,43 @@
                     <h6 class="menu-title active">My Profile</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrustList","Trustee")">Trustee Details List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")"> Add Trustee Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Trustee Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Trustee</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Trustee Members</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Your Colleges</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","AddCourse")">Add Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","ProofOfDocument")">Medical Document</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Create","UniverSityMST")">University Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateData","SubjectMaster")">Add Subject</a></li>
                 </ul>
             </div>
+        
+        <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">NOC Configuration</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ArchitectureDetail","Master")">Architecture Configuration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Application Master</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Application Parameter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterValueConfiguration","Master")">Application Value</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","DeptCourseMap")">Department Mapping</a></li>
+                </ul>
+            </div>
+        
+        <div id="MyMenu" class="main-icon-menu-pane active">
+                <div class="title-box">
+                    <h6 class="menu-title active">APPLY FOR NOC</h6>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">College Pending For NOC Add Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Sub Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Menu Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Departement</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Role Group Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Custom Field</a></li>
+                </ul>
+            </div>
+
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
                     <h6 class="menu-title active">Draft Application</h6>
@@ -61,35 +89,38 @@
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Apply For NOC</h6>
+                    <h6 class="menu-title active">APPLIED APPLICATION</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Application List</a></li>
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Application List</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Finance")">Finance</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","LandBuildingInfo")">Land Infomation</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Vertinary")">Vertinary Details</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("index","Staff")">Staff Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("index","Staff")">Staff Details</a></li>*@
                 </ul>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Applied Application</h6>
+                    <h6 class="menu-title active">TRACK APPLICATION</h6>
                 </div>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Track My Application</h6>
+                    <h6 class="menu-title active">STATS</h6>
                 </div>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Statics</h6>
+                    <h6 class="menu-title active">NOTIFICATION</h6>
                 </div>
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">Notification</h6>
+                    <h6 class="menu-title active">Helpdesk</h6>
                 </div>
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","SupportTicket")">Support Ticket</a></li>
+                </ul>
             </div>
             @*@{
         if (permissions != null)
