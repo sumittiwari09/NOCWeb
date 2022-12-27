@@ -19,6 +19,7 @@ namespace NewZapures_V2.Models
         public string TagDegrees { get; set; }
         public string TagCourse { get; set; }
         public string SubjectName { get; set; }
+        public string applicationNumber { get; set; }
         public int? iIsActive { get; set; }
 
         //public int? iPk_AddCourseId { get; set; }

@@ -26,6 +26,16 @@
 
     //List<NewZapures_V2.Models.CustomMaster> collegelist = ViewBag.collegeListData as List<NewZapures_V2.Models.CustomMaster>;
     List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
+    var appl = (string)ViewBag.applNumber;
+    var applicationNumber = "";
+    if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
+    {
+        applicationNumber = appl;
+    }
+    else
+    {
+        applicationNumber = Request.QueryString["appNo"].ToString();
+    }
 }
 
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
