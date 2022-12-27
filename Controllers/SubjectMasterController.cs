@@ -40,7 +40,7 @@ namespace NewZapures_V2.Controllers
             collegeListData = GetCollegeList();
             ViewBag.collegeListData = collegeListData;
 
-
+            ViewBag.applNumber = appNo;
 
 
             GetSubjectDataList();

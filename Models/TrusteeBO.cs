@@ -123,6 +123,7 @@ namespace NewZapures_V2.Models
             public string DepartmentId { get; set; }
             public string CourseId { get; set; }
             public string FinancialYear { get; set; }
+            public string ApplicationNumber { get; set; }
 
             public List<RateList> rateLists { get; set; }          
         }
