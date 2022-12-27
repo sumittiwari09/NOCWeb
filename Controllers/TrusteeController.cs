@@ -501,7 +501,6 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult CollageFacilitys(TrusteeBO.CollageFacility modal)
         {
-
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
             var request = new RestRequest(Method.POST);
