@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.TrusteeBO.TrusteeInfo> trustlist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.TrusteeInfo>;
     var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
-  
-    
+
+
 }
 @section styles {
 
@@ -91,7 +91,7 @@
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Trustee Details</h4>
-    </div>  
+    </div>
     <div class="row col-lg-12" style="margin-top:20px">
         <div class="form-group col-lg-12">
             <table class="table table-borderless table-striped table-hover" id="tblCapital">
@@ -101,12 +101,12 @@
                         <th>Logo</th>
                         <th>Trust Name</th>
                         <th>Type</th>
-                        <th>CertifiedBy No</th>
+                        <th>Registered In</th>
                         <th>Registration No</th>
                         <th>Registration Date</th>
-                        <th>Election Comm Date</th>
+                        <th hidden>Election Comm Date</th>
                         <th style="text-align:center">Certification Proof</th>
-                        <th style="text-align:center">Registration Prrof</th>                       
+                        <th style="text-align:center">Registration Proof</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -118,42 +118,42 @@
                         {
                             <tr>
                                 <td>@i</td>
-                        @if (item.TrusteeLogo != "")
-                        {
-                                <td><img src="data:@item.TrusteeContentType;base64,@item.TrusteeLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+                                @if (item.TrusteeLogo != "")
+                                {
+                                    <td><img src="data:@item.TrusteeContentType;base64,@item.TrusteeLogo" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                                 <td>@item.Name</td>
                                 <td>@item.TrustType</td>
                                 <td>@item.CertiFiedBy</td>
                                 <td>@item.RegistrationNo</td>
                                 <td>@item.RegistrationDate</td>
-                                <td>@item.ElectionDate</td>
-                        @if (item.Certified != "")
-                        {
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Certified })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        @if (item.Registration != "")
-                        {
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Registration })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        
-                        
-                        <td>
-                            <a id="@item.TrusteeInfoId" class="fas fa-edit text-info font-16" name="2" data-id="@item.TrusteeInfoId" title="Edit" onclick="EditDepartment(@item.TrusteeInfoId);"></a>
-                            <a id="btnDeactive_@item.TrusteeInfoId" class="Deleteclass" name="2" data-id="@item.TrusteeInfoId" onclick="DeleteData(@item.TrusteeInfoId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
-                        </td>
+                                <td hidden>@item.ElectionDate</td>
+                                @if (item.Certified != "")
+                                {
+                                    <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Certified })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (item.Registration != "")
+                                {
+                                    <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Registration })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+
+                                <td>
+                                    <a id="@item.TrusteeInfoId" class="fas fa-edit text-info font-16" name="2" data-id="@item.TrusteeInfoId" title="Edit" onclick="EditDepartment(@item.TrusteeInfoId);"></a>
+                                    <a id="btnDeactive_@item.TrusteeInfoId" class="Deleteclass" name="2" data-id="@item.TrusteeInfoId" onclick="DeleteData(@item.TrusteeInfoId)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                </td>
                                 @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
                                 @*<td></td>*@

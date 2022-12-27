@@ -1,0 +1,184 @@
+﻿@using NewZapures_V2.Models
+@model ProofOfDocument
+@{
+    ViewBag.Title = "Proof Of Document";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+}
+<style type="text/css">
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Proof Of Document</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">Proof Of Document</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("SaveDetails", "ProofOfDocument", FormMethod.Post, new { id = "ProofOfDocumentForm", enctype = "multipart/form-data" }))
+                {
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="certified copy of the Zoning plans" id="fupFile" name="certifiedcopy" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Aims and Objective of medical Education" id="fupFile" name="AimsandObjective" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Project map and Road map for development with forecase Estimation" name="ProjectmapandRoad" data-input="true" id="fupFile">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                                <span id="Doc1"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Proof of Ownership of Hospital" id="fupFile" name="ProofofOwnership" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Authorization letters to bankers for independent inquiry of Financial tracking" id="fupFile" name="Authorizationletters" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Project Report" id="fupFile" name="ProjectReport" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Balance Sheet" id="fupFile" name="BalanceSheet" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" placeholder="Landside plan / jone plan" id="fupFile" name="ESI" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Doc</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="form-group col-lg-12">
+                            <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}
+<script type="text/javascript">
+
+
+$(document).ready(function () {
+
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+});
+</script>
+

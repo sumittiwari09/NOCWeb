@@ -1,0 +1,249 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Fee Details";
+    NewZapures_V2.Models.TrusteeBO.CollageFeeMst FeeList = ViewBag.CollageFeeList as NewZapures_V2.Models.TrusteeBO.CollageFeeMst;
+    //List<CustomMaster> DepartmentList = new List<CustomMaster>();
+    //if (ViewBag.DepartmentList != null)
+    //{
+    //    DepartmentList = (List<CustomMaster>)ViewBag.DepartmentList;
+    //}
+
+    //List<CustomMaster> CourseList = new List<CustomMaster>();
+    //if (ViewBag.CourseList != null)
+    //{
+    //    CourseList = (List<CustomMaster>)ViewBag.CourseList;
+    //}
+    //List<CustomMaster> FinancialYear = new List<CustomMaster>();
+    //if (ViewBag.FinancialYearList != null)
+    //{
+    //    FinancialYear = (List<CustomMaster>)ViewBag.FinancialYearList;
+    //}
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+        .dropify-wrapper {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            width: 100%;
+            max-width: 100%;
+            height: 138px;
+            padding: 5px 10px;
+            font-size: 14px;
+            line-height: 22px;
+            color: #777;
+            background-color: #FFF;
+            background-image: none;
+            text-align: center;
+            border: 2px solid #E5E5E5;
+            -webkit-transition: border-color .15s linear;
+            transition: border-color .15s linear;
+        }
+
+        .table thead {
+            background-color: #646d91 !important;
+        }
+
+        .table th {
+            color: #ffffff !important;
+        }
+
+        .fsc {
+            background: #6441A5;
+            background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+            background: linear-gradient(to left, #506ee4, #5b3a96);
+            border-radius: 12px;
+        }
+
+            .fsc h4 {
+                color: white !important;
+            }
+
+        .fsi {
+            background: #6441A5;
+            background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+            background: linear-gradient(to right, #506ee4, #5b3a96);
+            border-radius: 12px;
+        }
+
+            .fsi h4 {
+                color: white !important;
+            }
+
+        .fop {
+            background: #B993D6; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            border-radius: 12px;
+        }
+
+            .fop h4 {
+                color: white !important;
+            }
+    </style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Fee details</li>
+                </ol>
+            </div>
+            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card">
+    <div class="card-header fsc">
+        <h4 class="mt-0 header-title float-left">Fee Details</h4>
+    </div>   
+    <div class="row col-lg-8" style="margin-top:12px">
+        <div class="form-group col-lg-12">
+            <table class="table table-bordered table-striped table-hover" id="tblFacility">
+                <thead class="dark">
+                    <tr>
+                        <th hidden></th>
+                        <th>Fees</th>
+                        <th>
+                            <label class="containercheckbox">
+                                &nbsp;
+                                <input type="checkbox" id="chkAll">
+                                <span class="checkmark"></span>
+                            </label>
+                        </th>
+                        <th>Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (FeeList.rateLists != null)
+                    {
+                        int i = 1;
+                        foreach (var item in FeeList.rateLists)
+                        {
+                            <tr>
+                                @*<td>@i</td>*@
+                                <td style="display:none">
+                                    @item.RateId
+                                </td>
+
+                                <td>
+                                    @item.RateName
+                                </td>
+                                <td>
+                                    @if (item.IsSelect == true)
+                                    {
+                                        <label class="containercheckbox">
+                                            &nbsp;
+                                            <input type="checkbox" id="Select" name="IsSelect" class="chk" checked="checked">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label class="containercheckbox">
+                                            &nbsp;
+                                            <input type="checkbox" id="Select" name="IsSelect" class="chk">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    }
+                                </td>
+                                <td>
+                                    <input type="text" id="Rate" name="Rate" class="form-control" value="@item.Rate" />
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row col-lg-12" style="margin-bottom:10px">
+            <div class="col-lg-12">
+                <button class="btn btn-primary" id="btnSave"> Save</button>
+
+                @*</div>*@
+            </div>
+        </div>
+        @*<div class="row col-lg-12" style="margin-top:20px">
+            <div class="col-lg-12 loat-right">
+                <button class="btn btn-primary" id="btnSave">Submit</button>
+            </div>
+        </div>*@
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {      
+        $('#chkAll').click(function () {
+            $('.chk').prop('checked', this.checked)
+        });
+
+        $("#btnSave").click(function () {
+            var tableData = new Array();
+            debugger;
+            var departmentId = "0";
+            var CourseId = "0";
+            var year = "0";            
+            $("#tblFacility tbody TR").each(function () {
+                var row_data = $(this);
+                var Idget = row_data.find("td").eq(0).html().trim();
+                var RateName = row_data.find("td").eq(1).html().trim();
+                var Rate = $(this).find('#Rate').val();
+                var rated = parseFloat(Rate);                
+                var select = false;
+                if ($(this).find('#Select').is(":checked")) {                    
+                    select = true;
+                }                
+                debugger;
+                var getdata = { RateId: Idget, IsSelect: select, RateName: RateName, Rate: rated }
+                tableData.push(getdata);               
+            });
+
+            var modal = {
+                DepartmentId: departmentId,
+                CourseId: CourseId,
+                FinancialYear:year,
+                rateLists: tableData
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/FeeDetails/SaveCollageFee",
+                data: modal,
+                success: function (data) {
+                    if (data.failure) {
+                        //alert("Successfully");
+
+                        var url = GetglobalDomain() + "/FeeDetails/Index";
+                        window.location.href = url;                        
+                        //Swal.fire(
+                        //    'Success',
+                        //    'Success',
+                        //    'Data Save Successfully!!'
+                        //)
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )                        
+                    }                   
+                }
+            });
+        });
+
+    });
+</script>
+
