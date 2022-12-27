@@ -105,6 +105,9 @@
     </div>   
     <div class="row col-lg-8" style="margin-top:12px">
         <div class="form-group col-lg-12">
+            <input type="hidden" name="iFk_TrstId" id="iFk_TrstId" value="@ViewData["TrustId"]" />
+            <input type="hidden" name="iFk_ClgId" id="iFk_ClgId" value="@ViewData["CollageId"]" />
+            <input type="hidden" name="iFk_CourseId" id="iFk_CourseId" value="@ViewData["CourseId"]" />
             <table class="table table-bordered table-striped table-hover" id="tblFacility">
                 <thead class="dark">
                     <tr>
@@ -126,45 +129,45 @@
                         int i = 1;
                         foreach (var item in FeeList.rateLists)
                         {
-                            <tr>
-                                @*<td>@i</td>*@
-                                <td style="display:none">
-                                    @item.RateId
-                                </td>
+                    <tr>
+                        @*<td>@i</td>*@
+                        <td style="display:none">
+                            @item.RateId
+                        </td>
 
-                                <td>
-                                    @item.RateName
-                                </td>
-                                <td>
-                                    @if (item.IsSelect == true)
+                        <td>
+                            @item.RateName
+                        </td>
+                        <td>
+                            @if (item.IsSelect == true)
                                     {
-                                        <label class="containercheckbox">
-                                            &nbsp;
-                                            <input type="checkbox" id="Select" name="IsSelect" class="chk" checked="checked">
-                                            <span class="checkmark"></span>
-                                        </label>
+                            <label class="containercheckbox">
+                                &nbsp;
+                                <input type="checkbox" id="Select" name="IsSelect" class="chk" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
                                     }
                                     else
                                     {
-                                        <label class="containercheckbox">
-                                            &nbsp;
-                                            <input type="checkbox" id="Select" name="IsSelect" class="chk">
-                                            <span class="checkmark"></span>
-                                        </label>
+                            <label class="containercheckbox">
+                                &nbsp;
+                                <input type="checkbox" id="Select" name="IsSelect" class="chk">
+                                <span class="checkmark"></span>
+                            </label>
                                     }
-                                </td>
-                                <td>
-                                    <input type="text" id="Rate" name="Rate" class="form-control" value="@item.Rate" />
-                                </td>
-                            </tr>
+                        </td>
+                        <td>
+                            <input type="text" id="Rate" name="Rate" class="form-control" value="@item.Rate" />
+                        </td>
+                    </tr>
                             i++;
                         }
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="8" style="text-align: center;">No Data Available</td>
-                        </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -192,9 +195,9 @@
         $("#btnSave").click(function () {
             var tableData = new Array();
             debugger;
-            var departmentId = "0";
-            var CourseId = "0";
-            var year = "0";            
+            var TrustId = $('#iFk_TrstId').val();
+            var CourseId = $('#iFk_CourseId').val();
+            var CollageId = $('#iFk_ClgId').val();
             $("#tblFacility tbody TR").each(function () {
                 var row_data = $(this);
                 var Idget = row_data.find("td").eq(0).html().trim();
@@ -211,21 +214,21 @@
             });
 
             var modal = {
-                DepartmentId: departmentId,
+                TrustId: TrustId,
                 CourseId: CourseId,
-                FinancialYear:year,
+                CollageId: CollageId,
                 rateLists: tableData
             }
 
             $.ajax({
                 type: "POST",
-                url: "/FeeDetails/SaveCollageFee",
+                url: GetglobalDomain() + "/FeeDetails/SaveCollageFee",
                 data: modal,
                 success: function (data) {
                     if (data.failure) {
                         //alert("Successfully");
 
-                        var url = GetglobalDomain() + "/FeeDetails/Index";
+                        var url = GetglobalDomain() + "/FeeDetails/Index?TrustId=" + TrustId + "&CollageId=" + CollageId + "&CourseId=" + CourseId;
                         window.location.href = url;                        
                         //Swal.fire(
                         //    'Success',

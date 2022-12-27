@@ -24,7 +24,7 @@
 function GenerateDocumentList(CategoryId, Status) {
     debugger;
     $.ajax({
-        url: '/Home/AddDocumentList?Id=' + CategoryId + '&status=' + Status,
+        url: globaUserProperties.domain + '/Home/AddDocumentList?Id=' + CategoryId + '&status=' + Status,
         type: 'POST',
         dataType: "text",
         success: function (response) {
@@ -47,7 +47,7 @@ function BindSubCategory(CategoryId) {
     $("#SubCategoryId").select2();
 
     $.ajax({
-        url: "/Home/FillSubCategory",
+        url: globaUserProperties.domain + "/Home/FillSubCategory",
         type: 'POST',
         dataType: "json",
         contentType: "application/json",
@@ -98,7 +98,7 @@ function BindSubChildCategory(CategoryId, EndPoint) {
     //$("#divServices").select2();
 
     $.ajax({
-        url: "/Home/FillSubChildCategory",
+        url: globaUserProperties.domain + "/Home/FillSubChildCategory",
         type: 'POST',
         dataType: "json",
         contentType: "application/json",
@@ -143,7 +143,7 @@ function BindSubService(CategoryId, EndPoint) {
     $("#ServiceId").html(strHTML);
     $("#ServiceId").select2();
     $.ajax({
-        url: "/Home/FillSubServiceCategory",
+        url: globaUserProperties.domain + "/Home/FillSubServiceCategory",
         type: 'POST',
         dataType: "json",
         contentType: "application/json",
@@ -172,7 +172,7 @@ function BindSubService(CategoryId, EndPoint) {
 function BindRatelist(categoryid, SubCategoryId, ChildCategoryId, services) {
     debugger;
     $.ajax({
-        url: '/Home/AddRateList?categoryid=' + categoryid + '&SubCategoryId=' + SubCategoryId + '&ChildCategoryId=' + ChildCategoryId + '&services=' + services,
+        url: globaUserProperties.domain + '/Home/AddRateList?categoryid=' + categoryid + '&SubCategoryId=' + SubCategoryId + '&ChildCategoryId=' + ChildCategoryId + '&services=' + services,
         type: 'POST',
         dataType: "text",
         success: function (response) {
