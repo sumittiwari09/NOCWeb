@@ -149,6 +149,7 @@
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\SubjectMasterController.cs" />
+    <Compile Include="Controllers\UniverSityMSTController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Models\SlotMaster.cs" />
 
     <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\UniversityMaster.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
@@ -3607,6 +3609,7 @@
     <Content Include="Views\Trustee\CollageAttachment.cshtml" />
     <Content Include="Views\ProofOfDocument\Index.cshtml" />
     <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
+    <Content Include="Views\UniversityMST\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
