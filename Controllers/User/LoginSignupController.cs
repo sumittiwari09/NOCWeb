@@ -77,7 +77,7 @@ namespace NewZapures_V2.Controllers
                     if (objResponse.Data != null)
                     {
                         userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
-                        List<UserPermissions> permissions = AdminAjaxRequestPageController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                        List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
                         List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
 
                         if (userModel.PartyId == "A000001")
