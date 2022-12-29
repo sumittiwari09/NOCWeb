@@ -1,7 +1,7 @@
 ﻿@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Staff";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.StaffBO.Staff> stafflist = ViewBag.StaffList as List<NewZapures_V2.Models.StaffBO.Staff>;
 }
 @section styles {
@@ -73,13 +73,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            @*<div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">Staff</li>
                 </ol>
-            </div>
+            </div>*@
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->

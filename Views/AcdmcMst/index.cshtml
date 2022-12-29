@@ -1,7 +1,7 @@
 ﻿@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Academic Master";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
 
     var FromYear = ViewBag.FromYear as List<Dropdown>;
     var ToYear = ViewBag.ToYear as List<Dropdown>;
@@ -55,13 +55,13 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
-                <div class="float-right">
+                @*<div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">NOC</li>
                         <li class="breadcrumb-item">Master</li>
                         <li class="breadcrumb-item active">Academic Master</li>
                     </ol>
-                </div>
+                </div>*@
                 <h4 class="page-title">@ViewBag.Title</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
@@ -163,12 +163,12 @@
                                 <input class="form-control" type="text" id="txtNoOfStudentPassed" placeholder="No Of Student Passed" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-4">
+                        @*<div class="col-4">
                             <div class="col-lg-12">
 
                                 <input class="form-control" type="text" id="txtPercentage" placeholder="Percentage" autocomplete="off" required>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
                     <div class="row">

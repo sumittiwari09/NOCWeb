@@ -1,6 +1,7 @@
 ﻿@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Fee Details";
+    Layout = null;
     NewZapures_V2.Models.TrusteeBO.CollageFeeMst FeeList = ViewBag.CollageFeeList as NewZapures_V2.Models.TrusteeBO.CollageFeeMst;
     //List<CustomMaster> DepartmentList = new List<CustomMaster>();
     //if (ViewBag.DepartmentList != null)
@@ -88,14 +89,14 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            @*<div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">Fee details</li>
                 </ol>
-            </div>
-            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+            </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
