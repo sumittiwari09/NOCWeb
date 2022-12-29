@@ -866,9 +866,9 @@ namespace NewZapures_V2.Models
             return trusteeList;
         }
 
-        public static List<DraftApplication> GetDraftApplication()
+        public static List<DraftApplication> GetDraftApplication(string applGUID = "")
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications?applGUID="+ applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

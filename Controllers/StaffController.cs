@@ -15,7 +15,7 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: Trustee
-        public ActionResult Index(string appNo)
+        public ActionResult Index(string guid)
         {
             List<StaffBO.Staff> _result = new List<StaffBO.Staff>();
             #region List Staff

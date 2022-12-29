@@ -15,12 +15,16 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: FeeDetails
-        public ActionResult Index(string TrustId, string CollageId, string CourseId)
+        public ActionResult Index(string guid)
         {
 
-            ViewData["TrustId"] = TrustId;
-            ViewData["CollageId"] = CollageId;
-            ViewData["CourseId"] = CourseId;
+            var draftedApplication = ZapurseCommonlist.GetDraftApplication(guid);
+
+
+
+            ViewData["TrustId"] = draftedApplication[0].iFKTst_ID;
+            ViewData["CollageId"] = draftedApplication[0].clgID;
+            ViewData["CourseId"] = draftedApplication[0].iFK_CORS_ID;
             // department list
             //List<CustomMaster> DepartMentList = new List<CustomMaster>();
             //DepartMentList = Common.GetCustomMastersList(37);
@@ -37,9 +41,9 @@ namespace NewZapures_V2.Controllers
             //ViewBag.FinancialYearList = FinancialYearList;
             //CourseId = "1";
             TrusteeBO.CollageFeeMst obj = new TrusteeBO.CollageFeeMst();
-            obj.CourseId = CourseId;
-            obj.TrustId = TrustId;
-            obj.CollageId = CollageId;
+            obj.CourseId = draftedApplication[0].iFK_CORS_ID.ToString();
+            obj.TrustId = draftedApplication[0].iFKTst_ID.ToString();
+            obj.CollageId = draftedApplication[0].clgID.ToString();
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetFeeDetailsList");
             var request = new RestRequest(Method.POST);
@@ -50,13 +54,14 @@ namespace NewZapures_V2.Controllers
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                TrusteeBO.CollageFeeMst _result = _JsonSerializer.Deserialize<TrusteeBO.CollageFeeMst>(response.Content);
-                if (_result != null)
-                {
-                    ViewBag.CollageFeeList = _result;
-                    //return RedirectToAction("Index");
-                }
+                obj = _JsonSerializer.Deserialize<TrusteeBO.CollageFeeMst>(response.Content);
+                //if (_result != null)
+                //{
+                //    ViewBag.CollageFeeList = _result;
+                //    //return RedirectToAction("Index");
+                //}
             }
+            ViewBag.CollageFeeList = obj;
             #endregion
             return View();
         }
@@ -64,6 +69,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult Index(TrusteeBO.CollageFeeMst obj)
         {
+            //TrusteeBO.CollageFeeMst obj = new TrusteeBO.CollageFeeMst();
             // department list
             List<CustomMaster> DepartMentList = new List<CustomMaster>();
             DepartMentList = Common.GetCustomMastersList(37);
@@ -87,7 +93,7 @@ namespace NewZapures_V2.Controllers
             //var MyFinancialYearListList = (from m in FinancialYearList select new { m.Id, m.text });
             //ViewData["FinancialYearList"] = new SelectList(MyFinancialYearListList.ToList(), "ListID", "ListName");
 
-
+            ViewBag.CollageFeeList = obj;
 
             return View();
         }

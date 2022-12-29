@@ -51,22 +51,23 @@ namespace NewZapures_V2.Controllers
             {
                 //try
                 //{
-                if (SSO.CreateSSOSession())
-                {
+                //if (SSO.CreateSSOSession())
+                //{
                     var jsonUserDetail = "";
 
                     var jsonSSODetail = "";
                     var jsonUserDetails = "";
                     var jsonInternLogin = "";
 
-                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                    RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
+                    //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                    //RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
 
-                    if (detail != null)
-                    {
+                    //if (detail != null)
+                    //{
 
                         System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                        RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
+                        //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
+                        RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
                         if (UserDetail != null)
                         {
                             SSOUserDetail _SSOUserDetail = new SSOUserDetail();
@@ -94,17 +95,42 @@ namespace NewZapures_V2.Controllers
                             _SSOUserDetail.AadhaarId = UserDetail.AadhaarId;
                             _SSOUserDetail.Gender = UserDetail.Gender;
                             _SSOUserDetail.OldSSOIDs = UserDetail.OldSSOIDs;
-                            
+
                             SessionModel.SSOUserDetail = _SSOUserDetail;
                             jsonUserDetail = new JavaScriptSerializer().Serialize(_SSOUserDetail);
 
+                            var status =  AddUpdateSSO(_SSOUserDetail);
                             SSO.IncreaseSession();
+
+
                         }
-                    }
-                }
+                    //}
+                //}
             }
 
-                            return View();
+            return View();
+        }
+
+        public string AddUpdateSSO(SSOUserDetail userDetail)
+        {
+            ResponseData objResponse = new ResponseData();
+
+            var json = JsonConvert.SerializeObject(userDetail);
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/AddUpdateSSO");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+
+            return objResponse.Message;
         }
     }
 }

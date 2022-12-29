@@ -2,7 +2,7 @@
 @model AddCourseBO
 @{
     ViewBag.Title = "Subject Master";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;//"~/Views/Shared/_Layout.cshtml";
 
     List<CustomMaster> TrustList = new List<CustomMaster>();
     if (ViewBag.TrustList != null)
@@ -28,14 +28,14 @@
     List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
     var appl = (string)ViewBag.applNumber;
     var applicationNumber = "";
-    if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
-    {
-        applicationNumber = appl;
-    }
-    else
-    {
-        applicationNumber = Request.QueryString["appNo"].ToString();
-    }
+    //if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
+    //{
+    //    applicationNumber = appl;
+    //}
+    //else
+    //{
+    //    applicationNumber = Request.QueryString["appNo"].ToString();
+    //}
 }
 
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
@@ -87,13 +87,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            <!--<div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item">Master</li>-->
                     @*<li class="breadcrumb-item">Master</li>*@
-                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                    <!--<li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
-            </div>
+            </div>-->
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -114,7 +114,7 @@
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
                     <div>
-                        <select class="form-control" id="IsdefaultCollegeId" name="iCollegeId">
+                        <select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
                             <option value="">Select College</option>
                             @{
 
@@ -133,7 +133,7 @@
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Department</label>
                     <div>
-                        <select class="form-control" name="TagDegrees" id="txtTagDegree">
+                        <select class="form-control singleselect" name="TagDegrees" id="txtTagDegree">
                             <option value="0">Select Department</option>
                             @{
                                 foreach (var item in DegreeList)
@@ -151,7 +151,7 @@
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Course</label>
                     <div>
-                        <select class="form-control" name="TagCourse" id="txtTagCourse">
+                        <select class="form-control singleselect" name="TagCourse" id="txtTagCourse">
                             @*<option value="0">Select Course List</option>
                                 @{
                                     foreach (var item in CourseList)
@@ -228,9 +228,9 @@
     </div>
 </div>
 
-<script src="~/Content/select2/js/select2.js"></script>
+
 <script src="~/Content/jquery/jquery.js"></script>
-@*<script src="~/Content/select2/js/select2.js"></script>*@
+<script src="~/Content/select2/js/select2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
