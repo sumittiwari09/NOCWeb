@@ -1,0 +1,291 @@
+﻿@using NewZapures_V2.Models
+@model UniversityMaster
+@{
+    ViewBag.Title = "University Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.UniversityMaster> Unilist = ViewBag.UniList as List<NewZapures_V2.Models.UniversityMaster>;
+
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+}
+
+<style type="text/css">
+    form {
+        margin: 20px;
+    }
+
+        form input, button {
+            padding: 5px;
+        }
+
+    table {
+        width: 90%;
+        margin: 20px;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+
+    /* table, th, td {
+        border: 1px solid black;
+    }*/
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">University Master</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsc">
+                <h4 class="mt-0 header-title float-left">University Master</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "UniverSityMST", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University Type</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <select class="form-control" name="UniType">
+                                    <option>State Universities </option>
+                                    <option>Private Universities </option>
+                                    <option>Deemed Universities </option>
+                                    <option>Others Universities </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter University Name</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="University Name" type="text" autocomplete="off" id="txtemail" name="UniName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website Link</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Link" type="text" autocomplete="off" id="txtemail" name="Website">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Document</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Link" type="file" autocomplete="off" id="txtemail" name="Document">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    @*<div id="Remove" class="row">
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact Person</label>
+                                <div class="is-empty  removehidde" id="collegetypedata">
+                                    <div>
+                                        <input class="form-control col-sm-12" placeholder="ContactPerson" type="text" autocomplete="off" id="txtemail" name="Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Contact Number</label>
+                                <div class="is-empty  removehidde" id="collegetypedata">
+                                    <div>
+                                        <input class="form-control col-sm-12" placeholder="Number" type="text" autocomplete="off" id="txtemail" name="Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Email Address</label>
+                                <div class="is-empty  removehidde" id="collegetypedata">
+                                    <div>
+                                        <input class="form-control col-sm-12" placeholder="Email" type="text" autocomplete="off" id="txtemail" name="Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-sm removeDiv"> Remove</button>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="card-header fsc">
+                        <h4 class="mt-0 header-title">Contact Details</h4>
+                    </div>
+                    <br>
+
+
+                    <form>
+                        <input type="text" id="Name" name="Name" placeholder="ContactPerson">
+                        <input type="text" id="Number" name="Number" placeholder="Number">
+                        <input type="text" id="EmailId" name="Email" placeholder="Email Address">
+                        <input type="button" class="add-row" value="Add Row">
+
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Search</th>
+                                    <th>ContactPerson</th>
+                                    <th>Number</th>
+                                    <th>Email Address</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <button type="button" class="delete-row">Delete Row</button>
+                        <div class="row text-center">
+                            <div class="form-group col-lg-12">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                            </div>
+                        </div>
+                    </form>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function () {
+        $(".add-row").click(function () {
+            var Name = $("#Name").val();
+            var Number = $("#Number").val();
+            var Email = $("#EmailId").val();
+            var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + Name + "</td><td>" + Number + "</td><td>" + Email + "</td></tr>";
+            $("table tbody").append(markup);
+        });
+
+        // Find and remove selected table rows
+        $(".delete-row").click(function () {
+            $("table tbody").find('input[name="record"]').each(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parents("tr").remove();
+                }
+            });
+        });
+});
+</script>
+@*<script>
+    $(".removeDiv").click(function () {
+
+            $(this).parents("#Remove").remove();
+    });
+    </script>*@
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+}
+<script type="text/javascript">
+
+
+$(document).ready(function ()
+{
+
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+});
+</script>
+
+
+

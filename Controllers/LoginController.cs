@@ -19,7 +19,24 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         }
-
+        public static List<UserPermissions> GetPermissionDetails(int RoleId, int DepartmentId)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetPermissionDetails?RoleId=" + RoleId + "&DepartmentId=" + DepartmentId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<UserPermissions> permissions = new List<UserPermissions>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var responseData = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                permissions = JsonConvert.DeserializeObject<List<UserPermissions>>(responseData.Data.ToString());
+            }
+            return permissions;
+        }
         public ActionResult Handshake()
         {
 
