@@ -11,6 +11,7 @@
     var deptID = (int)ViewBag.dptID;
     var ecourseID = (int)ViewBag.courseID;
     var eClgID = (int)ViewBag.clgID;
+    var eGuid = (string)ViewBag.Guid;
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
@@ -99,6 +100,9 @@
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Edit Application Details</h4>
+        <div class="form-group" style="text-align:right">
+            <a href="@Url.Action("DraftApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+        </div>
     </div>
     <div class="card-body ">
         <div class="col-lg-12">
@@ -132,10 +136,10 @@
                         <table class="table table-striped">
                             <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo", new {appNo=eAppNo,deptID=deptID})" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
                             <tr><td><a href="@Url.Action("CreateData","SubjectMaster",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
-                            <tr><td><a href="@Url.Action("Index","FeeDetails",new {appNo=eAppNo,CourseId=ecourseID})" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
                             <tr><td><a href="@Url.Action("ArchitectureDetail","Master",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Architectrual Details</a></td></tr>
-                            <tr><td><a href="@Url.Action("CollageFacilitys","Trustee",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
-                            <tr><td><a href="@Url.Action("Index","Staff",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
+                            <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
                             <tr><td><a href="@Url.Action("Index","AcdmcMst",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
                             <tr><td><a href="@Url.Action("CollageAttachment","Trustee",new {appNo=eAppNo,TrustId=etrustID,CourseId=ecourseID,CollageId=eClgID})" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
                        

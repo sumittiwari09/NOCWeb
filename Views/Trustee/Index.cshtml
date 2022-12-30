@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Trustee";
+    ViewBag.Title = "Trust Comittee";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.TrusteeBO.Trustee> trusteelist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
     List<CustomMaster> TrustList = new List<CustomMaster>();
@@ -97,33 +97,30 @@
 
 <div class="card">
     <div class="card-header fsc">
-        <h4 class="mt-0 header-title float-left">Trustee Details</h4>
+        <h4 class="mt-0 header-title float-left">ViewBag.Title</h4>
     </div>
     @using (Html.BeginForm("Index", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
     {
         <div class="card-body row">
             <div class="col-8">
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
-                        <div>
-                            <select class="form-control" name="TrustInfoId" id="TrustType">
+                @*<div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
+                            <div>
+                                <select class="form-control" name="TrustInfoId" id="TrustType">
 
-                                <option value="0">Select Trust</option>
-                                @{
-                                    foreach (var item in TrustList)
-                                    {
-                                        <option value="@item.Id">@item.text</option>
+                                    <option value="0">Select Trust</option>
+                                    @{
+                                        foreach (var item in TrustList)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+                                        }
                                     }
-                                }
-                            </select>
-                            @*<select class="form-control" id="txtrole" name="TrustType">
-                                    <option value="0">Type</option>
-                                </select>*@
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>*@
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Person</label>
@@ -210,9 +207,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @*<div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chkIsPrime" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="hidden" id="hdnchkIsPrime" name="isPrimary">
+                                <label class="custom-control-label" for="chkIsPrime">Is Primary</label>
 
-
-
+                            </div>*@
+                    </div>
+                    <div class="form-group col-lg-6" id="fileAuth" style="display:none">
+                        <label for="file2">Upload Authorized Document</label>
+                        <input type="file" id="fileAuth" style="border: 0px solid #e8ebf3" name="Authfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <span id="panfile"></span>
+                    </div>
+                </div>
             </div>
             <div class="col-3 text-center d-flex align-items-center justify-content-center">
                 <div class="">
@@ -222,12 +231,19 @@
                 </div>
             </div>
             <div class="row col-lg-12" style="margin-top:20px">
-                <div class="col-lg-12 float-left">
+                <div class="col-lg-12 loat-right">
                     @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
-                    <button class="btn" id="btnCapitalAdd" style="color:white!important;float:left;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                    <button class="btn btn-primary" id="btnCapitalAdd" style="color:white!important;float:right;"><i class="fa fa-plus"></i> ADD</button>
                 </div>
                 @*</div>*@
             </div>
+            @*<div class="row col-lg-12" style="margin-top:20px">
+                    <div class="col-lg-12 float-left">
+
+                        <button class="btn" id="btnCapitalAdd" style="color:white!important;float:left;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                    </div>
+
+                </div>*@
         </div>
     }
 
@@ -250,6 +266,7 @@
                         <th>Is Authorize</th>
                         <th style="text-align:center">Aadhaar</th>
                         <th style="text-align:center">Pan</th>
+                        <th style="text-align:center">Authorized Doc</th>
                         <th>Action</th>
                         @*<th style="text-align:center">Profile</th>*@
                         @*<th>Action</th>*@
@@ -273,12 +290,26 @@
                                 <td>@item.PanNo</td>
                                 <td>@item.isPrimary</td>
                                 <td>@item.isAuthorize</td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td>
-                                    <a id="@item.Id" class="fas fa-edit text-info font-16" name="2" data-id="@item.Id" title="Edit" onclick="EditDepartment(@item.Id);"></a>
-                                    <a id="btnDeactive_@item.Id" class="Deleteclass" name="2" data-id="@item.Id" onclick="DeleteData(@item.Id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                <td style="text-align:center">
+                                 @if(item.Aadhaar != null) {  
+                                <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>
+                                    }
                                 </td>
+                                <td style="text-align:center">
+                                    @if (item.Pan != null)
+                                    {
+                                        <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>
+                                    }</td>
+                                <td style="text-align:center">
+                                    @if (item.Authorized != null)
+                                    {
+                                        <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Authorized })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>
+                                    }</td>
+                                <td>
+                                    
+                                        @*<a id="@item.Id" class="fas fa-edit text-info font-16" name="2" data-id="@item.Id" title="Edit" onclick="EditDepartment(@item.Id);"></a>*@
+                                        <a id="" class="Deleteclass" name="2" data-id="@item.Id" href="@Url.Action("DeleteTrustMemeber", "Trustee", new { Id = item.Id })" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                    </td>
                                 @*<td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.ProfileImg })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>*@
 
                                 @*<td></td>*@
@@ -296,6 +327,14 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="row col-lg-12" style="margin-top:20px">
+        <div class="col-lg-12 loat-right">
+            @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+            <a href="@Url.Action("CreateDetails","BasicDetails")" class="btn btn-primary" style="display: block; margin:5px; background-color: deeppink;float:right" id="Reset">Proceed To Add Collage Details</a>
+</div>
+        @*</div>*@
     </div>
     <!--<div class="row col-lg-12" style="margin-bottom:10px">
         <div class="col-lg-12 float-right">-->
@@ -356,8 +395,10 @@
         //alert(status);
         if (status) {
             $('#hdnchkIsAuthorized').val(1);
+            $('#fileAuth').attr("style", "display:block");
         } else {
             $('#hdnchkIsAuthorized').val(0);
+            $('#fileAuth').attr("style", "display:none");
         }
 
         //alert($('#hdnchkTDSApplicable').val());

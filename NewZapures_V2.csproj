@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -235,8 +235,8 @@
     <Compile Include="Models\Slot.cs" />
     <Compile Include="Models\SlotDropdownBO.cs" />
     <Compile Include="Models\SlotMaster.cs" />
-
     <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\TrustAPIBO.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
@@ -3607,6 +3607,7 @@
     <Content Include="Views\Trustee\CollageAttachment.cshtml" />
     <Content Include="Views\ProofOfDocument\Index.cshtml" />
     <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
+    <Content Include="Views\Trustee\testpage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
