@@ -240,18 +240,12 @@ namespace NewZapures_V2.Controllers
             return View();
         }
 
-        public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID,int courseID, int clgID)
+        //public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
+        public ActionResult ApplicationPreview(string applGUID)
         {
-            ViewBag.appNo = applicationNo;
-            ViewBag.trustName = trustName.Trim();
-            ViewBag.trustID = trustID;
-            ViewBag.clgname = clgName;
-            ViewBag.dept = dptname;
-            ViewBag.cours = cours;
-            ViewBag.dptID = deptID;
-            ViewBag.courseID = courseID;
-            ViewBag.clgID = clgID;
-            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(trustID);
+            var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             ViewBag.trusteeMember = trusteeMember;
 
             return View();

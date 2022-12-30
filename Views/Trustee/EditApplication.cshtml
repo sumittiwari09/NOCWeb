@@ -152,7 +152,7 @@
                     <th style="color:black!important;font-weight:500">Course</th>
                     <td>@draftAppl.CourseName</td>
                 </tr>
-                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee")" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
                 @*<tr>
                         <td colspan="4">
                             <table class="table table-striped">

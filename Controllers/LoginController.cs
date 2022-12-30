@@ -53,65 +53,118 @@ namespace NewZapures_V2.Controllers
                 //{
                 //if (SSO.CreateSSOSession())
                 //{
-                    var jsonUserDetail = "";
+                var jsonUserDetail = "";
 
-                    var jsonSSODetail = "";
-                    var jsonUserDetails = "";
-                    var jsonInternLogin = "";
+                var jsonSSODetail = "";
+                var jsonUserDetails = "";
+                var jsonInternLogin = "";
 
-                    //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                    //RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
+                //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                //RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
 
-                    //if (detail != null)
-                    //{
+                //if (detail != null)
+                //{
 
-                        System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                        //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
-                        RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
-                        if (UserDetail != null)
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
+                RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
+                if (UserDetail != null)
+                {
+                    SSOUserDetail _SSOUserDetail = new SSOUserDetail();
+                    _SSOUserDetail.FirstName = UserDetail.FirstName;
+                    _SSOUserDetail.IpPhone = UserDetail.IpPhone;
+                    _SSOUserDetail.TelephoneNumber = UserDetail.TelephoneNumber;
+                    _SSOUserDetail.State = UserDetail.State;
+                    _SSOUserDetail.SSOID = UserDetail.SSOID;
+                    _SSOUserDetail.PostalCode = UserDetail.PostalCode;
+                    _SSOUserDetail.PostalAddress = UserDetail.PostalAddress;
+                    _SSOUserDetail.Photo = UserDetail.Photo;
+                    _SSOUserDetail.Mobile = UserDetail.Mobile;
+                    _SSOUserDetail.MailPersonal = UserDetail.MailPersonal;
+                    _SSOUserDetail.LastName = UserDetail.LastName;
+                    _SSOUserDetail.MailOfficial = UserDetail.MailOfficial;
+                    _SSOUserDetail.EmployeeNumber = UserDetail.EmployeeNumber;
+                    _SSOUserDetail.DisplayName = UserDetail.DisplayName;
+                    _SSOUserDetail.Designation = UserDetail.Designation;
+                    _SSOUserDetail.DepartmentName = UserDetail.DepartmentName;
+                    _SSOUserDetail.DepartmentId = UserDetail.DepartmentId;
+                    _SSOUserDetail.DateOfBirth = UserDetail.DateOfBirth;
+                    _SSOUserDetail.City = UserDetail.City;
+                    _SSOUserDetail.BhamashahMemberId = UserDetail.BhamashahMemberId;
+                    _SSOUserDetail.BhamashahId = UserDetail.BhamashahId;
+                    _SSOUserDetail.AadhaarId = UserDetail.AadhaarId;
+                    _SSOUserDetail.Gender = UserDetail.Gender;
+                    _SSOUserDetail.OldSSOIDs = UserDetail.OldSSOIDs;
+
+                    SessionModel.SSOUserDetail = _SSOUserDetail;
+                    jsonUserDetail = new JavaScriptSerializer().Serialize(_SSOUserDetail);
+
+                    //Check ssoID in partymaster
+                    //(if present then get the department and roleid and groupid from partymaster itself
+                    //(if not the put into usrMaster with Applicant Roleid,DeptID and groupid)
+
+                    //userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
+                    //List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                    //List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
+
+                    //Session["Token"] = objResponse.JWT;
+                    //Session["UserDetails"] = userModel;
+                    //Session["UserPermissions"] = permissions;
+                    //Session["notificationList"] = notificationsData;
+
+                    var userModel = AddUpdateSSO(_SSOUserDetail);
+
+                    List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                    List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
+                    SSO.IncreaseSession();
+
+                    if (userModel.PartyId == "A000001")
+                    {
+                        //if (permissions != null)
+                        //{
+                        //Session["Token"] = objResponse.JWT;
+                        Session["UserDetails"] = userModel;
+                        Session["UserPermissions"] = permissions;
+                        Session["notificationList"] = notificationsData;
+
+                        //}
+                        //return RedirectToAction("WelcomeNoc", "Dashboard");
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+                    else if (userModel.Type == "11")
+                    {
+                        //if (permissions != null)
+                        //{
+                        //Session["Token"] = objResponse.JWT;
+                        Session["UserDetails"] = userModel;
+                        Session["UserPermissions"] = permissions;
+                        Session["notificationList"] = notificationsData;
+
+                        //}
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+                    else
+                    {
+                        if (permissions != null)
                         {
-                            SSOUserDetail _SSOUserDetail = new SSOUserDetail();
-                            _SSOUserDetail.FirstName = UserDetail.FirstName;
-                            _SSOUserDetail.IpPhone = UserDetail.IpPhone;
-                            _SSOUserDetail.TelephoneNumber = UserDetail.TelephoneNumber;
-                            _SSOUserDetail.State = UserDetail.State;
-                            _SSOUserDetail.SSOID = UserDetail.SSOID;
-                            _SSOUserDetail.PostalCode = UserDetail.PostalCode;
-                            _SSOUserDetail.PostalAddress = UserDetail.PostalAddress;
-                            _SSOUserDetail.Photo = UserDetail.Photo;
-                            _SSOUserDetail.Mobile = UserDetail.Mobile;
-                            _SSOUserDetail.MailPersonal = UserDetail.MailPersonal;
-                            _SSOUserDetail.LastName = UserDetail.LastName;
-                            _SSOUserDetail.MailOfficial = UserDetail.MailOfficial;
-                            _SSOUserDetail.EmployeeNumber = UserDetail.EmployeeNumber;
-                            _SSOUserDetail.DisplayName = UserDetail.DisplayName;
-                            _SSOUserDetail.Designation = UserDetail.Designation;
-                            _SSOUserDetail.DepartmentName = UserDetail.DepartmentName;
-                            _SSOUserDetail.DepartmentId = UserDetail.DepartmentId;
-                            _SSOUserDetail.DateOfBirth = UserDetail.DateOfBirth;
-                            _SSOUserDetail.City = UserDetail.City;
-                            _SSOUserDetail.BhamashahMemberId = UserDetail.BhamashahMemberId;
-                            _SSOUserDetail.BhamashahId = UserDetail.BhamashahId;
-                            _SSOUserDetail.AadhaarId = UserDetail.AadhaarId;
-                            _SSOUserDetail.Gender = UserDetail.Gender;
-                            _SSOUserDetail.OldSSOIDs = UserDetail.OldSSOIDs;
+                            //Session["Token"] = objResponse.JWT;
+                            Session["UserDetails"] = userModel;
+                            Session["UserPermissions"] = permissions;
+                            Session["notificationList"] = notificationsData;
 
-                            SessionModel.SSOUserDetail = _SSOUserDetail;
-                            jsonUserDetail = new JavaScriptSerializer().Serialize(_SSOUserDetail);
-
-                            var status =  AddUpdateSSO(_SSOUserDetail);
-                            SSO.IncreaseSession();
-
-
+                            return RedirectToAction("WelcomeNoc", "Dashboard");
                         }
-                    //}
+                    }
+
+                }
+                //}
                 //}
             }
 
             return View();
         }
 
-        public string AddUpdateSSO(SSOUserDetail userDetail)
+        public UserModelSession AddUpdateSSO(SSOUserDetail userDetail)
         {
             ResponseData objResponse = new ResponseData();
 
@@ -125,12 +178,17 @@ namespace NewZapures_V2.Controllers
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Accept", "application/json");
             IRestResponse response = client.Execute(request);
+            UserModelSession userModel = new UserModelSession();
             if (response.StatusCode.ToString() == "OK")
             {
                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
+                }
             }
 
-            return objResponse.Message;
+            return userModel;
         }
     }
 }

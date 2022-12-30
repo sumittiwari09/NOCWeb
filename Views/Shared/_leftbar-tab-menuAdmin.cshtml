@@ -57,7 +57,7 @@
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Trust Details</a></li>
                 </ul>
-                
+
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Trustee</a></li>
                 </ul>
@@ -67,26 +67,26 @@
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Your Colleges</a></li>
                 </ul>
-                
+
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateDetails","AddCourse")">Add Courses</a></li>
                 </ul>
-                <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateData","SubjectMaster")">Add Subject</a></li>
-                </ul>
-                @*<ul class="nav">
-                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index","Trustee")">Trustee Members</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" CreateDetails","BasicDetails")">Your Colleges</a></li>
-                        <li class="nav-item"><a class="nav-link" href="@Url.Action(" project-index","Dashboard")">Add Courses</a></li>
-                    </ul>*@
+                @* <ul class="nav">
+             <li class="nav-item"><a class="nav-link" href="@Url.Action("CreateData","SubjectMaster")">Add Subject</a></li>
+         </ul>
+        <ul class="nav">
+                 <li class="nav-item"><a class="nav-link" href="@Url.Action(" TrusteeGeneralInfo","Trustee")">Trustee Details</a></li>
+                 <li class="nav-item"><a class="nav-link" href="@Url.Action(" Index","Trustee")">Trustee Members</a></li>
+                 <li class="nav-item"><a class="nav-link" href="@Url.Action(" CreateDetails","BasicDetails")">Your Colleges</a></li>
+                 <li class="nav-item"><a class="nav-link" href="@Url.Action(" project-index","Dashboard")">Add Courses</a></li>
+             </ul>*@
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">NOC Configuration</h6>
+                    <h6 class="menu-title active">NOC Config</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("ArchitectureDetail","Master")">Architecture Configuration</a></li>
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("ArchitectureDetail","Master")">Architecture Configuration</a></li>*@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("DepartmentMapping","Master")">NOC Application Master</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterCategoryMapping","Master")">Application Parameter</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("ParameterValueConfiguration","Master")">Application Value</a></li>
@@ -94,15 +94,16 @@
             </div>
             <div id="MyMenu" class="main-icon-menu-pane active">
                 <div class="title-box">
-                    <h6 class="menu-title active">System Configuration</h6>
+                    <h6 class="menu-title active">System Config</h6>
                 </div>
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageListForApply","Trustee")">Add Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("TrusteeGeneralInfo","Trustee")">Add Sub Menu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Trustee")">Menu Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("AddSystemUser","Role")">Config SSO User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("MenuIndex","Role")">Add Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("SubmenuIndex","Role")">Add Submenu</a></li>
+                    @*<li class="nav-item"><a class="nav-link" href="@Url.Action("RoleMappingIndex","Role")">Menu Mapping</a></li>*@
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("AddDepartment","Admin")">Add Departement</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("AddGroup","Admin")">Add Group</a></li>
-                    <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Role Group Mapping</a></li>
+                    <li class="nav-item"><a class="nav-link" href="@Url.Action("RoleMappingDepartmentandGroupIndex","Role")">Role Group Mapping</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("CollageList","BasicDetails")">Custom Field</a></li>
                     <li class="nav-item"><a class="nav-link" href="@Url.Action("ManageUserRights","Admin")">Manage User Right</a></li>
 

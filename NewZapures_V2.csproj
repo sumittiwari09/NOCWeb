@@ -153,6 +153,7 @@
     <Compile Include="Controllers\UniverSityMSTController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
+    <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
@@ -3527,6 +3528,8 @@
     <Content Include="Views\SupportTicket\index.cshtml" />
     <Content Include="Views\Master\NewArchitectureDetail.cshtml" />
     <Content Include="Views\UniversityMST\Create.cshtml" />
+    <Content Include="Views\UserDetails\Index.cshtml" />
+    <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
