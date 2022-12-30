@@ -857,6 +857,25 @@ namespace NewZapures_V2.Controllers
             }
             return groups;
         }
+        
+        public List<Dropdown> GetDepartmentList(string Type = "Department", int MenuId = 0)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> groups = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                groups = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return groups;
+        }
         public List<PartyMaster> GetPartyMasterList(string Type = "SelectpartyMaster", int MenuId = 0)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
@@ -889,7 +908,32 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        
+        public JsonResult GetTehsil(int distID)
+        {
+            var tehsilList  = ZapurseCommonlist.GetTehsil(distID);
+            return new JsonResult
+            {
+                Data = new { Data = tehsilList, failure = false, msg = "Success", isvalid = 1 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
         #endregion
+
+        public JsonResult FillDepartmentandGroupMaster(string Type)
+        {
+            UserModelSession servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+            string PartyId = servicesCollectiondata.PartyId;
+            List<Dropdown> data = new List<Dropdown>();
+            data = Common.GetDepartmentGroupMaster(Type, PartyId);
+            return new JsonResult
+            {
+                Data = new { Data = data, failure = true, msg = "Failed" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
 
         #region Notification
 
@@ -1233,6 +1277,12 @@ namespace NewZapures_V2.Controllers
             if (userdetailsSession != null)
             {
                 ViewBag.userType = userdetailsSession.Type;
+               var departmentList =  GetDepartmentList();
+               var districtList = ZapurseCommonlist.GetDistrict();
+                ViewBag.document = departmentList;
+                ViewBag.districts = districtList;
+
+
                 return View();
             }
             else

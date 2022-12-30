@@ -52,8 +52,8 @@
             <div class="page-title-box">
                 <div class="float-right">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">Zapures</li>
-                        <li class="breadcrumb-item">Sub Menu Master</li>
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item active">Sub Menu Master</li>
 
                     </ol>
                 </div>
@@ -254,15 +254,10 @@ else
                         text: 'YES',
                         btnClass: 'btn-red',
                         action: function () {
-
-
-
                             var Params = JSON.stringify({
                                 TableId: 'SubMenuMaster',
                                 Id: Id,
                                 type: 2
-
-
                             });
                             /* ShowBALoader("LoaderBASinup1");*/
                             $.ajax({
@@ -272,8 +267,6 @@ else
                                 data: Params,
                                 contentType: "application/json",
                                 success: function (response) {
-
-
                                     debugger;
                                     if (response.IsValid = 1) {
                                         Swal.fire({
@@ -285,11 +278,8 @@ else
                                         })
                                         $("#tr_" + Id).remove();
                                     }
-
                                 },
-
                             });
-
                         }
                     },
                     close: {

@@ -1,0 +1,582 @@
+﻿@using NewZapures_V2.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var user = ViewBag.UserDetails as List<RegistredUser>;
+}
+
+@section styles {
+    <!-- DataTables -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+}
+<div>
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">NOC</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
+                        <li class="breadcrumb-item active">Registered Users</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Registered Users</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+
+    <div id="loadingDiv" style="display: none;position: absolute;width: 100%;height: 100%;background: rgba(0,0,0,0.2);text-align: center;margin-left: -20px;z-index: 9;place-content: center;justify-content: center;align-items: center;">
+        <img src="~/images/MobileOperators/loader.gif" width="45" height="45" />
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" hidden>Type</th>
+                                <th scope="col" hidden>Registration No</th>
+                                <th scope="col" hidden>Party Id</th>
+                                <th scope="col" hidden>UserName</th>
+                                <th scope="col">SSO ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile Number</th>
+                                <th scope="col">Email Address</th>
+                                <th scope="col">District</th>
+                                <th scope="col">Tehsil</th>
+                                <th scope="col" hidden>Payment Status</th>
+                                <th scope="col" hidden>Service List</th>
+                                <th scope="col" hidden>Hardware List</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in user)
+                            {
+
+                                string id = @item.PartyId;
+                                var checkboxId = "customSwitchSuccess" + @id;
+                                <tr>
+                                    <td hidden>@item.userType</td>
+                                    <td hidden>@item.RegistrationNo</td>
+                                    <td hidden>@item.PartyId</td>
+                                    <td hidden>@item.userName</td>
+                                    <td>NA</td>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.MobileNumber</td>
+                                    <td>@item.EmailId</td>
+                                    <td>NA</td>
+                                    <td>NA</td>
+                                    <td hidden>@item.PaymentStatus</td>
+                                    <td hidden>@item.ServiceList</td>
+                                    <td hidden>@item.HardwareList</td>
+                                    <td style="text-align:center">
+                                        <span class="custom-control custom-switch switch-success">
+                                            <input type="checkbox" class="custom-control-input" id=@checkboxId @(item.IsActive == 1 ? "checked" : "") onchange="GetData(this, '@item.PartyId','@item.EmailId','@item.userName')"><label class="custom-control-label" for=@checkboxId></label>
+                                        </span>
+                                    </td>
+                              
+                                    @*<td></td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <button class="next_button color-pay" style="display:none" id="remarks" data-toggle="modal" data-target="#exampleModal"></button>
+                    <button class="next_button color-pay" style="display:none" id="IsAEPSremarks" data-toggle="modal" data-target="#IsAEPSModal"></button>
+                    <button class="next_button color-pay" style="display:none" id="AEPSOnBoardActive" data-toggle="modal" data-target="#AEPSOnBoardModal"></button>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter Remarks</h5>
+                    <button type="button" class="close" id="modalClose" onclick="location.reload();" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-text">
+                        <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Select Reason</label>
+                        <select class="form-control singleselect mb-4" id="ddlBasicReason">
+                            <option value="0" role=separator>Select Any Reason</option>
+                            <option value="NW">Not In Working</option>
+                            <option value="NDU">Document Not Uploded</option>
+                            <option value="PNWR">Portal Not Working At That Region</option>
+                        </select>
+
+                        <div class="input-div">
+                            <textarea class="form-control" id="txtremarks" rows="5" cols="50" style="resize:none" name="Remark" placeholder="Reason" readonly></textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="buttons button_space mt-3">
+                        <button type="button" id="saveRemarks" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateDetails()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="IsAEPSModal" tabindex="-1" role="dialog" aria-labelledby="IsAEPSModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="input-text">
+                        <h4 class="text-center"><span> Are You Sure you want to Deactivate AEPS Service</span></h4>
+                    </div>
+                    <div class="buttons button_space mt-3 text-center">
+                        <button type="button" id="saveAEPSRemarks" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateAEPSDetails()">Yes</button>
+                        <button type="button" class="btn btn-gradient-danger waves-effect waves-light float-center" id="modalClose" onclick="location.reload();" data-dismiss="modal" aria-label="Close">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AEPSOnBoardModal" tabindex="-1" role="dialog" aria-labelledby="AEPSOnBoardModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">AEPS OnBoard Detail</h5>
+                    <button type="button" class="close" id="modalClose1" onclick="location.reload();" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @Html.Hidden("PartyId", null, new { @id = "PartyId", @class = "form-control", @readonly = "readonly" })
+                        <div class="input-text col-lg-6">
+                            <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Client Name</label>
+                            @Html.TextBox("merchantName", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="input-text col-lg-6">
+                            <label>Mobile NO</label>
+                            @Html.TextBox("merchantPhoneNumber", null, new { @class = "form-control", @readonly = "readonly" })
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-text col-lg-6">
+                            <label>Pan Number</label>
+                            @Html.TextBox("userPan", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="input-text col-lg-6">
+                            <label>Aadhaar Number</label>
+                            @Html.TextBox("merchantAadhaar", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="input-text col-lg-6">
+                            <label>State</label>
+                            @Html.TextBox("merchantState", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="input-text col-lg-6">
+                            <label>District</label>
+                            @Html.TextBox("merchantDistrict", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-text col-lg-6">
+                            <label>City</label>
+                            @Html.TextBox("merchantCity", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="input-text col-lg-6">
+                            <label>PinCode</label>
+                            @Html.TextBox("merchantPinCode", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-text col-lg-12">
+                            <label>Address</label>
+                            @Html.TextBox("merchantAddress", null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons button_space mt-3 text-right" style="margin: 10px;">
+                    <button type="button" id="saveAEPSOnBoard" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateAEPOnBoardSDetailss()">Submit</button>
+                    <span class="btn btn-gradient-danger btn-sm" id="btnRefresh" style="float:right">
+                        <span class="far fa-refresh-alt mr-1">Close</span>
+                    </span>
+                    @*<button type="button" class="btn btn-gradient-danger waves-effect waves-light float-center" id="btnRefresh" data-dismiss="modal" aria-label="Close">
+                            No
+                        </button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <!-- Required datatable js -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables/jszip.min.js"></script>
+    <script src="~/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js"></script>
+    <script src="~/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    @*<script src="~/scripts/pages/jquery.sweet-alert.init.js"></script>*@
+}
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $('#btnRefresh').click(function (event) {
+        console.log("clickbutton");
+        location.reload();
+    });
+</script>
+<script>
+    var status;
+    var partyId;
+    var email;
+    var user;
+
+
+    $(".singleselect").select2();
+
+    $('#ddlBasicReason').change(function () {
+        $('#txtremarks').html('')
+        if ($(this).val() != 0) {
+            var seletedvalue = $("#ddlBasicReason option:selected").text();
+
+            $('#txtremarks').html(seletedvalue);
+        }
+        else {
+        }
+    });
+
+
+    function GetData(sender, item, emailId, username) {
+        $('#loadingDiv').css('display', 'flex');
+        if ($(sender).is(':checked')) {
+            console.log('checked');
+            status = 1;
+
+            partyId = item;
+            email = emailId;
+            user = username;
+            console.log(partyId)
+            updateUser(status, partyId, email, user);
+        }
+        else {
+            console.log('unchecked');
+            $('#remarks').click();
+            status = 0;
+            partyId = item;
+            email = emailId;
+            user = username;
+            console.log(partyId)
+        }
+        //console.log(sender);
+        //alert(item);
+    };
+
+    function UpdateDetails() {
+        var d = $('#txtremarks').val();
+
+        if (d.length <= 0) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Any Reason',
+                allowOutsideClick: false,
+                showCloseButton: true,
+            })
+
+        }
+        else {
+            updateUser(status, partyId, email, user);
+        }
+    }
+
+    function updateUser(status, partyId, email, username) {
+
+        var UpdateUserDetailsModel = {
+            Status: status,
+            PartyId: partyId,
+            email: email,
+            username: username
+        }
+        console.log(JSON.stringify(UpdateUserDetailsModel));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/UpdateUser",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(UpdateUserDetailsModel),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
+                    //sweetAlert(dic, 'center', 'warning', 0);
+                    $('#modalClose').click();
+
+                    location.reload();
+                    //var url = globaUserProperties.domain + "/UserDetails/Index";//globaUserProperties.domain +
+
+                    //window.location.href = url;
+
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    //AEPS Activation
+    function GetDataAEPS(sender, item) {
+        $('#loadingDiv').css('display', 'flex');
+        if ($(sender).is(':checked')) {
+            console.log('checked');
+            status = 1;
+
+            partyId = item;
+            console.log(partyId)
+            updateAEPSUser(status, partyId);
+        }
+        else {
+            console.log('unchecked');
+            $('#IsAEPSremarks').click();
+            status = 0;
+            partyId = item;
+            email = emailId;
+            user = username;
+            console.log(partyId)
+        }
+        //console.log(sender);
+        //alert(item);
+    };
+    function updateAEPSUser(status, partyId) {
+
+        var UpdateAEPSUserDetailsModel = {
+            Status: status,
+            PartyId: partyId
+        }
+        console.log(JSON.stringify(UpdateAEPSUserDetailsModel));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/AEPSActiveDeactive",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(UpdateAEPSUserDetailsModel),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
+                    //sweetAlert(dic, 'center', 'warning', 0);
+                    $('#modalClose').click();
+
+                    location.reload();
+                    //var url = globaUserProperties.domain + "/UserDetails/Index";//globaUserProperties.domain +
+
+                    //window.location.href = url;
+
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function UpdateAEPSDetails() {
+        //var d = $('#txtremarks').val();
+
+        //if (d.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Please Select Any Reason',
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //    })
+
+        //}
+        //else {
+        updateAEPSUser(status, partyId);
+        //}
+    }
+    //AEPS Activation
+
+    // AEPS Onboard
+    function GetDataOnBoardAEPS(partyId) {
+
+        var Modal = {
+            PartyId: partyId
+        }
+        console.log(JSON.stringify(Modal));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/GetAEPSOnBoardClientDetail",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Modal),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+                debugger;
+                if (data.ResponseCode == "1") {
+                    //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
+                    //sweetAlert(dic, 'center', 'warning', 0);
+                    //partyId = partyId;
+                    //console.log(data.Data);
+                    $('#merchantName').val(data.merchantName);
+                    $('#merchantPhoneNumber').val(data.merchantPhoneNumber);
+                    $('#userPan').val(data.userPan);
+
+                    $('#merchantAadhaar').val(data.merchantaadhaar);
+                    $('#merchantAddress').val(data.merchantAddress);
+                    $('#merchantPinCode').val(data.merchantPinCode);
+
+                    $('#merchantState').val(data.merchantState);
+                    $('#merchantDistrict').val(data.merchantDistrict);
+                    $('#merchantCity').val(data.merchantCity);
+                    $('#PartyId').val(data.PartyId);
+                    $('#AEPSOnBoardActive').click();
+                    //location.reload();
+                    //var url = globaUserProperties.domain + "/UserDetails/Index";//globaUserProperties.domain +
+
+                    //window.location.href = url;
+
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+    function UpdateAEPOnBoardSDetailss() {
+        if ($('#merchantName').val() == "") {
+            ValidationError('User Profile not Complete');
+            return false;
+        }
+        if ($('#merchantPhoneNumber').val() == "") {
+            ValidationError('User Profile not Complete');
+            return false;
+        }
+        if ($('#userPan').val() == "") {
+            ValidationError('User Profile not Complete');
+            return false;
+        }
+        if ($('#merchantAadhaar').val() == "") {
+            ValidationError('User Profile not Complete');
+            return false;
+        }
+        if ($('#merchantAddress').val() == "") {
+            ValidationError('User Profile not Complete');
+        }
+        if ($('#merchantPinCode').val() == "") {
+            ValidationError('User Profile not Complete');
+        }
+        if ($('#merchantState').val() == "") {
+            ValidationError('User Profile not Complete');
+        }
+        if ($('#merchantDistrict').val() == "") {
+            ValidationError('User Profile not Complete');
+        }
+        if ($('#merchantCity').val() == "") {
+            ValidationError('User Profile not Complete');
+        }
+
+        //partyId = "D000001";
+        UpdateAEPOnBoardSDetails($('#PartyId').val());
+    }
+    function UpdateAEPOnBoardSDetails(partyId) {
+        var Modal = {
+            PartyId: partyId
+        }
+        console.log(JSON.stringify(Modal));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/AEPSMerchantOnboard",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Modal),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+                if (data.IsSuccess == true) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Data.APIResponseMessage,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                    });
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: data.Data.APIResponseMessage,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                    });
+                }
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+    //AESP Onboard
+    function ValidationError(message) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: message,
+            allowOutsideClick: false,
+            showCloseButton: true,
+        });
+    }
+</script>
+

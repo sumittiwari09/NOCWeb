@@ -788,7 +788,44 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
+        public static List<Dropdown> GetDistrict(string Type = "District", int MenuId = 0)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
         
+        public static List<Dropdown> GetTehsil(int MenuId,string Type = "Tehsil")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+
         public static List<Dropdown> GetProjectSource(string Type = "ProjectSource", int MenuId = 0)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
@@ -904,7 +941,6 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
-
         public enum ModalSize
         {
             Small,
