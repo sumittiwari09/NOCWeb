@@ -142,6 +142,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AcdmcMstController.cs" />
     <Compile Include="Controllers\AddCourseController.cs" />
+    <Compile Include="Controllers\AdminAjaxRequestPageController.cs" />
     <Compile Include="Controllers\FeeDetailsController.cs" />
     <Compile Include="Controllers\DeptCourseMapController.cs" />
     <Compile Include="Controllers\LandBuildingInfoController.cs" />

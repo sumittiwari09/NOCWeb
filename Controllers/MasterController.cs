@@ -509,11 +509,11 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
-        public ActionResult NewArchitectureDetail()
+        public ActionResult NewArchitectureDetail(string guid= "abhc123")
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
             lst = ParameterValueConfigurationlist();
-            ViewBag.Applicableid = "abhc123";
+            ViewBag.Applicableid = guid;
             return View(lst);
         }
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
@@ -734,11 +734,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        public ActionResult NewArchitectureDetail(string guid)
-        {
-            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-            lst = ParameterValueConfigurationlist();
-            return View(lst);
-        }
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
     }
 }
