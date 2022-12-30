@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var loggedInUserType = (string)ViewBag.userType;
+
+    var dept = (List<Dropdown>)ViewBag.document;
+    var districtList = (List<Dropdown>)ViewBag.districts;
 }
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 
@@ -18,7 +21,7 @@ else
             <div class="page-title-box">
                 <div class="float-right">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">Zapures</li>
+                        <li class="breadcrumb-item">NOC</li>
                         <li class="breadcrumb-item active">@ViewBag.Title</li>
                     </ol>
                 </div>
@@ -35,46 +38,90 @@ else
                     {
                         <div class="row">
                             <div class="col-lg-12 row" style="margin-left: -12px;">
-                                <div class="form-group col-lg-3">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Full Name</label>
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter SSO ID</label>
                                     <div>
                                         <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtFullName" name="FirstName">
                                     </div>
                                 </div>
 
-                                <div class="form-group col-lg-3">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Mobile Number</label>
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select District</label>
                                     <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" id="txtMobileNumber">
+                                        <select id="ddldistrict" class="form-control" name="DistrictId">
+                                            <option value="0">Select District</option>
+                                            @{
+                                                if (districtList != null)
+                                                {
+                                                    foreach (var item in districtList)
+                                                    {
+                                                        <option value=@item.Id>@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
                                     </div>
                                 </div>
-
-                                <div class="form-group col-lg-3">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Email</label>
+                                
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Tehsil</label>
                                     <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtEmail" name="EmailId" oninput="FillUserName(this.id)">
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-lg-3">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Department</label>
-                                    <div>
-                                        <select id="ddlrole" class="form-control" name="Type" disabled>
-                                            <option value=5>User</option>
+                                        <select id="ddltehsil" class="form-control" name="CityId">
                                         </select>
                                     </div>
                                 </div>
 
-
-
+                               
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12 row" style="margin-left: -12px;">
 
-                                <div class="form-group col-lg-3">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" id="txtMobileNumber">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
+                                    <div>
+                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtEmail" name="EmailId" oninput="FillUserName(this.id)">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Department</label>
+                                    <div>
+                                        <select id="ddlrole" class="form-control" name="Type">
+                                            @{
+                                                if (dept != null)
+                                                {
+                                                    foreach (var item in dept)
+                                                    {
+                                                        <option value=@item.Id>@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+
+                               
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12 row" style="margin-left: -12px;">
+                                <div class="form-group col-lg-4">
                                     <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Role Group</label>
                                     <div>
                                         <select id="RoleId" class="form-control" name="RoleId">
@@ -82,36 +129,37 @@ else
                                     </div>
                                 </div>
 
-                                <div class="form-group col-lg-3">
+                                @*<div class="form-group col-lg-4">
                                     <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Username</label>
                                     <div>
                                         <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtUsername" name="EmailId" readonly>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-lg-3">
+                                <div class="form-group col-lg-4">
                                     <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Password</label>
                                     <div>
                                         <input class="form-control col-sm-12" type="password" autocomplete="off" id="txtPassword" name="Password">
-                                        <span id="withoutslash-login" style="display: none; top: -26px; position: relative; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 21rem; ">
+                                        <span id="withoutslash-login" style="display: none; top: -26px; position: relative; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 29rem; ">
                                             <i class="fa fa-eye EyeIcon" id="logineye" style="color:black!important" onclick="revealPassword(this,'txtPassword')"></i>
                                         </span>
 
-                                        <span id="withslash-login" style="top: -26px; position: relative; display: flex; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 21rem;">
+                                        <span id="withslash-login" style="top: -26px; position: relative; display: flex; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 29rem;">
                                             <i class="fa fa-eye-slash EyeIcon" id="logineye" onclick="revealPassword(this,'txtPassword')"></i>
                                         </span>
                                     </div>
-                                </div>
+                                </div>*@
 
-                                <div class="form-group col-lg-offset-6 col-lg-3">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">&nbsp;</label>
+                                <div class="form-group col-lg-offset-6 col-lg-2">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
                                     <div>
                                         <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnSave" onclick="CheckValidation()">Activate User Button</button>
                                         <button type="submit" id="btnsubmitDetails" style="display:none"></button>
                                     </div>
                                 </div>
-
                             </div>
+
+
                         </div>
                     }
                 </div>
@@ -129,7 +177,17 @@ else
     $(document).ready(function () {
         $("#ddlrole").select2();
         $("#RoleId").select2();
+        $("#ddldistrict").select2();
         BindRole();
+
+
+        $("#ddldistrict").change(function () {
+            var distID = $(this).val();
+            BindTehsil(distID);
+
+        });
+
+
 
         $('#txtMobileNumber').blur(function () {
             if ($("#txtMobileNumber").val().length > 0) {
@@ -230,10 +288,10 @@ else
 
     function FillUserName(item) {
 
-        var d = $('#' + item).val();
-        console.log(d);
+        //var d = $('#' + item).val();
+        //console.log(d);
 
-        $('#txtUsername').val(d);
+        //$('#txtUsername').val(d);
 
     }
 
@@ -260,7 +318,7 @@ else
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Full Name Required...!',
+                title: 'SSO ID Required...!',
                 allowOutsideClick: false,
                 showCloseButton: false,
                 showConfirmButton: false,
@@ -333,21 +391,21 @@ else
             $('#btnSave').css('cursor', 'pointer');
             status = false;
         }
-        else if (Password.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Password Required...!',
-                allowOutsideClick: false,
-                showCloseButton: false,
-                showConfirmButton: false,
-                timer: 2000,
-            })
-            $('#txtPassword').focus();
-            $('#btnSave').html('Activate User Button');
-            $('#btnSave').css('cursor', 'pointer');
-            status = false;
-        }
+        //else if (Password.length <= 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Password Required...!',
+        //        allowOutsideClick: false,
+        //        showCloseButton: false,
+        //        showConfirmButton: false,
+        //        timer: 2000,
+        //    })
+        //    $('#txtPassword').focus();
+        //    $('#btnSave').html('Activate User Button');
+        //    $('#btnSave').css('cursor', 'pointer');
+        //    status = false;
+        //}
 
         if (status) {
             $('#btnsubmitDetails').click();
@@ -372,7 +430,7 @@ else
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: GetglobalDomain()+ "/LoginSignup/ValidateUser", 
+                url: GetglobalDomain()+ "/LoginSignup/ValidateUser",
                 dataType: 'json',
                 type: 'Post',
                 cache: false,
@@ -481,7 +539,7 @@ else
                 Type: "Role"
             });
         $.ajax({
-            url: GetglobalDomain()+ "/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+            url: GetglobalDomain()+ "/Role/FillDepartmentandGroupMaster",
             type: 'POST',
             dataType: "json",
             contentType: "application/json",
@@ -502,6 +560,41 @@ else
                 $("#RoleId").select2("destroy");
                 $("#RoleId").html(strHTML);
                 $("#RoleId").select2();
+                //$("#RoleId").select2("destroy");
+                //$("#RoleId").html('Select Role');
+                //$("#RoleId").select2();
+
+
+            }
+        });
+
+
+
+    }
+    function BindTehsil(DistID) {
+        debugger;
+        var strHTML = "";
+
+
+        var Params = JSON.stringify(
+            {
+                distID: parseInt(DistID)
+            });
+        $.ajax({
+            url: GetglobalDomain() + "/Role/GetTehsil",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+                strHTML = "<option value='0'>Select Tehsil</option>";
+                for (var i = 0; i < response.Data.length; i++) {
+                   
+                    strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                }
+                //$("#ddltehsil").select2("destroy");
+                $("#ddltehsil").html(strHTML);
+                $("#ddltehsil").select2();
                 //$("#RoleId").select2("destroy");
                 //$("#RoleId").html('Select Role');
                 //$("#RoleId").select2();

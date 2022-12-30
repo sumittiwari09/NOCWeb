@@ -15,6 +15,8 @@ namespace NewZapures_V2.Models
         public string nocTypeName { get; set; }
         public string Feetype { get; set; }
         public int DeptID { get; set; }
+        public int NOCApplID { get; set; }
+        public string    NocApplication { get; set; }
         public int NOCTypID { get; set; }
         public int FeeTypID { get; set; }
         public decimal dBoys { get; set; }

@@ -2,23 +2,24 @@
 @{
     ViewBag.Title = "collage Facility";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<NewZapures_V2.Models.TrusteeBO.Trustee> FacilityList = ViewBag.FacilityList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+    //List<NewZapures_V2.Models.TrusteeBO.Trustee> FacilityList = ViewBag.FacilityList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+
     TrusteeBO.CollageFacility CollageFacilityMster = ViewBag.CollageFacilityMster as TrusteeBO.CollageFacility;
     //if (ViewBag.CollageFacilityMster != null)
     //{
     //    CollageFacilityMster = (List<CustomMaster>)ViewBag.CollageFacilityMster;
     //}
 
-    List<CustomMaster> TrustList = new List<CustomMaster>();
-    if (ViewBag.TrustList != null)
-    {
-        TrustList = (List<CustomMaster>)ViewBag.TrustList;
-    }
-    List<CustomMaster> RoleType = new List<CustomMaster>();
-    if (ViewBag.RoleType != null)
-    {
-        RoleType = (List<CustomMaster>)ViewBag.RoleType;
-    }
+    //List<CustomMaster> TrustList = new List<CustomMaster>();
+    //if (ViewBag.TrustList != null)
+    //{
+    //    TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    //}
+    //List<CustomMaster> RoleType = new List<CustomMaster>();
+    //if (ViewBag.RoleType != null)
+    //{
+    //    RoleType = (List<CustomMaster>)ViewBag.RoleType;
+    //}
 }
 @section styles {
 
@@ -89,13 +90,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            @*<div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">Collage Facility</li>
                 </ol>
-            </div>
+            </div>*@
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -104,139 +105,143 @@
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Trustee Details</h4>
+        @*<div class="form-group" style="text-align:right">
+            <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+        </div>*@
     </div>
 
     <div class="card-body row">
         <div class="col-8">
 
-            @using (Html.BeginForm("CollageFacilitys", "Trustee", FormMethod.Post, new { id = "CollageFacilityform", enctype = "multipart/form-data" }))
-            {
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
-                        <div>
-                            <select class="form-control" name="TrustId" id="TrustId">
-                                <option value="0">Select Trust</option>
-                                @{
-                                    foreach (var item in TrustList)
+            @*@using (Html.BeginForm("CollageFacilitys", "Trustee", FormMethod.Post, new { id = "CollageFacilityform", enctype = "multipart/form-data" }))
+        {
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
+                    <div>
+                        <select class="form-control" name="TrustId" id="TrustId">
+                            <option value="0">Select Trust</option>
+                            @{
+                                foreach (var item in TrustList)
+                                {
+                                    if(ViewData["TrustId"].ToString() == item.Id.ToString())
                                     {
-                                        if(ViewData["TrustId"].ToString() == item.Id.ToString())
-                                        {
-                                           <option value="@item.Id" selected>@item.text</option>
-                                        }
-                                        else
-                                        {
-                                          <option value="@item.Id">@item.text</option>
-                                        }                                        
+                                       <option value="@item.Id" selected>@item.text</option>
+                                    }
+                                    else
+                                    {
+                                      <option value="@item.Id">@item.text</option>
                                     }
                                 }
-                            </select>
-                        </div>
+                            }
+                        </select>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
-                        <div>
-                            <select class="form-control" id="CollageId" name="CollageId">
-                                <option value="">Select Collage</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-lg-4">
-                    <button class="btn btn-primary" id="btnsearch" style="margin-top:28PX">Submit</button>
                 </div>
             </div>
-                    }
-                
+            <div class="col-lg-4">
+                <div class="">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
+                    <div>
+                        <select class="form-control" id="CollageId" name="CollageId">
+                            <option value="">Select Collage</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-4">
+                <button class="btn btn-primary" id="btnsearch" style="margin-top:28PX">Submit</button>
+            </div>
+        </div>
+                }*@
 
-
-                <div class="row col-lg-12">
-                    <div class="form-group col-lg-12">
-                        <table class="table table-borderless table-striped table-hover" id="tblFacility">
-                            <thead class="dark">
-                                <tr>
-                                    @*<th>SNo</th>*@
-                                    <th>
-                                        <label class="containercheckbox">
-                                            &nbsp;
-                                            <input type="checkbox" id="chkAll">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </th>
-                                    <th>Facility Name</th>
-                                    <th>Action</th>
-                                    @*<th style="text-align:center">Profile</th>*@
-                                    @*<th>Action</th>*@
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (CollageFacilityMster != null)
-                                {
-                                    int i = 1;
-                                    foreach (var item in CollageFacilityMster.list)
-                                    {
-                                <tr>
-                                    @*<td>@i</td>*@
-                                    <td style="display:none">
-                                        @item.FacilityId
-                                    </td>
-                                    <td>
-                                        @if (item.IsSelect == true)
-                                        {
-                                            <label class="containercheckbox">
-                                                &nbsp;
-                                                <input type="checkbox" id="select_@item.FacilityId" name="IsSelect" class="chk" checked>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        }
-                                        else
-                                        {
-                                            <label class="containercheckbox">
-                                                &nbsp;
-                                                <input type="checkbox" id="select_@item.FacilityId" name="IsSelect" class="chk">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        }
-                                    </td>
-                                    <td>
-                                        @item.FacilityName
-                                    </td>
-                                    <td>
-                                        <input type="hidden" id="Upbase64_@item.FacilityId" />
-                                        <input type="file" id="up_@item.FacilityId" style="border: 0px solid #e8ebf3" name="uploadFile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                        <span id="uploadFile"></span>
-                                    </td>
-                                    <td>
-                                        @if (item.uploadFile != "")
-                                        {
-                                        <img src="data:@item.ContentType;base64,@item.uploadFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
-                                    }
-                                        </td>
-                                    </tr>
-                                        i++;
-                                    }
-                                }
-                                else
+            @*<input type="hidden" id="Guid" value="@ViewBag.Guid" />*@
+            <div class="row col-lg-12">
+                <div class="form-group col-lg-12">
+                    <table class="table table-borderless table-striped table-hover" id="tblFacility">
+                        <thead class="dark">
+                            <tr>
+                                @*<th>SNo</th>*@
+                                <th>
+                                    <label class="containercheckbox">
+                                        &nbsp;
+                                        <input type="checkbox" id="chkAll">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>Facility Name</th>
+                                <th colspan="2">Action</th>
+                                @*<th style="text-align:center">Profile</th>*@
+                                @*<th>Action</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (CollageFacilityMster != null)
+                            {
+                                int i = 1;
+                                foreach (var item in CollageFacilityMster.list)
                                 {
                                     <tr>
-                                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                                        @*<td>@i</td>*@
+                                        <td style="display:none">
+                                            @item.FacilityId
+                                        </td>
+                                        <td>
+                                            @if (item.IsSelect == true)
+                                            {
+                                                <label class="containercheckbox">
+                                                    &nbsp;
+                                                    <input type="checkbox" id="select_@item.FacilityId" name="IsSelect" class="chk" checked>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label class="containercheckbox">
+                                                    &nbsp;
+                                                    <input type="checkbox" id="select_@item.FacilityId" name="IsSelect" class="chk">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.FacilityName
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id="Upbase64_@item.FacilityId" />
+                                            <input type="file" id="up_@item.FacilityId" style="border: 0px solid #e8ebf3" name="uploadFile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                            <span id="uploadFile"></span>
+                                        </td>
+                                        <td>
+                                            @if (item.uploadFile != "")
+                                            {
+                                                <img src="data:@item.ContentType;base64,@item.uploadFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                            }
+                                        </td>
                                     </tr>
+                                    i++;
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row col-lg-12" style="margin-top:20px">
-                    <div class="col-lg-12 loat-right">
-                        <button class="btn" id="btnupload" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ ">Upload</button>
-                        <button class="btn btn-primary" id="btnSave" style="display:none;float:right">Save</button>
-                    </div>
-
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+                    <button class="btn btn-primary" id="btnupload" style="float:right">Upload</button>
+                    <button class="btn btn-primary" id="btnSave" style="display:none;float:right">Save</button>
+                    <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary col-sm-1" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
+
+                </div>
+
+            </div>
+        </div>
     </div>
     @*}*@
 
@@ -266,17 +271,17 @@
 
         $(document).ready(function () {
 
-            if (@ViewData["CollageId"].ToString() != 0) {
+            @*if (@ViewData["CollageId"].ToString() != 0) {
                 AddCollegeData(@ViewData["TrustId"].ToString());
             }
 
             $('#TrustId').change(function () {
-                alert("in");
+                //alert("in");
                 var selectedVal = $(this).val();
                 if (selectedVal > 0) {
                     AddCollegeData(selectedVal);
                 }
-            })
+            })*@
 
             $('#btnupload').click(function () {
                 var row_data = $('#tblFacility tbody tr').length;
@@ -293,14 +298,31 @@
                         reader.readAsDataURL(Idupload[0]);
                     }
                 });
+                var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: function (toast) {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                })
+                    Toast.fire({
+                        icon: 'success' ,
+                        title: 'Uploded Successfully!!'
+                    })
                 $('#btnupload').attr("style", "display:none");
                 $('#btnSave').attr("style", "display:block");
+                $('#btnSave').attr("style", "float:right");
             });
             $("#btnSave").click(function () {
                 var tableData = new Array();
                 debugger;
-                var trustId = $('#TrustId').val();
-                var CollageId = $('#CollageId').val();
+                //var trustId = $('#TrustId').val();
+                //var CollageId = $('#CollageId').val();
+                //var Guid = $('#Guid').val();
                 $("#tblFacility tbody TR").each(function () {
                     var row_data = $(this);
                     var Idget = row_data.find("td").eq(0).html().trim();
@@ -314,8 +336,7 @@
                 });
 
                 var modal = {
-                    TrustId: trustId,
-                    CollageId: CollageId,
+                    //Guid: Guid,
                     list: tableData
                 }
 
@@ -350,7 +371,7 @@
             });
         });
 
-        function AddCollegeData(Type) {
+        @*function AddCollegeData(Type) {
             debugger
             var strHtml = "";
             strHtml += "<option value=''>Select College</option>";
@@ -380,6 +401,6 @@
                     $("#CollageId").html(strHtml);
                 }
             });
-        }
+        }*@
     </script>
 }

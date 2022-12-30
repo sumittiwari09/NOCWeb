@@ -86,29 +86,56 @@
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">Application List</h4>
+    </div>
+    <div class="card-body row">
+        <div class="form-group col-lg-12">
+            <table class="table table-borderless table-striped table-hover">
+                <thead class="dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Creation Date</th>
+                        <th hidden>GUID</th>
+                        <th>Application Number</th>
+                        <th>Trust Name</th>
+                        <th>College</th>
+                        <th>Department</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (draft != null && draft.Count > 0)
+                        {
+                            var i = 1;
+                            foreach (var item in draft)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.createdDate</td>
+                                    <td hidden>@item.ApplGuid</td>
+                                    <td>@item.ApplicationNumber</td>
+                                    <td>@item.TrustName</td>
+                                    <td>@item.CollegeName</td>
+                                    <td>@item.DepartmentName</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.Applicationstatus</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-primary" href="@Url.Action("EditApplication", "Trustee")"><i class="fas fa-pencil"></i></a>
+                                        &nbsp;&nbsp;
+                                        <button onclick="Verify('@item.ApplGuid', '@item.ApplicationNumber')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                i++;
 
-<div class="card-body row">
-    <div class="form-group col-lg-12">
-        <table class="table table-borderless table-striped table-hover">
-            <thead class="dark">
-                <tr>
-                    <th>#</th>
-                    <th>Creation Date</th>
-                    <th>Application Number</th>
-                    <th>Trust Name</th>
-                    <th>College</th>
-                    <th>Department</th>
-                    <th>Course</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    if (draft != null && draft.Count > 0)
-                    {
-                        var i = 1;
-                        foreach (var item in draft)
+                            }
+                        }
+
+                        else
                         {
                             <tr>
                                 <th>@i</th>
@@ -119,52 +146,104 @@
                                 <th>@item.DepartmentName</th>
                                 <th>@item.CourseName</th>
                                 <th>@item.Applicationstatus</th>
-                                <th><a href="@Url.Action("EditApplication", "Trustee", new {clgID=item.clgID,applicationNo=item.ApplicationNumber,trustName=item.TrustName,trustID=item.iFKTst_ID,clgName=item.CollegeName,dptname=item.DepartmentName,cours=item.CourseName,deptID=item.iFKDEPT_ID,courseID=item.iFK_CORS_ID})"><i class="fas fa-pencil"></i></a></th>
+                                <th><a href="@Url.Action("EditApplication", "Trustee", new {clgID=item.clgID,applicationNo=item.ApplicationNumber,trustName=item.TrustName,trustID=item.iFKTst_ID,clgName=item.CollegeName,dptname=item.DepartmentName,cours=item.CourseName,deptID=item.iFKDEPT_ID,courseID=item.iFK_CORS_ID,Guid=item.sGuid})"><i class="fas fa-pencil"></i></a>
+                                    &nbsp;&nbsp;
+                                <a href="#"><i class="fas fa-trash" style="color:red"></i></a></th>
                             </tr>
-                            i++;
 
                         }
                     }
 
-                    else
-                    {
-                        <tr>
-                            <td colspan="9" style="text-align: center;">No Data Available</td>
-                        </tr>
 
-                    }
-                }
-
-
-                @*<tr>
-                        <th>1</th>
-                        <th>19.12.2022</th>
-                        <th>Trust 1</th>
-                        <th>College 1</th>
-                        <th>Department 1</th>
-                        <th>Course 1</th>
-                        <th>In-process</th>
-                        <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
-                    </tr>*@
+                    @*<tr>
+                            <th>1</th>
+                            <th>19.12.2022</th>
+                            <th>Trust 1</th>
+                            <th>College 1</th>
+                            <th>Department 1</th>
+                            <th>Course 1</th>
+                            <th>In-process</th>
+                            <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
+                        </tr>*@
 
 
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="row col-lg-12" style="margin-top:20px">
-        <div class="col-lg-12 loat-right">
+        <div class="row col-lg-12" style="margin-top:20px">
+            <div class="col-lg-12 loat-right">
 
-            @* <button class="btn" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-save"></i> Save</button>*@
+                @* <button class="btn" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-save"></i> Save</button>*@
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
-
-
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
 }
+<script>
+
+    function Verify(applGUID, applNumber) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are You Sure?',
+            html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+            showDenyButton: true,
+            showCancelButton: false,
+            denyButtonText: 'No',
+            confirmButtonText: 'Yes, I am',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                CancelApplication(applGUID);
+            } else if (result.isDenied) {
+
+            }
+        });
+    }
+
+    function CancelApplication(ApplGUID) {
+        var Data = {
+            applGUID: ApplGUID
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/CancelDraftApplication",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+                if (data.StatusCode == 1) {
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `Success`,
+                    html: `<p>${data.msg}</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    }
+
+</script>

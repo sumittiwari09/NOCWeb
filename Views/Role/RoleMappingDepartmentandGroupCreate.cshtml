@@ -34,7 +34,7 @@
         <div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">@ViewBag.Create</li>
                 </ol>
@@ -199,7 +199,7 @@
                     Type: "Department"
                 });
             $.ajax({
-                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() + "/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
@@ -247,7 +247,7 @@
                     Type: "Group"
                 });
             $.ajax({
-                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() + "/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
@@ -289,7 +289,7 @@
                     Type: "Role"
                 });
             $.ajax({
-                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() +"/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",

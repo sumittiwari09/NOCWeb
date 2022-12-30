@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -67,6 +67,9 @@
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RAJSSO">
+      <HintPath>..\..\Users\Lenovo\OneDrive\Desktop\RAJSSO.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
@@ -146,60 +149,39 @@
     <Compile Include="Controllers\SSODeptMappingController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\SubjectMasterController.cs" />
+    <Compile Include="Controllers\SupportTicketController.cs" />
+    <Compile Include="Controllers\UniverSityMSTController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
+    <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
-    <Compile Include="Models\AEPS\AEPSCommon.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AdminAjaxRequestPageController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\AEPSController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
-    <Compile Include="Controllers\AppsController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
-    <Compile Include="Controllers\BankMasterController.cs" />
     <Compile Include="Controllers\BasicDetailsController.cs" />
-    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ChartController.cs" />
-    <Compile Include="Controllers\ClientController.cs" />
-    <Compile Include="Controllers\CommissionController.cs" />
     <Compile Include="Controllers\ContentPageController.cs" />
-    <Compile Include="Controllers\CRMController.cs" />
-    <Compile Include="Controllers\CryptoController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DashboardReportController.cs" />
-    <Compile Include="Controllers\EcommerceController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
-    <Compile Include="Controllers\GeographicalController.cs" />
     <Compile Include="Controllers\HelpdeskController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HospitalController.cs" />
-    <Compile Include="Controllers\IconController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageMenuOrderController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
-    <Compile Include="Controllers\MapsController.cs" />
-    <Compile Include="Controllers\MobileRechargeController.cs" />
-    <Compile Include="Controllers\MyPaymentsController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
-    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="Controllers\SupportController.cs" />
-    <Compile Include="Controllers\SwitchPartyController.cs" />
     <Compile Include="Controllers\TableController.cs" />
-    <Compile Include="Controllers\TargetController.cs" />
-    <Compile Include="Controllers\TestingController.cs" />
     <Compile Include="Controllers\UIController.cs" />
     <Compile Include="Controllers\User\LoginSignupController.cs" />
-    <Compile Include="Controllers\User\UserDetailsController.cs" />
-    <Compile Include="Controllers\DocumentLibraryController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,9 +189,7 @@
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="Helper\NoDirectAccessAttribute.cs" />
     <Compile Include="Helper\GenerateOTP.cs" />
-    <Compile Include="Helper\Recharge_Helper.cs" />
     <Compile Include="Models\AddGroupDepartment.cs" />
-    <Compile Include="Models\AEPSTransaction.cs" />
     <Compile Include="Models\BankMaster.cs" />
     <Compile Include="Models\BasicDetailsBO.cs" />
     <Compile Include="Models\CategoryMaster.cs" />
@@ -222,14 +202,20 @@
     <Compile Include="Models\CustomMaster.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DeptCourseMapMaster.cs" />
-    <Compile Include="Models\DMT_ModelCollection.cs" />
+    <Compile Include="Models\GSTApplicable.cs" />
+    <Compile Include="Models\HandshakeModel.cs" />
     <Compile Include="Models\LandDetailsBO.cs" />
     <Compile Include="Models\FeeMaster.cs" />
+    <Compile Include="Models\SessionModel.cs" />
+    <Compile Include="Models\SSOUserDetail.cs" />
     <Compile Include="Models\ProofOfDocument.cs" />
     <Compile Include="Models\Slot.cs" />
     <Compile Include="Models\SlotDropdownBO.cs" />
     <Compile Include="Models\SlotMaster.cs" />
     <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\TrustAPIBO.cs" />
+    <Compile Include="Models\SupportTicket.cs" />
+    <Compile Include="Models\UniversityMaster.cs" />
     <Compile Include="Models\TrusteeBO.cs" />
     <Compile Include="Models\VertinaryModalSave.cs" />
     <Compile Include="Models\FinanceModalSave.cs" />
@@ -240,8 +226,6 @@
     <Compile Include="Models\Others\GetCommonResponseMessage_DMT.cs" />
     <Compile Include="Models\PartwiseStatementBO.cs" />
     <Compile Include="Models\Reports.cs" />
-    <Compile Include="Models\ServiceTransationBO.cs" />
-    <Compile Include="Models\ServiceWisePartCountBO.cs" />
     <Compile Include="Models\SwitchVendorResponse.cs" />
     <Compile Include="Models\TargetMaster.cs" />
     <Compile Include="Models\TransectionMaster.cs" />
@@ -254,7 +238,6 @@
     <Compile Include="Models\FillDropDown.cs" />
     <Compile Include="Models\DocumentLibraryMaster.cs" />
     <Compile Include="Models\GeographicalMaster.cs" />
-    <Compile Include="Models\GSTApplicable.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Others\Modal.cs" />
     <Compile Include="Models\Partial.cs" />
@@ -3424,15 +3407,12 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Admin\Detail.cshtml" />
     <Content Include="Views\Admin\RateMaster.cshtml" />
     <Content Include="Views\Shared\Preloader\_grid.cshtml" />
     <Content Include="Views\Shared\Preloader\_createpopupright.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\RateCreate.cshtml" />
-    <Content Include="Views\Testing\CardDetail.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\_ProfileAddressDetails.cshtml" />
     <Content Include="Views\Home\_ProfileCompanyDetails.cshtml" />
@@ -3461,16 +3441,10 @@
     <Content Include="Views\Shared\_ModalHeader.cshtml" />
     <Content Include="Views\Home\ChequeClearenceList.cshtml" />
     <Content Include="Views\Home\ChequeClearedList.cshtml" />
-    <Content Include="Views\MyPayments\GetPayments.cshtml" />
-    <Content Include="Views\MyPayments\Index.cshtml" />
-    <Content Include="Views\UserDetails\Index.cshtml" />
     <Content Include="Views\Home\AddUser.cshtml" />
-    <Content Include="Views\Geographical\Index.cshtml" />
     <Content Include="Views\Home\SignOut.cshtml" />
     <Content Include="Views\Authentication\login-alt - Copy.cshtml" />
     <Content Include="Views\Authentication\recover-pw - Copy.cshtml" />
-    <Content Include="Views\DocumentLibrary\Index.cshtml" />
-    <Content Include="Views\DocumentLibrary\GetDocuments.cshtml" />
     <Content Include="Views\Home\ClientChangeRequest.cshtml" />
     <Content Include="Views\Admin\ClientChangeRequest.cshtml" />
     <Content Include="Views\Admin\Setting.cshtml" />
@@ -3496,7 +3470,6 @@
     <Content Include="Views\Admin\AddGroup.cshtml" />
     <Content Include="Views\Admin\ManageUserRights.cshtml" />
     <Content Include="Views\Welcome\NoDirectAccess.cshtml" />
-    <Content Include="Views\MobileRecharge\RechargeNew.cshtml" />
     <Content Include="Views\AddPartner\Index.cshtml" />
     <Content Include="Views\Authentication\recover-pw-new.cshtml" />
     <Content Include="Views\Role\AddPartner.cshtml" />
@@ -3505,65 +3478,18 @@
     <Content Include="Views\Role\CreateGroup.cshtml" />
     <Content Include="Views\Role\UserPermissionforUser.cshtml" />
     <Content Include="Views\Role\Userpermission.cshtml" />
-    <Content Include="Views\Client\WalletRecharge.cshtml" />
-    <Content Include="Views\Client\WalletRechargeHistory.cshtml" />
-    <Content Include="Views\Support\ClientWalletRechargeRequets.cshtml" />
     <Content Include="Views\Role\NotificationMaster.cshtml" />
     <Content Include="Views\Role\GetHierarchyList - Copy.cshtml" />
-    <Content Include="Views\Client\LedgerReport.cshtml" />
     <Content Include="Views\Admin\ServiceProviderWalletconsumption.cshtml" />
     <Content Include="Views\Home\ClientChangeRequestList.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\GenerateRecharges.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\GenerateRechargesUserWise.cshtml" />
-    <Content Include="Views\Commission\CommissionMaster.cshtml" />
-    <Content Include="Views\Commission\CommissionMasterIndex.cshtml" />
-    <Content Include="Views\Commission\RechargeCommission.cshtml" />
-    <Content Include="Views\Commission\RechargeCommissionIndex.cshtml" />
-    <Content Include="Views\Commission\RechargeUserCommission.cshtml" />
-    <Content Include="Views\Commission\ServiceProviderCreate.cshtml" />
-    <Content Include="Views\Commission\ServiceProviderIndex.cshtml" />
-    <Content Include="Views\Commission\ServiceProviderRateMaster.cshtml" />
-    <Content Include="Views\Commission\UserCommission.cshtml" />
     <Content Include="Views\Admin\Report.cshtml" />
-    <Content Include="Views\MobileRecharge\Index.cshtml" />
     <Content Include="Views\ContentPage\Index.cshtml" />
     <Content Include="Views\Role\NotificationIndex.cshtml" />
     <Content Include="Views\Role\NotificationList.cshtml" />
     <Content Include="Views\Welcome\OurServices.cshtml" />
-    <Content Include="Views\Commission\Admin_DTHCommission_Show.cshtml" />
-    <Content Include="Views\Commission\Admin_setCommission_Show.cshtml" />
-    <Content Include="Views\Commission\AepsMaster.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\AddNewbranch.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\GenerateAepslist.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\GenerateSlabData.cshtml" />
-    <Content Include="Views\Commission\SlabMaster.cshtml" />
     <Content Include="Views\Admin\_ChangeRequestDetail.cshtml" />
-    <Content Include="Views\Target\Create.cshtml" />
-    <Content Include="Views\Target\ViewDetails.cshtml" />
-    <Content Include="Views\AEPS\Index.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\AddRemitterPage.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\CheckRemitterPage.cshtml" />
-    <Content Include="Views\Category\Addbeneficiary.cshtml" />
-    <Content Include="Views\Category\AddCustomer.cshtml" />
-    <Content Include="Views\Category\DMT.cshtml" />
-    <Content Include="Views\Category\DMTMobileVerification.cshtml" />
-    <Content Include="Views\Category\DMTOTPVerification.cshtml" />
-    <Content Include="Views\Category\MoneyTransfer.cshtml" />
-    <Content Include="Views\Category\SearchTransaction.cshtml" />
-    <Content Include="Views\Category\TransactionList.cshtml" />
-    <Content Include="Views\Category\TransferMoney.cshtml" />
-    <Content Include="Views\AEPS\Home.cshtml" />
-    <Content Include="Views\Report\PartWiseStaDetails.cshtml" />
-    <Content Include="Views\Report\servicewiseTrans.cshtml" />
-    <Content Include="Views\Report\SerwisePartnerCount.cshtml" />
-    <Content Include="Views\Report\UserPartyWiseProfileReport.cshtml" />
-    <Content Include="Views\Report\UserProfileReport.cshtml" />
-    <Content Include="Views\BankMaster\CreateDetails.cshtml" />
-    <Content Include="Views\BankMaster\ViewDetails.cshtml" />
     <Content Include="Views\DashboardReport\Dashboard.cshtml" />
     <Content Include="Views\Dashboard\AllNewsandAnnoucement.cshtml" />
-    <Content Include="Views\Commission\NewsAndAnnoucement.cshtml" />
-    <Content Include="Views\Commission\NewsAndAnnoucementIndex.cshtml" />
     <Content Include="Views\Admin\WalletLeft.cshtml" />
     <Content Include="Views\DashboardReport\AdminDashboard.cshtml" />
     <Content Include="Views\DashboardReport\GetTargetvsActual.cshtml" />
@@ -3597,17 +3523,22 @@
     <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
     <Content Include="Views\AcdmcMst\index.cshtml" />
     <Content Include="Views\Master\ArchitectureDetail.cshtml" />
+    <Content Include="Views\Trustee\CollageAttachment.cshtml" />
+    <Content Include="Views\ProofOfDocument\Index.cshtml" />
+    <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
+    <Content Include="Views\Trustee\testpage.cshtml" />
+    <Content Include="Views\SupportTicket\index.cshtml" />
     <Content Include="Views\Master\NewArchitectureDetail.cshtml" />
-    <Content Include="Views\Master\Testing.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\Newitem.cshtml" />
-    <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
+    <Content Include="Views\UniversityMST\Create.cshtml" />
+    <Content Include="Views\UserDetails\Index.cshtml" />
+    <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
     <Folder Include="images\Docs\" />
     <Folder Include="images\WalletRecipts\" />
     <Folder Include="UploadFloder\" />
-    <Folder Include="Views\SwitchParty\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\dripicons-v2.eot" />
@@ -3912,15 +3843,6 @@
     <Content Include="Views\Dashboard\ecommerce-index.cshtml" />
     <Content Include="Views\Analytics\customers.cshtml" />
     <Content Include="Views\Analytics\reports.cshtml" />
-    <Content Include="Views\Crypto\exchange.cshtml" />
-    <Content Include="Views\Crypto\settings.cshtml" />
-    <Content Include="Views\Crypto\wallet.cshtml" />
-    <Content Include="Views\Crypto\news.cshtml" />
-    <Content Include="Views\Crypto\ico.cshtml" />
-    <Content Include="Views\CRM\contacts.cshtml" />
-    <Content Include="Views\CRM\opportunities.cshtml" />
-    <Content Include="Views\CRM\leads.cshtml" />
-    <Content Include="Views\CRM\customers.cshtml" />
     <Content Include="Views\Projects\clients.cshtml" />
     <Content Include="Views\Projects\team.cshtml" />
     <Content Include="Views\Projects\chat.cshtml" />
@@ -3929,47 +3851,11 @@
     <Content Include="Views\Projects\project.cshtml" />
     <Content Include="Views\Projects\users.cshtml" />
     <Content Include="Views\Projects\create.cshtml" />
-    <Content Include="Views\Ecommerce\cart.cshtml" />
-    <Content Include="Views\Ecommerce\checkout.cshtml" />
-    <Content Include="Views\Ecommerce\product-detail.cshtml" />
-    <Content Include="Views\Ecommerce\product-list.cshtml" />
-    <Content Include="Views\Ecommerce\products.cshtml" />
     <Content Include="Views\Helpdesk\teckets.cshtml" />
     <Content Include="Views\Helpdesk\agents.cshtml" />
     <Content Include="Views\Helpdesk\reports.cshtml" />
-    <Content Include="Views\Hospital\doctor-shedule.cshtml" />
-    <Content Include="Views\Hospital\all-appointments.cshtml" />
-    <Content Include="Views\Hospital\all-doctors.cshtml" />
-    <Content Include="Views\Hospital\add-doctor.cshtml" />
-    <Content Include="Views\Hospital\edit-doctor.cshtml" />
-    <Content Include="Views\Hospital\doctor-profile.cshtml" />
-    <Content Include="Views\Hospital\all-patients.cshtml" />
-    <Content Include="Views\Hospital\add-patient.cshtml" />
-    <Content Include="Views\Hospital\edit-patient.cshtml" />
-    <Content Include="Views\Hospital\patient-profile.cshtml" />
-    <Content Include="Views\Hospital\all-payments.cshtml" />
-    <Content Include="Views\Hospital\payment-invoice.cshtml" />
-    <Content Include="Views\Hospital\cashless-payments.cshtml" />
-    <Content Include="Views\Hospital\all-staff.cshtml" />
-    <Content Include="Views\Hospital\add-member.cshtml" />
-    <Content Include="Views\Hospital\edit-member.cshtml" />
-    <Content Include="Views\Hospital\member-profile.cshtml" />
-    <Content Include="Views\Hospital\salary.cshtml" />
-    <Content Include="Views\Hospital\all-rooms.cshtml" />
-    <Content Include="Views\Hospital\attendance.cshtml" />
-    <Content Include="Views\Hospital\chat.cshtml" />
-    <Content Include="Views\Hospital\departments.cshtml" />
-    <Content Include="Views\Hospital\events.cshtml" />
-    <Content Include="Views\Hospital\expenses.cshtml" />
-    <Content Include="Views\Hospital\holidays.cshtml" />
-    <Content Include="Views\Hospital\insurance-company.cshtml" />
-    <Content Include="Views\Hospital\leaves.cshtml" />
     <Content Include="Views\Email\email-read.cshtml" />
     <Content Include="Views\Email\inbox.cshtml" />
-    <Content Include="Views\Apps\Chat.cshtml" />
-    <Content Include="Views\Apps\Contacts.cshtml" />
-    <Content Include="Views\Apps\Calendar.cshtml" />
-    <Content Include="Views\Apps\Invoice.cshtml" />
     <Content Include="Views\UI\bootstrap.cshtml" />
     <Content Include="Views\UI\animation.cshtml" />
     <Content Include="Views\UI\avatar.cshtml" />
@@ -4010,16 +3896,6 @@
     <Content Include="Views\Table\jsgrid.cshtml" />
     <Content Include="Views\Table\dragger.cshtml" />
     <Content Include="Views\Table\editable.cshtml" />
-    <Content Include="Views\Icon\materialdesign.cshtml" />
-    <Content Include="Views\Icon\dripicons.cshtml" />
-    <Content Include="Views\Icon\fontawesome.cshtml" />
-    <Content Include="Views\Icon\themify.cshtml" />
-    <Content Include="Views\Icon\feather.cshtml" />
-    <Content Include="Views\Icon\typicons.cshtml" />
-    <Content Include="Views\Icon\emoji.cshtml" />
-    <Content Include="Views\Maps\Google.cshtml" />
-    <Content Include="Views\Maps\Leaflet.cshtml" />
-    <Content Include="Views\Maps\Vector.cshtml" />
     <Content Include="Views\Email\basic.cshtml" />
     <Content Include="Views\Email\alert.cshtml" />
     <Content Include="Views\Email\billing.cshtml" />

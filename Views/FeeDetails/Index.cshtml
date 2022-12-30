@@ -1,25 +1,12 @@
 ﻿@using NewZapures_V2.Models
 @{
+    Layout = null;
     ViewBag.Title = "Fee Details";
+    Layout = null;
     NewZapures_V2.Models.TrusteeBO.CollageFeeMst FeeList = ViewBag.CollageFeeList as NewZapures_V2.Models.TrusteeBO.CollageFeeMst;
-    //List<CustomMaster> DepartmentList = new List<CustomMaster>();
-    //if (ViewBag.DepartmentList != null)
-    //{
-    //    DepartmentList = (List<CustomMaster>)ViewBag.DepartmentList;
-    //}
 
-    //List<CustomMaster> CourseList = new List<CustomMaster>();
-    //if (ViewBag.CourseList != null)
-    //{
-    //    CourseList = (List<CustomMaster>)ViewBag.CourseList;
-    //}
-    //List<CustomMaster> FinancialYear = new List<CustomMaster>();
-    //if (ViewBag.FinancialYearList != null)
-    //{
-    //    FinancialYear = (List<CustomMaster>)ViewBag.FinancialYearList;
-    //}
 }
-@section styles {
+@*@section styles {
 
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
@@ -84,27 +71,33 @@
             .fop h4 {
                 color: white !important;
             }
-    </style>
+    </style>*@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            @*<div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">Fee details</li>
                 </ol>
-            </div>
-            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+            </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Fee Details</h4>
+        @*<div class="" style="text-align:right">
+            <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px; color: white; font-family: 'Ubuntu', sans-serif; background-color: deeppink;" class="btn btn-warning btn btn btn-default">Back</a>
+        </div>*@
     </div>   
     <div class="row col-lg-8" style="margin-top:12px">
         <div class="form-group col-lg-12">
+            <input type="hidden" name="iFk_TrstId" id="iFk_TrstId" value="@ViewData["TrustId"]" />
+            <input type="hidden" name="iFk_ClgId" id="iFk_ClgId" value="@ViewData["CollageId"]" />
+            <input type="hidden" name="iFk_CourseId" id="iFk_CourseId" value="@ViewData["CourseId"]" />
             <table class="table table-bordered table-striped table-hover" id="tblFacility">
                 <thead class="dark">
                     <tr>
@@ -126,53 +119,53 @@
                         int i = 1;
                         foreach (var item in FeeList.rateLists)
                         {
-                            <tr>
-                                @*<td>@i</td>*@
-                                <td style="display:none">
-                                    @item.RateId
-                                </td>
+                    <tr>
+                        @*<td>@i</td>*@
+                        <td style="display:none">
+                            @item.RateId
+                        </td>
 
-                                <td>
-                                    @item.RateName
-                                </td>
-                                <td>
-                                    @if (item.IsSelect == true)
+                        <td>
+                            @item.RateName
+                        </td>
+                        <td>
+                            @if (item.IsSelect == true)
                                     {
-                                        <label class="containercheckbox">
-                                            &nbsp;
-                                            <input type="checkbox" id="Select" name="IsSelect" class="chk" checked="checked">
-                                            <span class="checkmark"></span>
-                                        </label>
+                            <label class="containercheckbox">
+                                &nbsp;
+                                <input type="checkbox" id="Select" name="IsSelect" class="chk" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
                                     }
                                     else
                                     {
-                                        <label class="containercheckbox">
-                                            &nbsp;
-                                            <input type="checkbox" id="Select" name="IsSelect" class="chk">
-                                            <span class="checkmark"></span>
-                                        </label>
+                            <label class="containercheckbox">
+                                &nbsp;
+                                <input type="checkbox" id="Select" name="IsSelect" class="chk">
+                                <span class="checkmark"></span>
+                            </label>
                                     }
-                                </td>
-                                <td>
-                                    <input type="text" id="Rate" name="Rate" class="form-control" value="@item.Rate" />
-                                </td>
-                            </tr>
+                        </td>
+                        <td>
+                            <input type="text" id="Rate" name="Rate" class="form-control" value="@item.Rate" />
+                        </td>
+                    </tr>
                             i++;
                         }
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="8" style="text-align: center;">No Data Available</td>
-                        </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                    </tr>
                     }
                 </tbody>
             </table>
         </div>
-        <div class="row col-lg-12" style="margin-bottom:10px">
-            <div class="col-lg-12">
-                <button class="btn btn-primary" id="btnSave"> Save</button>
-
+        <div class="col-lg-12" style="margin-bottom:10px">
+            <div class="">
+                <button class="btn btn-primary" id="btnSave" style="float:right"> Save</button>
+                <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary col-sm-1" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
                 @*</div>*@
             </div>
         </div>
@@ -192,9 +185,9 @@
         $("#btnSave").click(function () {
             var tableData = new Array();
             debugger;
-            var departmentId = "0";
-            var CourseId = "0";
-            var year = "0";            
+            var TrustId = $('#iFk_TrstId').val();
+            var CourseId = $('#iFk_CourseId').val();
+            var CollageId = $('#iFk_ClgId').val();
             $("#tblFacility tbody TR").each(function () {
                 var row_data = $(this);
                 var Idget = row_data.find("td").eq(0).html().trim();
@@ -211,27 +204,20 @@
             });
 
             var modal = {
-                DepartmentId: departmentId,
+                TrustId: TrustId,
                 CourseId: CourseId,
-                FinancialYear:year,
+                CollageId: CollageId,
                 rateLists: tableData
             }
 
             $.ajax({
                 type: "POST",
-                url: "/FeeDetails/SaveCollageFee",
+                url: GetglobalDomain() + "/FeeDetails/SaveCollageFee",
                 data: modal,
                 success: function (data) {
                     if (data.failure) {
-                        //alert("Successfully");
-
                         var url = GetglobalDomain() + "/FeeDetails/Index";
-                        window.location.href = url;                        
-                        //Swal.fire(
-                        //    'Success',
-                        //    'Success',
-                        //    'Data Save Successfully!!'
-                        //)
+                        window.location.href = url;
                     }
                     else {
                         Swal.fire(

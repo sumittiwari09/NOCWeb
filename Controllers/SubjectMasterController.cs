@@ -20,7 +20,7 @@ namespace NewZapures_V2.Controllers
         CommonFunction objcf = new CommonFunction();
         ResponseData objResponse;
         // GET: SubjectMaster
-        public ActionResult CreateData(string appNo)
+        public ActionResult CreateData(string guid)
         {
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
@@ -40,7 +40,7 @@ namespace NewZapures_V2.Controllers
             collegeListData = GetCollegeList();
             ViewBag.collegeListData = collegeListData;
 
-
+            ViewBag.applNumber = guid;
 
 
             GetSubjectDataList();

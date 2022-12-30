@@ -734,5 +734,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        public ActionResult NewArchitectureDetail(string guid)
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist();
+            return View(lst);
+        }
     }
 }

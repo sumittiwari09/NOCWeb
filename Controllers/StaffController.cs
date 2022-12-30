@@ -15,11 +15,12 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: Trustee
-        public ActionResult Index(string appNo)
+        public ActionResult Index()
         {
+            
             List<StaffBO.Staff> _result = new List<StaffBO.Staff>();
             #region List Staff
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList");
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList?Guid="+SessionModel.ApplicantGuid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -41,6 +42,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile)
         {
+            obj.Guid = SessionModel.ApplicantGuid;
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -174,5 +176,32 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Delete(int Id)
+        {
+            #region List Staff
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffDelete?Id=" + Id);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+            if (objResponseData.ResponseCode == "1")
+            {
+                TempData["SwalStatusMsg"] = "success";
+                TempData["SwalMessage"] = "Deleted Successfully!!";
+                TempData["SwalTitleMsg"] = "Success...!";
+                //return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+                //return RedirectToAction("Index");
+            }            
+            #endregion
+            return RedirectToAction("Index");
+        }
     }
 }

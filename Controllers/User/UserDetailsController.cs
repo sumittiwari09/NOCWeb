@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace NewZapures_V2.Controllers.User
 {
-    [NoDirectAccess]
+    //[NoDirectAccess]
     public class UserDetailsController : Controller
     {
         // GET: UserDetails
@@ -49,12 +49,12 @@ namespace NewZapures_V2.Controllers.User
 
 
         //public JsonResult UpdateUser(UpdateUserDetails userDetails)
-        public JsonResult UpdateUser(string partyId, int status,string email,string username)
+        public JsonResult UpdateUser(string partyId, int status, string email, string username, string Parent)
         {
             //var userdetailsSession = (UserModelSession)Session["UserDetails"];
-          
+
             var Token = Session["Token"];
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/ActiveinactiveUser?PartyId=" + partyId + "&status=" + status+ "&username="+ username + "&emailaddress="+ email);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/ActiveinactiveUser?PartyId=" + partyId + "&status=" + status + "&username=" + username + "&emailaddress=" + email + "&parentID=" + Parent);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "bearer " + Token + "");

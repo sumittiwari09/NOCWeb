@@ -2,21 +2,23 @@
 @{
     ViewBag.Title = "Edit Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var eAppNo = (string)ViewBag.appNo;
-    var etrustName = (string)ViewBag.trustName;
-    var etrustID = (int)ViewBag.trustID;
-    var eclgname = (string)ViewBag.clgname;
-    var edept = (string)ViewBag.dept;
-    var ecours = (string)ViewBag.cours;
-    var deptID = (int)ViewBag.dptID;
-    var ecourseID = (int)ViewBag.courseID;
-    var eClgID = (int)ViewBag.clgID;
-    var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    //var eAppNo = (string)ViewBag.appNo;
+    //var etrustName = (string)ViewBag.trustName;
+    //var etrustID = (int)ViewBag.trustID;
+    //var eclgname = (string)ViewBag.clgname;
+    //var edept = (string)ViewBag.dept;
+    //var ecours = (string)ViewBag.cours;
+    //var deptID = (int)ViewBag.dptID;
+    //var ecourseID = (int)ViewBag.courseID;
+    //var eClgID = (int)ViewBag.clgID;
+    //var eGuid = (string)ViewBag.Guid;
+    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
+   var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 
-
+@*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
 
 <style type="text/css">
     .dropify-wrapper {
@@ -38,6 +40,22 @@
         -webkit-transition: border-color .15s linear;
         transition: border-color .15s linear;
     }
+
+    .applicationBtn {
+        width: 20em;
+        text-align: start;
+        display: flex;
+        align-items: center;
+    }
+
+    ul li {
+        list-style: none;
+        margin-bottom: 10px
+    }
+
+        ul li button i {
+            font-size: 20px;
+        }
 
     .table thead {
         background-color: #646d91 !important;
@@ -91,65 +109,150 @@
                     <li class="breadcrumb-item active">Edit Application</li>
                 </ol>
             </div>
-            <h4 class="page-title">@ViewBag.Title</h4>
+            @*<h4 class="page-title">@ViewBag.Title</h4>*@
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
 
 <div class="card">
-    <div class="card-header fsc">
+    <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
         <h4 class="mt-0 header-title float-left">Edit Application Details</h4>
+        <div class="form-group" style="text-align:right">
+            <a href="@Url.Action("DraftApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+        </div>
     </div>
     <div class="card-body ">
-        <div class="col-lg-12">
-            <table class="table table-bordered">
+        <div class="row">
+            <table class="table table-bordered table-striped">
                 <tr>
-                    <td>Application Number :</td>
-                    <td>@eAppNo</td>
-                    <td>Trust Name</td>
-                    <td>@etrustName</td>
+                    <th style="color:black!important;font-weight:500">Application Number :</th>
+                    <td>@draftAppl.ApplicationNumber</td>
+                    <th style="color:black!important;font-weight:500">Trust Name</th>
+                    <td>@draftAppl.TrustName</td>
+                    <th style="color:black!important;font-weight:500">Department Name</th>
+                    <td>@draftAppl.DepartmentName</td>
                 </tr>
-                <tr><td colspan="4" style="background: #bdbdbd;">Trust Members</td></tr>
-                @{
-                    if (trusteeMember != null)
-                    {
-                        <tr><th>Member Name</th><th colspan="3">Is Primary</th></tr>
-                        foreach (var item in trusteeMember)
-                        {
-                            <tr><td>@item.sPrsnName</td><td colspan="3">@item.iisprimary</td></tr>
-                        }
-                    }
-                }
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><i class="fa fa-users"></i>  Trust Comitee Members</td></tr>
                 <tr>
-                    <td>College Name :</td>
-                    <td>@eclgname</td>
-                    <td>Course</td>
-                    <td>@ecours</td>
-                </tr>
-                <tr><td colspan="4" style="background: #bdbdbd;"><div style="display: flex;place-content: space-between;"><span>Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applicationNo=eAppNo,trustName=etrustName,trustID=etrustID,clgName=eclgname,dptname=edept,cours=ecours,deptID=deptID})" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
-                <tr>
-                    <td colspan="4">
-                        <table class="table table-striped">
-                            <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo", new {appNo=eAppNo,deptID=deptID})" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
-                            <tr><td><a href="@Url.Action("CreateData","SubjectMaster",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
-                            <tr><td><a href="@Url.Action("Index","FeeDetails",new {appNo=eAppNo,CourseId=ecourseID})" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
-                            <tr><td><a href="@Url.Action("ArchitectureDetail","Master",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Architectrual Details</a></td></tr>
-                            <tr><td><a href="@Url.Action("CollageFacilitys","Trustee",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
-                            <tr><td><a href="@Url.Action("Index","Staff",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
-                            <tr><td><a href="@Url.Action("Index","AcdmcMst",new {appNo=eAppNo})" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
-                            <tr><td><a href="@Url.Action("CollageAttachment","Trustee",new {appNo=eAppNo,TrustId=etrustID,CourseId=ecourseID,CollageId=eClgID})" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
-                       
+                    <td colspan="6">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr><th>Member Name</th><th>Is Primary</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (trusteeMember != null)
+                                    {
 
-
+                                        foreach (var item in trusteeMember)
+                                        {
+                                            <tr><td>@item.sPrsnName</td><td>@((string.IsNullOrEmpty(item.iisprimary) || item.iisprimary=="0")?"No":"Yes" )</td></tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
                         </table>
                     </td>
                 </tr>
 
+                <tr>
+                    <th style="color:black!important;font-weight:500">College Name :</th>
+                    <td>@draftAppl.CollegeName</td>
+                    <td colspan="2"></td>
+                    <th style="color:black!important;font-weight:500">Course</th>
+                    <td>@draftAppl.CourseName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
+                @*<tr>
+                        <td colspan="4">
+                            <table class="table table-striped">
+                                <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo")" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
+                                <tr><td><a href="@Url.Action("CreateData","SubjectMaster")" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
+                                <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
+                                <tr><td><button onclick="GenerateArchtable('sdfd')"><i class="fa fa-plus"></i> Add Architectrual Details</button></td></tr>
+                                <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
+                                <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
+                                <tr><td><a href="@Url.Action("Index","AcdmcMst")" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
+                                <tr><td><a href="@Url.Action("CollageAttachment","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
+                            </table>
+                        </td>
+                    </tr>*@
             </table>
+            <div class="col-lg-12">
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        <ul style="margin-left: -50px;">
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land & Building Information</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CreateData", "SubjectMaster", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-book"></i> &nbsp;Subject Covered</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "FeeDetails", new {guid=draftAppl.ApplGuid})"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("NewArchitectureDetail", "Master", new {guid=draftAppl.ApplGuid})"><i class="fa fa-building"></i> &nbsp;Architectrual Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageFacilitys", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-smile"></i> &nbsp;Other Facilites</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-lg-9"  id="divFormContainer1" style="place-content: center;display: flex;align-items: center;">
+                        <div id="divFormContainer">
+
+                        </div>
+                        <p style="font-size: 30px;color: red;" id="pNote">Please Select Any Form from the left side to fill</p>
+                        <div id="divLoader" style="display:none"><span><i class="fa fa-4x fa-circle-notch fa-spin fa-fade" style="color: #506ee4;"></i></span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    @*<script src="~/Content/select2/js/select2.js"></script>*@
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnToggal').click();
+
+        $('.applicationBtn').click(function () {
+             $('#divFormContainer').html('');
+            $('#divFormContainer1').css('place-content','center').css('display','flex').css('align-items','center')
+            $('#divLoader').css('display', 'block');
+            $('#pNote').css('display', 'none');
+            //$(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            $(this).css('background-color','#ffbf68').css('color','black');
+            $(this).css('border-bottom-right-radius', '33px');
+
+            var url = $(this).data('id');
+
+            //console.log(url);
+            setTimeout(function () {
+
+                GenerateArchtable(url);
+            }, 1000);
+           /* $('#divLoader').css('display', 'none');*/
+        });
+    });
+
+    function GenerateArchtable(url) {
+
+        $.ajax({
+            url: GetglobalDomain() + url,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+                //$('#divFormContainer').html('');
+                $('#divFormContainer1').removeAttr("style");
+                $('#divFormContainer').html(response);
+                $('#divLoader').css('display', 'none');
+
+                return;
+                /*  $("#AddSection").html(response);*/
+            }
+        });
+        return false;
+    }
+</script>
