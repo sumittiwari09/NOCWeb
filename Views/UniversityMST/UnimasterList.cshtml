@@ -1,0 +1,269 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "UnimasterList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.UniversityMaster> list = ViewBag.UniList as List<NewZapures_V2.Models.UniversityMaster>;
+
+
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    #tblsummery th {
+        color: black !important;
+        font-weight: 500;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6;
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6);
+        background: linear-gradient(to left, #8CA6DB, #B993D6);
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">UniversityMaster List</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">UniversityMaster List</h4>
+    </div>
+    <div class="row col-lg-12" style="margin-top:20px">
+        <div class="form-group col-lg-12">
+            <table class="table table-borderless table-striped table-hover" id="List">
+                <thead class="dark">
+                    <tr>
+                        <th>SNo</th>
+                        <th>UniName</th>
+                        <th>Website</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (list != null)
+                    {
+                        int i = 1;
+
+                        foreach (var item in list)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.UniName</td>
+                                <td>@item.Website</td>
+
+                                <td>
+
+                                    @{
+                                        <a id="@item.Type_id" class="fas fa-edit text-info font-16" name="2" data-id="@item.Type_id" title="Edit" onclick="EditDepartment(@item.Type_id);"></a>
+                                        <a id="btnDeactive_@item.Type_id" class="Deleteclass" name="2" data-id="@item.Type_id" onclick="DeleteData(@item.Type_id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+
+                                    }
+
+                                </td>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script type="text/javascript">
+
+        //var applicationDetails = {
+        //    appltrustID: "",
+        //    applcollegeID: "",
+        //    appldegreeID: "",
+        //    applCourseID: ""
+        //};
+
+        //function openModal(trustName, CollegeName, Degree, Course, rowNum) {
+        //    $('#spnTrust').html('');
+        //    $('#spnCollege').html('');
+        //    $('#spnDegree').html('');
+        //    $('#spnCourse').html('');
+
+
+        //    $('#spnTrust').html(trustName);
+        //    $('#spnCollege').html(CollegeName);
+        //    $('#spnDegree').html(Degree);
+        //    $('#spnCourse').html(Course);
+
+        //    $('#openModal').click();
+
+            //$('#List > tbody  > tr:eq(' + rowNum + ')').each(function () {
+
+            //    var UniName = $(this).find('td:eq(2)').html();
+            //    var Website = $(this).find('td:eq(3)').html()
+            //    //var collegeID = $(this).find('td:eq(6)').html()
+            //    //var degreeID = $(this).find('td:eq(12)').html()
+            //    //var CourseID = $(this).find('td:eq(14)').html()
+            //    //console.log(trusName, trustID, collegeID, degreeID, CourseID);
+
+
+            //    //applicationDetails.appltrustID = trustID;
+            //    //applicationDetails.applcollegeID = collegeID;
+            //    //applicationDetails.appldegreeID = degreeID;
+            //    //applicationDetails.applCourseID = CourseID;
+
+            //});
+
+
+
+
+
+
+
+        @*function SaveDetails() {
+
+            if ($("#customCheck1").is(':checked')) {
+
+                var applicationModal = {
+                    "iFKTst_ID": applicationDetails.appltrustID,
+                    "iFKCLG_ID": applicationDetails.applcollegeID,
+                    "iFKDEPT_ID": applicationDetails.appldegreeID,
+                    "iFK_CORS_ID": applicationDetails.applCourseID,
+                }
+
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/Trustee/SaveApplicationDetails",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(applicationModal),
+                    success: function (data) {
+                        //console.log('ajax');
+                        console.log(data);
+
+                        setTimeout(function () {
+                            location.href = '@Url.Action("DraftApplication", "Trustee")';
+                        }, 2000)
+
+                     /*   $('#btnClose').click();*/
+
+                    },
+                    error: function (d) {
+                        console.log(d);
+                    }
+                });
+            }
+
+
+            else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `Error`,
+                    html: `<p style="font-size: 18px;">Kindly Tick the checkbox for application confirmation..</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+            }
+
+
+        }*@
+
+
+
+
+</script>
+
+
+

@@ -68,13 +68,13 @@ namespace NewZapures_V2.Controllers
 
                     TempData["isSaved"] = 1;
                     TempData["msg"] = " Details Saved...";
-                    return RedirectToAction("Create", "UniverSityMST");
+                    return RedirectToAction("UnimasterList", "UniverSityMST");
                 }
                 else
                 {
                     TempData["isSaved"] = 0;
                     TempData["msg"] = " Details Not Saved...";
-                    return RedirectToAction("Create", "UniverSityMST");
+                    return RedirectToAction("UnimasterList", "UniverSityMST");
                 }
             }
             catch (Exception ex)
@@ -102,7 +102,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-            return View("Create");
+            return View();
         }
         public ActionResult Edit()
         {

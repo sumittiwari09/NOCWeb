@@ -95,132 +95,92 @@
                 <h4 class="mt-0 header-title float-left">University Master</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("Create", "UniverSityMST", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
+                @*@using (Html.BeginForm("Create", "UniverSityMST", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+                @*{*@
 
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University Type</label>
-                            <div class="is-empty  removehidde" id="collegetypedata">
-                                <select class="form-control" name="UniType">
-                                    <option>State Universities </option>
-                                    <option>Private Universities </option>
-                                    <option>Deemed Universities </option>
-                                    <option>Others Universities </option>
-                                </select>
-                            </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University Type</label>
+                        <div class="is-empty  removehidde" id="collegetypedata">
+                            <select class="form-control" name="UniType" id="UniType">
+                                <option value="1">State Universities </option>
+                                <option value="2">Private Universities </option>
+                                <option value="3">Deemed Universities </option>
+                                <option value="4">Others Universities </option>
+                            </select>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter University Name</label>
-                            <div class="is-empty  removehidde" id="collegetypedata">
-                                <div>
-                                    <input class="form-control col-sm-12" placeholder="University Name" type="text" autocomplete="off" id="txtemail" name="UniName">
-                                </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter University Name</label>
+                        <div class="is-empty  removehidde" id="collegetypedata">
+                            <div>
+                                <input class="form-control col-sm-12" placeholder="University Name" type="text" autocomplete="off" id="UniName" name="UniName">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website Link</label>
-                            <div class="is-empty  removehidde" id="collegetypedata">
-                                <div>
-                                    <input class="form-control col-sm-12" placeholder="Link" type="text" autocomplete="off" id="txtemail" name="Website">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Document</label>
-                            <div class="is-empty  removehidde" id="collegetypedata">
-                                <div>
-                                    <input class="form-control col-sm-12" placeholder="Link" type="file" autocomplete="off" id="txtemail" name="Document">
-                                </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website Link</label>
+                        <div class="is-empty  removehidde" id="collegetypedata">
+                            <div>
+                                <input class="form-control col-sm-12" placeholder="Link" type="text" autocomplete="off" id="Website" name="Website">
                             </div>
                         </div>
                     </div>
-
-
-
-
-                    @*<div id="Remove" class="row">
-                            <div class="form-group col-lg-3">
-                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact Person</label>
-                                <div class="is-empty  removehidde" id="collegetypedata">
-                                    <div>
-                                        <input class="form-control col-sm-12" placeholder="ContactPerson" type="text" autocomplete="off" id="txtemail" name="Name">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-lg-3">
-                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Contact Number</label>
-                                <div class="is-empty  removehidde" id="collegetypedata">
-                                    <div>
-                                        <input class="form-control col-sm-12" placeholder="Number" type="text" autocomplete="off" id="txtemail" name="Number">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Email Address</label>
-                                <div class="is-empty  removehidde" id="collegetypedata">
-                                    <div>
-                                        <input class="form-control col-sm-12" placeholder="Email" type="text" autocomplete="off" id="txtemail" name="Email">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <div>
-                                    <button type="button" class="btn btn-danger btn-sm removeDiv"> Remove</button>
-                                </div>
-                            </div>
-                        </div>*@
-                    <div class="card-header fsc">
-                        <h4 class="mt-0 header-title">Contact Details</h4>
-                    </div>
-                    <br>
-
-
-                    <form>
-                        <input type="text" id="Name" name="Name" placeholder="ContactPerson">
-                        <input type="text" id="Number" name="Number" placeholder="Number">
-                        <input type="text" id="EmailId" name="Email" placeholder="Email Address">
-                        <input type="button" class="add-row" value="Add Row">
-
-
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Search</th>
-                                    <th>ContactPerson</th>
-                                    <th>Number</th>
-                                    <th>Email Address</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <button type="button" class="delete-row">Delete Row</button>
-                        <div class="row text-center">
-                            <div class="form-group col-lg-12">
-                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Document</label>
+                        <div class="is-empty  removehidde" id="collegetypedata">
+                            <div>
+                                <input class="form-control col-sm-12" placeholder="Link" type="file" id="UniDocument" name="Document">
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
+                <div class="card-header fsc">
+                    <h4 class="mt-0 header-title">Contact Details</h4>
+                </div>
+                <br>
+                @*<form>*@
+            <div>
+                <input type="text" id="Name" name="Name" placeholder="ContactPerson">
+                <input type="text" id="Number" name="Number" placeholder="Number">
+                <input type="text" id="EmailId" name="Email" placeholder="Email Address">
+                <input type="button" class="add-row" value="Add Row">
+                <table id="contactsData">
+                    <thead>
+                        <tr>
+                            <th>Check</th>
+                            <th>ContactPerson</th>
+                            <th>Number</th>
+                            <th>Email Address</th>
 
-                }
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <button type="button"class="delete-row">Delete Row</button>
+                <div class="row text-center">
+                    <div class="form-group col-lg-12">
+                        <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                    </div>
+                </div>
+            </div>
+                @*</form>*@
+                @*}*@
             </div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
         $(".add-row").click(function () {
-            var Name = $("#Name").val();
-            var Number = $("#Number").val();
-            var Email = $("#EmailId").val();
-            var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + Name + "</td><td>" + Number + "</td><td>" + Email + "</td></tr>";
+            var name = $("#Name").val();
+            var number = $("#Number").val();
+            var email = $("#EmailId").val();
+            var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td></tr>";
             $("table tbody").append(markup);
         });
 
@@ -228,11 +188,58 @@ $(document).ready(function () {
         $(".delete-row").click(function () {
             $("table tbody").find('input[name="record"]').each(function () {
                 if ($(this).is(":checked")) {
-                    $(this).parents("tr").remove();
+            $(this).parents("tr").remove();
                 }
             });
         });
-});
+        $("#btnSave").click(function () {
+            //var name = $("#Name").val();
+            //var number = $("#Number").val();
+            //var email = $("#EmailId").val();
+            //var markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' onclick = "Geeks()" name='delete' value='Remove' /></td></tr>";
+            //$("table tbody").append(markup);
+
+            
+
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tbody tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+
+
+            var model = {
+                Type_id: $('#UniType').val(),
+                UniName: $('#UniName').val(),
+                Website: $('#Website').val(),
+                Document: $('#UniDocument').val(),
+                //Financier_id
+                //Created_id
+                ContactDetails: contactsInfo,
+                IsActive: true
+            }
+            
+            console.log('model data is', model);
+
+            
+
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/UniverSityMST/Create",
+                data: model,
+                success: function (data) {
+                    console.log('data is', data);
+                }
+            });
+        });
+
+    });
 </script>
 @*<script>
     $(".removeDiv").click(function () {
