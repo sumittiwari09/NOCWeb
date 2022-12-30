@@ -2,17 +2,18 @@
 @{
     ViewBag.Title = "Edit Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var eAppNo = (string)ViewBag.appNo;
-    var etrustName = (string)ViewBag.trustName;
-    var etrustID = (int)ViewBag.trustID;
-    var eclgname = (string)ViewBag.clgname;
-    var edept = (string)ViewBag.dept;
-    var ecours = (string)ViewBag.cours;
-    var deptID = (int)ViewBag.dptID;
-    var ecourseID = (int)ViewBag.courseID;
-    var eClgID = (int)ViewBag.clgID;
-    var eGuid = (string)ViewBag.Guid;
-    var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    //var eAppNo = (string)ViewBag.appNo;
+    //var etrustName = (string)ViewBag.trustName;
+    //var etrustID = (int)ViewBag.trustID;
+    //var eclgname = (string)ViewBag.clgname;
+    //var edept = (string)ViewBag.dept;
+    //var ecours = (string)ViewBag.cours;
+    //var deptID = (int)ViewBag.dptID;
+    //var ecourseID = (int)ViewBag.courseID;
+    //var eClgID = (int)ViewBag.clgID;
+    //var eGuid = (string)ViewBag.Guid;
+    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
+   var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
