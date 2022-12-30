@@ -80,17 +80,17 @@
                                     <option value="0" role=separator>From Year</option>
                                     <option value="11" role=separator>2022</option>
                                     @*@{
-                                        if (FromYear != null)
-                                        {
-                                            foreach (var item in FromYear)
-                                            {
-                                                <option data-image="~/images/404.png">@item.Text</option>
+                            if (FromYear != null)
+                            {
+                                foreach (var item in FromYear)
+                                {
+                                    <option data-image="~/images/404.png">@item.Text</option>
 
 
 
-                                            }
-                                        }
-                                    }*@
+                                }
+                            }
+                        }*@
                                 </select>
 
                             </div>
@@ -103,19 +103,19 @@
                                 <select id="ddlToYear">
                                     <option value="0" role=separator>To Year</option>
                                     <option value="21" role=separator>2023</option>
-                                    
+
                                     @*@{
-                                        if (ToYear != null)
-                                        {
-                                            foreach (var item in ToYear)
-                                            {
-                                                <option data-image="~/images/404.png">@item.Text</option>
+                            if (ToYear != null)
+                            {
+                                foreach (var item in ToYear)
+                                {
+                                    <option data-image="~/images/404.png">@item.Text</option>
 
 
 
-                                            }
-                                        }
-                                    }*@
+                                }
+                            }
+                        }*@
                                 </select>
 
                             </div>
@@ -137,8 +137,8 @@
 
                                     <select id="ddlResult">
                                         @*<option value="0" role=separator>Select Result</option>
-                                        <option value="0" role=separator>Select Result</option>
-                                        <option value="0" role=separator>Select Result</option>*@
+                            <option value="0" role=separator>Select Result</option>
+                            <option value="0" role=separator>Select Result</option>*@
                                         @{
                                             if (Result != null)
                                             {
@@ -155,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <div class="row">
                         <div class="col-4">
                             <div class="col-lg-12">
@@ -184,6 +184,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="row mt-3">
         <div class="col-lg-12">
 
@@ -230,13 +232,12 @@
                             }
                         }
                     }
-                </tbody>ad
+                </tbody>
             </table>
 
 
         </div>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $("#ddlResult").select2();
@@ -249,7 +250,7 @@
             var Result = $('#ddlResult').val();
             var NoOfStdntApp = $('#txtNoOfStudentAppear').val();
             var NoOfStdntPass = $('#txtNoOfStudentPassed').val();
-            
+
 
             var isSaved = true;
             var Data = {

@@ -14,11 +14,13 @@ namespace NewZapures_V2.Controllers
     public class LandBuildingInfoController : Controller
     {
         // GET: LandBuildingInfo
-        public ActionResult Index()
+        public ActionResult Index(string appNo, int deptID)
         {
+            var courses = ZapurseCommonlist.GetCourseForDept(deptID);
+            ViewBag.CourseList = courses;
             return View();
         }
-       
+
         [HttpPost]
         public ActionResult SaveDetails(LandInfoBO trg, HttpPostedFileBase LandAreaProof, HttpPostedFileBase LandConvertProof, HttpPostedFileBase OwnBuildingProof)
         {
