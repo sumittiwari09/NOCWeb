@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
+using static NewZapures_V2.Models.TrusteeBO;
 
 namespace NewZapures_V2.Controllers
 {
@@ -253,39 +254,37 @@ namespace NewZapures_V2.Controllers
             ViewBag.draftApplication = draftApplications;
             return View();
         }
-
-        public ActionResult EditApplication(string applicationNo=null, string trustName=null, int trustID=0, string clgName=null, string dptname=null, string cours=null, int deptID=0, int courseID=0,int clgID=0,string Guid=null)
+        
+        public JsonResult CancelDraftApplication(string applGUID)
         {
-            SessionModel.ApplicantGuid = Guid;
-            ViewBag.appNo = applicationNo;
-            ViewBag.trustName = trustName != null ? trustName.Trim(): null;
-            ViewBag.trustID = trustID;
-            ViewBag.clgname = clgName;
-            ViewBag.dept = dptname;
-            ViewBag.cours = cours;
-            ViewBag.dptID = deptID;
-            ViewBag.courseID = courseID;
-            ViewBag.clgID = clgID;
-            //ViewBag.Guid = "787D460E-F543-4348-A1D2-146B0F70CB00";
-
-            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(trustID);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID="+applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData(); 
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+        //public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
+        public ActionResult EditApplication(string applGUID)
+        {
+            var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             ViewBag.trusteeMember = trusteeMember;
 
             return View();
         }
 
-        public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID,int courseID, int clgID)
+        //public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
+        public ActionResult ApplicationPreview(string applGUID)
         {
-            ViewBag.appNo = applicationNo;
-            ViewBag.trustName = trustName.Trim();
-            ViewBag.trustID = trustID;
-            ViewBag.clgname = clgName;
-            ViewBag.dept = dptname;
-            ViewBag.cours = cours;
-            ViewBag.dptID = deptID;
-            ViewBag.courseID = courseID;
-            ViewBag.clgID = clgID;
-            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(trustID);
+            var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             ViewBag.trusteeMember = trusteeMember;
 
             return View();
@@ -590,6 +589,7 @@ namespace NewZapures_V2.Controllers
             TrusteeBO.CollageFacility modal = new TrusteeBO.CollageFacility();
             modal.Guid = SessionModel.ApplicantGuid;
             //ViewBag.Guid = eGuid;
+            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
             var request = new RestRequest(Method.POST);
@@ -607,6 +607,7 @@ namespace NewZapures_V2.Controllers
                     //return RedirectToAction("Index");
                 }
             }
+            ViewBag.TrusteeList = trustees;
             #endregion
 
             //Collage Faciliy Master from Enum
@@ -674,8 +675,8 @@ namespace NewZapures_V2.Controllers
             //CollageFacilityMster = Common.GetCustomMastersList(35);
             //ViewBag.CollageFacilityMster = CollageFacilityMster;
 
-            ViewData["TrustId"] = modal.TrustId;
-            ViewData["CollageId"] = modal.CollageId;
+            ViewData["TrustId"] = 0; //modal.TrustId;
+            ViewData["CollageId"] = 0; //modal.CollageId;
             //Trust List 
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
@@ -685,7 +686,7 @@ namespace NewZapures_V2.Controllers
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
-
+            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();   
             #region List Trustee
             client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
             request = new RestRequest(Method.GET);
@@ -695,13 +696,14 @@ namespace NewZapures_V2.Controllers
             response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
-                if (_result != null)
-                {
-                    ViewBag.TrusteeList = _result;
-                    //return RedirectToAction("Index");
-                }
+                trustees = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
+                //if (_result != null)
+                //{
+                //    ViewBag.TrusteeList = _result;
+                //    //return RedirectToAction("Index");
+                //}
             }
+            ViewBag.TrusteeList = trustees; 
             #endregion
             return View();
         }
@@ -799,11 +801,13 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public ActionResult CollageAttachment(string TrustId,string CollageId,string CourseId, string appNo)
+        public ActionResult CollageAttachment(string guid)
         {
-            ViewData["TrustId"] = TrustId;
-            ViewData["CollageId"] = CollageId;
-            ViewData["CourseId"] = CourseId;
+            var draftedApplication = ZapurseCommonlist.GetDraftApplication(guid);
+
+            ViewData["TrustId"] = draftedApplication[0].iFKTst_ID;
+            ViewData["CollageId"] = draftedApplication[0].clgID;
+            ViewData["CourseId"] = draftedApplication[0].iFK_CORS_ID;
             return View();
         }
 

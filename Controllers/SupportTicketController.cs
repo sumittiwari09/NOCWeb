@@ -11,35 +11,33 @@ using System.Web.Mvc;
 
 namespace NewZapures_V2.Controllers
 {
-    public class AcdmcMstController : Controller
+    public class SupportTicketController : Controller
     {
-
         ResponseData objResponse;
-        // GET: AcdmcMst
-        public ActionResult Index(string guid)
+
+        // GET: SupportTicket
+        public ActionResult Index()
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];
             var Token = Session["Token"];
             if (userdetailsSession != null)
             {
 
-                var ddlYear = GetYear();
-                var result = GetResult();
-                var AllData = GetAcdmcData();
-                ViewBag.FromYear = ddlYear;
-                ViewBag.ToYear = ddlYear;
-                ViewBag.Result = result;
-                ViewBag.AllData = AllData;
+                var ddlModule = GetModule();
+                var ddlFunctionality = GetFunctionality();
+                var ddlTicket = GetTicket();
+                ViewBag.Module = ddlModule;
+                ViewBag.Functionality = ddlFunctionality;
+                ViewBag.Ticket = ddlTicket;
             }
-
 
             return View();
         }
 
-        public List<Dropdown> GetYear()
+        public List<Dropdown> GetModule()
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetYear");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetModule");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -59,10 +57,10 @@ namespace NewZapures_V2.Controllers
             return data;
         }
 
-        public List<Dropdown> GetResult()
+        public List<Dropdown> GetFunctionality()
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetResult");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetFunctionality");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -82,12 +80,35 @@ namespace NewZapures_V2.Controllers
             return data;
         }
 
-        public JsonResult SaveData(AcdmcMaster mapping)
+        public List<Dropdown> GetTicket()
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetTicket");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> data = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+
+        public JsonResult SaveData(SupportTicket mapping)
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];
             var Token = Session["Token"];
             var json = JsonConvert.SerializeObject(mapping);
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/SaveAcdmcMst");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/SaveSupportTicket");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "bearer " + Token + "");
@@ -107,30 +128,6 @@ namespace NewZapures_V2.Controllers
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
-        }
-
-
-        public List<AcdmcTableData> GetAcdmcData()
-        {
-
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("cache-control", "no-cache");
-            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request.AddParameter("application/json", "", ParameterType.RequestBody);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Accept", "application/json");
-            IRestResponse response = client.Execute(request);
-            List<AcdmcTableData> data = new List<AcdmcTableData>();
-            if (response.StatusCode.ToString() == "OK")
-            {
-                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse.Data != null)
-                {
-                    data = JsonConvert.DeserializeObject<List<AcdmcTableData>>(objResponse.Data.ToString());
-                }
-            }
-            return data;
         }
     }
 }

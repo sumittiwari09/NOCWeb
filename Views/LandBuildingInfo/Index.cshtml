@@ -2,22 +2,22 @@
 @model LandDetailsBO
 @{
     ViewBag.Title = "Land And Building Information";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
 
     //var university = ViewBag.universityCollection as List<Dropdown>;
     var courses = (List<Dropdown>)ViewBag.CourseList;
 
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+@*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
 <!-- Font Awesome -->
 @*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
-<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">*@
 <!-- Theme style -->
 @*<link rel="stylesheet" href="../../dist/css/adminlte.min.css">*@
-<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">*@
 <style type="text/css">
     .dropify-wrapper {
         display: block;
@@ -82,9 +82,9 @@
 
     .locationBTN {
         color: white !important;
-        background: #f953c6; /* fallback for old browsers */
-        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #ffbf68; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #ffbf68); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #ffbf68); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
 </style>
 
@@ -93,13 +93,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            <!--<div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">NOC</li>-->
                     @*<li class="breadcrumb-item">Master</li>*@
-                    <li class="breadcrumb-item active">Land & Building Information</li>
+                    <!--<li class="breadcrumb-item active">Land & Building Information</li>
                 </ol>
-            </div>
+            </div>-->
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -168,7 +168,7 @@
                                     <label for="rbtn_CourseBuildingNo" class="custom-control-label" style="width: max-content;">No</label>
                                 </div>
                             </div>
-                            <div id="divOtherCourses" style="display: none; margin-top: -8px;">
+                            <div id="divOtherCourses" style="display: none; margin-top: -15px;">
                                 <div class="select2-purple">
                                     <select class="singleSelect" multiple="multiple"  id="ddlotherCourses" data-placeholder="Select Course">
                                        
@@ -366,7 +366,7 @@
 </div>
 
 
-<script src="~/Content/jquery/jquery.js"></script>
+@*<script src="~/Content/jquery/jquery.js"></script>*@
 <script src="~/Content/select2/js/select2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>

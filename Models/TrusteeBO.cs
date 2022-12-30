@@ -72,6 +72,7 @@ namespace NewZapures_V2.Models
         public class DraftApplication
         {
             public string ApplicationNumber { get; set; }
+            public string ApplGuid { get; set; }
             public string iFK_Finyr { get; set; }
             public string FinancialYear { get; set; }
             public int iFKTst_ID { get; set; }

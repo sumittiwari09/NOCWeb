@@ -32,13 +32,14 @@ namespace NewZapures_V2.Controllers
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                TrusteeBO.CollageFeeMst _result = _JsonSerializer.Deserialize<TrusteeBO.CollageFeeMst>(response.Content);
-                if (_result != null)
-                {
-                    ViewBag.CollageFeeList = _result;
-                    //return RedirectToAction("Index");
-                }
+                obj = _JsonSerializer.Deserialize<TrusteeBO.CollageFeeMst>(response.Content);
+                //if (_result != null)
+                //{
+                //    ViewBag.CollageFeeList = _result;
+                //    //return RedirectToAction("Index");
+                //}
             }
+            ViewBag.CollageFeeList = obj;
             #endregion
             return View();
         }
@@ -46,6 +47,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public ActionResult Index(TrusteeBO.CollageFeeMst obj)
         {
+            //TrusteeBO.CollageFeeMst obj = new TrusteeBO.CollageFeeMst();
             // department list
             List<CustomMaster> DepartMentList = new List<CustomMaster>();
             DepartMentList = Common.GetCustomMastersList(37);
@@ -69,7 +71,7 @@ namespace NewZapures_V2.Controllers
             //var MyFinancialYearListList = (from m in FinancialYearList select new { m.Id, m.text });
             //ViewData["FinancialYearList"] = new SelectList(MyFinancialYearListList.ToList(), "ListID", "ListName");
 
-
+            ViewBag.CollageFeeList = obj;
 
             return View();
         }

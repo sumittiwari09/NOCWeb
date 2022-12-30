@@ -305,7 +305,19 @@
                 success: function (data) {
                     //console.log('ajax');
                     console.log(data);
+                    if (data.StatusCode == 1) {
 
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `Success`,
+                            html: `<p>Application Draft Saved Successfully...</p>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+
+                    }
                     setTimeout(function () {
                         location.href = '@Url.Action("DraftApplication", "Trustee")';
                     }, 2000)

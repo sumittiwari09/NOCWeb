@@ -14,9 +14,10 @@ namespace NewZapures_V2.Controllers
     public class LandBuildingInfoController : Controller
     {
         // GET: LandBuildingInfo
-        public ActionResult Index(string appNo, int deptID)
+        public ActionResult Index(string guid)
         {
-            var courses = ZapurseCommonlist.GetCourseForDept(deptID);
+            var draftApplications = ZapurseCommonlist.GetDraftApplication(guid);
+            var courses = ZapurseCommonlist.GetCourseForDept(draftApplications[0].iFKDEPT_ID);
             ViewBag.CourseList = courses;
             return View();
         }
