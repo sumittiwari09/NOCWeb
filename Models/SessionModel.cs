@@ -183,22 +183,18 @@ namespace NewZapures_V2.Models
         //    }
         //}
 
-        public static long ApplicantLoginId
+        public static string ApplicantGuid
         {
             get
             {
-                if (HttpContext.Current.Session["_ApplicantLoginId"] != null)
-                {
-
-                    return Convert.ToInt64(HttpContext.Current.Session["_ApplicantLoginId"].ToString());
-                }
-
+                if (HttpContext.Current.Session["_ApplicantGuid"] != null)
+                    return HttpContext.Current.Session["_ApplicantGuid"].ToString();
                 else
-                    return 0;
+                    return "";
             }
             set
             {
-                HttpContext.Current.Session["_ApplicantLoginId"] = value;
+                HttpContext.Current.Session["_ApplicantGuid"] = value;
             }
         }
         public static long InternDetailId
@@ -333,7 +329,35 @@ namespace NewZapures_V2.Models
 
 
       
+        public static string TrustId
+        {
+            get
+            {
+                if (HttpContext.Current.Session["_TrustId"] != null)
+                    return HttpContext.Current.Session["_TrustId"].ToString();
+                else
+                    return "";
+            }
+            set
+            {
+                HttpContext.Current.Session["_TrustId"] = value;
+            }
+        }
 
+        public static string ApplicationId
+        {
+            get
+            {
+                if (HttpContext.Current.Session["_ApplicationId"] != null)
+                    return HttpContext.Current.Session["_ApplicationId"].ToString();
+                else
+                    return "";
+            }
+            set
+            {
+                HttpContext.Current.Session["_TrustId"] = value;
+            }
+        }
 
     }
 }

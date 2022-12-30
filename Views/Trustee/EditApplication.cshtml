@@ -2,9 +2,16 @@
 @{
     ViewBag.Title = "Edit Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
-
+    var eAppNo = (string)ViewBag.appNo;
+    var etrustName = (string)ViewBag.trustName;
+    var etrustID = (int)ViewBag.trustID;
+    var eclgname = (string)ViewBag.clgname;
+    var edept = (string)ViewBag.dept;
+    var ecours = (string)ViewBag.cours;
+    var deptID = (int)ViewBag.dptID;
+    var ecourseID = (int)ViewBag.courseID;
+    var eClgID = (int)ViewBag.clgID;
+    var eGuid = (string)ViewBag.Guid;
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
@@ -109,7 +116,9 @@
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
         <h4 class="mt-0 header-title float-left">Edit Application Details</h4>
-        <a href="@Url.Action("DraftApplication","Trustee")" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Draft Application</a>
+        <div class="form-group" style="text-align:right">
+            <a href="@Url.Action("DraftApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+        </div>
     </div>
     <div class="card-body ">
         <div class="row">

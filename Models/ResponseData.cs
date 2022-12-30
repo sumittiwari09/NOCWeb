@@ -28,6 +28,7 @@ namespace NewZapures_V2.Models
     {
         public string ResponseCode { get; set; }
         public string Messsage { get; set; }
+        public string Id { get; set; }
     }
     public class Response
     {

@@ -26,7 +26,19 @@ namespace NewZapures_V2.Models
             public string TrusteeLogo { get; set; }
             public string TrusteeExtension { get; set; }
             public string TrusteeContentType { get; set; }
+            public string EmailId { get; set; }
+            public string MobileNo { get; set; }
+            public string AadhaarNo { get; set; }
+            public string JanAadhaarNo { get; set; }
+            public string PanNo { get; set; }
 
+            public string SocietyName { get; set; }
+            public object BRN { get; set; }
+            public string SSOID { get; set; }
+            public string TotalNumberOfMembers { get; set; }
+            public string District { get; set; }
+            public string Act { get; set; }
+            public string Status { get; set; }
         }
 
         public class Trustee : ErrorBO
@@ -35,9 +47,7 @@ namespace NewZapures_V2.Models
             public string TrustInfoId { get; set; }
             public string trustName { get; set; }
             public string Name { get; set; }
-
             public string RoleId { get; set; }
-
             public string Mobile { get; set; }
             public string Email { get; set; }
             public string AadhaarNo { get; set; }
@@ -55,6 +65,9 @@ namespace NewZapures_V2.Models
             public string Profilefile { get; set; }
             public string isPrimary { get; set; }
             public string isAuthorize { get; set; }
+            public string Authorized { get; set; }
+            public string AuthorizedExtension { get; set; }
+            public string AuthorizedContentType { get; set; }
         }
         public class DraftApplication
         {
@@ -69,6 +82,7 @@ namespace NewZapures_V2.Models
             public int iFKDEPT_ID { get; set; }
             public string DepartmentName { get; set; }
             public int iFK_CORS_ID { get; set; }
+            public string sGuid { get; set; }
             public string CourseName { get; set; }
             public string createdDate { get; set; }
             public string Applicationstatus { get; set; }
@@ -98,6 +112,7 @@ namespace NewZapures_V2.Models
         {
             public int? TrustId { get; set; }
             public int? CollageId { get; set; }
+            public string Guid { get; set; }
             public List<Facilty> list { get; set; }
         }
 
@@ -125,7 +140,7 @@ namespace NewZapures_V2.Models
             public string CourseId { get; set; }
             public string FinancialYear { get; set; }
             public string ApplicationNumber { get; set; }
-
+            public string Guid { get; set; } 
             public List<RateList> rateLists { get; set; }          
         }
 

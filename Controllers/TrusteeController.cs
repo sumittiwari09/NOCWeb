@@ -31,7 +31,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.RoleType = RoleType;
 
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList?TrustId="+SessionModel.TrustId.ToString());
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -51,8 +51,9 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile)
+        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile,HttpPostedFile Authfile)
         {
+            obj.TrustInfoId = SessionModel.TrustId;
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -77,7 +78,6 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-
             #region Pan
             if (panfile != null)
             {
@@ -118,6 +118,27 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+            #region Authfile
+            if (Authfile != null)
+            {
+                byte[] AadharDocumentbyte;
+                extension = Path.GetExtension(Authfile.FileName);
+                ContentType = aadhaarfile.ContentType;
+                using (Stream inputStream = Authfile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.Authorized = Convert.ToBase64String(Documentbyte);
+                    obj.AuthorizedExtension = extension;
+                    obj.AuthorizedContentType = ContentType;
+                }
+            }
+            #endregion
             #region Add Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddTrustee");
             var request = new RestRequest(Method.POST);
@@ -146,7 +167,7 @@ namespace NewZapures_V2.Controllers
             }
             #endregion
             #region List Trustee
-            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList?TrustId="+obj.TrustInfoId);
             request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -165,6 +186,33 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult DeleteTrustMemeber(int Id)
+        {
+            #region Delete Trust Memeber
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/DeleteTrustMemeber?Id=" + Id);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+            if (objResponseData.ResponseCode == "1")
+            {
+                TempData["SwalStatusMsg"] = "success";
+                TempData["SwalMessage"] = "Deleted Successfully!!";
+                TempData["SwalTitleMsg"] = "Success...!";
+                //return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+                //return RedirectToAction("Index");
+            }
+            #endregion
+            return RedirectToAction("Index");
+        }
         public ActionResult DownloadDocuments(int id)
         {
             #region List Trustee
@@ -206,16 +254,16 @@ namespace NewZapures_V2.Controllers
             ViewBag.draftApplication = draftApplications;
             return View();
         }
-        
+
         public JsonResult CancelDraftApplication(string applGUID)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID="+applGUID);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            ResponseData objResponse = new ResponseData(); 
+            ResponseData objResponse = new ResponseData();
             if (response.StatusCode.ToString() == "OK")
             {
                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
@@ -228,7 +276,6 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-
         //public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
         public ActionResult EditApplication(string applGUID)
         {
@@ -256,44 +303,122 @@ namespace NewZapures_V2.Controllers
         //    return View();
         //}
         [HttpGet]
-        public ActionResult TrusteeGeneralInfo()
+        public ActionResult TrusteeGeneralInfo(string RegNo)
         {
-            //var client = new RestClient("https://api.sewadwaar.rajasthan.gov.in/app/live/master/getmasterdata/service?client_id=88d28d9b-408d-4b41-ab9e-5f704825ce4c");
-            //var request = new RestRequest(Method.POST);
-            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            //request.AddHeader("UserName","Doit");
-            //request.AddHeader("Password","Doit@123");
-            //request.AddHeader("ProjectCode","WSKANBZATL");
-            //request.AddHeader("MasterDataID","1");
-            //request.AddHeader("IsNew","1");
-            //request.AddHeader("IsActive","1");
-            //request.AddHeader("ModificationDate", "01-01-2017");
-            ////request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            //request.AddParameter("application/json", "", ParameterType.RequestBody);
+            TrustRoot _trustapi = new TrustRoot();
+            //modal.RegistrationNo = "COOP/2019/ALWAR/100658";
+            #region Trust API
+            var client = new RestClient("https://rajsahakarapp.rajasthan.gov.in/api/EntireSocietyDetail/GetSocietyDetailsByRegistrationNO?Reg_no=" + RegNo);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                _trustapi = _JsonSerializer.Deserialize<TrustRoot>(response.Content);
+                if (_trustapi.Status == "200" && _trustapi.Message == "Success")
+                {
+                    ErrorBO _ress = Verificationdata(_trustapi);
+                    if(_ress.ResponseCode == "1")
+                    {
+                        #region List Trustee
+                        client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustInfo?TrustId=" + _trustapi.Data.RegistrationNo);
+                        request = new RestRequest(Method.GET);
+                        request.AddHeader("cache-control", "no-cache");
+                        //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+                        _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
+                        request.AddParameter("application/json", "", ParameterType.RequestBody);
+                        response = client.Execute(request);
+                        if (response.StatusCode.ToString() == "OK")
+                        {
+                            TrusteeBO.TrusteeInfo _result = _JsonSerializer.Deserialize<TrusteeBO.TrusteeInfo>(response.Content);
+                            if (_result != null)
+                            {
+                                ViewBag.TrustDetails = _result;
+                                //return RedirectToAction("Index");
+                            }
+                        }
+                        #endregion
+                    }
+                }
+                else
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Success = false, Message = "Enter Correct Registration Number", res = _trustapi },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            //Console.WriteLine(response.Content);
+            #endregion
+
+            // TrusteeBO.TrusteeInfo modal = new TrusteeBO.TrusteeInfo();
+            // modal.RegistrationNo = RegNo;
+            // #region Save and Get details
+            // //#region VerifyDetails
+            //var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustVerificationAPI");
+            //var  request = new RestRequest(Method.POST);
+            // request.AddHeader("cache-control", "no-cache");
+            // //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            // _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            // request.AddParameter("application/json", _JsonSerializer.Serialize(modal), ParameterType.RequestBody);
             //IRestResponse response = client.Execute(request);
+            // if (response.StatusCode.ToString() == "OK")
+            // {
+            //     ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+            //     if (objResponseData.ResponseCode == "1")
+            //     {
+            //         //TempData["SwalStatusMsg"] = "success";
+            //         //TempData["SwalMessage"] = "Data saved sussessfully!";
+            //         //TempData["SwalTitleMsg"] = "Success...!";
+            //         SessionModel.TrustId = objResponseData.Id;
+            //         return new JsonResult
+            //         {
+            //             Data = new { Success = true, Message = objResponseData.Messsage },
+            //             ContentEncoding = System.Text.Encoding.UTF8,
+            //             JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            //         };
+            //     }
+            //     else
+            //     {
+            //         //TempData["SwalStatusMsg"] = "error";
+            //         //TempData["SwalMessage"] = "Something wrong";
+            //         //TempData["SwalTitleMsg"] = "error!";
+            //         return new JsonResult
+            //         {
+            //             Data = new { Success = false, Message = objResponseData.Messsage },
+            //             ContentEncoding = System.Text.Encoding.UTF8,
+            //             JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            //         };
+            //     }
+            // }
+            // //#endregion
+            // #endregion
 
 
-            //#region List Trustee
-            //var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
-            //var request = new RestRequest(Method.GET);
-            //request.AddHeader("cache-control", "no-cache");
-            ////request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            //request.AddParameter("application/json", "", ParameterType.RequestBody);
-            //IRestResponse response = client.Execute(request);
-            //if (response.StatusCode.ToString() == "OK")
-            //{
-            //    List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
-            //    if (_result != null)
-            //    {
-            //        ViewBag.TrusteeList = _result;
-            //        //return RedirectToAction("Index");
-            //    }
-            //}
-            //#endregion
+            // #region List Trustee
+            // var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustInfo?TrustId=" + SessionModel.TrustId);
+            // var request = new RestRequest(Method.GET);
+            // request.AddHeader("cache-control", "no-cache");
+            // //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            // _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
+            // request.AddParameter("application/json", "", ParameterType.RequestBody);
+            // IRestResponse response = client.Execute(request);
+            // if (response.StatusCode.ToString() == "OK")
+            // {
+            //     TrusteeBO.TrusteeInfo _result = _JsonSerializer.Deserialize<TrusteeBO.TrusteeInfo>(response.Content);
+            //     if (_result != null)
+            //     {
+            //         ViewBag.TrustDetails = _result;
+            //         //return RedirectToAction("Index");
+            //     }
+            // }
+            // #endregion
 
-            List<CustomMaster> TrusteeType = new List<CustomMaster>();
-            TrusteeType = Common.GetCustomMastersList(31);
-            ViewBag.TrusteeType = TrusteeType;
+            // List<CustomMaster> TrusteeType = new List<CustomMaster>();
+            // TrusteeType = Common.GetCustomMastersList(31);
+            // ViewBag.TrusteeType = TrusteeType;
             return View();
         }
         public List<CustomMaster> GetTrustDropDownList(int Enum)
@@ -467,46 +592,68 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpGet]
-        public ActionResult CollageFacilitys(string guid)
+        public ActionResult CollageFacilitys()
         {
+            TrusteeBO.CollageFacility modal = new TrusteeBO.CollageFacility();
+            modal.Guid = SessionModel.ApplicantGuid;
+            //ViewBag.Guid = eGuid;
+            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            request.AddParameter("application/json", _JsonSerializer.Serialize(modal), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                TrusteeBO.CollageFacility _result = _JsonSerializer.Deserialize<TrusteeBO.CollageFacility>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.CollageFacilityMster = _result;
+                    //return RedirectToAction("Index");
+                }
+            }
+            ViewBag.TrusteeList = trustees;
+            #endregion
+
             //Collage Faciliy Master from Enum
             //List<CustomMaster> CollageFacilityMster = new List<CustomMaster>();
             //CollageFacilityMster = Common.GetCustomMastersList(35);
             //ViewBag.CollageFacilityMster = CollageFacilityMster;
-            ViewData["TrustId"] = "0";
-            ViewData["CollageId"] = "0";
+            //ViewData["TrustId"] = "0";
+            //ViewData["CollageId"] = "0";
 
-            ViewBag.CollageFacilityMster = new List<CustomMaster>();
+            //ViewBag.CollageFacilityMster = new List<CustomMaster>();
 
             //Trust List 
-            List<CustomMaster> TrustList = new List<CustomMaster>();
-            TrustList = GetTrustDropDownList(28);
-            ViewBag.TrustList = TrustList;
+            //List<CustomMaster> TrustList = new List<CustomMaster>();
+            //TrustList = GetTrustDropDownList(28);
+            //ViewBag.TrustList = TrustList;
 
 
-            List<CustomMaster> RoleType = new List<CustomMaster>();
-            RoleType = Common.GetCustomMastersList(29);
-            ViewBag.RoleType = RoleType;
+            //List<CustomMaster> RoleType = new List<CustomMaster>();
+            //RoleType = Common.GetCustomMastersList(29);
+            //ViewBag.RoleType = RoleType;
 
-            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();
-            #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("cache-control", "no-cache");
-            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-            request.AddParameter("application/json", "", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-            if (response.StatusCode.ToString() == "OK")
-            {
-                trustees = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
-                //if (_result != null)
-                //{
-                //    ViewBag.TrusteeList = _result;
-                //    //return RedirectToAction("Index");
-                //}
-            }
-            ViewBag.TrusteeList = trustees;
-            #endregion
+            //#region List Trustee
+            //var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            //var request = new RestRequest(Method.GET);
+            //request.AddHeader("cache-control", "no-cache");
+            ////request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            //request.AddParameter("application/json", "", ParameterType.RequestBody);
+            //IRestResponse response = client.Execute(request);
+            //if (response.StatusCode.ToString() == "OK")
+            //{
+            //    List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
+            //    if (_result != null)
+            //    {
+            //        ViewBag.TrusteeList = _result;
+            //        //return RedirectToAction("Index");
+            //    }
+            //}
+            //#endregion
             return View();
         }
 
@@ -571,6 +718,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public JsonResult CollageFacilitysAdd(TrusteeBO.CollageFacility modal)
         {
+            modal.Guid = SessionModel.ApplicantGuid;
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageFacility");
             var request = new RestRequest(Method.POST);
@@ -841,6 +989,55 @@ namespace NewZapures_V2.Controllers
             }
             #endregion
             return _result;
+        }
+
+        public ErrorBO Verificationdata(TrustRoot modal)
+        {
+            ErrorBO _res = new ErrorBO();
+            #region VerifyDetails
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustVerificationAPI");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            request.AddParameter("application/json", _JsonSerializer.Serialize(modal), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                _res = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+                if (_res.ResponseCode == "1")
+                {
+                    //TempData["SwalStatusMsg"] = "success";
+                    //TempData["SwalMessage"] = "Data saved sussessfully!";
+                    //TempData["SwalTitleMsg"] = "Success...!";
+                    SessionModel.TrustId = _res.Id;
+                    //return new JsonResult
+                    //{
+                    //    Data = new { Success = true, Message = objResponseData.Messsage },
+                    //    ContentEncoding = System.Text.Encoding.UTF8,
+                    //    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    //};
+                }
+                else
+                {
+                    //TempData["SwalStatusMsg"] = "error";
+                    //TempData["SwalMessage"] = "Something wrong";
+                    //TempData["SwalTitleMsg"] = "error!";
+                    //return new JsonResult
+                    //{
+                    //    Data = new { Success = false, Message = objResponseData.Messsage },
+                    //    ContentEncoding = System.Text.Encoding.UTF8,
+                    //    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    //};
+                }
+            }
+            #endregion
+            return _res;
+        }
+
+        public ActionResult testpage()
+        {
+            return View();
         }
     }
 }
