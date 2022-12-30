@@ -117,6 +117,43 @@ namespace NewZapures_V2.Controllers
             }
             //return RedirectToAction("CreateDetails");
         }
+        
+        //[HttpPost]
+        //public ActionResult ContactSaveDetails(BasicDetailsBO trg)
+        //{
+        //  try
+        //    {
+        //        var userdetailsSession = (UserModelSession)Session["UserDetails"];
+        //        //party.ParentId = userdetailsSession.PartyId;
+        //        var json = JsonConvert.SerializeObject(trg);
+        //        var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/ContactDetailConfigure");
+        //        var request = new RestRequest(Method.POST);
+        //        request.AddHeader("cache-control", "no-cache");
+        //        request.AddParameter("application/json", json,ParameterType.RequestBody);
+        //        request.AddHeader("Content-Type", "application/json");
+        //        request.AddHeader("Accept", "application/json");
+        //        IRestResponse response = client.Execute(request);
+        //        if (response.StatusCode.ToString() == "OK")
+        //        {
+        //            var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+        //            TempData["isSaved"] = 1;
+        //            TempData["msg"] = " Details Saved...";
+        //            ContactList();
+        //            return RedirectToAction("CreateDetails", "BasicDetails");
+        //        }
+        //        else
+        //        {
+        //            TempData["isSaved"] = 0;
+        //            TempData["msg"] = " Details Not Saved...";
+        //            return RedirectToAction("CreateDetails", "BasicDetails");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    //return RedirectToAction("CreateDetails");
+        //}
 
         [HttpGet]
         public ActionResult CollageList()
@@ -140,6 +177,29 @@ namespace NewZapures_V2.Controllers
             #endregion
             return View();
         }
+     
+        //[HttpGet]
+        //public ActionResult ContactList()
+        //{
+        //    #region List Contact Apply List
+        //    var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "BasicDataDetails/ContactDetailConfigure");
+        //    var request = new RestRequest(Method.GET);
+        //    request.AddHeader("cache-control", "no-cache");
+        //    //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+        //    request.AddParameter("application/json", "", ParameterType.RequestBody);
+        //    IRestResponse response = client.Execute(request);
+        //    if (response.StatusCode.ToString() == "OK")
+        //    {
+        //        List<BasicDetailsBO> _result = _JsonSerializer.Deserialize<List<BasicDetailsBO>>(response.Content);
+        //        if (_result != null)
+        //        {
+        //            ViewBag.ContactList = _result;
+        //            //return RedirectToAction("Index");
+        //        }
+        //    }
+        //    #endregion
+        //    return View();
+        //}
 
     }
 }
