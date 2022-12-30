@@ -114,16 +114,16 @@ namespace NewZapures_V2.Controllers
 
                     var userModel = AddUpdateSSO(_SSOUserDetail);
 
-                    List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                    List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel[0].RoleId, userModel[0].DepartmentId);
                     List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
                     SSO.IncreaseSession();
 
-                    if (userModel.PartyId == "A000001")
+                    if (userModel[0].PartyId == "A000001")
                     {
                         //if (permissions != null)
                         //{
                         //Session["Token"] = objResponse.JWT;
-                        Session["UserDetails"] = userModel;
+                        Session["UserDetails"] = userModel[0];
                         Session["UserPermissions"] = permissions;
                         Session["notificationList"] = notificationsData;
 
@@ -131,12 +131,12 @@ namespace NewZapures_V2.Controllers
                         //return RedirectToAction("WelcomeNoc", "Dashboard");
                         return RedirectToAction("Index", "Dashboard");
                     }
-                    else if (userModel.Type == "11")
+                    else if (userModel[0].Type == "11")
                     {
                         //if (permissions != null)
                         //{
                         //Session["Token"] = objResponse.JWT;
-                        Session["UserDetails"] = userModel;
+                        Session["UserDetails"] = userModel[0];
                         Session["UserPermissions"] = permissions;
                         Session["notificationList"] = notificationsData;
 
@@ -148,7 +148,7 @@ namespace NewZapures_V2.Controllers
                         if (permissions != null)
                         {
                             //Session["Token"] = objResponse.JWT;
-                            Session["UserDetails"] = userModel;
+                            Session["UserDetails"] = userModel[0];
                             Session["UserPermissions"] = permissions;
                             Session["notificationList"] = notificationsData;
 
@@ -164,7 +164,7 @@ namespace NewZapures_V2.Controllers
             return View();
         }
 
-        public UserModelSession AddUpdateSSO(SSOUserDetail userDetail)
+        public List<UserModelSession> AddUpdateSSO(SSOUserDetail userDetail)
         {
             ResponseData objResponse = new ResponseData();
 
@@ -178,13 +178,13 @@ namespace NewZapures_V2.Controllers
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Accept", "application/json");
             IRestResponse response = client.Execute(request);
-            UserModelSession userModel = new UserModelSession();
+            List<UserModelSession> userModel = new List<UserModelSession>();
             if (response.StatusCode.ToString() == "OK")
             {
                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (objResponse.Data != null)
                 {
-                    userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
+                    userModel = JsonConvert.DeserializeObject<List<UserModelSession>>(objResponse.Data.ToString());
                 }
             }
 
