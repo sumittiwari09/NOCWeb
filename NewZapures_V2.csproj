@@ -3591,6 +3591,10 @@
     <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
     <Content Include="Views\AcdmcMst\index.cshtml" />
     <Content Include="Views\Master\ArchitectureDetail.cshtml" />
+    <Content Include="Views\Master\NewArchitectureDetail.cshtml" />
+    <Content Include="Views\Master\Testing.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\Newitem.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

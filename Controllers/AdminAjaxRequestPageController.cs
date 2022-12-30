@@ -463,7 +463,10 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-
+        public ActionResult Newitem()
+        {
+            return View();
+        }
 
     }
 }
