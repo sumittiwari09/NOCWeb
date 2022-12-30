@@ -15,35 +15,13 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: FeeDetails
-        public ActionResult Index(string guid)
+        public ActionResult Index()
         {
-
-            var draftedApplication = ZapurseCommonlist.GetDraftApplication(guid);
-
-
-
-            ViewData["TrustId"] = draftedApplication[0].iFKTst_ID;
-            ViewData["CollageId"] = draftedApplication[0].clgID;
-            ViewData["CourseId"] = draftedApplication[0].iFK_CORS_ID;
-            // department list
-            //List<CustomMaster> DepartMentList = new List<CustomMaster>();
-            //DepartMentList = Common.GetCustomMastersList(37);
-            //ViewBag.DepartMentList = DepartMentList;
-
-            //// Course List
-            //List<CustomMaster> CourseList = new List<CustomMaster>();
-            //CourseList = Common.GetCustomMastersList(30);
-            //ViewBag.CourseList = CourseList;
-
-            ////Financial year
-            //List<CustomMaster> FinancialYearList = new List<CustomMaster>();
-            //FinancialYearList = Common.GetCustomMastersList(37);
-            //ViewBag.FinancialYearList = FinancialYearList;
-            //CourseId = "1";
             TrusteeBO.CollageFeeMst obj = new TrusteeBO.CollageFeeMst();
-            obj.CourseId = draftedApplication[0].iFK_CORS_ID.ToString();
-            obj.TrustId = draftedApplication[0].iFKTst_ID.ToString();
-            obj.CollageId = draftedApplication[0].clgID.ToString();
+            //obj.CourseId = CourseId;
+            //obj.TrustId = TrustId;
+            //obj.CollageId = CollageId;
+            obj.Guid = SessionModel.ApplicantGuid;
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetFeeDetailsList");
             var request = new RestRequest(Method.POST);
@@ -119,6 +97,7 @@ namespace NewZapures_V2.Controllers
         [HttpPost]
         public JsonResult SaveCollageFee(TrusteeBO.CollageFeeMst modal)
         {
+            modal.Guid = SessionModel.ApplicantGuid;
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageFee");
             var request = new RestRequest(Method.POST);

@@ -138,7 +138,17 @@
                         else
                         {
                             <tr>
-                                <td colspan="10" style="text-align: center;">No Data Available</td>
+                                <th>@i</th>
+                                <th>@item.createdDate</th>
+                                <th>@item.ApplicationNumber</th>
+                                <th>@item.TrustName</th>
+                                <th>@item.CollegeName</th>
+                                <th>@item.DepartmentName</th>
+                                <th>@item.CourseName</th>
+                                <th>@item.Applicationstatus</th>
+                                <th><a href="@Url.Action("EditApplication", "Trustee", new {clgID=item.clgID,applicationNo=item.ApplicationNumber,trustName=item.TrustName,trustID=item.iFKTst_ID,clgName=item.CollegeName,dptname=item.DepartmentName,cours=item.CourseName,deptID=item.iFKDEPT_ID,courseID=item.iFK_CORS_ID,Guid=item.sGuid})"><i class="fas fa-pencil"></i></a>
+                                    &nbsp;&nbsp;
+                                <a href="#"><i class="fas fa-trash" style="color:red"></i></a></th>
                             </tr>
 
                         }
