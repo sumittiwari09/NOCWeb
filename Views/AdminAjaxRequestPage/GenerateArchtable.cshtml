@@ -1,0 +1,38 @@
+﻿@using NewZapures_V2.Models
+@model List<ArchiMstDetail>
+@{
+    Layout = null;
+    var i = 1;
+}
+
+@foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>
+                        @{
+                            if (!string.IsNullOrEmpty(item.bAttachFile))
+                            {
+                                <img src="data:@item.ProfileContentType;base64,@item.bAttachFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                            }
+                        }
+                    </td>
+                    <td>
+                        @item.iWid
+                    </td>
+                    <td>
+                        @item.iLen
+                    </td>
+                    <td>
+                        @item.iQty
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-danger btn-sm padding5" title="Delete" onclick="Delete(@item.ipk_ArchiMstDetId,@item.iParamId,@item.iSubCatId,@item.iUomId)">
+                            <i class="fa fa-times"></i>
+                        </a>
+
+                    </td>
+                    
+                </tr>
+                                i = i + 1;
+                            }
