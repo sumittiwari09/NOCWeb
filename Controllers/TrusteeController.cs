@@ -254,20 +254,28 @@ namespace NewZapures_V2.Controllers
             ViewBag.draftApplication = draftApplications;
             return View();
         }
-        
+
         public JsonResult CancelDraftApplication(string applGUID)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID="+applGUID);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            ResponseData objResponse = new ResponseData(); 
+            ResponseData objResponse = new ResponseData();
             if (response.StatusCode.ToString() == "OK")
             {
                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
             }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = "", Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
         //public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
         public ActionResult EditApplication(string applGUID)
         {
