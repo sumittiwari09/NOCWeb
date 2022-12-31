@@ -15,5 +15,7 @@ namespace NewZapures_V2.Models
         public string Created_id { get; set; }
         public List<ContactDetails> ContactDetails { get; set; }
         public string IsActive { get; set; }
+        public string Documentextension { get; set; }
+        public string DocumentContentType { get; set; }
     }
 }
