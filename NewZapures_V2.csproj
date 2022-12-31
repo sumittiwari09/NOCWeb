@@ -2340,6 +2340,7 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\globalDomain.js" />
     <Content Include="Content\loader.css" />
+    <Content Include="Content\LoginSignUp\img\NOC Process flow.jpeg" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -3532,6 +3533,7 @@
     <Content Include="Views\UniversityMST\Create.cshtml" />
     <Content Include="Views\UserDetails\Index.cshtml" />
     <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
+    <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
