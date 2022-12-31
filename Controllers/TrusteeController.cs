@@ -312,6 +312,7 @@ namespace NewZapures_V2.Controllers
         [HttpGet]
         public ActionResult TrusteeGeneralInfo(string RegNo)
         {
+            SessionModel.TrustRegNo = RegNo;
             TrustRoot _trustapi = new TrustRoot();
             //modal.RegistrationNo = "COOP/2019/ALWAR/100658";
             #region Trust API
@@ -341,6 +342,7 @@ namespace NewZapures_V2.Controllers
                             if (_result != null)
                             {
                                 ViewBag.TrustDetails = _result;
+                                SessionModel.TrustId = _result.TrusteeInfoId;
                                 //return RedirectToAction("Index");
                             }
                         }
@@ -450,9 +452,10 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile)
+        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile,HttpPostedFileBase TMProfffile)
         {
 
+            obj.TrusteeInfoId = SessionModel.TrustId;
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -518,6 +521,27 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+            #region Registration Document
+            if (TMProfffile != null)
+            {
+
+                extension = Path.GetExtension(TMProfffile.FileName);
+                ContentType = TMProfffile.ContentType;
+                using (Stream inputStream = TMProfffile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.TRMP = Convert.ToBase64String(Documentbyte);
+                    obj.TRMPExtension = extension;
+                    obj.TRMPContenttype = ContentType;
+                }
+            }
+            #endregion
             #region Add Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddTrusteeInfo");
             var request = new RestRequest(Method.POST);
@@ -534,7 +558,7 @@ namespace NewZapures_V2.Controllers
                     TempData["SwalStatusMsg"] = "success";
                     TempData["SwalMessage"] = "Data saved sussessfully!";
                     TempData["SwalTitleMsg"] = "Success...!";
-                    return RedirectToAction("TrusteeGeneralInfo");
+                    return RedirectToAction("TrusteeGeneralInfo",new { RegNo = SessionModel.TrustRegNo});
                 }
                 else
                 {
@@ -545,6 +569,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+
             List<CustomMaster> TrusteeType = new List<CustomMaster>();
             TrusteeType = Common.GetCustomMastersList(31);
             ViewBag.TrusteeType = TrusteeType;
