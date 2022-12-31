@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Draft Application";
+    ViewBag.Title = "Upload Fee Recipt";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var draft = (List<TrusteeBO.DraftApplication>)ViewBag.draftApplication;
 }
@@ -79,7 +79,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Draft Application</li>
+                    <li class="breadcrumb-item active">Fee Recipt</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -88,7 +88,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <h4 class="mt-0 header-title float-left">Application List</h4>
+        <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
     </div>
     <div class="card-body row">
         <div class="form-group col-lg-12">
@@ -125,9 +125,9 @@
                                     <td>@item.CourseName</td>
                                     <td>@item.Applicationstatus</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-primary" href="@Url.Action("EditApplication", "Trustee")"><i class="fas fa-pencil"></i></a>
+                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
                                         &nbsp;&nbsp;
-                                        <button onclick="Verify('@item.ApplGuid', '@item.ApplicationNumber')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        <button id="btnUpload" class="btn btn-sm btn-outline-dark"><i class="fas fa-upload"></i></button>
                                     </td>
                                 </tr>
                                 i++;
@@ -140,22 +140,9 @@
                             <tr>
                                 <td colspan="10" class="text-center">No Data Available</td>
                             </tr>
+
                         }
                     }
-
-
-                    @*<tr>
-            <th>1</th>
-            <th>19.12.2022</th>
-            <th>Trust 1</th>
-            <th>College 1</th>
-            <th>Department 1</th>
-            <th>Course 1</th>
-            <th>In-process</th>
-            <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
-        </tr>*@
-
-
                 </tbody>
             </table>
         </div>
