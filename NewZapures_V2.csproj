@@ -2626,6 +2626,9 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.esm.min.js.map" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js.map" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="LandDocuments\Affidavit Document for Coversion.pdf" />
+    <Content Include="LandDocuments\Certificate of Land &amp; Rented Building.pdf" />
+    <Content Include="LandDocuments\Land Title Certificate.pdf" />
     <None Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1-vsdoc.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.min.js" />

@@ -289,7 +289,10 @@ namespace NewZapures_V2.Controllers
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+            var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
             ViewBag.trusteeMember = trusteeMember;
+            ViewBag.LandDetails = LandData;
+
 
             return View();
         }
