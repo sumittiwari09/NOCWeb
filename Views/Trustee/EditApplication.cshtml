@@ -14,6 +14,7 @@
     //var eGuid = (string)ViewBag.Guid;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    var lands = (List<LandInfoBO>)ViewBag.LandDetails;
 }
 
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
@@ -109,17 +110,15 @@
                     <li class="breadcrumb-item active">Edit Application</li>
                 </ol>
             </div>
-            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
 
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
-        <h4 class="mt-0 header-title float-left">Edit Application Details</h4>
-        <div class="form-group" style="text-align:right">
-            <a href="@Url.Action("DraftApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
-        </div>
+        <h4 class="mt-0 header-title float-left">Edit Application</h4>
+        <a href="@Url.Action("DraftApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Draft</a>
     </div>
     <div class="card-body ">
         <div class="row">
@@ -127,8 +126,8 @@
                 <tr>
                     <th style="color:black!important;font-weight:500">Application Number :</th>
                     <td>@draftAppl.ApplicationNumber</td>
-                    <th style="color:black!important;font-weight:500">Trust Name</th>
-                    <td>@draftAppl.TrustName</td>
+                    <th hidden style="color:black!important;font-weight:500">Trust Name</th>
+                    <td hidden>@draftAppl.TrustName</td>
                     <th style="color:black!important;font-weight:500">Department Name</th>
                     <td>@draftAppl.DepartmentName</td>
                 </tr>
@@ -191,6 +190,7 @@
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
                         </ul>
 
                     </div>
@@ -207,6 +207,82 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+                <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="appSummary">Application Summary</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 20px !important;">
+                            <p style="font-size: 15px;font-weight: 500;color: black;">Your Application is processed for following selection : </p>
+                            <table class="table table-bordered" id="tblsummery" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+                                <tr><th>Trust</th><td><span id="spnTrust">@draftAppl.TrustName</span></td><th>College</th><td><span id="spnCollege">@draftAppl.CollegeName</span></td></tr>
+                                <tr><th>Degree</th><td><span id="spnDegree">@draftAppl.DepartmentName</span></td><th>Course</th><td><span id="spnCourse">@draftAppl.CourseName</span></td></tr>
+                                <tr><th>District</th><td>NA</td><th>College Type</th><td>@draftAppl.clgTypeName</td></tr>
+                                <tr><th>SSO</th><td>NA</td><th>Username</th><td>NA</td></tr>
+                            </table>
+
+                            <p>Land & Building Information</p>
+                            <table class="table table-bordered" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+                                <thead>
+                                    <tr>
+                                        <th>Land Area</th>
+                                        <th>Land Doc Type</th>
+                                        <th>Is Land Converted</th>
+                                        <th>Order No</th>
+                                        <th>Order Date</th>
+                                        <th>Land Type</th>
+                                        <th>Khasara No</th>
+                                        <th>Land Area</th>
+                                        <th hidden>Total Area</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+
+                                        foreach (var item in lands)
+                                        {
+                                            <tr>
+                                                <td>@item.sLndArea</td>
+                                                <td>@item.sLndDocType</td>
+                                                <td>@item.sIsLndCnvrted</td>
+                                                <td>@item.sOrdrNo</td>
+                                                <td>@item.dtOrdrDate</td>
+                                                <td>@item.sLndTyp</td>
+                                                <td>@item.sKhasaraNo</td>
+                                                <td>@item.dLndArea</td>
+                                                <td hidden>@item.dTotalArea</td>
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div style="display: flex;gap: 10px; align-items: baseline;">
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="customCheck1" name="customCheck" class="custom-control-input">
+                                    @*<label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to continue for application</label>*@
+                                <label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to submit my application</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>
+                            <button type="button" class="btn btn-primary" onclick="SaveDetails();">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>

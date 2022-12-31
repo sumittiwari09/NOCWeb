@@ -922,6 +922,25 @@ namespace NewZapures_V2.Models
             }
             return draftApplication;
         }
+        public static List<LandInfoBO> GetLandData(string applGUID = "")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "LandDetails/GetLandData?APPGUID=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<LandInfoBO> draftApplication = new List<LandInfoBO>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    draftApplication = JsonConvert.DeserializeObject<List<LandInfoBO>>(requestResponse.Data.ToString());
+            }
+            return draftApplication;
+        }
 
         public static List<Dropdown> GetCourseForDept(int MenuId, string Type = "Course")
         {

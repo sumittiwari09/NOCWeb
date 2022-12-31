@@ -84,6 +84,8 @@ namespace NewZapures_V2.Models
             public int iFKTst_ID { get; set; }
             public string TrustName { get; set; }
             public string CollegeName { get; set; }
+            public int clgType { get; set; }
+            public string clgTypeName { get; set; }
             public int clgID { get; set; }
             public int iFKDEPT_ID { get; set; }
             public string DepartmentName { get; set; }
