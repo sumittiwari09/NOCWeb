@@ -509,17 +509,17 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
-        public ActionResult NewArchitectureDetail()
+        public ActionResult NewArchitectureDetail(string guid= "abhc123")
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
             lst = ParameterValueConfigurationlist();
-            ViewBag.Applicableid = "abhc123";
+            ViewBag.Applicableid = guid;
             return View(lst);
         }
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureDetail");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureDetail");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -605,7 +605,7 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult DeleteImage(int ipk_ArchiMstDetId)
         {
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -676,7 +676,7 @@ namespace NewZapures_V2.Controllers
             upload.iUomId = iUomId;
             upload.UploadUrl =FileName;
             upload.Type = Type;
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchupload");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchupload");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -698,7 +698,7 @@ namespace NewZapures_V2.Controllers
             mst.iUom = iUomId;
             mst.iFK_AppId = sAppId;
             mst.Value = value;
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureMst");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureMst");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -734,11 +734,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        public ActionResult NewArchitectureDetail(string guid)
-        {
-            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-            lst = ParameterValueConfigurationlist();
-            return View(lst);
-        }
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
     }
 }

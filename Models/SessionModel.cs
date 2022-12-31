@@ -344,6 +344,21 @@ namespace NewZapures_V2.Models
             }
         }
 
+        public static string TrustRegNo
+        {
+            get
+            {
+                if (HttpContext.Current.Session["_TrustRegNo"] != null)
+                    return HttpContext.Current.Session["_TrustRegNo"].ToString();
+                else
+                    return "";
+            }
+            set
+            {
+                HttpContext.Current.Session["_TrustRegNo"] = value;
+            }
+        }
+
         public static string ApplicationId
         {
             get

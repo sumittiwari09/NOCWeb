@@ -26,6 +26,11 @@ namespace NewZapures_V2.Models
             public string TrusteeLogo { get; set; }
             public string TrusteeExtension { get; set; }
             public string TrusteeContentType { get; set; }
+
+            public string TRMP { get; set; }
+            public string TRMPExtension { get; set; }
+            public string TRMPContenttype { get; set; }
+
             public string EmailId { get; set; }
             public string MobileNo { get; set; }
             public string AadhaarNo { get; set; }
@@ -39,6 +44,7 @@ namespace NewZapures_V2.Models
             public string District { get; set; }
             public string Act { get; set; }
             public string Status { get; set; }
+            public List<AdministrativeDatum> AdminList { get; set; }
         }
 
         public class Trustee : ErrorBO

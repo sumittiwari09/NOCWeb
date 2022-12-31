@@ -184,7 +184,7 @@
 <script src="~/Content/globalDomain.js"></script>
 <script type="text/javascript">
     $('#ddlparentdata').on('change', function () {
-        debugger;
+        
         var newparenttype = $("#ddlparentdata" + " option:selected").text();
         var oldparentid = $("#FromParentId").val();
         var op = '';
@@ -311,7 +311,7 @@
 
     });
     $('#btnsubmit').on("click", function () {
-        debugger;
+        
         var regdetails = {};
         var SwitchType = $('#Switchtype').val();
         var IsParentKnow = $('#IsParentKnow').val();
@@ -380,7 +380,7 @@
                 closeOnCancel: false
             }).then((result) => {
                 if (result) {
-                    debugger;
+                    
                     swal.close();
                     //$("#Loding").modal({ backdrop: "static" });
                     var newUrl = GetglobalDomain() + '/Admin/ClientChangeRequest';
@@ -390,7 +390,7 @@
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         success: function (Data) {
-                            debugger;
+                            
                             if (Data.Details.ResponseCode == 1) {
                                 setTimeout(function () {
                                     swal.fire({
