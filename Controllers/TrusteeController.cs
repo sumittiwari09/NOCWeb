@@ -254,6 +254,13 @@ namespace NewZapures_V2.Controllers
             ViewBag.draftApplication = draftApplications;
             return View();
         }
+        
+        public ActionResult UploadFeeRecipt()
+        {
+            var draftApplications = ZapurseCommonlist.GetDraftApplication();
+            ViewBag.draftApplication = draftApplications;
+            return View();
+        }
 
         public JsonResult CancelDraftApplication(string applGUID)
         {
