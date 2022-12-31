@@ -124,7 +124,7 @@
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".singleselect").select2();
-        debugger;
+        
         //var Typedata = $("#Type").val();
         //if (parseInt(Typedata) != 0) {
 
@@ -187,7 +187,7 @@
         });
 
           function BindGroup(Id) {
-            debugger;
+            
             var strHTML = "";
 
             strHTML += "<option value=''>Select Group</option>"
@@ -210,7 +210,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -236,7 +236,7 @@
 
         }
         function BindRole(DepartmentId, GroupId) {
-            debugger;
+            
             var strHTML = "";
 
             strHTML += "<option value=''>Select Role</option>"
@@ -260,7 +260,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {

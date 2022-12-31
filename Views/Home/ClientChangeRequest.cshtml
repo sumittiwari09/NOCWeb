@@ -368,9 +368,9 @@
                 }*@
 
                 $(function () {
-                    debugger;
+                    
                     $('#PartyType').on('change', function () {
-                        debugger;
+                        
 
                         //$("#dvretailerparnt").show();
                         $("#ParentDataName option").remove();
@@ -513,7 +513,7 @@
         $(".div5").attr("style", "display:none");
     }
     $("#ParentDataName").change(function () {
-        debugger;
+        
             var NewParentId = $("#ParentDataName" + " option:selected").val();
 
             var RequestFor = $('.resultscore input[type="radio"]:checked').val();
@@ -544,7 +544,7 @@
         $(".singleselect").select2();
 
         function getValue(radio) {
-            debugger;
+            
             if (radio.value == "Yes") {
                 $(".div2").removeAttr("style", "display:block");
                 $(".div3").removeAttr("style", "display:block");

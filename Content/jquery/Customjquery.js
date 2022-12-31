@@ -22,7 +22,7 @@
    // document.getElementById("DOB").value(today);
 }
 function GenerateDocumentList(CategoryId, Status) {
-    debugger;
+    
     $.ajax({
         url: globaUserProperties.domain + '/Home/AddDocumentList?Id=' + CategoryId + '&status=' + Status,
         type: 'POST',
@@ -76,7 +76,7 @@ function BindSubCategory(CategoryId) {
 }
 
 function BindSubChildCategory(CategoryId, EndPoint) {
-    debugger;
+    
     if (!EndPoint) {
         $("#divChildCategory").addClass('hidden');
         $("#divServices").addClass('hidden');
@@ -170,7 +170,7 @@ function BindSubService(CategoryId, EndPoint) {
 }
 
 function BindRatelist(categoryid, SubCategoryId, ChildCategoryId, services) {
-    debugger;
+    
     $.ajax({
         url: globaUserProperties.domain + '/Home/AddRateList?categoryid=' + categoryid + '&SubCategoryId=' + SubCategoryId + '&ChildCategoryId=' + ChildCategoryId + '&services=' + services,
         type: 'POST',
