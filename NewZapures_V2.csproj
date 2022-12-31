@@ -150,6 +150,7 @@
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\SubjectMasterController.cs" />
     <Compile Include="Controllers\SupportTicketController.cs" />
+    <Compile Include="Controllers\UniverSityMasterController.cs" />
     <Compile Include="Controllers\UniverSityMSTController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
@@ -3533,6 +3534,7 @@
     <Content Include="Views\UniversityMST\Create.cshtml" />
     <Content Include="Views\UserDetails\Index.cshtml" />
     <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
+    <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
   </ItemGroup>
   <ItemGroup>
