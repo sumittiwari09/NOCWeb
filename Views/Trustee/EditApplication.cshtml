@@ -13,13 +13,13 @@
     //var eClgID = (int)ViewBag.clgID;
     //var eGuid = (string)ViewBag.Guid;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
-   var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 
 @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <style type="text/css">
     .dropify-wrapper {
         display: block;
@@ -195,14 +195,14 @@
 
                     </div>
 
-                    <div class="col-lg-9"  id="divFormContainer1" style="place-content: center;display: flex;align-items: center;">
+                    <div class="col-lg-9" id="divFormContainer1" style="place-content: center;display: flex;align-items: center;">
                         <div id="divFormContainer">
 
                         </div>
                         <p style="font-size: 30px;color: red;" id="pNote">
-                        @*Please Select Any Form from the left side to fill*@
+                            @*Please Select Any Form from the left side to fill*@
                             <img src="~/Content/LoginSignUp/img/NOC Process flow.jpeg" />
-                                                </p>
+                        </p>
                         <div id="divLoader" style="display:none"><span><i class="fa fa-4x fa-circle-notch fa-spin fa-fade" style="color: #506ee4;"></i></span></div>
                     </div>
                 </div>
@@ -221,12 +221,12 @@
         $('#btnToggal').click();
 
         $('.applicationBtn').click(function () {
-             $('#divFormContainer').html('');
-            $('#divFormContainer1').css('place-content','center').css('display','flex').css('align-items','center')
+            $('#divFormContainer').html('');
+            $('#divFormContainer1').css('place-content', 'center').css('display', 'flex').css('align-items', 'center')
             $('#divLoader').css('display', 'block');
             $('#pNote').css('display', 'none');
             //$(this).removeClass('btn-outline-primary').addClass('btn-primary');
-            $(this).css('background-color','#ffbf68').css('color','black');
+            $(this).css('background-color', '#ffbf68').css('color', 'black');
             $(this).css('border-bottom-right-radius', '33px');
 
             var url = $(this).data('id');
@@ -236,7 +236,7 @@
 
                 GenerateArchtable(url);
             }, 1000);
-           /* $('#divLoader').css('display', 'none');*/
+            /* $('#divLoader').css('display', 'none');*/
         });
     });
 
