@@ -3537,6 +3537,7 @@
     <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
     <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
+    <Content Include="Views\Master\Testing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
