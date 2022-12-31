@@ -1002,7 +1002,7 @@ namespace NewZapures_V2.Controllers
         {
             ErrorBO _res = new ErrorBO();
             #region VerifyDetails
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustVerificationAPI");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrustVerificationAPI");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

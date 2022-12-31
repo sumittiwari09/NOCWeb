@@ -2444,6 +2444,7 @@
     <Content Include="images\flags\russia_flag.jpg" />
     <Content Include="images\flags\spain_flag.jpg" />
     <Content Include="images\flags\us_flag.jpg" />
+    <Content Include="images\flow-image.jpeg" />
     <Content Include="images\logo-dark1.png" />
     <Content Include="images\logo-sm.png" />
     <Content Include="images\logo.png" />

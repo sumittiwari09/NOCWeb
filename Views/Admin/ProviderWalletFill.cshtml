@@ -231,13 +231,13 @@
         $(".singleselect").select2();
         var imagebase64 = "";
         $("#ServiceProviderId").change(function () {
-            debugger;
+            
             var sername = $(this).find('option:selected').text();
             $("#name").text(sername);
             $("#sServName").val(sername);
         });
         $("#sTrnFillAmut").blur(function () {
-            debugger;
+            
             var sTrnFillAmut = $("#sTrnFillAmut").val();
             $("#FillAmut1").text(sTrnFillAmut);
         });
@@ -246,7 +246,7 @@
             $("#Date1").text(TrnsctnDt);
         });
         $("#srefval").blur(function () {
-            debugger;
+            
             var refval = $("#srefval").val();
             $("#refval").text(refval);
         });
@@ -282,7 +282,7 @@
 
         }
         $("#savedata").click(function () {
-            debugger;
+            
 
 
             modal.style.display = "none";
@@ -302,7 +302,7 @@
             modaldelete.style.display = "none";
         });
         $("#deleteok").click(function () {
-            debugger;
+            
             var id = $("#deleteid").val();
             var narration = $("#narration").val();
             if (narration.trim() == '') {
@@ -334,7 +334,7 @@
                 success: function (response) {
 
 
-                    debugger;
+                    
                     if (response.IsValid = 1) {
                         modaldelete.style.display = "none";
                         Swal.fire({
@@ -369,7 +369,7 @@
             reader.onloadend = function () {
                 imagebase64 = reader.result;
                 if (elementID == 'walletimg') {
-                    debugger;
+                    
                     console.log(imagebase64);
                     //$('#Uploadedwalletimg').val(imagebase64);
                     var Image = imagebase64.split(',')[1];

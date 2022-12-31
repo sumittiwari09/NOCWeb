@@ -291,7 +291,7 @@
                 success: function (response) {
                     var AddedId = Number(response.Data);
     //                alert("Hello");
-    //                debugger;
+    //                
     //
     //                var ids = 'delete_' + AddedId;
 
@@ -333,7 +333,7 @@
         $(document).ready(function () {
             var currentRequest = null;
             $(".delete").click(function () {
-                debugger;
+                
                 var data = $(this).data("id");
                 var deletedata = data.split('-');
 
@@ -361,7 +361,7 @@
                                     deteleId: i
 
                                 });
-                                debugger;
+                                
                                 $.ajax({
                                     url: "@Url.Action("DeleteCustomSentence", "Admin")",
                                     type: 'POST',
@@ -369,10 +369,10 @@
                                     data: Params,
                                     contentType: "application/json",
                                     success: function (response) {
-                                        debugger;
+                                        
 
                                         if (response.IsValid = 1) {
-                                            debugger;
+                                            
                                             //if (j == 36) {
                                             //  var row = "#Hotel #tbody_HotelSubCategory" + " #delete_" + i;
                                             //var row = "#table_" + k + "  #tbody_" + k + " #delete_" + i;
