@@ -125,7 +125,7 @@
                                     <td>@item.CourseName</td>
                                     <td>@item.Applicationstatus</td>
                                     <td>
-                                        <a class="btn btn-sm btn-outline-primary" href="@Url.Action("EditApplication", "Trustee")"><i class="fas fa-pencil"></i></a>
+                                        <a class="btn btn-sm btn-outline-primary" href="@Url.Action("EditApplication", "Trustee", new {applGUID=item.ApplGuid})"><i class="fas fa-pencil"></i></a>
                                         &nbsp;&nbsp;
                                         <button onclick="Verify('@item.ApplGuid', '@item.ApplicationNumber')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
                                     </td>
