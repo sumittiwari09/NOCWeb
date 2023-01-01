@@ -14,7 +14,7 @@
     //var eGuid = (string)ViewBag.Guid;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
-    var lands = (List<LandInfoBO>)ViewBag.LandDetails;
+    //var lands = (List<LandInfoBO>)ViewBag.LandDetails;  
 
     var currentDate = DateTime.Today.ToString("dd.MM.yyyy");
     var validCurrentDate = Convert.ToDateTime(currentDate).AddYears(1).ToString("dd.MM.yyyy");
@@ -24,7 +24,7 @@
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 
 @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+@*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
 <style type="text/css">
     .dropify-wrapper {
         display: block;
@@ -194,7 +194,8 @@
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
                         </ul>
 
                     </div>
@@ -211,8 +212,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
                 <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -232,8 +231,8 @@
                                 <tr><th>SSO</th><td>NA</td><th>Username</th><td>NA</td></tr>
                             </table>
 
-                            <p>Land & Building Information</p>
-                            <table class="table table-bordered" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+                            <p style="padding: 10px;background: #989898;border-radius: 10px;color: black;"><i class="fa fa-arrow-down" style="color:black"></i> Land & Building Information</p>
+                            <table class="table table-bordered" id="tblLandInfo" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
                                 <thead>
                                     <tr>
                                         <th>Land Area</th>
@@ -244,11 +243,11 @@
                                         <th>Land Type</th>
                                         <th>Khasara No</th>
                                         <th>Land Area</th>
-                                        <th hidden>Total Area</th>
+                                        <th>Total Area</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{
+                                    @*@{
 
                                         foreach (var item in lands)
                                         {
@@ -261,10 +260,10 @@
                                                 <td>@item.sLndTyp</td>
                                                 <td>@item.sKhasaraNo</td>
                                                 <td>@item.dLndArea</td>
-                                                <td hidden>@item.dTotalArea</td>
+                                                <td>@item.dTotalArea</td>
                                             </tr>
                                         }
-                                    }
+                                    }*@
 
                                 </tbody>
                             </table>
@@ -280,13 +279,12 @@
                         </div>
                         <div class="modal-footer">
                             @*<button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>*@
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ThankYou">Submit</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal">Submit</button>
                             @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>*@
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -328,10 +326,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
             @*Modal Start*@
             <div class="modal fade bd-example-modal-lg" id="mChallan" tabindex="-1" role="dialog" aria-labelledby="mChallan" data-backdrop="static" style="display:none;">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -447,7 +441,6 @@
 
             @*Modal End*@
 
-
         </div>
     </div>
 </div>
@@ -480,6 +473,13 @@
         });
     });
 
+    //function refreshData() {
+    //    window.location.reload();
+    //    setTimeout(function () {
+    //        $('#openModalWithData').click();
+    //    },1000)
+    //}
+
     function GenerateArchtable(url) {
 
         $.ajax({
@@ -494,6 +494,48 @@
 
                 return;
                 /*  $("#AddSection").html(response);*/
+            }
+        });
+        return false;
+    }
+
+    function getLandInfo() {
+      
+        var Data = {
+            AppGUID: '@draftAppl.ApplGuid'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetLandDetails",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var tableHTML = "";
+                var landData = data.Data;
+
+                landData.forEach(function (item) {
+                    tableHTML += `<tr><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td></tr>`;
+                })
+
+                $('#tblLandInfo tbody').html('')
+                $('#tblLandInfo tbody').html(tableHTML);
+
+                    setTimeout(function () {
+            $('#openModalWithData').click();
+        },1000)
+            },
+            error: function (d) {
+                //alert(d);
             }
         });
         return false;
