@@ -289,9 +289,9 @@ namespace NewZapures_V2.Controllers
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
-            var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
+            //var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
+            //ViewBag.LandDetails = LandData;
             ViewBag.trusteeMember = trusteeMember;
-            ViewBag.LandDetails = LandData;
 
 
             return View();
@@ -839,6 +839,16 @@ namespace NewZapures_V2.Controllers
             return new JsonResult
             {
                 Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetLandDetails(string AppGUID)
+        {
+            var LandData = ZapurseCommonlist.GetLandData(AppGUID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = LandData, Failure = false, msg = "Land Details" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };

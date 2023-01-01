@@ -261,7 +261,7 @@
                                     <th>Land Type</th>
                                     <th>Khasara Number</th>
                                     <th>Land Area</th>
-                                    <th hidden>Total Area</th>
+                                    <th>Total Area</th>
                                     <th>Converted Doc</th>
                                     <th>Land Title Doc</th>
                                     <th>Land Doc</th>
@@ -388,7 +388,7 @@
 
                 });
 
-                //console.table(landInfoData);
+                console.table(landInfoData);
 
                 $('#txtTotalArea').val(0);
                 if (landInfoData.length <= 0) {
@@ -399,7 +399,7 @@
                 }
                 else {
                     landInfoData.forEach(function (item, index) {
-                        htmlString += `<tr><td>${index + 1}</td><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td hidden>${item.dTotalArea}</td><td class="text-center"><span><a href="${item.lndConvertURL}" download="LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.lndTitleURL}" download="landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.landDocURL}" download="LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td><td class="text-center"><span><a href="${item.lndConvertURL}" download="LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.lndTitleURL}" download="landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.landDocURL}" download="LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
                         $('#txtTotalArea').val(item.dTotalArea);
                     });
                     $("#tblLandInfo tbody").html('');
@@ -458,8 +458,20 @@
             cache: false,
             data: JSON.stringify(VertinaryModal),
             success: function (data) {
-                console.log('ajax');
-                console.log(data);
+                //console.log('ajax');
+                //console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+
 
             },
             error: function (d) {
@@ -505,7 +517,12 @@
 
         //Land Document
          $('#hdnlandDocumentExten').val('')
-         $('#hdnlandDocument').val('')
+        $('#hdnlandDocument').val('')
+
+        $('#flulandDocument').val('');
+        $('#flulandTitleCertificate').val('');
+        $('#fluConvertedDoc').val('');
+
     }
 
     function encodeImageFileAsURL(element,hdnId,hdnExtnID) {
