@@ -31,7 +31,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.RoleType = RoleType;
 
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList?TrustId="+SessionModel.TrustId.ToString());
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList?TrustId="+SessionModel.TrustId.ToString());
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -140,7 +140,7 @@ namespace NewZapures_V2.Controllers
             }
             #endregion
             #region Add Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddTrustee");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddTrustee");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -167,7 +167,7 @@ namespace NewZapures_V2.Controllers
             }
             #endregion
             #region List Trustee
-            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList?TrustId="+obj.TrustInfoId);
+            client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList?TrustId="+obj.TrustInfoId);
             request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -189,7 +189,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult DeleteTrustMemeber(int Id)
         {
             #region Delete Trust Memeber
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/DeleteTrustMemeber?Id=" + Id);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/DeleteTrustMemeber?Id=" + Id);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -216,7 +216,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult DownloadDocuments(int id)
         {
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/DocumentDetail?Id=" + id);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/DocumentDetail?Id=" + id);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -264,7 +264,7 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult CancelDraftApplication(string applGUID)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -289,7 +289,10 @@ namespace NewZapures_V2.Controllers
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+            //var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
+            //ViewBag.LandDetails = LandData;
             ViewBag.trusteeMember = trusteeMember;
+
 
             return View();
         }
@@ -312,6 +315,7 @@ namespace NewZapures_V2.Controllers
         [HttpGet]
         public ActionResult TrusteeGeneralInfo(string RegNo)
         {
+            SessionModel.TrustRegNo = RegNo;
             TrustRoot _trustapi = new TrustRoot();
             //modal.RegistrationNo = "COOP/2019/ALWAR/100658";
             #region Trust API
@@ -328,7 +332,7 @@ namespace NewZapures_V2.Controllers
                     if(_ress.ResponseCode == "1")
                     {
                         #region List Trustee
-                        client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustInfo?TrustId=" + _trustapi.Data.RegistrationNo);
+                        client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + _trustapi.Data.RegistrationNo);
                         request = new RestRequest(Method.GET);
                         request.AddHeader("cache-control", "no-cache");
                         //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -341,6 +345,7 @@ namespace NewZapures_V2.Controllers
                             if (_result != null)
                             {
                                 ViewBag.TrustDetails = _result;
+                                SessionModel.TrustId = _result.TrusteeInfoId;
                                 //return RedirectToAction("Index");
                             }
                         }
@@ -364,7 +369,7 @@ namespace NewZapures_V2.Controllers
             // modal.RegistrationNo = RegNo;
             // #region Save and Get details
             // //#region VerifyDetails
-            //var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustVerificationAPI");
+            //var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrustVerificationAPI");
             //var  request = new RestRequest(Method.POST);
             // request.AddHeader("cache-control", "no-cache");
             // //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -405,7 +410,7 @@ namespace NewZapures_V2.Controllers
 
 
             // #region List Trustee
-            // var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustInfo?TrustId=" + SessionModel.TrustId);
+            // var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + SessionModel.TrustId);
             // var request = new RestRequest(Method.GET);
             // request.AddHeader("cache-control", "no-cache");
             // //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -433,7 +438,7 @@ namespace NewZapures_V2.Controllers
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
 
 
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetTrustDropDownList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustDropDownList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -450,9 +455,10 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile)
+        public ActionResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj, HttpPostedFileBase Ceritifiedbyfile, HttpPostedFileBase registrationnofile, HttpPostedFileBase trustfile,HttpPostedFileBase TMProfffile)
         {
 
+            obj.TrusteeInfoId = SessionModel.TrustId;
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -518,8 +524,29 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+            #region Registration Document
+            if (TMProfffile != null)
+            {
+
+                extension = Path.GetExtension(TMProfffile.FileName);
+                ContentType = TMProfffile.ContentType;
+                using (Stream inputStream = TMProfffile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.TRMP = Convert.ToBase64String(Documentbyte);
+                    obj.TRMPExtension = extension;
+                    obj.TRMPContenttype = ContentType;
+                }
+            }
+            #endregion
             #region Add Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddTrusteeInfo");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddTrusteeInfo");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -534,7 +561,7 @@ namespace NewZapures_V2.Controllers
                     TempData["SwalStatusMsg"] = "success";
                     TempData["SwalMessage"] = "Data saved sussessfully!";
                     TempData["SwalTitleMsg"] = "Success...!";
-                    return RedirectToAction("TrusteeGeneralInfo");
+                    return RedirectToAction("TrusteeGeneralInfo",new { RegNo = SessionModel.TrustRegNo});
                 }
                 else
                 {
@@ -545,6 +572,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+
             List<CustomMaster> TrusteeType = new List<CustomMaster>();
             TrusteeType = Common.GetCustomMastersList(31);
             ViewBag.TrusteeType = TrusteeType;
@@ -555,7 +583,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult TrustList()
         {
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustInfoList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrustInfoList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -606,7 +634,7 @@ namespace NewZapures_V2.Controllers
             //ViewBag.Guid = eGuid;
             List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetCollageFacilityList");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -668,7 +696,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult CollageFacilitys(TrusteeBO.CollageFacility modal)
         {
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/GetCollageFacilityList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetCollageFacilityList");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -703,7 +731,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.RoleType = RoleType;
             List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();   
             #region List Trustee
-            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrusteeList");
+            client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList");
             request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -727,7 +755,7 @@ namespace NewZapures_V2.Controllers
         {
             modal.Guid = SessionModel.ApplicantGuid;
             #region List Trustee
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageFacility");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddCollageFacility");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -772,7 +800,7 @@ namespace NewZapures_V2.Controllers
         {
             ResponseData objResponse = new ResponseData();
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -796,7 +824,7 @@ namespace NewZapures_V2.Controllers
         {
             ResponseData objResponse = new ResponseData();
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetCollageDropDownList?TrustInfoId=" + TrustInfoId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -811,6 +839,16 @@ namespace NewZapures_V2.Controllers
             return new JsonResult
             {
                 Data = new { StatusCode = objResponse.statusCode, Data = objUsermaster, Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetLandDetails(string AppGUID)
+        {
+            var LandData = ZapurseCommonlist.GetLandData(AppGUID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = LandData, Failure = false, msg = "Land Details" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
@@ -888,7 +926,7 @@ namespace NewZapures_V2.Controllers
             _rendmodal.sSSOID = obj.sSSOID;
 
             #region Adddata
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageAttachementMain");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddCollageAttachementMain");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -907,7 +945,7 @@ namespace NewZapures_V2.Controllers
                         {
                             item.Id = objResponseData.ID;
                             item.EnumNo = 40;
-                            client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/AddCollageAttachementFiles");
+                            client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddCollageAttachementFiles");
                             request = new RestRequest(Method.POST);
                             request.AddHeader("cache-control", "no-cache");
                             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1002,7 +1040,7 @@ namespace NewZapures_V2.Controllers
         {
             ErrorBO _res = new ErrorBO();
             #region VerifyDetails
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Trustee/TrustVerificationAPI");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrustVerificationAPI");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

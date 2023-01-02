@@ -297,7 +297,7 @@
     $(document).ready(function () {
         $(".singleselect").select2();
         $("#dtInsertStrDt").change(function () {
-            debugger;
+            
             var startdate = $(this).val();
             $("#dtInsertEndDt").prop('disabled', false);
             document.getElementById("dtInsertEndDt").min = startdate;

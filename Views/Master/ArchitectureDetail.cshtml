@@ -289,7 +289,7 @@
     <script type="text/javascript">
 
         $(".mainsave").click(function () {
-            debugger;
+            
             var dataid = $(this).data('id');
             var datamain = $(this).data('main');
             var value = $("#" + datamain +"-" +dataid).val();
@@ -335,7 +335,7 @@
             $(this).addClass('active1');
         });
         $('.checkbox').click(function () {
-            debugger;
+            
             var id = $(this).data('id');
             $("#1_" + id).addClass('hidden');
             $("#1_" + id).removeClass('hiddenactive');
@@ -364,7 +364,7 @@
             }
         });
         $(".addclass").click(function () {
-            debugger;
+            
             var id = $(this).data('id');
             var item = id.split('-');
             var width = $("#Width-" + id).val();
@@ -437,21 +437,21 @@
             });
         });
         $(".mainsave").click(function () {
-            debugger;
+            
             var id = $(this).data('id');
             var main = $(this).data('main');
         });
 
         buildalltabelArchitecture('@appid');
         function buildalltabelArchitecture(item) {
-            debugger;
+            
             $.ajax({
                 url: GetglobalDomain() + '/Master/BuildalltabelArchitecture?item=' + item,
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 success: function (response) {
-                    debugger;
+                    
                     console.log(response);
 
                     if (response.isvalid == 1) {
@@ -490,7 +490,7 @@
         }
 
         function encodeImageFileAsURL(element) {
-            debugger;
+            
             var imagebase64 = "";
             var file = element.files[0];
             var name = file.name;
@@ -516,14 +516,14 @@
             //return
         }
         function uploadFileAsURL(element, iParamId, iSubCatId, iUomId,Type) {
-            debugger;
+            
             var elementID = element.id;
             var uploadFile = new FormData();
             var selectedText = $("#" + elementID).val();
             var extension = selectedText.split('.');
             var files = $("#" + elementID).get(0).files;
             if (files.length > 0) {
-                debugger;
+                
                 uploadFile.append("CsvDoc", files[0]);
 
                 $.ajax({
@@ -533,7 +533,7 @@
                     data: uploadFile,
                     type: 'POST',
                     success: function (response) {
-                        debugger;
+                        
                         HideBALoader("LoaderBASinup")
                         if (response.IsValid = 1) {
                             Swal.fire({
@@ -588,7 +588,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',
@@ -617,7 +617,7 @@
     @*<script type="text/javascript">
             var imagebase64 = "";
             function encodeImageFileAsURL(element) {
-                /* debugger;*/
+                /* */
                 var elementID = element.id;
                 var file = element.files[0];
                 console.log(file);

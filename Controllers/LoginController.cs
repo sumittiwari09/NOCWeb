@@ -53,7 +53,7 @@ namespace NewZapures_V2.Controllers
                 //{
                 //if (SSO.CreateSSOSession())
                 //{
-                var jsonUserDetail = "";
+                    var jsonUserDetail = "";
 
                 var jsonSSODetail = "";
                 var jsonUserDetails = "";
@@ -65,7 +65,7 @@ namespace NewZapures_V2.Controllers
                 //if (detail != null)
                 //{
 
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
                 RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
                 if (UserDetail != null)

@@ -187,7 +187,7 @@
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".ChangeStatus").change(function () {
-            debugger;
+            
             var id = $(this).data("id");
             var item = id.split('-');
             var type = parseInt($(this).val());
@@ -211,7 +211,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     if (response.isvalid == 1) {
                         Swal.fire({
                             position: 'center',
@@ -269,7 +269,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',

@@ -102,7 +102,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/javascript">
         function GenerateDocumentList() {
-            debugger;
+            
             $.ajax({
                 url: globaUserProperties.domain + '/Master/NewArchitectureDetail',
                 type: 'POST',
@@ -127,7 +127,7 @@
                     success: function (response) {
 
 
-                        debugger;
+                        
                         if (response.IsValid = 1) {
                             Swal.fire({
                                 position: 'center',

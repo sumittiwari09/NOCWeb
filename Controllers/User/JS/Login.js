@@ -652,7 +652,7 @@ function changeIcon(sender) {
 }
 
 function validateform(item) {
-    //debugger;
+    //
     validate = true;
     var validate_inputs = document.querySelectorAll(".main.active .input-text .input-div input");
     validate_inputs.forEach(function (input_valid) {
@@ -827,7 +827,7 @@ function BindCheckoutData() {
 function SaveDetails(isSaved) {
 
     // Type : 1 for Company, 2 for distributer, 3 for Retailer
-    // debugger;
+    // 
     var SelectedServices = "";
     //alert(serviceList.length);
     serviceList.forEach(function (service) {

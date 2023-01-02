@@ -29,7 +29,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult GenerateArchtable(int iParamId,int iSubCatId,int iUomId,string sAppId= "abc123")
         {
             List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GenerateArchtable?iParamId=" + iParamId + "&iSubCatId="+ iSubCatId + "&iUomId="+ iUomId + "&sAppId="+ sAppId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GenerateArchtable?iParamId=" + iParamId + "&iSubCatId="+ iSubCatId + "&iUomId="+ iUomId + "&sAppId="+ sAppId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -49,7 +49,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult GenerateAepslist(int Id, int CommissionMasterId)
         {
             List<UserCommission> LstApesData = new List<UserCommission>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "CommissionMaster/Admin_AEPS_Commission_Show?ServiceProviderid=" + Id + "&CommissionMasterId=" + CommissionMasterId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "CommissionMaster/Admin_AEPS_Commission_Show?ServiceProviderid=" + Id + "&CommissionMasterId=" + CommissionMasterId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

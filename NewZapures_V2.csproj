@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -151,6 +151,7 @@
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\SubjectMasterController.cs" />
     <Compile Include="Controllers\SupportTicketController.cs" />
+    <Compile Include="Controllers\UniverSityMasterController.cs" />
     <Compile Include="Controllers\UniverSityMSTController.cs" />
     <Compile Include="Controllers\TrusteeController.cs" />
     <Compile Include="Controllers\FeeController.cs" />
@@ -2348,6 +2349,8 @@
     <Content Include="Content\OurServices\bootstrap\js\bootstrap.js" />
     <Content Include="Content\OurServices\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\OurServices\js\jquery-1.10.2.min.js" />
+    <Content Include="Content\sweetalert2.all.min.js" />
+    <Content Include="Content\sweetalert2.min.css" />
     <Content Include="Content\tree\css\style.css" />
     <Content Include="Content\tree\images\1.jpg" />
     <Content Include="Content\tree\images\2.jpg" />
@@ -2443,6 +2446,7 @@
     <Content Include="images\flags\russia_flag.jpg" />
     <Content Include="images\flags\spain_flag.jpg" />
     <Content Include="images\flags\us_flag.jpg" />
+    <Content Include="images\flow-image.jpeg" />
     <Content Include="images\logo-dark1.png" />
     <Content Include="images\logo-sm.png" />
     <Content Include="images\logo.png" />
@@ -2624,6 +2628,9 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.esm.min.js.map" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js.map" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="LandDocuments\Affidavit Document for Coversion.pdf" />
+    <Content Include="LandDocuments\Certificate of Land &amp; Rented Building.pdf" />
+    <Content Include="LandDocuments\Land Title Certificate.pdf" />
     <None Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1-vsdoc.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.min.js" />
@@ -3534,6 +3541,7 @@
     <Content Include="Views\UniversityMST\Create.cshtml" />
     <Content Include="Views\UserDetails\Index.cshtml" />
     <Content Include="Views\Shared\_leftbar-tab-menuUser.cshtml" />
+    <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
     <Content Include="Views\Master\Testing.cshtml" />
   </ItemGroup>
