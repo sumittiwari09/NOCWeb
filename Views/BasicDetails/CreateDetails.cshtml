@@ -11,6 +11,10 @@
     {
         TrustList = (List<CustomMaster>)ViewBag.TrustList;
     }
+
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> conctactlist = ViewBag.conctactlist as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+
+
 }
 @section styles {
 
@@ -19,6 +23,26 @@
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
 <style type="text/css">
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
     .dropify-wrapper {
         display: block;
         position: relative;
@@ -112,24 +136,33 @@
             <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Level</label>
                         <div>
-                            <select class="form-control" name="TrustInfoId" id="TrustInfoId">
+                            <select class="form-control" name="collegeLevel" id="collegeLevelId">
+                                <option value="">Select College Level</option>
+                                <option value="UG">UG</option>
+                                <option value="PG">PG</option>
+                                <option value="Diploma">Diploma</option>
+                            </select>
 
-                                <option value="0">Select Trust</option>
-                                @{
-                                    foreach (var item in TrustList)
-                                    {
-                                        <option value="@item.Id">@item.text</option>
-                                    }
-                                }
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Medium</label>
+                        <div>
+                            <select class="form-control" name="collegeMedium" id="collegeMediumId">
+                                <option value="">Select College Medium</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="English">English</option>
+                                <option value="Both">Both</option>
                             </select>
 
                         </div>
                     </div>
 
-
-                    <div class="form-group col-lg-6">
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Choose College type</label>
                         <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
 
@@ -138,33 +171,15 @@
                                 {
                                     foreach (var item in collegeType)
                                     {
-                                        <div class="form-group custom-control custom-radio col-sm-2">
+                                        <div class="form-group custom-control custom-radio col-sm-4">
                                             <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollegeType" id="rbtn_@item.Text" value="@item.Id">
                                             <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
                                         </div>
                                     }
                                 }
                             }
-
-
-
-
-
-                            @*<div class="form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtGirls" value="girls">
-                        <label for="txtGirls" class="custom-control-label">Girls</label>
-                    </div>
-                    <div class=" form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtBoy" value="boys">
-                        <label for="txtBoy" class="custom-control-label">Boys</label>
-                    </div>
-                    <div class="form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtCoEducation" value="girlsboyBoth">
-                        <label for="txtCoEducation" class="custom-control-label">CoEducation</label>
-                    </div>*@
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
@@ -365,40 +380,33 @@
         <div class="card-header fsc">
             <h4 class="mt-0 header-title float-left">Contact Details</h4>
         </div>
-        <div class="card-body row">
-            <div class="col-8">
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 1</label>
-                        <div>
-                            <input type="text" class="form-control" name="ContactNo1" id="txtcontact1" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 1</label>
-                        <div>
-                            <input type="text" class="form-control" name="EmailAddress1" id="txtEmailAddress1" autocomplete="off" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 2</label>
-                        <div>
-                            <input type="text" class="form-control" name="ContactNo2" id="txtcontact2" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 2</label>
-                        <div>
-                            <input type="text" class="form-control" name="EmailAddress2" id="txtEmailAddress2" autocomplete="off" />
-                        </div>
-                    </div>
+        @*<form>*@
+        <div>
+            <input type="text" id="Name" name="Name" placeholder="ContactPerson">
+            <input type="text" id="Number" name="Number" placeholder="Number">
+            <input type="text" id="EmailId" name="Email" placeholder="Email Address">
+            <input type="button" class="add-row" value="Add Row">
+            <table id="contactsData">
+                <thead>
+                    <tr>
+                        <th>ContactPerson</th>
+                        <th>Number</th>
+                        <th>Email Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            @*<button type="button" class="delete-row">Delete Row</button>*@
+            <div class="row text-center">
+                <div class="form-group col-lg-12">
+                    <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
                 </div>
             </div>
         </div>
 
+        @*</form>*@
         <div class="card-header fsc">
             <h4 class="mt-0 header-title float-left">Track Geo Location</h4>
         </div>
@@ -524,89 +532,6 @@
         //});
         $("#ddlUniverSity").select2();
 
-        //$('#ddlOperator').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var operatorval = parseInt($("#ddlOperator").val());
-        //    //getCommissions(operatorval);
-        //    //alert(operator)
-        //    //alert(operatorval)
-        //    if (operatorval <= 6) {
-        //        $('#divPlansForDTH').hide();
-        //        $('#divPlansForMobile').show();
-        //        $('#divCircle').show();
-        //        var selectedCircle = $('#ddlCircle').val();
-        //        if (selectedCircle != "0") {
-        //            $('#loadingDiv').css('display', 'block');
-        //        }
-
-        //        $('#txtRechargeAmount').attr('readonly', 'true');
-        //        $('#lblmobile').html('Enter Mobile Number');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlans(operator, selectedCircle);
-        //    }
-        //    if (operatorval >= 7) {
-        //        var operator = $("#ddlOperator option:selected").text();
-        //        $('#loadingDivnew').css('display', 'block');
-        //        $('#divPlansForDTH').show();
-        //        $('#divPlansForMobile').hide();
-        //        $('#PlansDivForDTH').show();
-        //        $('#txtRechargeAmount').removeAttr('readonly');
-        //        $('#lblmobile').html('Enter Subscriber ID');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
-        //        $('#divCircle').hide();
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlansForDTH(operator);
-        //    }
-
-        //});
-        //$('#ddlCircle').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var circle = $(this).val();
-
-        //    $('#txtRechargeAmount').attr('readonly', 'true');
-        //    $('#lblmobile').html('Enter Mobile Number');
-        //    $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //    $('#txtRechargeAmount').val('');
-        //    $('#txtplanDescription').html('');
-        //    $('#txtMobileNumer').val('');
-        //    $('#btnRecharge').attr('disabled', 'true');
-
-        //    if (operator == 'Select Operator') {
-        //        Swal.fire({
-        //            position: 'center',
-        //            icon: 'error',
-        //            title: 'Operator Not Selected',
-        //            text: 'Please select operator first...',
-        //            allowOutsideClick: false,
-        //            showCloseButton: false,
-        //            showConfirmButton: true,
-        //        });
-        //    }
-        //    else if (circle == 0) {
-        //        $('#divPlansForMobile').hide();
-
-
-        //    }
-        //    else {
-        //        $('#loadingDiv').css('display', 'block');
-        //        $('#divPlansForMobile').show();
-        //        getPlans(operator, circle);
-        //    }
-
-
-        //});
 
         $('#txtMobileNumber').blur(function () {
             if ($("#txtMobileNumber").val().length > 0) {
@@ -650,7 +575,8 @@
         }
     }
     function showPosition(position) {
-        //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        //alert("Latitude: " + position.coords.latitude + "
+ <br>Longitude: " + position.coords.longitude)
         var data = {
             lat:position.coords.latitude,
             long:position.coords.longitude
@@ -802,6 +728,89 @@
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
 </script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $(".add-row").click(function () {
+                var name = $("#Name").val();
+                var number = $("#Number").val();
+                var email = $("#EmailId").val();
+                var markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+                $("table tbody").append(markup);
+            });
 
+            // Find and remove selected table rows
+            $(".delete-row").click(function () {
+                $("table tbody").find('input[name="record"]').each(function () {
+                if ($(this).is(":checked")) {
+                $(this).parents("tr").remove();
+                 }
+                });
+            });
+            $("#btnSave").click(function () {
+                //var name = $("#Name").val();
+                //var number = $("#Number").val();
+                //var email = $("#EmailId").val();
+                //var markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+                //$("table tbody").append(markup);
+
+                var contactsInfo = new Array();
+                //Loop through the Table rows and build a JSON array.
+                $("#contactsData tbody tr").each(function () {
+                    var row = $(this);
+                    var contactInfo = {};
+                    contactInfo.name = row.find("td").eq(0).html();
+                    contactInfo.number = row.find("td").eq(1).html();
+                    contactInfo.email = row.find("td").eq(2).html();
+                    contactsInfo.push(contactInfo);
+                });
+                console.log(contactsInfo);
+
+
+                var model = {
+                    Type_id: $('#UniType').val(),
+                    UniName: $('#UniName').val(),
+                    Website: $('#Website').val(),
+                    Document: $('#UniDocument').val(),
+                    //Financier_id
+                    //Created_id
+                    ContactDetails: contactsInfo,
+                    IsActive: true
+                }
+                //var formData = new FormData();
+                //var totalFiles = document.getElementById("UniDocument").files.length;
+
+                //for (var i = 0; i < totalFiles; i++) {
+                //    var file = document.getElementById("UniDocument").files[i];
+
+                //    formData.append("UniDocument", file);
+                //}
+
+                console.log('model data is', model);
+
+                //Send the JSON array to Controller using AJAX.
+                //$.ajax({
+                //    type: "POST",
+                //    url: "/Home/InsertSkills",
+                //    data: JSON.stringify(skills),
+                //    contentType: "application/json; charset=utf-8",
+                //    dataType: "json",
+                //    success: function (r) {
+                //        alert(r + " record(s) inserted.");
+                //        location.reload();
+                //    }
+                //});
+
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/BasicDetails/ContactSaveDetails",
+                    data: model,
+                    success: function (data) {
+                        console.log('data is', data);
+                    }
+                });
+            });
+
+        });
+</script>
 
 

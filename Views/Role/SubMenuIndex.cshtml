@@ -52,8 +52,8 @@
             <div class="page-title-box">
                 <div class="float-right">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">Zapures</li>
-                        <li class="breadcrumb-item">Sub Menu Master</li>
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item active">Sub Menu Master</li>
 
                     </ol>
                 </div>
@@ -188,7 +188,7 @@ else
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/javascript">
         $(".ChangeStatus").change(function () {
-            debugger;
+            
             var id = $(this).data("id");
             var item = id.split('-');
             var type = parseInt($(this).val());
@@ -212,7 +212,7 @@ else
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     if (response.isvalid == 1) {
                         var msg = 'Status Changes Successfully';
                         if (type == 1) {
@@ -254,15 +254,10 @@ else
                         text: 'YES',
                         btnClass: 'btn-red',
                         action: function () {
-
-
-
                             var Params = JSON.stringify({
                                 TableId: 'SubMenuMaster',
                                 Id: Id,
                                 type: 2
-
-
                             });
                             /* ShowBALoader("LoaderBASinup1");*/
                             $.ajax({
@@ -272,9 +267,7 @@ else
                                 data: Params,
                                 contentType: "application/json",
                                 success: function (response) {
-
-
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',
@@ -285,11 +278,8 @@ else
                                         })
                                         $("#tr_" + Id).remove();
                                     }
-
                                 },
-
                             });
-
                         }
                     },
                     close: {

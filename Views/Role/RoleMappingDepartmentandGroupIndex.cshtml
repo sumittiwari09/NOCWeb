@@ -19,7 +19,7 @@
         <div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Mapping Role with Department and Group</li>
 
                 </ol>
@@ -102,18 +102,18 @@
 
 
                                                 <a id="btnDeactive_@item.Id" class="Deleteclass" name="2" data-id="@item.Id" onclick="DeleteData(@item.Id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
-                                                if (item.DepartmentId != 5)
-                                                {
+                                                //if (item.DepartmentId != 5)
+                                                //{
                                                     <a href="@Url.Action("Userpermission", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
                                                         <i class="fas fa-cogs text-blue font-16"></i>
                                                     </a>
-                                                }
+                                                @*}
                                                 else
                                                 {
                                                     <a href="@Url.Action("UserPermissionforUser", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
                                                         <i class="fas fa fa-cogs text-blue font-16"></i>
                                                     </a>
-                                                }
+                                                }*@
                                             }
 
                                         </td>
@@ -171,7 +171,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     if (response.isvalid == 1) {
                         var msg = 'Status Changes Successfully';
                         if (type == 1) {
@@ -241,7 +241,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',

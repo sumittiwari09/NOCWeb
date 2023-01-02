@@ -788,7 +788,44 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
+        public static List<Dropdown> GetDistrict(string Type = "District", int MenuId = 0)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
         
+        public static List<Dropdown> GetTehsil(int MenuId,string Type = "Tehsil")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+
         public static List<Dropdown> GetProjectSource(string Type = "ProjectSource", int MenuId = 0)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
@@ -861,14 +898,16 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null) { 
                 trusteeList = JsonConvert.DeserializeObject<List<TrusteeBO.TrusteeMember>>(objResponse.Data.ToString());
+                }
             }
             return trusteeList;
         }
 
-        public static List<DraftApplication> GetDraftApplication()
+        public static List<DraftApplication> GetDraftApplication(string applGUID = "")
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications?applGUID="+ applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -882,6 +921,25 @@ namespace NewZapures_V2.Models
                 var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (requestResponse.Data != null)
                     draftApplication = JsonConvert.DeserializeObject<List<DraftApplication>>(requestResponse.Data.ToString());
+            }
+            return draftApplication;
+        }
+        public static List<LandInfoBO> GetLandData(string applGUID = "")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "LandDetails/GetLandData?APPGUID=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<LandInfoBO> draftApplication = new List<LandInfoBO>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    draftApplication = JsonConvert.DeserializeObject<List<LandInfoBO>>(requestResponse.Data.ToString());
             }
             return draftApplication;
         }
@@ -904,7 +962,6 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
-
         public enum ModalSize
         {
             Small,

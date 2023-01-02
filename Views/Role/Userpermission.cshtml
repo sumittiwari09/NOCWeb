@@ -241,13 +241,13 @@
                 });
 
             $.ajax({
-                url: "OperationStatus",//GetglobalDomain() +
+                url: GetglobalDomain() +"/Role/OperationStatus",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     if (response.isvalid == 1) {
 
                         var msg = msgstring +' '+'Changes Successfully';

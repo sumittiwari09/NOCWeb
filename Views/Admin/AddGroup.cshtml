@@ -3,7 +3,7 @@
     ViewBag.Title = "Manage Groups";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var departmentList = ViewBag.departmentList as List<AddDepartment>;
+
     var groups = ViewBag.groups as List<AddGroup>;
     var Menus = ViewBag.Menus as List<Dropdown>;
 }
@@ -23,7 +23,7 @@
         <div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Zapurse 2.0</a></li>
+                    <li class="breadcrumb-item"><a href="#">NOC</a></li>
                     <li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
             </div>
@@ -49,9 +49,9 @@
                                     @{
                                         if (groups != null)
                                         {
-                                            foreach (var item in groups.Select(s => new { s.ID,s.GroupName }).Distinct().ToList())
+                                            foreach (var item in groups.Select(s => new { s.GroupID, s.GroupName }).Distinct().ToList())
                                             {
-                                                <option value=@item.ID>@item.GroupName</option>
+                                                <option value=@item.GroupID>@item.GroupName</option>
                                             }
                                         }
 
@@ -198,7 +198,7 @@
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".ChangeStatus").change(function () {
-            debugger;
+            
             var id = $(this).data("id");
             var item = id.split('-');
             var type = parseInt($(this).val());
@@ -216,13 +216,13 @@
                 });
 
             $.ajax({
-                url: GetglobalDomain()+"/Role/ChangeStatus",
+                url: GetglobalDomain() + "/Role/ChangeStatus",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     if (response.isvalid == 1) {
                         Swal.fire({
                             position: 'center',
@@ -271,7 +271,7 @@
                             });
                             /* ShowBALoader("LoaderBASinup1");*/
                             $.ajax({
-                                url: GetglobalDomain()+"/Role/ChangeStatus",
+                                url: GetglobalDomain() + "/Role/ChangeStatus",
                                 type: 'POST',
                                 dataType: "json",
                                 data: Params,
@@ -279,7 +279,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',

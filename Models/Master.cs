@@ -104,15 +104,24 @@ namespace NewZapures_V2.Models
     }
     public class ArchitectureMst
     {
-public int iPk_MasterId{ get; set; }
-public string iFK_AppId   { get; set; }
-public int iTrustId    { get; set; }
-public int iCollId     { get; set; }
-public int iParamId    { get; set; }
-public int iSubCatId   { get; set; }
-public string Value       { get; set; }
-public int iUom        { get; set; }
+         public int iPk_MasterId{ get; set; }
+         public string iFK_AppId   { get; set; }
+         public int iTrustId    { get; set; }
+         public int iCollId     { get; set; }
+         public int iParamId    { get; set; }
+         public int iSubCatId   { get; set; }
+         public string Value       { get; set; }
+         public int iUom        { get; set; }
 
 
 }
+    public class ArchUpload
+    {
+        public int iParamId { get; set; }
+        public int iSubCatId { get; set; }
+        public int iUomId { get; set; }
+        public string sFK_AppId { get; set; }
+        public string Type { get; set; }
+        public string UploadUrl { get; set; }
+    }
 }

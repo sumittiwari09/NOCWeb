@@ -675,7 +675,7 @@
         });
 
         $("#customCheck6").change(function () {
-            debugger;
+            
             var Id = $("#customCheck6").val();
             if (Id == 0) {
 
@@ -710,7 +710,7 @@
         });
 
         function BindBlock(Id, districtId, Type) {
-            debugger;
+            
             var strHTML = "";
             if (Type == 0) {
                 strHTML += "<option value=''>Select State</option>"
@@ -762,7 +762,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -842,7 +842,7 @@
             });
 
             $('#crop').click(function () {
-                debugger;
+                
                 canvas = cropper.getCroppedCanvas({
                     width: 400,
                     height: 400
@@ -863,7 +863,7 @@
                             data: { image: base64data },
                             success: function (response) {
                                 console.log(response);
-                                debugger;
+                                
                                 $modal.modal('hide');
                                 $('#uploaded_image').attr('src', "/images/Docs/" + response.imagename);
                             }

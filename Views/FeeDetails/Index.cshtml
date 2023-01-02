@@ -1,25 +1,12 @@
 ﻿@using NewZapures_V2.Models
 @{
+    Layout = null;
     ViewBag.Title = "Fee Details";
+    Layout = null;
     NewZapures_V2.Models.TrusteeBO.CollageFeeMst FeeList = ViewBag.CollageFeeList as NewZapures_V2.Models.TrusteeBO.CollageFeeMst;
-    //List<CustomMaster> DepartmentList = new List<CustomMaster>();
-    //if (ViewBag.DepartmentList != null)
-    //{
-    //    DepartmentList = (List<CustomMaster>)ViewBag.DepartmentList;
-    //}
 
-    //List<CustomMaster> CourseList = new List<CustomMaster>();
-    //if (ViewBag.CourseList != null)
-    //{
-    //    CourseList = (List<CustomMaster>)ViewBag.CourseList;
-    //}
-    //List<CustomMaster> FinancialYear = new List<CustomMaster>();
-    //if (ViewBag.FinancialYearList != null)
-    //{
-    //    FinancialYear = (List<CustomMaster>)ViewBag.FinancialYearList;
-    //}
 }
-@section styles {
+@*@section styles {
 
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
@@ -84,24 +71,27 @@
             .fop h4 {
                 color: white !important;
             }
-    </style>
+    </style>*@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            @*<div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">Fee details</li>
                 </ol>
-            </div>
-            @*<h4 class="page-title">@ViewBag.Title</h4>*@
+            </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
 <div class="card">
     <div class="card-header fsc">
         <h4 class="mt-0 header-title float-left">Fee Details</h4>
+        @*<div class="" style="text-align:right">
+            <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px; color: white; font-family: 'Ubuntu', sans-serif; background-color: deeppink;" class="btn btn-warning btn btn btn-default">Back</a>
+        </div>*@
     </div>   
     <div class="row col-lg-8" style="margin-top:12px">
         <div class="form-group col-lg-12">
@@ -172,10 +162,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="row col-lg-12" style="margin-bottom:10px">
-            <div class="col-lg-12">
-                <button class="btn btn-primary" id="btnSave"> Save</button>
-
+        <div class="col-lg-12" style="margin-bottom:10px">
+            <div class="">
+                <button class="btn btn-primary" id="btnSave" style="float:right"> Save</button>
+                <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary col-sm-1" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
                 @*</div>*@
             </div>
         </div>
@@ -194,7 +184,7 @@
 
         $("#btnSave").click(function () {
             var tableData = new Array();
-            debugger;
+            
             var TrustId = $('#iFk_TrstId').val();
             var CourseId = $('#iFk_CourseId').val();
             var CollageId = $('#iFk_ClgId').val();
@@ -208,7 +198,7 @@
                 if ($(this).find('#Select').is(":checked")) {                    
                     select = true;
                 }                
-                debugger;
+                
                 var getdata = { RateId: Idget, IsSelect: select, RateName: RateName, Rate: rated }
                 tableData.push(getdata);               
             });
@@ -226,15 +216,8 @@
                 data: modal,
                 success: function (data) {
                     if (data.failure) {
-                        //alert("Successfully");
-
-                        var url = GetglobalDomain() + "/FeeDetails/Index?TrustId=" + TrustId + "&CollageId=" + CollageId + "&CourseId=" + CourseId;
-                        window.location.href = url;                        
-                        //Swal.fire(
-                        //    'Success',
-                        //    'Success',
-                        //    'Data Save Successfully!!'
-                        //)
+                        var url = GetglobalDomain() + "/FeeDetails/Index";
+                        window.location.href = url;
                     }
                     else {
                         Swal.fire(

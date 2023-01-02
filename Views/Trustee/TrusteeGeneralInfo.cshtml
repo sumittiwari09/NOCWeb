@@ -2,12 +2,42 @@
 @{
     ViewBag.Title = "General Information";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    TrusteeBO.TrusteeInfo TrustDetails = ViewBag.TrustDetails as TrusteeBO.TrusteeInfo;
     List<CustomMaster> TrusteeType = new List<CustomMaster>();
     if (ViewBag.TrusteeType != null)
     {
         TrusteeType = (List<CustomMaster>)ViewBag.TrusteeType;
     }
 }
+<style>
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .custom-file-button input[type=file] {
+        margin-left: -2px !important;
+    }
+
+        .custom-file-button input[type=file]::-webkit-file-upload-button {
+            display: none;
+        }
+
+        .custom-file-button input[type=file]::file-selector-button {
+            display: none;
+        }
+
+    .custom-file-button:hover label {
+        background-color: #dde0e3;
+        cursor: pointer;
+    }
+</style>
 @section styles {
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
@@ -94,66 +124,113 @@
     </div>
     @using (Html.BeginForm("TrusteeGeneralInfo", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
     {
-        <div class="card-body row">
+
+        <div class="card-body">
             <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Name of Trust</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="Krishna Charitable Trust" required>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.Name" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
                         <div>
-                            <select class="form-control" name="TrustType" id="TrustType" required>
-
-                                <option value="0">Select Trust Type</option>
-                                @{
-                                    foreach (var item in TrusteeType)
-                                    {
-                                        <option value="@item.Id">@item.text</option>
-                                    }
-                                }
-                            </select>
-                            @*<select class="form-control" id="txtrole" name="TrustType">
-                                    <option value="0">Type</option>
-                                </select>*@
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.TrustType" readonly>
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registered In</label>
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registration Number</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtCerifiedby" name="CertiFiedBy" required>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.RegistrationNo" readonly>
                         </div>
                     </div>
-                    <div class="form-group col-lg-6" id="filediv">
-                        <label for="file1">Ceritified By Proof</label>
-                        <input type="file" id="filecerifiedby" style="border: 0px solid #e8ebf3" name="Ceritifiedbyfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
-                        <span id="Ceritifiedbyfile"></span>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">SSOID</label>
+                        <div>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.SSOID" readonly>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registration No</label>
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtRegistrationNo" name="RegistrationNo" maxlength="50" value="RAJ1234KRI" required>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.District" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Act</label>
+                        <div>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.Act" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Status</label>
+                        <div>
+                            <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtname" name="Name" value="@TrustDetails.Status" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6" id="filediv">
-                        <label for="file2">Registration No Proof</label>
-                        <input type="file" id="fileregistrationno" style="border: 0px solid #e8ebf3" name="registrationnofile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
-                        <span id="registrationnofile"></span>
+                        <div class="col-lg-8">
+                            <label for="file2">Trustee Member Proof</label>
+                            <div>
+                                <div class="input-group custom-file-button">
+                                    <input type="file" class="form-control" id="TMProfffile" name="TMProfffile">
+                                    <label class="input-group-text" for="affidavit">Choose file</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="Col-lg-2" style="margin-top:-36px;float:right">
+                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TRMP })" target="_blank" alt="Red dot"><i class="btn btn-primary btn-lg fa fa-download" style="padding-right:10px">Download</i></a>
+                        </div>
                     </div>
                 </div>
+                @*<div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registered In</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtCerifiedby" name="CertiFiedBy" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6" id="filediv">
+                            <label for="file1">Ceritified By Proof</label>
+                            <input type="file" id="filecerifiedby" style="border: 0px solid #e8ebf3" name="Ceritifiedbyfile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
+                            <span id="Ceritifiedbyfile"></span>
+                        </div>
+                    </div>*@
+
+                @*<div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Registration No</label>
+                            <div>
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtRegistrationNo" name="RegistrationNo" maxlength="50" value="RAJ1234KRI" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6" id="filediv">
+                            <label for="file2">Registration No Proof</label>
+                            <input type="file" id="fileregistrationno" style="border: 0px solid #e8ebf3" name="registrationnofile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
+                            <span id="registrationnofile"></span>
+                        </div>
+                    </div>*@
 
                 <div class="row">
+
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date Of Registration</label>
+
                         <div class="input-group">
                             <input type="text" class="form-control" name="RegistrationDate" id="RegistrationDate" placeholder="DD/MM/YYYY" autocomplete="off" required>
                             <div class="input-group-append">
@@ -161,36 +238,29 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group col-lg-6" id="filediv">
-                        <label for="file2">Trustee Member Proof</label>
-                        <input type="file" id="" style="border: 0px solid #e8ebf3" name="TMProfffile" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" required />
-                        <span id="TMProfffile"></span>
-                    </div>
-
-
-
-                    <div class="form-group col-lg-6" id="filediv" style="display:none">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date Of Election Comm.</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="ElectionDate" id="ElectionDate" placeholder="DD/MM/YYYY">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
+                        <div class="col-lg-8">
+                            <label for="file2">Trust Logo</label>
+                            <div>
+                                <div class="input-group custom-file-button">
+                                    <input type="file" class="form-control" id="trustfile" name="trustfile">
+                                    <label class="input-group-text" for="affidavit">Choose file</label>
+                                </div>
                             </div>
                         </div>
-                        @*<div>
-                                <input class="form-control col-sm-12" type="date" autocomplete="off" id="txtDateElectionComm" name="DateElectionComm">
-                            </div>*@
+                        <div class="Col-lg-2" style="margin-top:-36px;float:right">
+                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TrusteeLogo })" target="_blank" alt="Red dot"><i class="btn btn-primary btn-lg fa fa-download" style="padding-right:10px">Download</i></a>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                <div class="">
-                    <h4 class="mt-0 header-title">Trust Logo</h4>
-                    <input type="file" id="input-file-now" class="dropify" name="trustfile" />
                 </div>
             </div>
+            @*<div class="col-3 text-center d-flex align-items-center justify-content-center">
+                    <div class="">
+                        <h4 class="mt-0 header-title">Trust Logo</h4>
+                        <input type="file" id="input-file-now" class="dropify" name="trustfile" />
+                    </div>
+                </div>*@
             <div class="row col-lg-12" style="margin-top:20px">
                 <div class="col-lg-12 loat-right">
 
@@ -199,10 +269,59 @@
 
             </div>
         </div>
+        <div class="row col-lg-12">
+            <div class="form-group col-lg-12">
+                <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                    <tr>
+                        <th colspan="6">Trust Administrative Details</th>
+                    </tr>
+                    <thead class="dark">
+                        <tr>
+                            <th>SNo</th>
+                            <th>Name</th>
+                            <th>Post Name</th>
+                            <th>Occupation</th>
+                            <th>Address</th>
+                            <th>Contact No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (TrustDetails.AdminList != null)
+                        {
+                            int i = 1;
+                            foreach (var item in TrustDetails.AdminList)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.PostName</td>
+                                    <td>@item.Occupation</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.ContactNo</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" style="text-align: center;">No Data Available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row col-lg-12" style="margin-top:20px">
+            <div class="col-lg-12 loat-right">
+                @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">*@
+                <a href="@Url.Action("Index","Trustee")" class="btn btn-primary" style="display: block; margin:5px; background-color: deeppink;float:right" id="Reset">Proceed To Add Commitee Member</a>
+            </div>
+            @*</div>*@
+        </div>
     }
 </div>
-
-
 
 @section scripts {
     <script src="~/plugins/moment/moment.js"></script>
@@ -246,4 +365,3 @@
         });
     </script>
 }
-

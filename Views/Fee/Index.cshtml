@@ -111,7 +111,7 @@
                 <div class="row">
 
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Department</label>
                         <div>
                             <select class="singleselect" id="ddldept">
@@ -132,8 +132,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select NOC Type</label>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Application Type</label>
                         <div>
                             <select class="singleselect" id="ddlNOC">
                                 @*<option value="0">Select NOC</option>
@@ -143,7 +143,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Form Name</label>
+                        <div>
+                            <select class="singleselect" id="ddlNOCDetails">
+                                @*<option value="0">Select NOC</option>
+                                    <option value="n1">NOC 1</option>
+                                    <option value="n2">NOC 2</option>*@
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Fee Type</label>
                         <div>
                             <select class="singleselect" id="ddlFeeType">
@@ -206,11 +217,13 @@
                                     <th>#</th>
                                     <th>Type</th>
                                     <th>Start Date</th>
-                                    <th>End Data</th>
+                                    <th>End Date</th>
                                     <th hidden>DepartmentID</th>
                                     <th>Department</th>
+                                    <th hidden>NOC Application ID</th>
+                                    <th>NOC Application Type</th>
                                     <th hidden>NOC Type ID</th>
-                                    <th>NOC Type</th>
+                                    <th>NOC Form Name</th>
                                     <th hidden>Fee TypeID</th>
                                     <th>Fee Type</th>
                                     <th>For Boys</th>
@@ -233,22 +246,26 @@
                                                 <td>@item.EndDate</td>
                                                 <td hidden>@item.DeptID</td>
                                                 <td>@item.Deptname</td>
+                                                <td hidden>@item.NOCApplID</td>
+                                                <td>@item.NocApplication</td>
+
                                                 <td hidden>@item.NOCTypID</td>
                                                 <td>@item.nocTypeName</td>
+
                                                 <td hidden>@item.FeeTypID</td>
                                                 <td>@item.Feetype</td>
                                                 <td>@item.dBoys</td>
                                                 <td>@item.dGirls</td>
                                                 <td>@item.dCoEdu</td>
                                                 <td>@item.dCutOff</td>
-                                                <td><button id="btn_fee_@item.iPK_ID" class="btn btn-sm btn-primary"/><i class="fa fa-pencil"></i></td>
+                                                <td><button id="btn_fee_@item.iPK_ID" class="btn btn-sm btn-primary" /><i class="fa fa-pencil"></i></td>
                                             </tr>
                                         }
                                     }
                                     else
                                     {
                                         <tr>
-                                            <td colspan="12" style="text-align: center;">No Data Available</td>
+                                            <td colspan="14" style="text-align: center;">No Data Available</td>
                                         </tr>
                                     }
                                 }
@@ -280,7 +297,7 @@
     $(document).ready(function () {
         $(".singleselect").select2();
         $("#dtInsertStrDt").change(function () {
-            debugger;
+            
             var startdate = $(this).val();
             $("#dtInsertEndDt").prop('disabled', false);
             document.getElementById("dtInsertEndDt").min = startdate;
@@ -289,6 +306,12 @@
         $('#ddldept').change(function () {
             var id = $(this).val();
             getNoCForDept(id);
+            return false;
+        });
+
+        $('#ddlNOC').change(function () {
+            var id = $(this).val();
+            getNoCTypeDetails(id);
             return false;
         });
         $('input[name=customRadio]').change(function () {
@@ -318,6 +341,7 @@
             var endDate = $('#dtInsertEndDt').val();
             var dept = $('#ddldept').val();
             var nocType = $('#ddlNOC').val();
+            var nocForm = $('#ddlNOCDetails').val();
             var feeType = $('#ddlFeeType').val();
             var boys = $('#txtboysFee').val();
             var girls = $('#txtgirlsFee').val();
@@ -328,6 +352,7 @@
                 "Type": feeModal,
                 "DeptID": parseInt(dept),
                 "NOCTypID": parseInt(nocType),
+                "NOCApplID": parseInt(nocForm),
                 "FeeTypID": parseInt(feeType),
                 "dBoys": parseFloat(boys),
                 "dGirls": parseFloat(girls),
@@ -596,7 +621,7 @@
                     console.log('ajax');
                     console.log(data);
                     var NOCData = data.Data;
-                    var NocSelectData = `<option value=0>Select NOC Type</option>`;
+                    var NocSelectData = `<option value=0>Select Application Type</option>`;
                     if (NOCData.length > 0) {
 
                         NOCData.forEach(function (item) {
@@ -605,6 +630,45 @@
                     }
                     $('#ddlNOC').html('');
                     $('#ddlNOC').html(NocSelectData);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+    }
+
+    function getNoCTypeDetails(nocTypeID) {
+
+         var NOCReq = {
+             "MenuId": parseInt(nocTypeID),
+            }
+
+        var d = JSON.stringify(NOCReq);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Fee/GetNOCDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(NOCReq),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+                    var NOCData = data.Data;
+                    var NocSelectData = `<option value=0>Select Form Name</option>`;
+                    if (NOCData.length > 0) {
+
+                        NOCData.forEach(function (item) {
+                            NocSelectData += `<option value=${item.Id}>${item.Text}</option>`;
+                        })
+                    }
+                    $('#ddlNOCDetails').html('');
+                    $('#ddlNOCDetails').html(NocSelectData);
 
                 },
                 error: function (d) {

@@ -16,7 +16,7 @@ namespace NewZapures_V2.Controllers
 
         ResponseData objResponse;
         // GET: AcdmcMst
-        public ActionResult Index(string appNo)
+        public ActionResult Index(string guid)
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];
             var Token = Session["Token"];

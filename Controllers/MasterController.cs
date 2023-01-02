@@ -5,6 +5,7 @@ using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.EnterpriseServices.Internal;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -504,10 +505,21 @@ namespace NewZapures_V2.Controllers
 
             return View(lst);
         }
+        public ActionResult Testing()
+        {
+            return View();
+        } 
+        public ActionResult NewArchitectureDetail(string guid= "abhc123")
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist();
+            ViewBag.Applicableid = guid;
+            return View(lst);
+        }
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureDetail");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureDetail");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -593,7 +605,7 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult DeleteImage(int ipk_ArchiMstDetId)
         {
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -657,10 +669,22 @@ namespace NewZapures_V2.Controllers
             }
 
             attachedFile.SaveAs(gs + FileName);
-
+            ArchUpload upload = new ArchUpload();
+            upload.sFK_AppId = Appid;
+            upload.iParamId = iParamId;
+            upload.iSubCatId = iSubCatId;   
+            upload.iUomId = iUomId;
+            upload.UploadUrl =FileName;
+            upload.Type = Type;
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchupload");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", _JsonSerializer.Serialize(upload), ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
             return new JsonResult
             {
-                Data = new { Data = "", failure = false, msg = "Import File Successfully", isvalid = 1 },
+                Data = new { Data = "", failure = false, msg = FileName, isvalid = 1 },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
@@ -674,7 +698,7 @@ namespace NewZapures_V2.Controllers
             mst.iUom = iUomId;
             mst.iFK_AppId = sAppId;
             mst.Value = value;
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureMst");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureMst");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -710,5 +734,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
     }
 }

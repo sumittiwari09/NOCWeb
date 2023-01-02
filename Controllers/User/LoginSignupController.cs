@@ -77,7 +77,7 @@ namespace NewZapures_V2.Controllers
                     if (objResponse.Data != null)
                     {
                         userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
-                        List<UserPermissions> permissions = AdminAjaxRequestPageController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                        List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
                         List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
 
                         if (userModel.PartyId == "A000001")
@@ -99,7 +99,7 @@ namespace NewZapures_V2.Controllers
                             TempData["msg"] = "Your Account is blocked Please Contact to admin...";
                             return RedirectToAction("login-alt", "authentication");
                         }
-                        else if (userModel.Type == "6")
+                        else if (userModel.Type == "11")
                         {
                             //if (permissions != null)
                             //{
@@ -109,7 +109,7 @@ namespace NewZapures_V2.Controllers
                             Session["notificationList"] = notificationsData;
 
                             //}
-                            return RedirectToAction("Index", "Welcome");
+                            return RedirectToAction("Index", "Dashboard");
                         }
                         else
                         {

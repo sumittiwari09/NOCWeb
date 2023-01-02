@@ -11,7 +11,7 @@
                     <td>@i</td>
                     <td>
                         @{
-                            if (item.bAttachFile != null)
+                            if (!string.IsNullOrEmpty(item.bAttachFile))
                             {
                                 <img src="data:@item.ProfileContentType;base64,@item.bAttachFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
                             }

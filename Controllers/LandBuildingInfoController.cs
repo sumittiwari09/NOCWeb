@@ -14,81 +14,83 @@ namespace NewZapures_V2.Controllers
     public class LandBuildingInfoController : Controller
     {
         // GET: LandBuildingInfo
-        public ActionResult Index(string appNo, int deptID)
+        public ActionResult Index(string guid)
         {
-            var courses = ZapurseCommonlist.GetCourseForDept(deptID);
+            var draftApplications = ZapurseCommonlist.GetDraftApplication(guid);
+            var courses = ZapurseCommonlist.GetCourseForDept(draftApplications[0].iFKDEPT_ID);
             ViewBag.CourseList = courses;
+            ViewBag.draftApplication = draftApplications[0];
             return View();
         }
 
         [HttpPost]
-        public ActionResult SaveDetails(LandInfoBO trg, HttpPostedFileBase LandAreaProof, HttpPostedFileBase LandConvertProof, HttpPostedFileBase OwnBuildingProof)
+        public JsonResult SaveDetails(List<LandInfoBO> trg)
         {
-            byte[] Documentbyte;
-            string extension = string.Empty;
-            string ContentType = string.Empty;
-            #region Land Area Proof
-            if (LandAreaProof != null)
-            {
-                extension = Path.GetExtension(LandAreaProof.FileName);
-                ContentType = LandAreaProof.ContentType;
-                using (Stream inputStream = LandAreaProof.InputStream)
-                {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-                    Documentbyte = memoryStream.ToArray();
-                    trg.LandAreaProof = Convert.ToBase64String(Documentbyte);
-                    trg.LandAreaProofExtension = extension;
-                    trg.LandAreaProofDocumentContent = ContentType;
-                }
-            }
-            #endregion
+            //byte[] Documentbyte;
+            //string extension = string.Empty;
+            //string ContentType = string.Empty;
+            //#region Land Area Proof
+            //if (LandAreaProof != null)
+            //{
+            //    extension = Path.GetExtension(LandAreaProof.FileName);
+            //    ContentType = LandAreaProof.ContentType;
+            //    using (Stream inputStream = LandAreaProof.InputStream)
+            //    {
+            //        MemoryStream memoryStream = inputStream as MemoryStream;
+            //        if (memoryStream == null)
+            //        {
+            //            memoryStream = new MemoryStream();
+            //            inputStream.CopyTo(memoryStream);
+            //        }
+            //        Documentbyte = memoryStream.ToArray();
+            //        trg.LandAreaProof = Convert.ToBase64String(Documentbyte);
+            //        trg.LandAreaProofExtension = extension;
+            //        trg.LandAreaProofDocumentContent = ContentType;
+            //    }
+            //}
+            //#endregion
 
-            #region Upload Document 
-            if (LandConvertProof != null)
-            {
-                extension = Path.GetExtension(LandConvertProof.FileName);
-                ContentType = LandConvertProof.ContentType;
-                using (Stream inputStream = LandConvertProof.InputStream)
-                {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-                    Documentbyte = memoryStream.ToArray();
-                    trg.LandConvertProof = Convert.ToBase64String(Documentbyte);
-                    trg.LandConvertProofExtension = extension;
-                    trg.LandConvertProofDocumentContent = ContentType;
-                }
-            }
-            #endregion
+            //#region Upload Document 
+            //if (LandConvertProof != null)
+            //{
+            //    extension = Path.GetExtension(LandConvertProof.FileName);
+            //    ContentType = LandConvertProof.ContentType;
+            //    using (Stream inputStream = LandConvertProof.InputStream)
+            //    {
+            //        MemoryStream memoryStream = inputStream as MemoryStream;
+            //        if (memoryStream == null)
+            //        {
+            //            memoryStream = new MemoryStream();
+            //            inputStream.CopyTo(memoryStream);
+            //        }
+            //        Documentbyte = memoryStream.ToArray();
+            //        trg.LandConvertProof = Convert.ToBase64String(Documentbyte);
+            //        trg.LandConvertProofExtension = extension;
+            //        trg.LandConvertProofDocumentContent = ContentType;
+            //    }
+            //}
+            //#endregion
 
-            #region Certificate Doc
-            if (OwnBuildingProof != null)
-            {
-                extension = Path.GetExtension(OwnBuildingProof.FileName);
-                ContentType = OwnBuildingProof.ContentType;
-                using (Stream inputStream = OwnBuildingProof.InputStream)
-                {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-                    Documentbyte = memoryStream.ToArray();
-                    trg.OwnBuildingProof = Convert.ToBase64String(Documentbyte);
-                    trg.OwnBuildingProofExtension = extension;
-                    trg.OwnBuildingProofDocumentContent = ContentType;
-                }
-            }
-            #endregion
+            //#region Certificate Doc
+            //if (OwnBuildingProof != null)
+            //{
+            //    extension = Path.GetExtension(OwnBuildingProof.FileName);
+            //    ContentType = OwnBuildingProof.ContentType;
+            //    using (Stream inputStream = OwnBuildingProof.InputStream)
+            //    {
+            //        MemoryStream memoryStream = inputStream as MemoryStream;
+            //        if (memoryStream == null)
+            //        {
+            //            memoryStream = new MemoryStream();
+            //            inputStream.CopyTo(memoryStream);
+            //        }
+            //        Documentbyte = memoryStream.ToArray();
+            //        trg.OwnBuildingProof = Convert.ToBase64String(Documentbyte);
+            //        trg.OwnBuildingProofExtension = extension;
+            //        trg.OwnBuildingProofDocumentContent = ContentType;
+            //    }
+            //}
+            //#endregion
             try
             {
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
@@ -101,20 +103,30 @@ namespace NewZapures_V2.Controllers
                 request.AddHeader("Content-Type", "application/json");
                 request.AddHeader("Accept", "application/json");
                 IRestResponse response = client.Execute(request);
+                ResponseData objResponse = new ResponseData();
                 if (response.StatusCode.ToString() == "OK")
                 {
-                    var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                    objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
 
-                    TempData["isSaved"] = 1;
-                    TempData["msg"] = " Details Saved...";
-                    return RedirectToAction("Index", "LandBuildingInfo");
+                    //TempData["isSaved"] = 1;
+                    //TempData["msg"] = " Details Saved...";
+                    //return RedirectToAction("Index", "LandBuildingInfo");
                 }
                 else
                 {
-                    TempData["isSaved"] = 0;
-                    TempData["msg"] = " Details Not Saved...";
-                    return RedirectToAction("Index", "LandBuildingInfo");
-                }               
+                    //TempData["isSaved"] = 0;
+                    //TempData["msg"] = " Details Not Saved...";
+                    //return RedirectToAction("Index", "LandBuildingInfo");
+                }
+
+                return new JsonResult
+                {
+                    Data = new { StatusCode = objResponse.statusCode, Data = "", Failure = false, Message = objResponse.Message },
+                    ContentEncoding = System.Text.Encoding.UTF8,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+
+
             }
             catch (Exception ex)
             {
