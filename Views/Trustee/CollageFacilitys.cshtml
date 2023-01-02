@@ -339,7 +339,7 @@
             });
             $("#btnSave").click(function () {
                 var tableData = new Array();
-                debugger;
+                
                 //var trustId = $('#TrustId').val();
                 //var CollageId = $('#CollageId').val();
                 //var Guid = $('#Guid').val();
@@ -350,7 +350,7 @@
                     if ($('#select_' + Idget).is(":checked")) {
                         select = true;
                     }
-                    debugger;
+                    
                     var getdata = { FacilityId: Idget, IsSelect: select, uploadFile: $('#Upbase64_' + Idget).val() }
                     tableData.push(getdata);
                 });
@@ -423,7 +423,7 @@
                 dataType: "json",
                 contentType: "application/json",
                 success: function (response) {
-                    debugger;
+                    
                     for (var i = 0; i < response.Data.length; i++) {
                         if (@ViewData["CollageId"].ToString() == response.Data[i].Id) {
                             strHtml += "<option value='" + response.Data[i].Id + "' selected>" + response.Data[i].text + "</option>"

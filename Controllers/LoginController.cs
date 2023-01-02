@@ -51,23 +51,23 @@ namespace NewZapures_V2.Controllers
             {
                 //try
                 //{
-                if (SSO.CreateSSOSession())
-                {
+                //if (SSO.CreateSSOSession())
+                //{
                     var jsonUserDetail = "";
 
                 var jsonSSODetail = "";
                 var jsonUserDetails = "";
                 var jsonInternLogin = "";
 
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
+                //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                //RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
 
-                if (detail != null)
-                {
+                //if (detail != null)
+                //{
 
                     System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
-                RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
+                RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
                 if (UserDetail != null)
                 {
                     SSOUserDetail _SSOUserDetail = new SSOUserDetail();
@@ -157,8 +157,8 @@ namespace NewZapures_V2.Controllers
                     }
 
                 }
-                }
-                }
+                //}
+                //}
             }
 
             return View();

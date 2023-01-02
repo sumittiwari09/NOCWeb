@@ -757,7 +757,7 @@
 
     }
     if ('@stateId' != 0) {
-        debugger;
+        
         var Id = '@stateId';
         setTimeout(function () {
                BindDistrict('District', '@countryId', Id);
@@ -766,7 +766,7 @@
 
     }
     if ('@districtId' != 0) {
-        debugger;
+        
         var Id = '@districtId';
         setTimeout(function () {
              BindCity('City', '@countryId','@stateId', Id);
@@ -775,7 +775,7 @@
 
     }
      if ('@cityId' != 0) {
-        debugger;
+        
          var Id = '@cityId';
          setTimeout(function () {
              BindArea('Area', '@countryId','@stateId','@districtId', Id);
@@ -805,7 +805,7 @@
 
         });
         $("#CityId").change(function () {
-            debugger;
+            
             var Id = $(this).val();
             var CountryId = $("#CountryId").val();
             var StateId = $("#StateId").val();
@@ -817,7 +817,7 @@
         });
 
         $("#customCheck6").change(function () {
-            debugger;
+            
             var Id = $("#customCheck6").val();
             if (Id == 0) {
 
@@ -917,7 +917,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -975,7 +975,7 @@
                         }
 
                     }
-                    debugger;
+                    
                     $("#StateId").select2("destroy");
                     $("#StateId").html(strHTML);
                     $("#StateId").select2();
@@ -1019,7 +1019,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -1075,7 +1075,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -1128,7 +1128,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -1331,7 +1331,7 @@
             });
 
             $('#crop').click(function () {
-                debugger;
+                
                 canvas = cropper.getCroppedCanvas({
                     width: 400,
                     height: 400
