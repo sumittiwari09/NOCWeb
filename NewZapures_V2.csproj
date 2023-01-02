@@ -258,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\app.bundle.css" />
+    <Content Include="Content\Architecturefile.css" />
     <Content Include="Content\card.css" />
     <Content Include="Content\Cropimage.css" />
     <Content Include="Content\DashboardCss\AdminLTE2\css\adminlte.css" />
