@@ -165,7 +165,7 @@
         <div class="col-lg-12" style="margin-bottom:10px">
             <div class="">
                 <button class="btn btn-primary" id="btnSave" style="float:right"> Save</button>
-                <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary col-sm-1" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
+                <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
                 @*</div>*@
             </div>
         </div>
@@ -177,10 +177,28 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {      
+    $(document).ready(function () {
         $('#chkAll').click(function () {
             $('.chk').prop('checked', this.checked)
         });
+
+        function GenerateArc(url) {
+
+            $.ajax({
+                url: GetglobalDomain() + url,
+                type: 'GET',
+                dataType: "text",
+                success: function (response) {
+                    //$('#divFormContainer').html('');
+                    $('#divFormContainer1').removeAttr("style");
+                    $('#divFormContainer').html(response);
+                    $('#divLoader').css('display', 'none');
+                    return;
+                    /*  $("#AddSection").html(response);*/
+                }
+            });
+            return false;
+        }
 
         $("#btnSave").click(function () {
             var tableData = new Array();
@@ -193,14 +211,14 @@
                 var Idget = row_data.find("td").eq(0).html().trim();
                 var RateName = row_data.find("td").eq(1).html().trim();
                 var Rate = $(this).find('#Rate').val();
-                var rated = parseFloat(Rate);                
+                var rated = parseFloat(Rate);
                 var select = false;
-                if ($(this).find('#Select').is(":checked")) {                    
+                if ($(this).find('#Select').is(":checked")) {
                     select = true;
-                }                
+                }
                 debugger;
                 var getdata = { RateId: Idget, IsSelect: select, RateName: RateName, Rate: rated }
-                tableData.push(getdata);               
+                tableData.push(getdata);
             });
 
             var modal = {
@@ -216,20 +234,33 @@
                 data: modal,
                 success: function (data) {
                     if (data.failure) {
-                        var url = GetglobalDomain() + "/FeeDetails/Index";
-                        window.location.href = url;
+                        Swal.fire({
+                            title: 'Data saved sussessfully!',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Save',
+                            denyButtonText: `Don't save`,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var url = "/FeeDetails/Index";
+                                GenerateArc(url);
+                                //window.location.href = url;
+                            }
+                        })
+                       
+                        
                     }
                     else {
                         Swal.fire(
                             'error',
                             'Failed',
                             'Data not Saved'
-                        )                        
-                    }                   
+                        )
+                    }
                 }
             });
         });
-
     });
 </script>
 
