@@ -30,7 +30,8 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="~/images/NOCIMAGE.png">
     @Styles.Render("~/Content/css")
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
     <link href="~/Content/loader.css" rel="stylesheet" />
@@ -419,7 +420,7 @@
                                         <h2>Welcome to NOC Rajasthan ,follow following steps<span class="red"></span></h2>
                                         <p>You are successfully logged in to the system.</p>
                                     </div>
-                                  
+
                                     <div class="card-body">
                                         <div class="row col-lg-12" id="btnCapitalAdd">
                                             <div class="form-group col-lg-6" style="display: flex;flex-direction: column;place-content: center;height: 100%;">
@@ -472,18 +473,18 @@
                                         @*<input type="submit" value="Please Verify" id="verification" onclick="RedirectToVerfication();" style="display:block">*@
                                     </div>
                                 </div>
-                                
+
                                 <div class="modal-dialog modal-xl modal-dialog-centered" role="document" id="" style="display:none">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h3 class="modal-title" id="appSummary">Trust Details</h3>
                                             @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>*@
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>*@
                                         </div>
                                         <div class="modal-body" style="padding: 20px !important;">
                                             <p style="font-size: 15px;font-weight: 500;color: black;">Your Application is processed for following selection : </p>
-                                            
+
 
                                         </div>
                                         <div class="modal-footer">
@@ -593,7 +594,9 @@
     <script src="~/Content/select2/js/select2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
     @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
 
     @Scripts.Render("~/bundles/scripts")
@@ -685,12 +688,12 @@
                                     $('#btnCapitalAdd').css("display", "none");
                                 }
 
-                               
+
                             }
                             else {
                                 Swal.fire(data.Message, '', 'info')
-                                $('#continue').css("display","none");
-                                $('#btnCapitalAdd').css("display","block");
+                                $('#continue').css("display", "none");
+                                $('#btnCapitalAdd').css("display", "block");
                             }
                         },
                         error: function (d) {
