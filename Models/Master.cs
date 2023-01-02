@@ -9,6 +9,49 @@ namespace NewZapures_V2.Models
     public class Master
     {
     }
+    public class FinYear
+    {
+        public int iPk_Id { get; set; }
+        public string sName { get; set; }
+        public string dtInsertStrDt { get; set; }
+        public string dtInsertEndDt { get; set; }
+        public int iStts { get; set; }
+    }
+    public class FinYearView : FinYear
+    {
+        public DateTime? dtStrdate { get; set; }
+        public DateTime? dtEnddate { get; set; }
+
+        public string StartDate
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(dtStrdate.ToString()))
+                {
+                    return dtStrdate.Value.ToString("ddd dd MMM yyyy");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        public string EndDate
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(dtEnddate.ToString()))
+                {
+                    return dtEnddate.Value.ToString("ddd dd MMM yyyy");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+    }
     public class NOCDEPMAP
     {
         public int iPk_DeptMapId { get; set; }

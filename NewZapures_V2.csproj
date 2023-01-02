@@ -3542,6 +3542,7 @@
     <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
     <Content Include="Views\Master\Testing.cshtml" />
+    <Content Include="Views\Master\FinancialYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
