@@ -16,7 +16,8 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="~/images/NOCIMAGE.png">
     @Styles.Render("~/Content/css")
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
     <link href="~/Content/loader.css" rel="stylesheet" />
@@ -99,8 +100,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Content/select2/js/select2.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/sweetalert2.all.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
     @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
 
     @Scripts.Render("~/bundles/scripts")

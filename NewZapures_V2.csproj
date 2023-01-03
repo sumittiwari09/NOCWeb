@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -258,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\app.bundle.css" />
+    <Content Include="Content\Architecturefile.css" />
     <Content Include="Content\card.css" />
     <Content Include="Content\Cropimage.css" />
     <Content Include="Content\DashboardCss\AdminLTE2\css\adminlte.css" />
@@ -3544,6 +3545,7 @@
     <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
     <Content Include="Views\Master\Testing.cshtml" />
+    <Content Include="Views\Master\FinancialYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

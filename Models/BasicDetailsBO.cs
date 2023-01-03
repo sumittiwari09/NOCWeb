@@ -13,12 +13,12 @@ namespace NewZapures_V2.Models
         public int UniverSity { get; set; }
         public string MobileNumber { get; set; }
         public string Email { get; set; }
-        public int District { get; set; }
-        public int Division { get; set; }
-        public int SubDivision { get; set; }
-        public int District1 { get; set; }
-        public int Tehsil { get; set; }
-        public int ParliamentArea { get; set; }
+        public string LocationType { get; set; }
+        public int DistrictId { get; set; }       
+        public int TehsilId { get; set; }
+        public int CityId { get; set; }
+        public int BlockId { get; set; }
+        public string WardNo { get; set; }
         public int AssembleArea { get; set; }
         public int CityTownVillage { get; set; }
         public int UrbanRular { get; set; }
@@ -39,6 +39,7 @@ namespace NewZapures_V2.Models
         //public string CoEducation { get; set; }
         public string collegeLevel { get; set; }
         public string collegeMedium { get; set; }
+        public string CollageType { get; set; }
 
         public List<ContactDetails> ContactDetails { get; set; }
 

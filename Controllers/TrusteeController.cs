@@ -285,7 +285,8 @@ namespace NewZapures_V2.Controllers
         }
         //public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
         public ActionResult EditApplication(string applGUID)
-        {
+        
+        {           
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
@@ -293,8 +294,7 @@ namespace NewZapures_V2.Controllers
             //ViewBag.LandDetails = LandData;
             SessionModel.ApplicantGuid = applGUID;
             ViewBag.trusteeMember = trusteeMember;
-
-
+            SessionModel.ApplicantGuid = applGUID;
             return View();
         }
 
@@ -346,6 +346,7 @@ namespace NewZapures_V2.Controllers
                             if (_result != null)
                             {
                                 ViewBag.TrustDetails = _result;
+                                ViewData["RegDate"] = _result.RegistrationDate;
                                 SessionModel.TrustId = _result.TrusteeInfoId;
                                 //return RedirectToAction("Index");
                             }
@@ -768,9 +769,9 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    TempData["SwalStatusMsg"] = "success";
-                    TempData["SwalMessage"] = "Data saved sussessfully!";
-                    TempData["SwalTitleMsg"] = "Success...!";
+                    //TempData["SwalStatusMsg"] = "success";
+                    //TempData["SwalMessage"] = "Data saved sussessfully!";
+                    //TempData["SwalTitleMsg"] = "Success...!";
                     return new JsonResult
                     {
                         Data = new { failure = true, msg = "Success" },
