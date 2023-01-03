@@ -119,7 +119,6 @@
                         <select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
                             <option value="">Select College</option>
                             @{
-
                                 if (collegeList != null)
                                 {
                                     foreach (var item in collegeList)
@@ -202,7 +201,7 @@
                                 {
                                     <tr id="tr_@item.iPK_SubId">
                                         <td>@i</td>
-                                        @*<td>@item.TrustInfoId</td>*@
+                                        <td>@item.applicationNumber</td>
                                         <td>@item.CollegeName</td>
                                         <td>@item.TagDegrees</td>
                                         <td>@item.TagCourse</td>
@@ -354,8 +353,8 @@
         var Model = {
             type: itemType,
             iPK_SubId: parseInt(iPK_SubId),
-            sub: SubjectName
-
+            sub: SubjectName,
+            //hdnapp: sApplNo applicationNumber
         }
         var d = JSON.stringify(Model);
         console.log(d);
@@ -383,8 +382,8 @@
                         $('#txtSubjectName').val(SubjectName);
                         $('#hdnAPPID').val(applicationNumber);
 
-                    $('#btnSave').html('');
-                    $('#btnSave').html('Update');
+                        $('#btnSave').html('');
+                       $('#btnSave').html('Update');
 
                 }
             },
