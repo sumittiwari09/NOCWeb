@@ -36,4 +36,10 @@ namespace NewZapures_V2.Models
         public string Pincode { get; set; }
         public string EntryType { get; set; }
     }
+
+    public class GeoLocationMaster
+    {
+       public string Type { get; set; }
+        public int? Id { get; set; }
+    }
 }
