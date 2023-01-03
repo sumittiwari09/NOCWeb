@@ -3,6 +3,7 @@
     ViewBag.Title = "Staff";
     Layout = null;// "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.StaffBO.Staff> stafflist = ViewBag.StaffList as List<NewZapures_V2.Models.StaffBO.Staff>;
+  
 }
 @section styles {
 
@@ -91,6 +92,7 @@
     </div>
     @using (Html.BeginForm("Index", "Staff", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        <input type="hidden" name="guid" value="@ViewBag.guid" />
         <div class="card-body row">
             <div class="col-8">
                 <div class="row">
@@ -191,7 +193,7 @@
     }
     <div class="row col-lg-12">
         <div class="form-group col-lg-12">
-            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+            <table class="table  table-borderless table-striped table-hover" id="tblCapital">
                 <thead class="dark">
                     <tr>
                         <th>SNo</th>

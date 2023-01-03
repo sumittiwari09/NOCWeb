@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -2344,6 +2344,9 @@
     <Content Include="Content\globalDomain.js" />
     <Content Include="Content\loader.css" />
     <Content Include="Content\LoginSignUp\img\NOC Process flow.jpeg" />
+    <Content Include="Content\NewArchtech\bootstrap.min.js" />
+    <Content Include="Content\NewArchtech\jquery-confirm.min.css" />
+    <Content Include="Content\NewArchtech\Jsminmum.js" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
