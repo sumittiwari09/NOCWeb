@@ -26,7 +26,7 @@
 
     //List<NewZapures_V2.Models.CustomMaster> collegelist = ViewBag.collegeListData as List<NewZapures_V2.Models.CustomMaster>;
     List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
-    var appl = (string)ViewBag.applNumber;
+    var appl = ViewBag.applicationDetails;  //(string)ViewBag.applNumber;
     var applicationNumber = "";
     //if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
     //{
@@ -107,6 +107,7 @@
     </div>
     <div class="card-body">
         <input type="hidden" id="hdnPKID" />
+        <input type="hidden" id="hdnappl" />
         @using (Html.BeginForm("SaveDetails", "SubjectMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="row">
@@ -117,7 +118,6 @@
                         <select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
                             <option value="">Select College</option>
                             @{
-
                                 if (collegeList != null)
                                 {
                                     foreach (var item in collegeList)
@@ -200,14 +200,14 @@
                                 {
                                     <tr id="tr_@item.iPK_SubId">
                                         <td>@i</td>
-                                        @*<td>@item.TrustInfoId</td>*@
+                                        <td>@item.applicationNumber</td>
                                         <td>@item.CollegeName</td>
                                         <td>@item.TagDegrees</td>
                                         <td>@item.TagCourse</td>
                                         <td>@item.SubjectName</td>
                                         <td>
                                             <button class="btn btn col-sm-6" type="button" id="btnEdit" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);">
-                                                <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>Edit
+                                                <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>
                                             </button>
                                         </td>
                                     </tr>
@@ -353,8 +353,8 @@
         var Model = {
             type: itemType,
             iPK_SubId: parseInt(iPK_SubId),
-            sub: SubjectName
-
+            sub: SubjectName,
+            //hdnapp: sApplNo applicationNumber
         }
         var d = JSON.stringify(Model);
         console.log(d);
@@ -379,9 +379,12 @@
                     $('#hdnPKID').val(iPK_SubId);
                     if (itemType =='Get')
                         $('#txtSubjectName').val(SubjectName);
+                        $('#IsdefaultCollegeId').val(iCollegeId);
+                        $('#txtTagDegree').val(TagDegrees);
+                        $('#txtTagCourse').val(TagCourse);
 
-                    $('#btnSave').html('');
-                    $('#btnSave').html('Update');
+                        $('#btnSave').html('');
+                       $('#btnSave').html('Update');
 
                 }
             },

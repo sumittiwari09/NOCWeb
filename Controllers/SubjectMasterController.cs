@@ -20,8 +20,9 @@ namespace NewZapures_V2.Controllers
         CommonFunction objcf = new CommonFunction();
         ResponseData objResponse;
         // GET: SubjectMaster
-        public ActionResult CreateData(string guid)
+        public ActionResult CreateData(string applGUID)
         {
+
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
@@ -40,8 +41,9 @@ namespace NewZapures_V2.Controllers
             collegeListData = GetCollegeList();
             ViewBag.collegeListData = collegeListData;
 
-            ViewBag.applNumber = guid;
-
+            ViewBag.applNumber = SessionModel.ApplicantGuid;
+            var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
 
             GetSubjectDataList();
 

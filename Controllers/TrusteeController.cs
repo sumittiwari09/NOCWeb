@@ -291,6 +291,7 @@ namespace NewZapures_V2.Controllers
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             //var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
             //ViewBag.LandDetails = LandData;
+            SessionModel.ApplicantGuid = applGUID;
             ViewBag.trusteeMember = trusteeMember;
 
 
