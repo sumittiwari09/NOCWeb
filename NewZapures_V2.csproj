@@ -258,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\app.bundle.css" />
+    <Content Include="Content\Architecturefile.css" />
     <Content Include="Content\card.css" />
     <Content Include="Content\Cropimage.css" />
     <Content Include="Content\DashboardCss\AdminLTE2\css\adminlte.css" />
@@ -2349,6 +2350,8 @@
     <Content Include="Content\OurServices\bootstrap\js\bootstrap.js" />
     <Content Include="Content\OurServices\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\OurServices\js\jquery-1.10.2.min.js" />
+    <Content Include="Content\sweetalert2.all.min.js" />
+    <Content Include="Content\sweetalert2.min.css" />
     <Content Include="Content\tree\css\style.css" />
     <Content Include="Content\tree\images\1.jpg" />
     <Content Include="Content\tree\images\2.jpg" />

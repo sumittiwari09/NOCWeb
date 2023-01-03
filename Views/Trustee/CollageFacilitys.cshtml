@@ -1,7 +1,8 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "collage Facility";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Collage Facility";
+    Layout = null;
+    //Layout = "~/Views/Shared/_Layout.cshtml";
     //List<NewZapures_V2.Models.TrusteeBO.Trustee> FacilityList = ViewBag.FacilityList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
 
     TrusteeBO.CollageFacility CollageFacilityMster = ViewBag.CollageFacilityMster as TrusteeBO.CollageFacility;
@@ -91,12 +92,12 @@
     <div class="col-sm-12">
         <div class="page-title-box">
             @*<div class="float-right">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">NOC</li>
-                    <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Collage Facility</li>
-                </ol>
-            </div>*@
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Collage Facility</li>
+                    </ol>
+                </div>*@
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -104,56 +105,56 @@
 
 <div class="card">
     <div class="card-header fsc">
-        <h4 class="mt-0 header-title float-left">Trustee Details</h4>
+        <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
         @*<div class="form-group" style="text-align:right">
-            <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
-        </div>*@
+                <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+            </div>*@
     </div>
 
     <div class="card-body row">
         <div class="col-8">
 
             @*@using (Html.BeginForm("CollageFacilitys", "Trustee", FormMethod.Post, new { id = "CollageFacilityform", enctype = "multipart/form-data" }))
-        {
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
-                    <div>
-                        <select class="form-control" name="TrustId" id="TrustId">
-                            <option value="0">Select Trust</option>
-                            @{
-                                foreach (var item in TrustList)
-                                {
-                                    if(ViewData["TrustId"].ToString() == item.Id.ToString())
-                                    {
-                                       <option value="@item.Id" selected>@item.text</option>
+                {
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Trust</label>
+                            <div>
+                                <select class="form-control" name="TrustId" id="TrustId">
+                                    <option value="0">Select Trust</option>
+                                    @{
+                                        foreach (var item in TrustList)
+                                        {
+                                            if(ViewData["TrustId"].ToString() == item.Id.ToString())
+                                            {
+                                               <option value="@item.Id" selected>@item.text</option>
+                                            }
+                                            else
+                                            {
+                                              <option value="@item.Id">@item.text</option>
+                                            }
+                                        }
                                     }
-                                    else
-                                    {
-                                      <option value="@item.Id">@item.text</option>
-                                    }
-                                }
-                            }
-                        </select>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
+                            <div>
+                                <select class="form-control" id="CollageId" name="CollageId">
+                                    <option value="">Select Collage</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <button class="btn btn-primary" id="btnsearch" style="margin-top:28PX">Submit</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
-                    <div>
-                        <select class="form-control" id="CollageId" name="CollageId">
-                            <option value="">Select Collage</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-lg-4">
-                <button class="btn btn-primary" id="btnsearch" style="margin-top:28PX">Submit</button>
-            </div>
-        </div>
-                }*@
+                        }*@
 
             @*<input type="hidden" id="Guid" value="@ViewBag.Guid" />*@
             <div class="row col-lg-12">
@@ -236,7 +237,7 @@
                 <div class="col-lg-12 loat-right">
                     <button class="btn btn-primary" id="btnupload" style="float:right">Upload</button>
                     <button class="btn btn-primary" id="btnSave" style="display:none;float:right">Save</button>
-                    <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary col-sm-1" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
+                    <a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>
 
                 </div>
 
@@ -264,11 +265,30 @@
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script src="~/Content/globalDomain.js"></script>
-    <script type="text/javascript">
+
+}
+<script type="text/javascript">
         $('#chkAll').click(function () {
             $('.chk').prop('checked', this.checked)
         });
 
+    function GenerateArc(url) {
+
+        $.ajax({
+            url: GetglobalDomain() + url,
+            type: 'GET',
+            dataType: "text",
+            success: function (response) {
+                //$('#divFormContainer').html('');
+                $('#divFormContainer1').removeAttr("style");
+                $('#divFormContainer').html(response);
+                $('#divLoader').css('display', 'none');
+                return;
+                /*  $("#AddSection").html(response);*/
+            }
+        });
+        return false;
+    }
         $(document).ready(function () {
 
             @*if (@ViewData["CollageId"].ToString() != 0) {
@@ -349,13 +369,28 @@
 
                             $('#btnSave').attr("style", "display:none");
                             $('#btnupload').attr("style", "display:block");
+
+                            Swal.fire({
+                                title: 'Data saved sussessfully!',
+                                showDenyButton: false,
+                                showCancelButton: false,
+                                confirmButtonText: 'Save',
+                                denyButtonText: `Don't save`,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    var url = "/Trustee/CollageFacilitys";
+                                    GenerateArc(url);
+                                    //window.location.href = url;
+                                }
+                            })
                             //Swal.fire(
                             //    'Success',
                             //    'Success',
                             //    'Data Save Successfully!!'
                             //)
-                            var url = GetglobalDomain() + "/Trustee/CollageFacilitys";
-                            window.location.href = url;
+                            //var url = GetglobalDomain() + "/Trustee/CollageFacilitys";
+                            //window.location.href = url;
                         }
                         else {
                             Swal.fire(
@@ -402,5 +437,4 @@
                 }
             });
         }*@
-    </script>
-}
+</script>
