@@ -217,6 +217,7 @@ namespace NewZapures_V2.Controllers
         {
             try
             {
+                trg.applicationNumber = SessionModel.ApplicantGuid;
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
                 //party.ParentId = userdetailsSession.PartyId;
                 var json = JsonConvert.SerializeObject(trg);
