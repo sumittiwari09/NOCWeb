@@ -177,7 +177,8 @@ namespace NewZapures_V2.Controllers
             #endregion
 
             //return View();
-            return RedirectToAction("EditApplication", "Trustee", new { applGUID = guid });
+            return RedirectToAction("EditApplication", "Trustee", new { applGUID = SessionModel.ApplicantGuid });
+            //return RedirectToAction("Index");
         }
 
         public ActionResult Delete(int Id)

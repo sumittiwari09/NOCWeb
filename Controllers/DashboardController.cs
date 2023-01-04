@@ -67,6 +67,7 @@ namespace Metrica.Controllers
                 _trustapi = _JsonSerializer.Deserialize<TrustRoot>(response.Content);
                 if (_trustapi.Status == "200" && _trustapi.Message == "Success")
                 {
+                    SessionModel.TrustRegNo = modal.RegistrationNo;
                     //ErrorBO _ress = Verificationdata(_trustapi);
                     return new JsonResult
                     {

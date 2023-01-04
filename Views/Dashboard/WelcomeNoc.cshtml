@@ -197,15 +197,13 @@
     <!-- leftbar-tab-menu -->
     <div class="leftbar-tab-menu">
         <div class="main-icon-menu slimscroll-menu">
-            <a href="@Url.Action("Index", "Dashboard")" class="logo logo-metrica d-block text-center">
+            <a href="#" class="logo logo-metrica d-block text-center">
                 <span>
                     <img src="~/images/NOCIMAGE.png" alt="logo-small" class="logo-sm">
                 </span>
             </a>
             <nav class="nav">
-                <a href="#MetricaDashboard" class="nav-link active" data-toggle="tooltip-custom" data-placement="right" data-trigger="hover" title="" data-original-title="Dashboard">
-                    <i data-feather="home" class="align-self-center menu-icon icon-dual"></i>
-                </a><!--end MetricaDashboards-->
+                
             </nav><!--end nav-->
         </div><!--end main-icon-menu-->
     </div>
@@ -323,7 +321,7 @@
 
             <ul class="list-unstyled topbar-nav mb-0">
                 <li>
-                    <a href="@Url.Action("Dashboard", "DashboardReport")">
+                    <a href="#">
                         <span class="responsive-logo">
                             <img src="~/images/logo-dark.png" alt="logo-small" class="logo-sm align-self-center" style="width: 40px;height: 35px;">
                         </span>
@@ -534,7 +532,7 @@
         }
         function Countinue() {
             var TrustReg = $('#txtTrustReg').val();
-            var url = GetglobalDomain() + "/Trustee/TrusteeGeneralInfo?RegNo=" + TrustReg;//
+            var url = GetglobalDomain() + "/Trustee/TrusteeGeneralInfo"//
             window.location.href = url;
 
         }
