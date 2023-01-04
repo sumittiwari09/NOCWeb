@@ -267,6 +267,8 @@ namespace NewZapures_V2.Controllers
                 objUsermaster = objResponseData;
             }
             return objUsermaster;
+
+            //return RedirectToAction("GetDetailsList", "SubjectMaster", new { applGUID = guid });
         }
 
 
