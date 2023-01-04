@@ -35,6 +35,71 @@ namespace NewZapures_V2.Controllers
             lstMap = GetNOCDepartMaplst(0);
             return View(lstMap);
         }
+        
+        public ActionResult FinancialYear()
+        {
+            ViewBag.FinYear = GetFinacialyearlist();
+            return View();
+        }
+
+        public List<FinYearView> GetFinacialyearlist()
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetFinYearList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<FinYearView> groups = new List<FinYearView>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    groups = JsonConvert.DeserializeObject<List<FinYearView>>(objResponse.Data.ToString());
+                }
+            }
+            return groups;
+        }
+
+        public ActionResult CreateFinacialyear(FinYear Master)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertFinYear");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+
+            request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData CommonResponse = new ResponseData();
+                CommonResponse = _JsonSerializer.Deserialize<ResponseData>(response.Content);
+                if (CommonResponse.statusCode == 1)
+                {
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalTitleMsg"] = "Success!";
+                    if (CommonResponse.Message == "Allready Exists In table")
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalTitleMsg"] = "warning!";
+                    }
+                    TempData["SwalMessage"] = CommonResponse.Message;
+                    
+
+                }
+                else
+                {
+                    TempData["SwalStatusMsg"] = "error";
+                    TempData["SwalMessage"] = "Something wrong";
+                    TempData["SwalTitleMsg"] = "error!";
+
+                }
+            }
+            return RedirectToAction("FinancialYear", "Master");
+        }
+
         public ActionResult AddDepartmentMapping(NOCDEPMAP Master)
         {
             try
