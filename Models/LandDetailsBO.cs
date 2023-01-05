@@ -40,8 +40,8 @@ namespace NewZapures_V2.Models
         public string dtOrdrDate { get; set; }
         public string sLndTyp { get; set; }
         public string sKhasaraNo { get; set; }
-        public string dLndArea { get; set; }
-        public string dTotalArea { get; set; }
+        public decimal dLndArea { get; set; }
+        public decimal dTotalArea { get; set; }
 
         //image
         public string UploadConvertedDocument { get; set; }

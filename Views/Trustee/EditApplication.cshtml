@@ -24,7 +24,7 @@
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 
 @*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
-<link href="~/Content/Architecturefile.css" rel="stylesheet" />
+@*<link href="~/Content/Architecturefile.css" rel="stylesheet" />*@
 @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
 <style type="text/css">
     .dropify-wrapper {
@@ -195,8 +195,9 @@
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("ApplicationPreview", "Trustee", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            @*<li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>*@
                         </ul>
 
                     </div>

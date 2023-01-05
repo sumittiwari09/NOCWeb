@@ -1,10 +1,13 @@
 ﻿@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Preview Application";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
 
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    var landData = (List<LandInfoBO>)ViewBag.landDataList;
+    var currentDate = DateTime.Today.ToString("dd.MM.yyyy");
+    var validCurrentDate = Convert.ToDateTime(currentDate).AddYears(1).ToString("dd.MM.yyyy");
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
@@ -82,7 +85,7 @@
 </style>
 <div class="row">
     <div class="col-sm-12">
-        <div class="page-title-box">
+        <!--<div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
@@ -91,14 +94,15 @@
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
-        </div><!--end page-title-box-->
+        </div>-->
+        <!--end page-title-box-->
     </div><!--end col-->
 </div>
 
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
         <h4 class="mt-0 header-title float-left">Preview Application</h4>
-        <a href="@Url.Action("EditApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Edit Application</a>
+        @*<a href="@Url.Action("EditApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Edit Application</a>*@
     </div>
     <div class="card-body ">
         <div class="row">
@@ -159,7 +163,36 @@
             </table>
 
         </div>
-        <div class="formsCollection">Land and Building Information</div><br />
+        <div class="formsCollection">Land and Building Information</div>
+        <div id="DivLandInfo" style="padding: 20px;">
+            <div class="col-lg-12" style="overflow-x: scroll;">
+                <table class="table table-borderless" id="tblLandInfo" style="width: max-content;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Land Situated</th>
+                            <th>Land Doc Type</th>
+                            <th>Is Convereted</th>
+                            <th>Order No</th>
+                            <th>Order Date</th>
+                            <th>Land Type</th>
+                            <th>Khasara Number</th>
+                            <th>Land Area</th>
+                            <th>Total Area</th>
+                            <th>Converted Doc</th>
+                            <th>Land Title Doc</th>
+                            <th>Land Doc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="13" class="text-center">No Data Available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
         <div class="formsCollection">Subject Covered</div><br />
         <div class="formsCollection">College Fee Structure</div><br />
         <div class="formsCollection">Architectrual Details</div><br />
@@ -175,12 +208,45 @@
             </div>
         </div><br />
         <span><i>Disclaimer: Once the application is submitted to the department you can`t change it.</i></span>
-        <button class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#mChallan">Submit My Application</button><br />
+        <button class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal">Submit My Application</button><br />
 
 
 
     </div>
 </div>
+
+
+<div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Thankyou"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <h2>Thank You</h2>
+
+                <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
+
+                <div style="margin-top: 20px;font-size:18px">
+                    Thank you for using our service. <br />
+                    <p>Kindly upload your payment receipt in My Profile - Upload Payment Receipt section to proceed your application to department. Note- application will not be submitted if your receipt is not uploaded</p>
+                </div>
+                <hr />
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mChallan" data-dismiss="modal">Countiue For Reciept</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @*Modal Start*@
 <div class="modal fade bd-example-modal-lg" id="mChallan" tabindex="-1" role="dialog" aria-labelledby="mChallan" data-backdrop="static" style="display:none;">
@@ -204,13 +270,13 @@
                     </div>
                     <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;" />
                     <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
-                        <p style="font-size: 15px;color:black;font-weight: 500;">Valid Upto : <span>30.12.2022</span></p>
+                        <p style="font-size: 15px;color:black;font-weight: 500;">Valid Upto : <span>@currentDate</span></p>
                         <p style="font-size: 15px;color:black;font-weight: 500;">Remitters Copy</p>
                     </div>
                     <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
                     <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
                         <p style="font-size: 15px;color:black;font-weight: 500;">GRN : <span>24033220</span></p>
-                        <p style="font-size: 15px;color:black;font-weight: 500;">Date : <span>30.12.2022 12:53:00 PM</span></p>
+                        <p style="font-size: 15px;color:black;font-weight: 500;">Date : <span>@currentDate</span></p>
                     </div>
                     <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
                     <div>
@@ -218,7 +284,7 @@
                             <tr><th>Barcode : </th><td>{BarcodeHere}</td></tr>
                             <tr><th>Office Name : </th><td>Dy. Dir. COLLEGE EDUCATION JAIPUR</td></tr>
                             <tr><th>Location : </th><td>JAIPUR (SECTT.)</td></tr>
-                            <tr><th>Year : </th><td>13.07.2018 To 31.07.2019</td></tr>
+                            <tr><th>Year : </th><td>@currentDate To @validCurrentDate</td></tr>
                         </table>
                     </div>
                     <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
@@ -228,7 +294,7 @@
                                 <tr><th>Head (0202)</th><th>Amount &#8377;</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>0202-01-103-02-01-संचालक, महाविद्यालय शिक्षा</td><td>30,000</td></tr>
+                                <tr><td>@draftAppl.CollegeName</td><td>@draftAppl.Fees</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -237,7 +303,7 @@
                         <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
 
                             <tr><th>Discount : </th><td>&#8377; 0</td></tr>
-                            <tr><th>Total/Net Amount : </th><td>&#8377; 30,000<br />(Thirty Thousand Rupees and Zero Paisa Only)</td></tr>
+                            <tr><th>Total/Net Amount : </th><td>&#8377; @draftAppl.Fees<br />(One Lakh Rupee Only)</td></tr>
 
                         </table>
                     </div>
@@ -302,7 +368,48 @@
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
 }
 <script type="text/javascript">
+    var landInfoData = [];
 
+    $(document).ready(function () {
+
+        SomeFunction();
+    });
+
+
+
+    function SomeFunction() {
+        var htmlString = "";
+    var array = @Html.Raw(Json.Encode(ViewBag.landDataList));
+    for(var i = 0; i < array.length; i++) {
+        landInfoData.push(array[i]);
+        //alert(array[i]); // should display "string1" then string2"
+        }
+        landInfoData.forEach(function (item, index) {
+
+            var landConvertedURL = (item.lndConvertURL == "#") ? `NA` : `<a href="${item.lndConvertURL}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landTitleURL = (item.lndTitleURL == "#") ? `NA` : `<a href="${item.lndTitleURL}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landDocumentURL = (item.landDocURL == "#") ? `NA` : `<a href="${item.landDocURL}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+            htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;display:none"><i class="far fa-trash-alt"></i> :</span> ${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+            $('#txtTotalArea').val(item.dTotalArea);
+        });
+        $("#tblLandInfo tbody").html('');
+        $("#tblLandInfo tbody").html(htmlString);
+}
     function printDiv(divName) {
         alert(divName);
           //var printContents = document.getElementById(divName).innerHTML;

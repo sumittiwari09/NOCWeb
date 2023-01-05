@@ -257,7 +257,7 @@ namespace NewZapures_V2.Controllers
         
         public ActionResult UploadFeeRecipt()
         {
-            var draftApplications = ZapurseCommonlist.GetDraftApplication();
+            var draftApplications = ZapurseCommonlist.GetApplicationsToUploadReceipt();
             ViewBag.draftApplication = draftApplications;
             return View();
         }
@@ -269,6 +269,29 @@ namespace NewZapures_V2.Controllers
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = "", Failure = false, msg = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult UploadReceipt(UploadReceipt receipt)
+        {
+            var json = JsonConvert.SerializeObject(receipt);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/UploadReceipt");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             ResponseData objResponse = new ResponseData();
             if (response.StatusCode.ToString() == "OK")
@@ -303,8 +326,9 @@ namespace NewZapures_V2.Controllers
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+            var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
             ViewBag.trusteeMember = trusteeMember;
-
+            ViewBag.landDataList = LandData;
             return View();
         }
 

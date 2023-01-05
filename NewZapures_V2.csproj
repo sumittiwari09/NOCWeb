@@ -157,6 +157,7 @@
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\UploadReceipt.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
