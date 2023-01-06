@@ -25,21 +25,26 @@
     var collegeList = (List<CustomEnum>)ViewBag.collegeListData;
 
     //List<NewZapures_V2.Models.CustomMaster> collegelist = ViewBag.collegeListData as List<NewZapures_V2.Models.CustomMaster>;
-    List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
+
     var applicationNumber = (string)ViewBag.applNumber;
-    //var applicationNumber = "";
-    //if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
-    //{
-    //    applicationNumber = appl;
-    //}
-    //else
-    //{
-    //    applicationNumber = Request.QueryString["appNo"].ToString();
-    //}
+    List<AddCourseBO> pagedata = ViewBag.PageListData as List<AddCourseBO>;
+    var iCollegeId = "";
+    var tagdegree = "";
+    var tagcourse = "";
+    foreach (var item in pagedata)
+    {
+        iCollegeId = item.iCollegeId;
+        tagdegree = item.TagDegrees;
+        tagcourse = item.TagCourse;
+    }
+    List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
+
 }
 
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    @*<link href="~/Content/NewArchtech/FornAwsome.css" rel="stylesheet" />*@
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 <style type="text/css">
     .table thead {
         background-color: #646d91 !important;
@@ -87,19 +92,10 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <!--<div class="float-right">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Master</li>-->
-                    @*<li class="breadcrumb-item">Master</li>*@
-                    <!--<li class="breadcrumb-item active">@ViewBag.Title</li>
-                </ol>
-            </div>-->
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
 </div>
-
-
 
 <div class="card">
     <div class="card-header fsi">
@@ -107,18 +103,18 @@
     </div>
     <div class="card-body">
         <input type="hidden" id="hdnPKID" />
-        <input type="hidden" id="hdnAPPID"/>
-        @using (Html.BeginForm("SaveDetails", "SubjectMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @*<input type="hidden" id="hdnaaplication" name="applicationNumber" value="@applicationNumber" />*@
-            <div class="row">
+        <input type="hidden" id="hdnAPPID" />
+        @*@using (Html.BeginForm("SaveDetails", "SubjectMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {*@
+        @*<input type="hidden" id="hdnaaplication" name="applicationNumber" value="@applicationNumber" />*@
+        <div class="row">
 
-                <div class="form-group col-lg-6">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
-                    <div>
-                        <select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
+            <div class="form-group col-lg-6">
+                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">CollegeName</label>
+                <div>
+                    @*<select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
                             <option value="">Select College</option>
-                            @{
+                            {
                                 if (collegeList != null)
                                 {
                                     foreach (var item in collegeList)
@@ -126,126 +122,128 @@
                                         <option value=@item.Id>@item.Name</option>
                                     }
                                 }
-
                             }
-                        </select>
-                    </div>
+                        </select>*@
+                    <input type="text" class="form-control col-sm-12" autocomplete="off" id="IsdefaultCollegeId" name="iCollegeId" value="@iCollegeId" readonly />
                 </div>
-                <div class="form-group col-lg-6">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Department</label>
-                    <div>
-                        <select class="form-control singleselect" name="TagDegrees" id="txtTagDegree">
+            </div>
+            <div class="form-group col-lg-6">
+                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Department</label>
+                <div>
+                    @*<select class="form-control singleselect" name="TagDegrees" id="txtTagDegree">
                             <option value="0">Select Department</option>
-                            @{
+                            {
                                 foreach (var item in DegreeList)
                                 {
                                     <option value="@item.Id">@item.Text</option>
                                 }
                             }
-                        </select>
-                    </div>
-                </div>
+                        </select>*@
+                    <input type="text" class="form-control col-sm-12" value="@tagdegree" name="TagDegrees" id="txtTagDegree" readonly />
 
+                </div>
             </div>
 
-            <div class="row">
-                <div class="form-group col-lg-6">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Course</label>
-                    <div>
-                        <select class="form-control singleselect" name="TagCourse" id="txtTagCourse">
-                            @*<option value="0">Select Course List</option>
-                            @{
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-6">
+                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Course</label>
+                <div>
+                    @*<select class="form-control singleselect" name="TagCourse" id="txtTagCourse">
+                           <option value="0">Select Course List</option>
+                            {
                                 foreach (var item in CourseList)
                                 {
                                     <option value="@item.Id">@item.text</option>
                                 }
-                            }*@
+                            }
                         </select>
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-6">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Subject Name</label>
-                    <div>
-                        <input class="form-control col-sm-12" type="text" inputmode="charecterOnly(id)" autocomplete="off" id="txtSubjectName" name="SubjectName" value="SubjectName">
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="row" style="text-align:center">
-                <div class="form-group col-lg-3">
-                    <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                    <button class="btn btn col-sm-12" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
+                    <input type="text" class="form-control col-sm-12" value="@tagcourse" name="TagCourse" id="txtTagCourse" readonly />
                 </div>
             </div>
 
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <table class="table table-borderless table-striped table-hover" id="tblIncome">
-                        <thead class="dark">
-                            <tr>
-                                <th>Sr</th>
-                                <th>ApplicationNO</th>
-                                <th>College</th>
-                                <th>Degrees</th>
-                                <th>Course</th>
-                                <th>Subject</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (SubjectDataList != null)
+            <div class="form-group col-lg-6">
+                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Subject Name</label>
+                <div>
+                    <input class="form-control col-sm-12" type="text" inputmode="charecterOnly(id)" autocomplete="off" id="txtSubjectName" name="SubjectName" value="SubjectName">
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row" style="text-align:center">
+            <div class="form-group col-lg-3">
+                <button type="submit" id="btnsubmitDetails" style="display:none"></button>
+                <button class="btn btn col-sm-12" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <table class="table table-borderless table-striped table-hover" id="tblSubject">
+                    <thead class="dark">
+                        <tr>
+                            <th>Sr</th>
+                            <th>College</th>
+                            <th>Degrees</th>
+                            <th>Course</th>
+                            <th>Subject</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (SubjectDataList != null)
+                        {
+                            int i = 1;
+                            foreach (var item in SubjectDataList)
                             {
-                                int i = 1;
-                                foreach (var item in SubjectDataList)
-                                {
-                                    <tr id="tr_@item.iPK_SubId">
-                                        <td>@i</td>
-                                        <td>@item.applicationNumber</td>
-                                        <td>@item.CollegeName</td>
-                                        <td>@item.TagDegrees</td>
-                                        <td>@item.TagCourse</td>
-                                        <td>@item.SubjectName</td>
-                                        <td>
-                                            <button class="btn btn col-sm-6" type="button" id="btnEdit" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);">
-                                                <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a></button>
-                                        </td>
-                                    </tr>
-                                    i++;
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="8" style="text-align: center;">No Data Available</td>
+                                <tr id="tr_@item.iPK_SubId">
+                                    <td>@i</td>
+                                    <td>@item.CollegeName</td>
+                                    <td>@item.TagDegrees</td>
+                                    <td>@item.TagCourse</td>
+                                    <td>@item.SubjectName</td>
+                                    <td>
+                                        <button class="btn btn col-sm-6" type="button" id="btnEdit" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);">
+                                            <a id="@item.iPK_SubId" class="mdi mdi-pencil" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>
+                                        </button>
+                                    </td>
                                 </tr>
+                                i++;
                             }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" style="text-align: center;">No Data Available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        }
+        </div>
+        @*} fa fa-edit  *@
     </div>
 </div>
 
 
 <script src="~/Content/jquery/jquery.js"></script>
 <script src="~/Content/select2/js/select2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script src="~/Content/NewArchtech/sweetalert2.all.min.js"></script>
+    <script src="~/Content/NewArchtech/jquery-confirm.min.2.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
 <script src="~/Content/globalDomain.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".singleselect").select2();
 
-
         $('#txtTagDegree').change(function () {
             var id = $(this).val();
             bindCourse(id);
         })
-
-
 
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
@@ -280,7 +278,6 @@
 
         })
     });
-
 
     function bindCourse(deptID) {
         var html = `<option value="0">Select Course List</option>`;
@@ -319,7 +316,6 @@
         });
     }
 
-
     function AddCollegeData(Type) {
             var strHtml = "";
             strHtml += "<option value=''>Select College</option>";
@@ -336,7 +332,7 @@
                 dataType: "json",
                 contentType: "application/json",
                 success: function (response) {
-                    
+
                     for (var i = 0; i < response.Data.length; i++) {
                         strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
                     }
@@ -348,14 +344,12 @@
             });
     }
 
-    function EditSubject(iPK_SubId, itemType,SubjectName) {
+    function EditSubject(iPK_SubId, itemType, SubjectName) {
         alert(iPK_SubId)
-        //var sub=$('#txtSubjectName').val(SubjectName);
         var Model = {
             type: itemType,
             iPK_SubId: parseInt(iPK_SubId),
-            sub: SubjectName,
-            //hdnapp: sApplNo applicationNumber
+            sub: SubjectName
         }
         var d = JSON.stringify(Model);
         console.log(d);
@@ -365,7 +359,7 @@
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            url: GetglobalDomain() +"/SubjectMaster/EditSubject",
+            url: GetglobalDomain() + "/SubjectMaster/EditSubject",
             dataType: 'json',
             type: 'Post',
             cache: false,
@@ -376,15 +370,14 @@
                 if (data.StatusCode == 1) {
                     var iPK_SubId = data.Data[0].iPK_SubId;
                     var SubjectName = data.Data[0].SubjectName;
-                    var applicationNumber = data.Data[0].applicationNumber
                     console.log(SubjectName);
                     $('#hdnPKID').val(iPK_SubId);
-                    if (itemType =='Get')
+                    if (itemType == 'Get')
                         $('#txtSubjectName').val(SubjectName);
-                        $('#hdnAPPID').val(applicationNumber);
 
-                        $('#btnSave').html('');
-                       $('#btnSave').html('Update');
+                    $('#btnSave').html('');
+
+                    $('#btnSave').html('Update');
 
                 }
             },
@@ -397,6 +390,8 @@
     }
 
     function CheckValidation() {
+       //debugger;
+        var IsdefaultCollegeId = $("#IsdefaultCollegeId").val();
         var status = true;
         var TagCourse = $('#txtTagCourse').val().trim();
         var TagDegree = $('#txtTagDegree').val().trim();
@@ -442,7 +437,7 @@
         if (status) {
             var btnText = $('#btnSave').text();
             if (btnText == "Update") {
-                var pkid = $('#hdnPKID').val();
+               var pkid = $('#hdnPKID').val();
                var sub = $('#txtSubjectName').val();
                 EditSubject(pkid, 'Update', sub);
                     $('#txtSubjectName').val('');
@@ -452,19 +447,59 @@
                 $('#btnsubmitDetails').click();
             }
         }
+        var trg = [];
+        trg.push({
+           // TagCourse: TagCourse,
+           // TagDegrees: TagDegree,
+            SubjectName: SubjectName,
+           // iCollegeId: IsdefaultCollegeId,
+            status: status
+        });
+          var Params = JSON.stringify({
+              trg: trg
+          });
+        var htmlString = "";
+        $.ajax({
+            url: GetglobalDomain() + "/SubjectMaster/SaveDetails",
+            type: 'POST',
+            dataType: "json",
+            data: Params,
+            contentType: "application/json",
+            success: function (response) {
+               // debugger;
+                if (response.IsValid = 1) {
+                    response.Data.forEach(function (item, index) {
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.CollegeName}</td><td>${item.TagDegrees}</td><td>${item.TagCourse}</td><td>${item.SubjectName}</td><td class="text-center"><span><a id="${item.iPK_SubId}" class="mdi mdi-pencil" name="2" data-id="${item.iPK_SubId}" title="Edit" onclick="EditSubject(${item.iPK_SubId},'Get','NULL');"></a></span></td></tr>`
+
+                    });
+                    $("#tblSubject tbody").html('');
+                    $("#tblSubject tbody").html(htmlString);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.msg,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    //window.location.reload();
+                 //$("#" + datamain + "-" + dataid).val('');
+                  }
+            }
+        });
+
     }
+
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);
         // This removes any other character but numbers as entered by user
         element.value = element.value.replace(/[^0-9]/gi, "");
     }
+
     function charecterOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);
         // This removes any other character but numbers as entered by user
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
-
-
 </script>

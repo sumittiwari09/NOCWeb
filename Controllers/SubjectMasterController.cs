@@ -20,9 +20,10 @@ namespace NewZapures_V2.Controllers
         CommonFunction objcf = new CommonFunction();
         ResponseData objResponse;
         // GET: SubjectMaster
-        public ActionResult CreateData(string applGUID)
+        public ActionResult CreateData()
         {
 
+            string applGUID = SessionModel.ApplicantGuid;
             List<CustomMaster> TrustList = new List<CustomMaster>();
             TrustList = GetTrustDropDownList(28);
             ViewBag.TrustList = TrustList;
@@ -41,11 +42,14 @@ namespace NewZapures_V2.Controllers
             collegeListData = GetCollegeList();
             ViewBag.collegeListData = collegeListData;
 
-            ViewBag.applNumber = SessionModel.ApplicantGuid;
+            ViewBag.applNumber = applGUID;
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
 
-            GetSubjectDataList();
+            var subjects= GetSubjectDataList(applGUID);
+            ViewBag.SubjectDataList = subjects;
+
+            ViewBag.PageListData=GetSubjectPageDataList(applGUID);
 
             return View();
         }
@@ -86,29 +90,46 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-
-
-
-
-
-        public JsonResult GetSubjectDataList()
+        //For pagelist
+        public List<AddCourseBO> GetSubjectPageDataList(string applGUID)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "AddCourseData/GetSubjectList");
+            //List<AddCourseBO> res = new List<AddCourseBO>();
+           var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "AddCourseData/GetSubjectPageList?Guid=" + SessionModel.ApplicantGuid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
+            List<AddCourseBO> _result=new List<AddCourseBO>();
             if (response.StatusCode.ToString() == "OK")
             {
-                List<AddCourseBO> _result = _JsonSerializer.Deserialize<List<AddCourseBO>>(response.Content);
-                if (_result != null)
-                {
-                    ViewBag.SubjectDataList = _result;
-
-                }
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                    _result = JsonConvert.DeserializeObject<List<AddCourseBO>>(objResponse.Data.ToString());
             }
-            return Json(ViewBag);
+            return _result;
+            //return View(_result);
+           // return RedirectToAction("EditApplication", "SubjectMaster", new { applGUID = SessionModel.ApplicantGuid });
+        }
+        public List<AddCourseBO> GetSubjectDataList(string applGUID)
+        {
+            //List<AddCourseBO> res = new List<AddCourseBO>();
+           var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "AddCourseData/GetSubjectList?Guid=" + SessionModel.ApplicantGuid);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            List<AddCourseBO> _result=new List<AddCourseBO>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                    _result = JsonConvert.DeserializeObject<List<AddCourseBO>>(objResponse.Data.ToString());
+            }
+            return _result;
+            //return View(_result);
+           // return RedirectToAction("EditApplication", "SubjectMaster", new { applGUID = SessionModel.ApplicantGuid });
         }
         public List<CustomMaster> GetCourseDropDownList(int Enum)
         {
@@ -213,41 +234,58 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveDetails(AddCourseBO trg)
+        public JsonResult SaveDetails(List<AddCourseBO> trg)
         {
-            try
-            {
-                trg.applicationNumber = SessionModel.ApplicantGuid;
+            //try
+            //{
+            string applGUID = SessionModel.ApplicantGuid;
+            List<AddCourseBO> _ListSubject = new List<AddCourseBO>();
+            AddCourseBO obj=new AddCourseBO();
+            obj = trg.FirstOrDefault();
+                obj.applicationNumber = SessionModel.ApplicantGuid;
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
                 //party.ParentId = userdetailsSession.PartyId;
-                var json = JsonConvert.SerializeObject(trg);
+                var json = JsonConvert.SerializeObject(obj);
                 var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "AddCourseData/SubjectDetail");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
                 request.AddParameter("application/json", json, ParameterType.RequestBody);
                 request.AddHeader("Content-Type", "application/json");
                 request.AddHeader("Accept", "application/json");
-                IRestResponse response = client.Execute(request);
-                if (response.StatusCode.ToString() == "OK")
+                IRestResponse response2 = client.Execute(request);
+                if (response2.StatusCode.ToString() == "OK")
                 {
-                    var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                    TempData["isSaved"] = 1;
-                    TempData["msg"] = " Details Saved...";
-                    // return RedirectToAction("CreateData", "SubjectMaster");
+                    ResponseData objResponseData = JsonConvert.DeserializeObject<ResponseData>(response2.Content);
+                    if (objResponseData.ResponseCode == "001")
+                    {
+                    _ListSubject = GetSubjectDataList(applGUID);
+                    return new JsonResult
+                        {
+                            Data = new { Data = _ListSubject, failure = false, msg = objResponseData.Message, isvalid = 1 },
+                            ContentEncoding = System.Text.Encoding.UTF8,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                    else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                    {
+                    _ListSubject = GetSubjectDataList(applGUID);
+                    return new JsonResult
+                        {
+                            Data = new { Data = _ListSubject, failure = false, msg = objResponseData.Message, isvalid = 1 },
+                            ContentEncoding = System.Text.Encoding.UTF8,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+
+                    }
                 }
-                else
+                return new JsonResult
                 {
-                    TempData["isSaved"] = 0;
-                    TempData["msg"] = " Details Not Saved...";
-                    // return RedirectToAction("CreateData", "AddCourse");
-                }
+                    Data = new { Data = _ListSubject, failure = true, msg = "Failed", isvalid = 0 },
+                    ContentEncoding = System.Text.Encoding.UTF8,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+                //return RedirectToAction("CreateData");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("CreateData");
-        }
         //For Course List
         public List<AddCourseBO> GetDetailsList()
         {

@@ -360,7 +360,7 @@
             $("#table-" + id).css('display', 'block');
             var splitdata = id.split('-');
             $(this).addClass('hidden');
-            GenerateArchtable(splitdata[0], splitdata[1], splitdata[2],'@appid');
+            GenerateArchtable(splitdata[0], splitdata[1], splitdata[2]);
         });
         $(".inputdata").blur(function () {
 
@@ -501,7 +501,7 @@
                         $("#filedata-" + id).val('');
                         $("#file_"+id).val('');
                         /**/
-                        GenerateArchtable(item[0], item[1], item[2], '@appid');
+                        GenerateArchtable(item[0], item[1], item[2]);
                         /**/
                     }
 
@@ -511,10 +511,10 @@
         });
 
     });
-    function GenerateArchtable(iParamId, iSubCatId, iUomId, sAppId) {
+    function GenerateArchtable(iParamId, iSubCatId, iUomId) {
 
         $.ajax({
-            url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
+            url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId,
             type: 'POST',
             dataType: "text",
             success: function (response) {
