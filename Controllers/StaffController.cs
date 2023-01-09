@@ -18,10 +18,10 @@ namespace NewZapures_V2.Controllers
         // GET: Trustee
         public ActionResult Index(string guid)
         {
-            
+
             List<StaffBO.Staff> _result = new List<StaffBO.Staff>();
             #region List Staff
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList?Guid="+SessionModel.ApplicantGuid);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList?Guid=" + SessionModel.ApplicantGuid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -37,12 +37,12 @@ namespace NewZapures_V2.Controllers
                 }
             }
             ViewBag.StaffList = _result;
-            ViewBag.guid=guid;
+            ViewBag.guid = guid;
             #endregion
             return View();
         }
         [HttpPost]
-        public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile ,string guid)
+        public JsonResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile, string guid)
         {
             obj.Guid = SessionModel.ApplicantGuid;
             byte[] Documentbyte;
@@ -147,6 +147,13 @@ namespace NewZapures_V2.Controllers
                     TempData["SwalStatusMsg"] = "success";
                     TempData["SwalMessage"] = "Data saved sussessfully!";
                     TempData["SwalTitleMsg"] = "Success...!";
+
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponseData.ResponseCode, Data = "", Failure = true, Message = "Data saved sussessfully!" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
                     //return RedirectToAction("Index");
                 }
                 else
@@ -154,6 +161,13 @@ namespace NewZapures_V2.Controllers
                     TempData["SwalStatusMsg"] = "error";
                     TempData["SwalMessage"] = "Something wrong";
                     TempData["SwalTitleMsg"] = "error!";
+
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponseData.ResponseCode, Data = "", Failure = false, Message = "Something wrong" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
                     //return RedirectToAction("Index");
                 }
             }
@@ -176,9 +190,12 @@ namespace NewZapures_V2.Controllers
             }
             #endregion
 
-            //return View();
-            return RedirectToAction("EditApplication", "Trustee", new { applGUID = SessionModel.ApplicantGuid });
-            //return RedirectToAction("Index");
+            return new JsonResult
+            {
+                Data = new { StatusCode = 0, Data = "", Failure = false, Message = "Something wrong" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         public ActionResult Delete(int Id)
@@ -204,7 +221,7 @@ namespace NewZapures_V2.Controllers
                 TempData["SwalMessage"] = "Something wrong";
                 TempData["SwalTitleMsg"] = "error!";
                 //return RedirectToAction("Index");
-            }            
+            }
             #endregion
             return RedirectToAction("Index");
         }
