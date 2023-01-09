@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "University Master";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<NewZapures_V2.Models.UniversityMaster> Unilist = ViewBag.UniList as List<NewZapures_V2.Models.UniversityMaster>;
 
 }
 @section styles {
@@ -142,31 +141,31 @@
                 </div>
                 <br>
                 @*<form>*@
-            <div>
-                <input type="text" id="Name" name="Name" placeholder="ContactPerson">
-                <input type="text" id="Number" name="Number" placeholder="Number">
-                <input type="text" id="EmailId" name="Email" placeholder="Email Address">
-                <input type="button" class="add-row" value="Add Row">
-                <table id="contactsData">
-                    <thead>
-                        <tr>
-                            <th>Check</th>
-                            <th>ContactPerson</th>
-                            <th>Number</th>
-                            <th>Email Address</th>
+                <div>
+                    <input type="text" id="Name" name="Name" placeholder="ContactPerson">
+                    <input type="text" id="Number" name="Number" placeholder="Number">
+                    <input type="text" id="EmailId" name="Email" placeholder="Email Address">
+                    <input type="button" class="add-row" value="Add Row">
+                    <table id="contactsData">
+                        <thead>
+                            <tr>
+                                @*<th>Check</th>*@
+                                <th>ContactPerson</th>
+                                <th>Number</th>
+                                <th>Email Address</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <button type="button"class="delete-row">Delete Row</button>
-                <div class="row text-center">
-                    <div class="form-group col-lg-12">
-                        <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    @*<button type="button"class="delete-row">Delete Row</button>*@
+                    <div class="row text-center">
+                        <div class="form-group col-lg-12">
+                            <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                        </div>
                     </div>
                 </div>
-            </div>
                 @*</form>*@
                 @*}*@
             </div>
@@ -175,32 +174,22 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
+
+    function deleteRow(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("contactsData").deleteRow(i);
+    }
     $(document).ready(function () {
         $(".add-row").click(function () {
             var name = $("#Name").val();
             var number = $("#Number").val();
             var email = $("#EmailId").val();
-            var markup = "<tr><td><input type='checkbox' name='record'></td><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td></tr>";
+            var markup = "<tr><<td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input type='button' value='Delete'onclick='deleteRow(this)'></td></tr>";
             $("table tbody").append(markup);
         });
 
-        // Find and remove selected table rows
-        $(".delete-row").click(function () {
-            $("table tbody").find('input[name="record"]').each(function () {
-                if ($(this).is(":checked")) {
-            $(this).parents("tr").remove();
-                }
-            });
-        });
         $("#btnSave").click(function () {
-            //var name = $("#Name").val();
-            //var number = $("#Number").val();
-            //var email = $("#EmailId").val();
-            //var markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' onclick = "Geeks()" name='delete' value='Remove' /></td></tr>";
-            //$("table tbody").append(markup);
-
-            
-
+            var formData = new FormData();
             var contactsInfo = new Array();
             //Loop through the Table rows and build a JSON array.
             $("#contactsData tbody tr").each(function () {
@@ -218,35 +207,38 @@
                 Type_id: $('#UniType').val(),
                 UniName: $('#UniName').val(),
                 Website: $('#Website').val(),
-                Document: $('#UniDocument').val(),
-                //Financier_id
-                //Created_id
                 ContactDetails: contactsInfo,
                 IsActive: true
             }
-            
             console.log('model data is', model);
-
-            
+            var files = document.getElementById("UniDocument");
+            for (var x = 0; x < files.files.length; x++) {
+                formData.append("file" + x, files.files[x]);
+            }
+            formData.append("Type_id", model.Type_id);
+            formData.append("UniName", model.UniName);
+            formData.append("Website", model.Website);
+            formData.append("ContactDetails", JSON.stringify(model.ContactDetails));
+            formData.append("IsActive", model.IsActive);
 
             $.ajax({
                 type: "POST",
-                url: GetglobalDomain() + "/UniverSityMST/Create",
-                data: model,
-                success: function (data) {
-                    console.log('data is', data);
+                url: GetglobalDomain() + "/UniverSityMST/CreateUniversity",
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (msg) {
+                    console.log('success data response is', data);
+                },
+                error: function (error) {
+                    console.log('error response is', data);
                 }
             });
         });
-
     });
+
 </script>
-@*<script>
-    $(".removeDiv").click(function () {
-
-            $(this).parents("#Remove").remove();
-    });
-    </script>*@
 @section scripts {
     <script src="~/plugins/moment/moment.js"></script>
     <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
