@@ -16,14 +16,14 @@
 }
 <script>
     function Domain(PartyId) {
-        debugger;
+        
         var domain = GetglobalDomain();
         var newdomain = domain + '/Home/ApprovedchangeRequest?PartyId=' + PartyId;
         $('#approved_' + PartyId).attr("href", newdomain);
     }
 
     function DomainReject(PartyId) {
-        debugger;
+        
         var domain = GetglobalDomain();
         var newdomain = domain + '/Home/RejectchangeRequest?PartyId=' + PartyId;
         $('#reject_' + PartyId).attr("href", newdomain);

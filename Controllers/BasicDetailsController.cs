@@ -30,6 +30,12 @@ namespace NewZapures_V2.Controllers
 
             ViewBag.universityCollection = universityList;
             ViewBag.collegeTypeList = collegeType;
+
+            #region Get District
+            List<Dropdown> DistrictList = new List<Dropdown>();
+            DistrictList = Common.GetLocationDropDown("District");
+            ViewBag.DistrictList = DistrictList;
+            #endregion
             return View();
         }
         public ActionResult ShowDetails()
@@ -118,6 +124,59 @@ namespace NewZapures_V2.Controllers
             //return RedirectToAction("CreateDetails");
         }
 
+        [HttpPost]
+        public JsonResult ContactSaveDetails(BasicDetailsBO trg)
+        {
+            try
+            {
+                trg.TrustInfoId = SessionModel.TrustId;
+                var userdetailsSession = (UserModelSession)Session["UserDetails"];
+                //party.ParentId = userdetailsSession.PartyId;
+                var json = JsonConvert.SerializeObject(trg);
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/BasicDetailConfigure");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Accept", "application/json");
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                    //TempData["SwalStatusMsg"] = "success";
+                    //TempData["SwalMessage"] = "Data saved sussessfully!";
+                    //TempData["SwalTitleMsg"] = "Success...!";
+                    //ContactList();
+
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                    //return RedirectToAction("CreateDetails","BasicDetails");
+                }
+                else
+                {
+                    //TempData["SwalStatusMsg"] = "error";
+                    //TempData["SwalMessage"] = "Something wrong";
+                    //TempData["SwalTitleMsg"] = "error!";
+
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponse.statusCode,Failure = false },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                    //return RedirectToAction("CreateDetails", "BasicDetails");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }           
+        }
+
         [HttpGet]
         public ActionResult CollageList()
         {
@@ -141,5 +200,79 @@ namespace NewZapures_V2.Controllers
             return View();
         }
 
+        //[HttpGet]
+        //public ActionResult ContactList()
+        //{
+        //    #region List Contact Apply List
+        //    var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "BasicDataDetails/ContactDetailConfigure");
+        //    var request = new RestRequest(Method.GET);
+        //    request.AddHeader("cache-control", "no-cache");
+        //    //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+        //    request.AddParameter("application/json", "", ParameterType.RequestBody);
+        //    IRestResponse response = client.Execute(request);
+        //    if (response.StatusCode.ToString() == "OK")
+        //    {
+        //        List<BasicDetailsBO> _result = _JsonSerializer.Deserialize<List<BasicDetailsBO>>(response.Content);
+        //        if (_result != null)
+        //        {
+        //            ViewBag.ContactList = _result;
+        //            //return RedirectToAction("Index");
+        //        }
+        //    }
+        //    #endregion
+        //    return View();
+        //}
+
+        public JsonResult GetTehsilList(string DistrictId)
+        {
+            try
+            {
+                var id = Convert.ToInt32(DistrictId);
+                List<Dropdown> TehsilList = new List<Dropdown>();
+                TehsilList = Common.GetLocationDropDown("Tehsil", id);
+                var List = TehsilList.Select(x => new { x.Text, x.Id }).ToList().Select(y => new SelectListItem { Text = y.Text, Value = Convert.ToString(y.Id) }).OrderBy(x => x.Text).ToList();
+
+                return Json(List.OrderBy(X => X.Text).ToList(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+               
+                throw;
+            }
+        }
+
+        public JsonResult GetCityList(string Id)
+        {
+            try
+            {
+                var id = Convert.ToInt32(Id);
+                List<Dropdown> DistrictList = new List<Dropdown>();
+                DistrictList = Common.GetLocationDropDown("City",id);
+                var List= DistrictList.Select(x => new { x.Text, x.Id }).ToList().Select(y => new SelectListItem { Text = y.Text, Value = Convert.ToString(y.Id) }).OrderBy(x => x.Text).ToList();
+                
+                return Json(List.OrderBy(X => X.Text).ToList(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {                
+                throw;
+            }
+        }
+
+        public JsonResult GetBlockList(string Id)
+        {
+            try
+            {
+                var id = Convert.ToInt32(Id);
+                List<Dropdown> BlockList = new List<Dropdown>();
+                BlockList = Common.GetLocationDropDown("Block", id);
+                var List = BlockList.Select(x => new { x.Text, x.Id }).ToList().Select(y => new SelectListItem { Text = y.Text, Value = Convert.ToString(y.Id) }).OrderBy(x => x.Text).ToList();
+
+                return Json(List.OrderBy(X => X.Text).ToList(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

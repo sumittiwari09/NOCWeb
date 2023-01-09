@@ -30,6 +30,8 @@ namespace NewZapures_V2.Models
 
             public string ExperienceExtension { get; set; }
             public string ExperienceContentType { get; set; }
+
+            public string Guid { get; set; }
         }
     }
 }

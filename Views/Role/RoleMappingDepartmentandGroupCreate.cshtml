@@ -34,7 +34,7 @@
         <div class="page-title-box">
             <div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Zapures</li>
+                    <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
                     <li class="breadcrumb-item active">@ViewBag.Create</li>
                 </ol>
@@ -125,7 +125,7 @@
 
 
 
-        debugger;
+        
         //var Typedata = $("#Type").val();
         //if (parseInt(Typedata) != 0) {
 
@@ -192,21 +192,21 @@
         //});
 
           function BindDepartment() {
-            debugger;
+            
               var strHTML = "";
             var Params = JSON.stringify(
                 {
                     Type: "Department"
                 });
             $.ajax({
-                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() + "/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -240,21 +240,21 @@
 
         }
         function BindGroup() {
-            debugger;
+            
               var strHTML = "";
             var Params = JSON.stringify(
                 {
                     Type: "Group"
                 });
             $.ajax({
-                url: GetglobalDomain() + "/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() + "/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -280,7 +280,7 @@
 
         }
         function BindRole() {
-            debugger;
+            
               var strHTML = "";
 
 
@@ -289,14 +289,14 @@
                     Type: "Role"
                 });
             $.ajax({
-                url: GetglobalDomain() +"/AdminAjaxRequestPage/FillDepartmentandGroupMaster",
+                url: GetglobalDomain() +"/Role/FillDepartmentandGroupMaster",
                 type: 'POST',
                 dataType: "json",
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {
@@ -324,7 +324,7 @@
 
 
         @*function BindRole(DepartmentId, GroupId) {
-            debugger;
+            
             var strHTML = "";
 
             strHTML += "<option value=''>Select Role</option>"
@@ -348,7 +348,7 @@
                 data: Params,
                 success: function (response) {
 
-                    debugger;
+                    
 
 
                     for (var i = 0; i < response.Data.length; i++) {

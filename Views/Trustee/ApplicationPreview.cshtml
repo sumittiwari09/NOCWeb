@@ -1,16 +1,9 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Application Preview";
+    ViewBag.Title = "Preview Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var eAppNo = (string)ViewBag.appNo;
-    var etrustName = (string)ViewBag.trustName;
-    var etrustID = (int)ViewBag.trustID;
-    var eclgname = (string)ViewBag.clgname;
-    var edept = (string)ViewBag.dept;
-    var ecours = (string)ViewBag.cours;
-    var deptID = (int)ViewBag.dptID;
-    var ecourseID = (int)ViewBag.courseID;
-    var eClgID = (int)ViewBag.clgID;
+    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
+
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
 }
 
@@ -38,6 +31,7 @@
         -webkit-transition: border-color .15s linear;
         transition: border-color .15s linear;
     }
+
     .formsCollection {
         padding: 10px;
         background: #e88f8f5e;
@@ -93,7 +87,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Edit Application</li>
+                    <li class="breadcrumb-item active">Preview Application</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -102,39 +96,71 @@
 </div>
 
 <div class="card">
-    <div class="card-header fsc">
+    <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
         <h4 class="mt-0 header-title float-left">Preview Application</h4>
+        <a href="@Url.Action("EditApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Edit Application</a>
     </div>
     <div class="card-body ">
+        <div class="row">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th style="color:black!important;font-weight:500">Application Number :</th>
+                    <td>@draftAppl.ApplicationNumber</td>
+                    <th hidden style="color:black!important;font-weight:500">Trust Name</th>
+                    <td hidden>@draftAppl.TrustName</td>
+                    <th style="color:black!important;font-weight:500">Department Name</th>
+                    <td>@draftAppl.DepartmentName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><i class="fa fa-users"></i>  Trust Comitee Members</td></tr>
+                <tr>
+                    <td colspan="6">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr><th>Member Name</th><th>Is Primary</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (trusteeMember != null)
+                                    {
 
-        <table class="table table-bordered">
-            <tr>
-                <td>Application Number :</td>
-                <td>@eAppNo</td>
-                <td>Trust Name</td>
-                <td>@etrustName</td>
-            </tr>
-            <tr><td colspan="4" style="background: #bdbdbd;color: black;">Trust Members</td></tr>
-            @{
-                if (trusteeMember != null)
-                {
-                    <tr><th>Member Name</th><th colspan="3">Is Primary</th></tr>
-                    foreach (var item in trusteeMember)
-                    {
-                        <tr><td>@item.sPrsnName</td><td colspan="3">@item.iisprimary</td></tr>
-                    }
-                }
-            }
-            <tr>
-                <td>College Name :</td>
-                <td>@eclgname</td>
-                <td>Course</td>
-                <td>@ecours</td>
-            </tr>
-            <tr><td colspan="4" style="background: #bdbdbd;color: black;"><i class="fa fa-arrow-down"></i> Application Forms</tr>
-        </table>
+                                        foreach (var item in trusteeMember)
+                                        {
+                                            <tr><td>@item.sPrsnName</td><td>@((string.IsNullOrEmpty(item.iisprimary) || item.iisprimary=="0")?"No":"Yes" )</td></tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
 
+                <tr>
+                    <th style="color:black!important;font-weight:500">College Name :</th>
+                    <td>@draftAppl.CollegeName</td>
+                    <td colspan="2"></td>
+                    <th style="color:black!important;font-weight:500">Course</th>
+                    <td>@draftAppl.CourseName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span></div></td></tr>
+                @*<tr>
+                        <td colspan="4">
+                            <table class="table table-striped">
+                                <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo")" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
+                                <tr><td><a href="@Url.Action("CreateData","SubjectMaster")" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
+                                <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
+                                <tr><td><button onclick="GenerateArchtable('sdfd')"><i class="fa fa-plus"></i> Add Architectrual Details</button></td></tr>
+                                <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
+                                <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
+                                <tr><td><a href="@Url.Action("Index","AcdmcMst")" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
+                                <tr><td><a href="@Url.Action("CollageAttachment","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
+                            </table>
+                        </td>
+                    </tr>*@
+            </table>
+
+        </div>
         <div class="formsCollection">Land and Building Information</div><br />
+        
         <div class="formsCollection">Subject Covered</div><br />
         <div class="formsCollection">College Fee Structure</div><br />
         <div class="formsCollection">Architectrual Details</div><br />
@@ -142,7 +168,6 @@
         <div class="formsCollection">Staff Details</div><br />
         <div class="formsCollection">Acadmy Information</div><br />
         <div class="formsCollection">Proof Document</div>
-
         <div style="display: flex;gap: 10px;align-items: baseline;margin-top:14px;">
 
             <div class="custom-control custom-checkbox">
@@ -150,11 +175,146 @@
                 <label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to submit my application</label>
             </div>
         </div><br />
-        <button class="btn btn-primary" style="float: right;">Submit My Application</button><br />
         <span><i>Disclaimer: Once the application is submitted to the department you can`t change it.</i></span>
+        <button class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#mChallan">Submit My Application</button><br />
+
+
+
     </div>
 </div>
+
+@*Modal Start*@
+<div class="modal fade bd-example-modal-lg" id="mChallan" tabindex="-1" role="dialog" aria-labelledby="mChallan" data-backdrop="static" style="display:none;">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="display: flex;align-items: center;width: 90%;place-content: space-between;">
+                    <h3 class="modal-title" id="mChallan">E-CHALLAN</h3>
+                    <button class="btn btn-purple" onclick="printDiv('divchallan')"><i class="fa fa-print"></i> Print Challan</button>
+                </div>
+                <button type="button" class="close" id="closeTNC" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="Container" id="divchallan" style="border:2px solid black;padding: 0 23px;padding-bottom: 0px;">
+                    <div class="text-center" style="margin-top: 8px;font-size: 15px;font-weight: 600;line-height: 17px;">
+                        <span>E-CHALLAN (Manual Payment)</span><br />
+                        <span>Government Of Rajsthan</span><br />
+                        <span>College Education Department</span>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;" />
+                    <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
+                        <p style="font-size: 15px;color:black;font-weight: 500;">Valid Upto : <span>30.12.2022</span></p>
+                        <p style="font-size: 15px;color:black;font-weight: 500;">Remitters Copy</p>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
+                        <p style="font-size: 15px;color:black;font-weight: 500;">GRN : <span>24033220</span></p>
+                        <p style="font-size: 15px;color:black;font-weight: 500;">Date : <span>30.12.2022 12:53:00 PM</span></p>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div>
+                        <table class="table table-borderless table-striped" style="margin-left: -20px;margin-top: -12px;">
+                            <tr><th>Barcode : </th><td>{BarcodeHere}</td></tr>
+                            <tr><th>Office Name : </th><td>Dy. Dir. COLLEGE EDUCATION JAIPUR</td></tr>
+                            <tr><th>Location : </th><td>JAIPUR (SECTT.)</td></tr>
+                            <tr><th>Year : </th><td>13.07.2018 To 31.07.2019</td></tr>
+                        </table>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div style="height: 10rem;">
+                        <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
+                            <thead>
+                                <tr><th>Head (0202)</th><th>Amount &#8377;</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0202-01-103-02-01-संचालक, महाविद्यालय शिक्षा</td><td>30,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div>
+                        <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
+
+                            <tr><th>Discount : </th><td>&#8377; 0</td></tr>
+                            <tr><th>Total/Net Amount : </th><td>&#8377; 30,000<br />(Thirty Thousand Rupees and Zero Paisa Only)</td></tr>
+
+                        </table>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div>
+                        <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
+                            <thead>
+                                <tr><th colspan="2" class="text-center">Payee Details</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>TIN/Actt. no/VehicleNo/TaxId/Lease No :</th>
+                                    <td>NA</td>
+                                </tr>
+
+                                <tr>
+                                    <th>PAN No :</th>
+                                    <td>NA</td>
+                                </tr>
+                                <tr>
+                                    <th>Remitter Name :</th>
+                                    <td>College Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Address :</th>
+                                    <td>College Addess Jaipur , 000000</td>
+                                </tr>
+                                <tr>
+                                    <th>Remarks :</th>
+                                    <td>NOC Fee</td>
+                                </tr>
+                            </tbody>
+                            <tfoot style="border-top:1px solid black">
+                                <tr><td colspan="2" class="text-center" style="padding: 2px;">FOR USE IN RECEIVING BANK</td></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
+                    <div>
+                        <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
+
+                            <tr><th>Cheque/DD No : </th><td>00000</td></tr>
+                            <tr><th>Bank CIN No : </th><td>NA</td></tr>
+                            <tr><th>Bank : </th><td>SBI Anywhere</td></tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CheckTermsAndCondition()">I Accept</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@*Modal End*@
+
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
 }
+<script type="text/javascript">
+
+    function printDiv(divName) {
+        alert(divName);
+          //var printContents = document.getElementById(divName).innerHTML;
+
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>

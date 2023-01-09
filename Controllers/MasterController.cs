@@ -5,6 +5,7 @@ using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.EnterpriseServices.Internal;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -34,6 +35,71 @@ namespace NewZapures_V2.Controllers
             lstMap = GetNOCDepartMaplst(0);
             return View(lstMap);
         }
+        
+        public ActionResult FinancialYear()
+        {
+            ViewBag.FinYear = GetFinacialyearlist();
+            return View();
+        }
+
+        public List<FinYearView> GetFinacialyearlist()
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetFinYearList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<FinYearView> groups = new List<FinYearView>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    groups = JsonConvert.DeserializeObject<List<FinYearView>>(objResponse.Data.ToString());
+                }
+            }
+            return groups;
+        }
+
+        public ActionResult CreateFinacialyear(FinYear Master)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertFinYear");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+
+            request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData CommonResponse = new ResponseData();
+                CommonResponse = _JsonSerializer.Deserialize<ResponseData>(response.Content);
+                if (CommonResponse.statusCode == 1)
+                {
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalTitleMsg"] = "Success!";
+                    if (CommonResponse.Message == "Allready Exists In table")
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalTitleMsg"] = "warning!";
+                    }
+                    TempData["SwalMessage"] = CommonResponse.Message;
+                    
+
+                }
+                else
+                {
+                    TempData["SwalStatusMsg"] = "error";
+                    TempData["SwalMessage"] = "Something wrong";
+                    TempData["SwalTitleMsg"] = "error!";
+
+                }
+            }
+            return RedirectToAction("FinancialYear", "Master");
+        }
+
         public ActionResult AddDepartmentMapping(NOCDEPMAP Master)
         {
             try
@@ -504,10 +570,21 @@ namespace NewZapures_V2.Controllers
 
             return View(lst);
         }
+        public ActionResult Testing()
+        {
+            return View();
+        } 
+        public ActionResult NewArchitectureDetail(string guid= "abhc123")
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist();
+            ViewBag.Applicableid = guid;
+            return View(lst);
+        }
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureDetail");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureDetail");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -593,7 +670,7 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult DeleteImage(int ipk_ArchiMstDetId)
         {
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/DeleteArchiMstDet?Id=" + ipk_ArchiMstDetId);
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -657,10 +734,22 @@ namespace NewZapures_V2.Controllers
             }
 
             attachedFile.SaveAs(gs + FileName);
-
+            ArchUpload upload = new ArchUpload();
+            upload.sFK_AppId = Appid;
+            upload.iParamId = iParamId;
+            upload.iSubCatId = iSubCatId;   
+            upload.iUomId = iUomId;
+            upload.UploadUrl =FileName;
+            upload.Type = Type;
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchupload");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", _JsonSerializer.Serialize(upload), ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
             return new JsonResult
             {
-                Data = new { Data = "", failure = false, msg = "Import File Successfully", isvalid = 1 },
+                Data = new { Data = "", failure = false, msg = FileName, isvalid = 1 },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
@@ -674,7 +763,7 @@ namespace NewZapures_V2.Controllers
             mst.iUom = iUomId;
             mst.iFK_AppId = sAppId;
             mst.Value = value;
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/InsertArchitectureMst");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertArchitectureMst");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -710,5 +799,11 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
     }
 }

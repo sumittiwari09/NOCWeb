@@ -2,7 +2,7 @@
 @model AddCourseBO
 @{
     ViewBag.Title = "Subject Master";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;//"~/Views/Shared/_Layout.cshtml";
 
     List<CustomMaster> TrustList = new List<CustomMaster>();
     if (ViewBag.TrustList != null)
@@ -26,16 +26,16 @@
 
     //List<NewZapures_V2.Models.CustomMaster> collegelist = ViewBag.collegeListData as List<NewZapures_V2.Models.CustomMaster>;
     List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
-    var appl = (string)ViewBag.applNumber;
-    var applicationNumber = "";
-    if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
-    {
-        applicationNumber = appl;
-    }
-    else
-    {
-        applicationNumber = Request.QueryString["appNo"].ToString();
-    }
+    var applicationNumber = (string)ViewBag.applNumber;
+    //var applicationNumber = "";
+    //if (string.IsNullOrEmpty(Request.QueryString["appNo"].ToString()))
+    //{
+    //    applicationNumber = appl;
+    //}
+    //else
+    //{
+    //    applicationNumber = Request.QueryString["appNo"].ToString();
+    //}
 }
 
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
@@ -87,13 +87,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            <!--<div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item">Master</li>-->
                     @*<li class="breadcrumb-item">Master</li>*@
-                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                    <!--<li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
-            </div>
+            </div>-->
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -107,17 +107,18 @@
     </div>
     <div class="card-body">
         <input type="hidden" id="hdnPKID" />
+        <input type="hidden" id="hdnAPPID"/>
         @using (Html.BeginForm("SaveDetails", "SubjectMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            @*<input type="hidden" id="hdnaaplication" name="applicationNumber" value="@applicationNumber" />*@
             <div class="row">
 
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College</label>
                     <div>
-                        <select class="form-control" id="IsdefaultCollegeId" name="iCollegeId">
+                        <select class="form-control singleselect" id="IsdefaultCollegeId" name="iCollegeId">
                             <option value="">Select College</option>
                             @{
-
                                 if (collegeList != null)
                                 {
                                     foreach (var item in collegeList)
@@ -133,7 +134,7 @@
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Department</label>
                     <div>
-                        <select class="form-control" name="TagDegrees" id="txtTagDegree">
+                        <select class="form-control singleselect" name="TagDegrees" id="txtTagDegree">
                             <option value="0">Select Department</option>
                             @{
                                 foreach (var item in DegreeList)
@@ -151,14 +152,14 @@
                 <div class="form-group col-lg-6">
                     <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Course</label>
                     <div>
-                        <select class="form-control" name="TagCourse" id="txtTagCourse">
+                        <select class="form-control singleselect" name="TagCourse" id="txtTagCourse">
                             @*<option value="0">Select Course List</option>
-                                @{
-                                    foreach (var item in CourseList)
-                                    {
-                                        <option value="@item.Id">@item.text</option>
-                                    }
-                                }*@
+                            @{
+                                foreach (var item in CourseList)
+                                {
+                                    <option value="@item.Id">@item.text</option>
+                                }
+                            }*@
                         </select>
                     </div>
                 </div>
@@ -185,6 +186,7 @@
                         <thead class="dark">
                             <tr>
                                 <th>Sr</th>
+                                <th>ApplicationNO</th>
                                 <th>College</th>
                                 <th>Degrees</th>
                                 <th>Course</th>
@@ -200,15 +202,14 @@
                                 {
                                     <tr id="tr_@item.iPK_SubId">
                                         <td>@i</td>
-                                        @*<td>@item.TrustInfoId</td>*@
+                                        <td>@item.applicationNumber</td>
                                         <td>@item.CollegeName</td>
                                         <td>@item.TagDegrees</td>
                                         <td>@item.TagCourse</td>
                                         <td>@item.SubjectName</td>
                                         <td>
                                             <button class="btn btn col-sm-6" type="button" id="btnEdit" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);">
-                                                <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>Edit
-                                            </button>
+                                                <a id="@item.iPK_SubId" class="fas fa-edit text-info font-16" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a></button>
                                         </td>
                                     </tr>
                                     i++;
@@ -228,9 +229,9 @@
     </div>
 </div>
 
-<script src="~/Content/select2/js/select2.js"></script>
+
 <script src="~/Content/jquery/jquery.js"></script>
-@*<script src="~/Content/select2/js/select2.js"></script>*@
+<script src="~/Content/select2/js/select2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
@@ -335,7 +336,7 @@
                 dataType: "json",
                 contentType: "application/json",
                 success: function (response) {
-                    debugger;
+                    
                     for (var i = 0; i < response.Data.length; i++) {
                         strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
                     }
@@ -353,8 +354,8 @@
         var Model = {
             type: itemType,
             iPK_SubId: parseInt(iPK_SubId),
-            sub: SubjectName
-
+            sub: SubjectName,
+            //hdnapp: sApplNo applicationNumber
         }
         var d = JSON.stringify(Model);
         console.log(d);
@@ -375,13 +376,15 @@
                 if (data.StatusCode == 1) {
                     var iPK_SubId = data.Data[0].iPK_SubId;
                     var SubjectName = data.Data[0].SubjectName;
+                    var applicationNumber = data.Data[0].applicationNumber
                     console.log(SubjectName);
                     $('#hdnPKID').val(iPK_SubId);
                     if (itemType =='Get')
                         $('#txtSubjectName').val(SubjectName);
+                        $('#hdnAPPID').val(applicationNumber);
 
-                    $('#btnSave').html('');
-                    $('#btnSave').html('Update');
+                        $('#btnSave').html('');
+                       $('#btnSave').html('Update');
 
                 }
             },

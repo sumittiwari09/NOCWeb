@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using static NewZapures_V2.Models.TrusteeBO;
 
 namespace NewZapures_V2.Controllers
 {
@@ -15,11 +16,12 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: Trustee
-        public ActionResult Index(string appNo)
+        public ActionResult Index(string guid)
         {
+            
             List<StaffBO.Staff> _result = new List<StaffBO.Staff>();
             #region List Staff
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList");
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffList?Guid="+SessionModel.ApplicantGuid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -35,12 +37,14 @@ namespace NewZapures_V2.Controllers
                 }
             }
             ViewBag.StaffList = _result;
+            ViewBag.guid=guid;
             #endregion
             return View();
         }
         [HttpPost]
-        public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile)
+        public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile ,string guid)
         {
+            obj.Guid = SessionModel.ApplicantGuid;
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
@@ -171,8 +175,38 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-            return RedirectToAction("Index");
+
+            //return View();
+            return RedirectToAction("EditApplication", "Trustee", new { applGUID = SessionModel.ApplicantGuid });
+            //return RedirectToAction("Index");
         }
 
+        public ActionResult Delete(int Id)
+        {
+            #region List Staff
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Staff/StaffDelete?Id=" + Id);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
+            if (objResponseData.ResponseCode == "1")
+            {
+                TempData["SwalStatusMsg"] = "success";
+                TempData["SwalMessage"] = "Deleted Successfully!!";
+                TempData["SwalTitleMsg"] = "Success...!";
+                //return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+                //return RedirectToAction("Index");
+            }            
+            #endregion
+            return RedirectToAction("Index");
+        }
     }
 }

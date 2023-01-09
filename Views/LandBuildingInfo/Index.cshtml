@@ -1,23 +1,23 @@
 ﻿@using NewZapures_V2.Models
-@model LandDetailsBO
 @{
-    ViewBag.Title = "Land And Building Information";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Land & Building Information";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
 
     //var university = ViewBag.universityCollection as List<Dropdown>;
     var courses = (List<Dropdown>)ViewBag.CourseList;
+    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.draftApplication;
 
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+@*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
 <!-- Font Awesome -->
 @*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
-<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">*@
 <!-- Theme style -->
 @*<link rel="stylesheet" href="../../dist/css/adminlte.min.css">*@
-<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">*@
 <style type="text/css">
     .dropify-wrapper {
         display: block;
@@ -82,9 +82,9 @@
 
     .locationBTN {
         color: white !important;
-        background: #f953c6; /* fallback for old browsers */
-        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #ffbf68; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #ffbf68); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #ffbf68); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
 </style>
 
@@ -93,13 +93,13 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
-            <div class="float-right">
+            <!--<div class="float-right">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">NOC</li>
-                    @*<li class="breadcrumb-item">Master</li>*@
-                    <li class="breadcrumb-item active">Land & Building Information</li>
+                    <li class="breadcrumb-item">NOC</li>-->
+            @*<li class="breadcrumb-item">Master</li>*@
+            <!--<li class="breadcrumb-item active">Land & Building Information</li>
                 </ol>
-            </div>
+            </div>-->
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -113,305 +113,308 @@
                 <h4 class="mt-0 header-title float-left">Land & Building Information</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("SaveDetails", "LandBuildingInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="row col-lg-12">
-                        <div class="col-lg-6">
-                            <label for="example-text-input" class="col-sm-6">Name Of Building</label>
-                            <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
-                        </div>
 
-                        <div class="col-lg-6">
-                            <label for="example-text-input" class="col-sm-6">Khasra No</label>
-                            <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
+                <div class="row col-lg-12">
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6" style="margin-left:-10px"><strong>Land Area Situated In</strong></label>
+                        <select class="singleSelect" id="ddlLandArea">
+                            <option value="0">Select Area</option>
+                            <option value="Jaipur JDA AREA">Jaipur JDA AREA</option>
+                            <option value="JodhpurJDA AREA">Jodhpur JDA AREA</option>
+                            <option value="Ajmer JDA AREA">Ajmer JDA AREA</option>
+                            <option value="Division Headquater Area">Division Headquater Area</option>
+                            <option value="District Headquater Area">District Headquater Area</option>
+                            <option value="Urban Bodies">Urban Bodies</option>
+                            <option value="OTHER AREA">OTHER AREA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label for="example-text-input" class="col-sm-6" style="margin-left:-10px"><strong>Land Document Type</strong></label>
+                        <select class="singleSelect" id="ddlLandDocType">
+                            <option value="0">Select Document Type</option>
+                            <option value="PATTA">PATTA</option>
+                            <option value="Sale DEED">Sale DEED</option>
+                            <option value="Gift DEED">Gift DEED</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row col-lg-12 mt-3">
+
+                    <div class="col-lg-12">
+                        <div class="select2-purple">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Is Land converted to Institution/Education</strong></label>
+                            <select class="singleSelect" id="ddlLandConvert">
+                                <option value="0">Select Conversion</option>
+                                <option value="Fully Converted">Fully Converted</option>
+                                <option value="Partially Converted">Partially Converted</option>
+                                <option value="Not Converted">Not Converted</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="row col-lg-12 mt-3">
+                </div>
 
-                        <div class="col-lg-6">
-                            <div class="select2-purple">
-                                <label for="example-text-input" class="col-sm-6">Course Running</label>
-                                <select class="singleSelect" multiple="multiple" id="ddlrunningCourses" data-placeholder="Select Course">
-                                    @{
-                                        if (courses != null)
-                                        {
-                                            foreach (var item in courses)
-                                            {
-                                                <option value=@item.Id>@item.Text</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        @*<div class="col-lg-6">
-                                <label for="example-text-input" class="col-sm-6">Course Running</label>
-                                <select class="form-control select2" name="courseRunning" id="ddlrunningCourses">
-                                    <option value="0">Select Course</option>
-                                    <option value="1">Course 1</option>
-                                    <option value="2">Course 2</option>
-                                </select>
-                            </div>*@
-
-                        <div class="col-lg-4">
-                            <div style="display:flex">
-                                <label for="example-text-input" class="col-sm-6">Other Course Building</label>
-                                <div class="form-group custom-control custom-radio col-sm-2">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="courseBuilding" id="rbtn_CourseBuildingyes" value="1">
-                                    <label for="rbtn_CourseBuildingyes" class="custom-control-label" style="width: max-content;">Yes</label>
-                                </div>
-
-                                <div class="form-group custom-control custom-radio col-sm-2">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="courseBuilding" id="rbtn_CourseBuildingNo" value="0">
-                                    <label for="rbtn_CourseBuildingNo" class="custom-control-label" style="width: max-content;">No</label>
-                                </div>
-                            </div>
-                            <div id="divOtherCourses" style="display: none; margin-top: -8px;">
-                                <div class="select2-purple">
-                                    <select class="singleSelect" multiple="multiple"  id="ddlotherCourses" data-placeholder="Select Course">
-                                       
-                                            @{
-                                                if (courses != null)
-                                                {
-                                                    foreach (var item in courses)
-                                                    {
-                                                        <option value=@item.Id>@item.Text</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row col-lg-12 mt-3" id="divConverted" style="display:none">
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Order Number</strong></label>
+                        <input type="text" class="form-control" id="txtOrderNo" autocomplete="off" />
                     </div>
 
-                    <div class="row col-lg-12 mt-3">
-                        <div class="col-lg-2">
-                            <div style="display:flex; gap:50px">
-                                <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Building</label>
-                                <div class="form-group custom-control custom-radio col-sm-2">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="BuildingType" id="rbtn_Buildingowned" value="1">
-                                    <label for="rbtn_Buildingowned" class="custom-control-label" style="width: max-content;">Owned</label>
-                                </div>
-
-                                <div class="form-group custom-control custom-radio col-sm-2">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="BuildingType" id="rbtn_BuildingRented" value="0">
-                                    <label for="rbtn_BuildingRented" class="custom-control-label" style="width: max-content;">Rented</label>
-                                </div>
-
-                            </div>
-                        </div>
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Order Date</strong></label>
+                        <input type="date" class="form-control" id="txtOrderDate" autocomplete="off" />
                     </div>
 
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Attach your converted Document</strong></label>
+                        <input type="file" class="form-control-file" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" autocomplete="off" />
+                        <input type="hidden" id="hdnConvertedDoc" />
+                        <input type="hidden" id="hdnConvertedDocExten" />
+                    </div>
+                </div>
 
-                    <div class="row" id="divowned" style="display:none">
-                        <div class="col-lg-12">
-
-                            <div class="col-lg-2">
-                                <div style="display:flex; gap:50px">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Land Covered</label>
-                                    <div class="form-group custom-control custom-radio col-sm-2">
-                                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="LandCovered" id="rbtn_LandYes" value="1">
-                                        <label for="rbtn_LandYes" class="custom-control-label" style="width: max-content;">Yes</label>
-                                    </div>
-
-                                    <div class="form-group custom-control custom-radio col-sm-2">
-                                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="LandCovered" id="rbtn_LandNo" value="0">
-                                        <label for="rbtn_LandNo" class="custom-control-label" style="width: max-content;">No</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-
-                            <div id="divlandYes" class="row col-lg-12" style="display: none;padding: 20px;background: #ebebeb;border-radius: 11px;">
-                                <div class="col-lg-3">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Owner Name</label>
-                                    <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
-                                </div>
-
-                                <div class="col-lg-3">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter Area</label>
-                                    <input type="text" class="form-control" name="OwnerName" id="txtOwnerName" autocomplete="off" />
-                                </div>
-
-                                <div class="col-lg-3">
-                                    <label class="col-sm-12" style="margin-left:-10px">Certificate Document</label><br />
-                                    <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                                </div>
-
-                            </div>
-                        </div>
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Type</strong></label>
+                        <select class="singleSelect" id="ddlLandType">
+                            <option value="0">Select Land Type</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Instituional">Instituional</option>
+                            <option value="Residencial">Residencial</option>
+                        </select>
                     </div>
 
-                    <div id="divRented" style="display: none;padding: 20px;background: #ebebeb;border-radius: 11px;">
-                        <div class="row col-sm-12">
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">Agreement Expiry Date</label><br />
-                                <input class="col-sm-12 form-control" placeholder="dd.MM.yyyy" type="date" id="certficateDocuFile" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">Upload Agreement Copy</label><br />
-                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row col-lg-12 mt-3">
-                            <div class="col-lg-6">
-                                <div class="form-group custom-control custom-checkbox col-sm-2">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="checkbox" name="LandCovered" id="chkAcceptantion" value="1">
-                                    <label for="chkAcceptantion" class="custom-control-label" style="width: max-content;">I am not running any other institions or courses in this building for other trust or society</label>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">Upload Affidivate</label><br />
-                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                            </div>
-
-                        </div>
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Khasra No</strong></label>
+                        <input type="text" class="form-control" id="txtkhasaraNo" autocomplete="off" />
                     </div>
 
-                    <div style="padding: 10px;background: #999999;color: white;border-radius: 10px;font-size: 16px;font-weight: 100;margin-top:15px">
-                        Current year Building saftey
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Area (sqMtr)</strong></label>
+                        <input type="text" class="form-control col-sm-12" id="txtLandArea" oninput="numberOnly(this.id)" autocomplete="off" />
                     </div>
-                    <div class="mt-3">
-                        <p style="font-size: 20px;text-decoration: underline;font-weight: 700;">Fire NOC Validity</p>
-                        <div class="row col-lg-12">
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">From Date</label><br />
-                                <input class="col-sm-12 form-control" type="date" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">To Date</label><br />
-                                <input class="col-sm-12 form-control" type="date" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">Upload Fire NOC</label><br />
-                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                            </div>
-                        </div>
+                </div>
 
-                        <p style="font-size: 20px;text-decoration: underline;font-weight: 700;margin-top:30px">PWD NOC Validity</p>
-                        <div class="row col-lg-12">
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">From Date</label><br />
-                                <input class="col-sm-12 form-control" type="date" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">To Date</label><br />
-                                <input class="col-sm-12 form-control" type="date" />
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="col-sm-12" style="margin-left:-10px">Upload PWD NOC</label><br />
-                                <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                            </div>
-                        </div>
-
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-5">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Title Certificate</strong></label>
+                        <input type="file" class="form-control-file" id="flulandTitleCertificate" onchange="return encodeImageFileAsURL(this,'hdnlandTitleCertificate','hdnlandTitleCertificateExten')" autocomplete="off" />
+                        <input type="hidden" id="hdnlandTitleCertificate" />
+                        <input type="hidden" id="hdnlandTitleCertificateExten" />
                     </div>
 
-                    <div style="padding: 10px;background: #999999;color: white;border-radius: 10px;font-size: 16px;font-weight: 100;margin-top:30px">
-                        Building Land Photos
-                    </div>
-                    <div class="row col-lg-12 mt-3">
-                        <div class="col-lg-6">
-                            <label class="col-sm-12" style="margin-left:-10px">Building Front Photo</label><br />
-                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-sm-12" style="margin-left:-10px">Building Right Side View</label><br />
-                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                        </div>
+                    <div class="col-lg-5">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Document</strong></label>
+                        <input type="file" class="form-control-file" id="flulandDocument" onchange="return encodeImageFileAsURL(this,'hdnlandDocument','hdnlandDocumentExten')" autocomplete="off" />
+                        <input type="hidden" id="hdnlandDocument" />
+                        <input type="hidden" id="hdnlandDocumentExten" />
                     </div>
 
-                    <div class="row col-lg-12 mt-3">
-                        <div class="col-lg-6">
-                            <label class="col-sm-12" style="margin-left:-10px">Building Left Side View</label><br />
-                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-sm-12" style="margin-left:-10px">Building Back Side View</label><br />
-                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                        </div>
+                    <div class="col-lg-2">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <button class="btn" type="button" id="btnAdd" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-plus"></i> Add</button>
                     </div>
-                    <div class="row col-lg-12 mt-3">
-                        <div class="col-lg-12">
-                            <label class="col-sm-12" style="margin-left:-10px">Other Photos if Any</label><br />
-                            <input class="col-sm-12" placeholder="Certificate Doc" name="LandConvertProof" type="file" id="certficateDocuFile" />
-                        </div>
+                </div>
 
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-4" id="divLandConvertDoc" style="display:none">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Affidavit Document for Coversion.pdf" class="btn" id="btnDownloadConvertedDoc" download="LandConversion" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-download"></i> Download Converted Document File</a>
                     </div>
 
-
-
-                    <div class="row">
-                        <div class="form-group col-lg-12" style="text-align:right">
-                            @*<button type="submit" id="btnsubmitDetails" style="display:none"></button>*@
-                            <button class="btn" type="button" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> Save</button>
-                            @*<button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>*@
-                            @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
-
-                        </div>
+                    <div class="col-lg-4" id="divLandTitleDoc">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Land Title Certificate.pdf" class="btn" id="btnDownloadLandTitle" download="LandTitle" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-download"></i> Download Land Title Certificate File</a>
                     </div>
-                }
+
+                    <div class="col-lg-4" id="divLandDoc">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Certificate of Land & Rented Building.pdf" class="btn" id="btnDownloadLandDoc" download="LandDocument" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-download"></i> Download Land Document File</a>
+                    </div>
+
+                    <p style="padding: 15px;color: red;"><i>Disclaimer : please download the documents first, then fill the form accordingly and the upload the same</i></p>
+                </div>
+                <hr />
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-2">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Total Area</strong></label>
+                        <input type="text" class="form-control" id="txtTotalArea" autocomplete="off" value="0" disabled readonly />
+                    </div>
+                    <div class="col-lg-10" style="text-align: end;">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>&nbsp;</strong></label>
+                        <button class="btn" type="button" id="btnSave" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-save"></i> Save Details</button>
+                    </div>
+                    <div class="col-lg-12" style="overflow-x: scroll;">
+                        <table class="table table-borderless" id="tblLandInfo" style="width: max-content;">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Land Situated</th>
+                                    <th>Land Doc Type</th>
+                                    <th>Is Convereted</th>
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>Land Type</th>
+                                    <th>Khasara Number</th>
+                                    <th>Land Area</th>
+                                    <th>Total Area</th>
+                                    <th>Converted Doc</th>
+                                    <th>Land Title Doc</th>
+                                    <th>Land Doc</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="14" class="text-center">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
 
+
+
 </div>
 
 
-<script src="~/Content/jquery/jquery.js"></script>
+@*<script src="~/Content/jquery/jquery.js"></script>*@
 <script src="~/Content/select2/js/select2.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
 <script type="text/javascript">
 
+    var landInfoData = [];
+    var imagebase64 = "";
 
     $(document).ready(function () {
         $('.singleSelect').select2();
 
-
-
-        $("input[name='courseBuilding']").change(function () {
-            var s = $(this).val();
-            if (s == 1)
-                $('#divOtherCourses').css('display', 'block');
-            else
-                $('#divOtherCourses').css('display', 'none');
-        });
-
-        $("input[name='BuildingType']").change(function () {
-
-            var s = $(this).val();
-            if (s == 1) {
-                $('#divowned').css('display', 'block');
-                $('#divRented').css('display', 'none');
+        $('#ddlLandConvert').change(function () {
+            var selectedItem = $(this).val();
+            if (selectedItem != 'Not Converted') {
+                $('#divConverted').css('display', 'flex');
+                $('#divLandConvertDoc').css('display', 'block');
             }
-            if (s == 0) {
-                $('#divowned').css('display', 'none');
-                $('#divRented').css('display', 'block');
+            else {
+                $('#divConverted').css('display', 'none');
+                $('#divLandConvertDoc').css('display', 'none');
+                $('#divLandTitleDoc').removeClass('col-lg-4').addClass('col-lg-6');
+                $('#divLandDoc').removeClass('col-lg-4').addClass('col-lg-6');
             }
+        })
+
+        $('#btnAdd').click(function () {
+            var htmlString = "";
+            if (CheckValidation()) {
+                var landArea = $('#ddlLandArea option:selected').text().trim();
+                var landDocType = $('#ddlLandDocType option:selected').text().trim();
+                var landConverted = $('#ddlLandConvert option:selected').text().trim();
+                var landType = $('#ddlLandType option:selected').text().trim();
+                var orderNo = $('#txtOrderNo').val().trim();
+                var orderDate = $('#txtOrderDate').val().trim();
+                var khasaraNo = $('#txtkhasaraNo').val().trim();
+                var landAreaUnit = $('#txtLandArea').val().trim();
+                var totalArea = $('#txtTotalArea').val().trim();
+
+            //LandConverted
+                var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+                var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+                var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+                var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+            //Land Title
+            var landTitleDoc = $('#hdnlandTitleCertificate').val().split(',')[1];
+            var landTitleDocExte = $('#hdnlandTitleCertificateExten').val().split('.')[1];
+            var landTitleDocContent = $('#hdnlandTitleCertificate').val().split(',')[0];
+            var landTitleDocFullURL = $('#hdnlandTitleCertificate').val();
+
+            //Land Document
+            var landDoc = $('#hdnlandDocument').val().split(',')[1];
+            var landDocExte = $('#hdnlandDocumentExten').val().split('.')[1];
+            var landDocContent = $('#hdnlandDocument').val().split(',')[0];
+            var landDocFullURL = $('#hdnlandDocument').val();
 
 
+
+
+                //console.log('base64', convertedDoc);
+                //console.log('Exten', convertedDocExte);
+                //console.log('content', convertedDocContent);
+
+
+                totalArea = (totalArea.length <= 0) ? 0 : parseFloat(totalArea);
+
+                landInfoData.push({
+                    iDeptID: parseInt('@draftAppl.iFKDEPT_ID'),
+                    iCorsID: parseInt('@draftAppl.iFK_CORS_ID'),
+                    iClgID: parseInt('@draftAppl.clgID'),
+                    iFinyr: parseInt('@draftAppl.iFK_Finyr'),
+                    iTrstID: parseInt('@draftAppl.iFKTst_ID'),
+                    sApplGUID: '@draftAppl.ApplGuid',
+                    sLndArea: landArea,
+                    sLndDocType: landDocType,
+                    sIsLndCnvrted: landConverted,
+                    sOrdrNo: (orderNo.length <= 0) ? "": orderNo,
+                    dtOrdrDate: (orderDate.length <= 0) ? "" : orderDate,
+                    sLndTyp: landType,
+                    sKhasaraNo: khasaraNo,
+                    dLndArea: landAreaUnit,
+                    dTotalArea: (parseFloat(totalArea) + parseFloat(landAreaUnit)),
+
+                    UploadConvertedDocument: convertedDoc,
+                    UploadConvertedDocumentExtension: convertedDocExte,
+                    UploadConvertedDocumentContent: convertedDocContent,
+                    lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
+
+                    UploadLandTitleDoc: landTitleDoc,
+                    UploadLandTitleDocExtension: landTitleDocExte,
+                    UploadLandTitleDocContent: landTitleDocContent,
+                    lndTitleURL: (landTitleDocFullURL.length <= 0) ? "#" : landTitleDocFullURL,
+
+                    UploadLandDoc: landDoc,
+                    UploadLandDocExtension: landDocExte,
+                    UploadLandDocContent: landDocContent,
+                    landDocURL: (landDocFullURL.length <= 0) ? "#" : landDocFullURL, 
+
+                });
+
+                console.table(landInfoData);
+
+                $('#txtTotalArea').val(0);
+                if (landInfoData.length <= 0) {
+                    htmlString += `<td colspan="14" class="text-center">No Data Available</td>`
+
+                    $("#tblLandInfo tbody").html('');
+                    $("#tblLandInfo tbody").html(htmlString);
+                }
+                else {
+                    landInfoData.forEach(function (item, index) {
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td><td class="text-center"><span><a href="${item.lndConvertURL}" download="LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.lndTitleURL}" download="landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.landDocURL}" download="LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+                        $('#txtTotalArea').val(item.dTotalArea);
+                    });
+                    $("#tblLandInfo tbody").html('');
+                    $("#tblLandInfo tbody").html(htmlString);
+                    ClearAllData();
+                }
+            }
         });
 
-        $("input[name='LandCovered']").change(function () {
-
-            var s = $(this).val();
-            if (s == 1)
-                $('#divlandYes').css('display', 'flex');
-            else
-                $('#divlandYes').css('display', 'none');
+        $('#btnSave').click(function () {
+            saveDetails();
         });
 
 
-        var isuserExists = '@TempData["isSaved"]'
+        @*var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
         if (isuserExists == 1 && message.length> 0) {
                 Swal.fire({
@@ -433,125 +436,251 @@
                     showCloseButton: true,
                     showConfirmButton: false,
                 });
-        }
-
-        //$("#ddlOperator").select2({
-        //    templateResult: formatState,
-        //    templateSelection: formatState
-        //});
-        $("#ddlUniverSity").select2();
+        }*@
 
     });
 
+    function saveDetails() {
+        var VertinaryModal = {
+            trg: landInfoData
+        }
+
+        var d = JSON.stringify(VertinaryModal);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/LandBuildingInfo/SaveDetails",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
 
 
-    //function CheckValidation() {
-    //    var status = true;
-    //   // var Bankname = $('#txtBankName').val().trim();
-    //    var MobileNumber = $('#txtMobileNumber').val().trim();
-    //    var Email = $('#txtEmail').val().trim();
-    //    var WebsiteUrl = $('#txtWebsiteurl').val().trim();
-    //    var Address1 = $('#txtAddressLine1').val().trim();
-    //    var Address2 = $('#txtAddressLine2').val().trim();
-    //    var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
-    //    var LandlineNumber = $('#txtLandlineNumber').val().trim();
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
 
-    //    if (MobileNumber.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Mobile Number Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false
-    //        })
-    //        $('#txtMobileNumber').focus();
-    //        $('#txtMobileNumber').val('');
-    //        status = false;
-    //     }
-    //    else if (Email.length <= 0) {
-    //         Swal.fire({
-    //             position: 'center',
-    //             icon: 'error',
-    //             title: 'Email Id Required...!',
-    //             allowOutsideClick: false,
-    //             showCloseButton: true,
-    //             showConfirmButton: false,
-    //         })
-    //         $('#txtEmail').focus();
-    //         $('#txtEmail').val('');
-    //         status = false;
-    //     }
-    //    else if (WebsiteUrl.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Website URL Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false
-    //        })
-    //        $('#txtWebsiteurl').focus();
-    //        $('#txtWebsiteurl').val('');
-    //        status = false;
-    //    }
-    //    else if (Address1.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Address1 is Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false,
-    //        })
-    //        $('#txtAddressLine1').focus();
-    //        $('#txtAddressLine1').val('');
-    //        status = false;
-    //    }
-    //    else if (Address2.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Address2 is Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false,
-    //        })
-    //        $('#txtAddressLine2').focus();
-    //        $('#txtAddressLine2').val('');
-    //        status = false;
-    //    }
-    //    else if (AdiMobileNumber.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Additional Mobile Number Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false
-    //        })
-    //        $('#txtAddiMobileNumber').focus();
-    //        $('#txtAddiMobileNumber').val('');
-    //        status = false;
-    //    }
-    //    else if (LandlineNumber.length <= 0) {
-    //        Swal.fire({
-    //            position: 'center',
-    //            icon: 'error',
-    //            title: 'Landline Number Required...!',
-    //            allowOutsideClick: false,
-    //            showCloseButton: true,
-    //            showConfirmButton: false
-    //        })
-    //        $('#txtLandlineNumber').focus();
-    //        $('#txtLandlineNumber').val('');
-    //        status = false;
-    //    }
 
-    //    if (status) {
-    //        $('#btnsubmitDetails').click();
-    //    }
-    //}
+    function ClearAllData() {
+
+        $('#ddlLandArea').select2('destroy');
+        $('#ddlLandArea').val(0);
+        $('#ddlLandArea').select2();
+
+        $('#ddlLandDocType').select2('destroy');
+        $('#ddlLandDocType').val(0);
+        $('#ddlLandDocType').select2();
+
+
+        $('#ddlLandConvert').select2('destroy');
+        $('#ddlLandConvert').val(0);
+        $('#ddlLandConvert').select2();
+
+        $('#ddlLandType').select2('destroy');
+        $('#ddlLandType').val(0);
+        $('#ddlLandType').select2();
+
+        $('#txtOrderNo').val('')
+        $('#txtOrderDate').val('')
+        $('#txtkhasaraNo').val('')
+        $('#txtLandArea').val('')
+
+        $('#divConverted').css('display', 'none');
+
+        //LandConverted
+        $('#hdnConvertedDocExten').val('')
+        $('#hdnConvertedDoc').val('')
+
+        //Land Title
+        $('#hdnlandTitleCertificateExten').val('')
+        $('#hdnlandTitleCertificate').val('')
+
+        //Land Document
+         $('#hdnlandDocumentExten').val('')
+        $('#hdnlandDocument').val('')
+
+        $('#flulandDocument').val('');
+        $('#flulandTitleCertificate').val('');
+        $('#fluConvertedDoc').val('');
+
+    }
+
+    function encodeImageFileAsURL(element,hdnId,hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            $('#' + hdnExtnID).val(file.name);
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+
+
+    function CheckValidation() {
+        var status = true;
+        var landArea = $('#ddlLandArea option:selected').text().trim();
+        var landDocType = $('#ddlLandDocType option:selected').text().trim();
+        var landConverted = $('#ddlLandConvert option:selected').text().trim();
+        var landType = $('#ddlLandType option:selected').text().trim();
+        var orderNo = $('#txtOrderNo').val().trim();
+        var orderDate = $('#txtOrderDate').val().trim();
+        var khasaraNo = $('#txtkhasaraNo').val().trim();
+        var landAreaUnit = $('#txtLandArea').val().trim();
+        if (landArea == "Select Area") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Land Area...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            status = false;
+        }
+        else if (landDocType == "Select Document Type") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Land Document Type...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            status = false;
+        }
+        else if (landConverted == "Select Conversion") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Land Conversion...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            status = false;
+        }
+        else if (landConverted != "Not Converted") {
+            if (orderNo.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Order Number..!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+                status = false;
+            }
+           else if (orderDate.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Order Date..!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+                status = false;
+            }
+            else if (landType == "Select Land Type") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Land Type...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+            else if (khasaraNo.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Khasara Number...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+                status = false;
+            }
+            else if (landAreaUnit.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Land Area...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                })
+                status = false;
+            }
+
+        }
+        else if (landType == "Select Land Type") {
+             Swal.fire({
+                 position: 'center',
+                 icon: 'error',
+                 title: 'Please Select Land Type...!',
+                 allowOutsideClick: false,
+                 showCloseButton: true,
+                 showConfirmButton: false,
+             })
+             status = false;
+         }
+        else if (khasaraNo.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Enter Khasara Number...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false
+            })
+            status = false;
+        }
+        else if (landAreaUnit.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Enter Land Area...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+
+        return status;
+    }
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);

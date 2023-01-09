@@ -296,7 +296,7 @@
                                 success: function (response) {
 
 
-                                    debugger;
+                                    
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',
@@ -347,7 +347,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    debugger;
+                    
                     var dataid = $("#GSTApplicable_" + trid).is(':checked');
                     //alert(dataid);
                     if (response.isvalid == 1) {

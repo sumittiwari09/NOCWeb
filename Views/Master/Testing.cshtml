@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Testing";
+}
+
+@section styles{-->  @*@Styles.Render("~/bundles/datatable");*@\
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+
+<link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+<link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">*@
+<link href="~/Content/NewArchtech/jquery-confirm.min.css" rel="stylesheet" />
+
+<link href="~/Content/NewArchtech/jquery-confirm.min.css" rel="stylesheet" />
+<style>
+    body {
+        margin-top: 30px;
+    }
+
+    .stepwizard-step p {
+        margin-top: 0px;
+        color: #666;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+    .stepwizard {
+        display: table;
+        width: 100%;
+        position: relative;
+    }
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+        color: #bbb;
+    }
+
+    .stepwizard-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+        display: table-cell;
+        text-align: center;
+        position: relative;
+    }
+
+    .btn-circle {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+</style>
+}
+<div class="row">
+    <div class="col-sm-2">
+        <button class="btn btn-success pull-right" type="button" onclick="GenerateDocumentList();">Architecture</button>
+    </div>
+    <div class="col-sm-10" id="Architectureid">
+
+    </div>
+</div>
+@*<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="ArchitechModal">
+            </div>
+        </div>
+    </div>*@
+
+@section scripts {
+
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+    <script src="~/Content/NewArchtech/Jsminmum.js"></script>
+    <script src="~/Content/NewArchtech/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function GenerateDocumentList() {
+
+            $.ajax({
+                url: globaUserProperties.domain + '/Master/NewArchitectureDetail',
+                type: 'POST',
+                dataType: "text",
+                success: function (response) {
+                    $("#Architectureid").html(response);
+                }
+            });
+            return false;
+        }
+        function Delete(ipk_ArchiMstDetId, iParamId, iSubCatId, iUomId) {
+            if (confirm("Are you sure you want to delete this?")) {
+                var Params = JSON.stringify({
+                    ipk_ArchiMstDetId: ipk_ArchiMstDetId
+                });
+                $.ajax({
+                    url: GetglobalDomain() + "/Master/DeleteImage",
+                    type: 'POST',
+                    dataType: "json",
+                    data: Params,
+                    contentType: "application/json",
+                    success: function (response) {
+
+
+
+                        if (response.IsValid = 1) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Delete Successfully',
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                            /**/
+                            GenerateArchtable(iParamId, iSubCatId, iUomId, 'abhc123')
+                            /**/
+                        }
+
+                    },
+
+                });
+            }
+            else {
+                alert("tahk");
+                return false;
+            }
+        }
+
+    </script>
+}
+

@@ -6,11 +6,16 @@
 
     var university = ViewBag.universityCollection as List<Dropdown>;
     var collegeType = ViewBag.collegeTypeList as List<Dropdown>;
+    var DistrictList = ViewBag.DistrictList as List<Dropdown>;
     List<CustomMaster> TrustList = new List<CustomMaster>();
     if (ViewBag.TrustList != null)
     {
         TrustList = (List<CustomMaster>)ViewBag.TrustList;
     }
+
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> conctactlist = ViewBag.conctactlist as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+
+
 }
 @section styles {
 
@@ -19,6 +24,34 @@
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
 }
 <style type="text/css">
+    .btnpink {
+        color: white !important;
+        background: #f953c6;
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6);
+        background: linear-gradient(to left, #b91d73, #f953c6);
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .table tbody {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
     .dropify-wrapper {
         display: block;
         position: relative;
@@ -39,13 +72,13 @@
         transition: border-color .15s linear;
     }
 
-    .table thead {
+    /*.table thead {
         background-color: #646d91 !important;
     }
 
     .table th {
         color: #ffffff !important;
-    }
+    }*/
 
     .fsc {
         background: #6441A5;
@@ -112,24 +145,33 @@
             <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Trust Type</label>
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Level</label>
                         <div>
-                            <select class="form-control" name="TrustInfoId" id="TrustInfoId">
+                            <select class="form-control" name="collegeLevel" id="collegeLevelId">
+                                <option value="">Select College Level</option>
+                                <option value="UG">UG</option>
+                                <option value="PG">PG</option>
+                                <option value="Diploma">Diploma</option>
+                            </select>
 
-                                <option value="0">Select Trust</option>
-                                @{
-                                    foreach (var item in TrustList)
-                                    {
-                                        <option value="@item.Id">@item.text</option>
-                                    }
-                                }
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Medium</label>
+                        <div>
+                            <select class="form-control" name="collegeMedium" id="collegeMediumId">
+                                <option value="">Select College Medium</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="English">English</option>
+                                <option value="Both">Both</option>
                             </select>
 
                         </div>
                     </div>
 
-
-                    <div class="form-group col-lg-6">
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Choose College type</label>
                         <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
 
@@ -138,39 +180,21 @@
                                 {
                                     foreach (var item in collegeType)
                                     {
-                                        <div class="form-group custom-control custom-radio col-sm-2">
-                                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollegeType" id="rbtn_@item.Text" value="@item.Id">
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary collagetype" type="radio" name="CollageType" id="rbtn_@item.Text" value="@item.Id">
                                             <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
                                         </div>
                                     }
                                 }
                             }
-
-
-
-
-
-                            @*<div class="form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtGirls" value="girls">
-                        <label for="txtGirls" class="custom-control-label">Girls</label>
-                    </div>
-                    <div class=" form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtBoy" value="boys">
-                        <label for="txtBoy" class="custom-control-label">Boys</label>
-                    </div>
-                    <div class="form-group custom-control custom-radio col-sm-3">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="collegeType" id="txtCoEducation" value="girlsboyBoth">
-                        <label for="txtCoEducation" class="custom-control-label">CoEducation</label>
-                    </div>*@
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name</label>
                         <div>
-                            <input class="form-control col-sm-12" type="text" id="txtCollegeName" oninput="charecterOnly(id)" name="CollegeName" autocomplete="off">
+                            <input class="form-control col-sm-12" type="text" id="txtCollegeName"  name="CollegeName" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group col-lg-6">
@@ -222,55 +246,73 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Division</label>
-                        <div>
-                            <select class="form-control" id="txtdistrict" name="Division">
-                                <option value="">--Divison --</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="1" name="Type" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio7">Rural</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="2" name="Type" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio8">Urban</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group col-lg-6" style="display:none">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Sub Division</label>
-                        <div>
-                            <select class="form-control" id="txtdistrict" name="District">
-                                <option value="">--Sub Divison --</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District</label>
                         <div>
-                            <select class="form-control" id="txtdistrict" name="District">
-                                <option value="">--District--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
+                            <select class="form-control singleselect" id="DistrictId" name="DistrictId">
+                                <option>Select District</option>
+                                @{
+                                    if (DistrictList != null)
+                                    {
+                                        foreach (var item in DistrictList)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row" id="divRural">
                     <div class="form-group col-lg-6">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil</label>
                         <div>
-                            <select class="form-control" id="txttehsil" name="Tehsil">
-                                <option value="">--Sub Divison --</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
+                            <select class="form-control" id="TehsilId" name="TehsilId">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Block</label>
+                        <div>
+                            <select class="form-control" id="BlockId" name="BlockId">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="divUrban" style="display:none">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City</label>
+                        <div>
+                            <select class="form-control" id="CityId" name="CityId">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Ward No</label>
+                        <div>
+                            <select class="form-control" id="WardNo" name="WardNo">
+                                <option></option>
                             </select>
                         </div>
                     </div>
@@ -280,84 +322,86 @@
 
 
 
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Parliment Area</label>
-                        <div>
-                            <select class="form-control" id="txtParlimentArea" name="ParliamentArea">
-                                <option value="">--Parliament Area--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
+                @*<div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Parliment Area</label>
+                            <div>
+                                <select class="form-control" id="txtParlimentArea" name="ParliamentArea">
+                                    <option value="">--Parliament Area--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Assemble Area</label>
+                            <div>
+                                <select class="form-control" id="txtAssembleArea" name="AssembleArea">
+                                    <option value="">--Assemble Area--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Assemble Area</label>
-                        <div>
-                            <select class="form-control" id="txtAssembleArea" name="AssembleArea">
-                                <option value="">--Assemble Area--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City Town Village</label>
+                            <div>
+                                <select class="form-control" id="txtCityTownVillage" name="CityTownVillage">
+                                    <option value="">--City Town Village--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Urban/Rural</label>
+                            <div>
+                                <select class="form-control" id="txtUrbanRural" name="UrbanRural">
+                                    <option value="">--Urban Rural--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City Town Village</label>
-                        <div>
-                            <select class="form-control" id="txtCityTownVillage" name="CityTownVillage">
-                                <option value="">--City Town Village--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Panchayat Simiti</label>
+                            <div>
+                                <select class="form-control" id="txtPanchayatSimiti" name="PanchayatSimiti" required="required">
+                                    <option value="">--Panchayat Simiti--</option>
+                                    <option value="1">Jaipur</option>
+                                    <option value="2">Jodhpur</option>
+                                    <option value="3">Kota
+                                    <option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Urban/Rural</label>
-                        <div>
-                            <select class="form-control" id="txtUrbanRural" name="UrbanRural">
-                                <option value="">--Urban Rural--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website URL</label>
+                            <div>
+                                <input type="text" class="form-control" name="Websiteurl" placeholder="Website URL" id="txtWebsiteurl" autocomplete="off" />
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Panchayat Simiti</label>
-                        <div>
-                            <select class="form-control" id="txtPanchayatSimiti" name="PanchayatSimiti" required="required">
-                                <option value="">--Panchayat Simiti--</option>
-                                <option value="1">Jaipur</option>
-                                <option value="2">Jodhpur</option>
-                                <option value="3">Kota
-                                <option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Website URL</label>
-                        <div>
-                            <input type="text" class="form-control" name="Websiteurl" placeholder="Website URL" id="txtWebsiteurl" autocomplete="off" />
-                        </div>
-                    </div>
-                </div>
+                    </div>*@
             </div>
             <div class="col-3 text-center d-flex align-items-center justify-content-center" style="align-items:flex-start !important">
                 <div class="">
                     <h4 class="mt-0 header-title">Collage Logo</h4>
                     @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
-                    <input type="file" id="input-file-now" class="dropify" name="collageLogo" />
+                    <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                    <input type="hidden" id="hdnConvertedDoc" />
+                    <input type="hidden" id="hdnConvertedDocExten" />
                 </div>
             </div>
 
@@ -365,40 +409,37 @@
         <div class="card-header fsc">
             <h4 class="mt-0 header-title float-left">Contact Details</h4>
         </div>
-        <div class="card-body row">
-            <div class="col-8">
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 1</label>
-                        <div>
-                            <input type="text" class="form-control" name="ContactNo1" id="txtcontact1" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
-                        </div>
+        @*<form>*@
+        <div>
+            <table class="table table-borderless" id="contactsData">
+                <thead>
+                    <tr>
+                        <td><input type="text" id="Name" name="Name" placeholder="ContactPerson" class="form-control"></td>
+                        <td><input type="text" id="Number" name="Number" placeholder="Number" class="form-control"></td>
+                        <td><input type="text" id="EmailId" name="Email" placeholder="Email Address" class="form-control"></td>
+                        <td><input type="button" class="btn add-row btnpink" value="Add Row"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>ContactPerson</th>
+                        <th>Number</th>
+                        <th>Email Address</th>
+                        <th>Action</th>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            @*<button type="button" class="delete-row">Delete Row</button>*@
+            @*<div class="row text-center">
+                    <div class="form-group col-lg-12">
+                        <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
                     </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 1</label>
-                        <div>
-                            <input type="text" class="form-control" name="EmailAddress1" id="txtEmailAddress1" autocomplete="off" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Contact No. 2</label>
-                        <div>
-                            <input type="text" class="form-control" name="ContactNo2" id="txtcontact2" oninput="numberOnly(this.id);" maxlength="10" autocomplete="off" />
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email Address 2</label>
-                        <div>
-                            <input type="text" class="form-control" name="EmailAddress2" id="txtEmailAddress2" autocomplete="off" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </div>*@
         </div>
 
+        @*</form>*@
         <div class="card-header fsc">
             <h4 class="mt-0 header-title float-left">Track Geo Location</h4>
         </div>
@@ -463,11 +504,12 @@
                 </div>
             </div>*@
 
-        <div class="row">
-            <div class="form-group col-lg-12" style="text-align:center">
-                <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                <button class="btn btn col-sm-2" type="button" onclick="CheckValidation()" id="btnSave" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6);  "><i class="fa fa-plus"></i> ADD</button>
-                <button class="btn btn col-sm-2" id="btnCapitalAdd" style="color:white!important;background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #1d6cb9, #4f5fe0);">NEXT</button>
+        <div class="row" style="margin-bottom:10px">
+            <div class="col-lg-12" style="text-align:right">
+                @*<button type="submit" id="btnsubmitDetails" style="display:none"></button>*@
+                <button class="btn btn btn-primary" type="button" onclick="CheckValidation()" id="btnSave"> Save</button>
+                <a href="@Url.Action("CreateDetais","AddCourse")" class="col-lg-3 btn btnpink" id="Reset">Proceed To Add Course Details</a>
+
                 @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
 
             </div>
@@ -491,6 +533,112 @@
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>*@
 <script type="text/javascript">
+    var imagebase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            $('#' + hdnExtnID).val(file.name);
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+
+
+    $("input[name='Type']").change(function () {
+        //alert("in");
+        if ($(this).val() === '1') {
+            $('#divRural').show();
+            $('#divUrban').hide();
+        } else if ($(this).val() === '2') {
+            $('#divRural').hide();
+            $('#divUrban').show();
+
+        }
+    // Do something interesting here
+    });
+
+    $("#DistrictId").change(function () {
+        var Districtid = $("#DistrictId option:selected").val();
+        alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetTehsilList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+                    console.log('data is', data);
+                          $("#TehsilId").html("<option value = \"\">Select Tehsil</option>")
+                $.each(data, function (index, value) {
+                    $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                });
+                }
+            });
+            //$.get(GetglobalDomain()+ "BasicDetails/GetTehsilList", { DistrictId: Districtid }, function (data) {
+            //    $("#Tehsil").html("<option value = \"\">Select Tehsil</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+
+    $("#DistrictId").change(function () {
+        var id = $("#DistrictId option:selected").val();
+        if (id > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetCityList",
+                data: { Id: id },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#CityId").html("<option value = \"\">Select City</option>")
+                    $.each(data, function (index, value) {
+                        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "GeneralAssessment/GetCityList", { Id: id }, function (data) {
+            //    $("#CityId").html("<option value = \"\">Select City</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        var id = $("#DistrictId option:selected").val();
+        if (id > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetBlockList",
+                data: { Id: id },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#BlockId").html("<option value = \"\">Select Block</option>")
+                    $.each(data, function (index, value) {
+                        $("#BlockId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "GeneralAssessment/GetCityList", { Id: id }, function (data) {
+            //    $("#CityId").html("<option value = \"\">Select City</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
 
     $(document).ready(function () {
         getLocation();
@@ -524,89 +672,6 @@
         //});
         $("#ddlUniverSity").select2();
 
-        //$('#ddlOperator').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var operatorval = parseInt($("#ddlOperator").val());
-        //    //getCommissions(operatorval);
-        //    //alert(operator)
-        //    //alert(operatorval)
-        //    if (operatorval <= 6) {
-        //        $('#divPlansForDTH').hide();
-        //        $('#divPlansForMobile').show();
-        //        $('#divCircle').show();
-        //        var selectedCircle = $('#ddlCircle').val();
-        //        if (selectedCircle != "0") {
-        //            $('#loadingDiv').css('display', 'block');
-        //        }
-
-        //        $('#txtRechargeAmount').attr('readonly', 'true');
-        //        $('#lblmobile').html('Enter Mobile Number');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlans(operator, selectedCircle);
-        //    }
-        //    if (operatorval >= 7) {
-        //        var operator = $("#ddlOperator option:selected").text();
-        //        $('#loadingDivnew').css('display', 'block');
-        //        $('#divPlansForDTH').show();
-        //        $('#divPlansForMobile').hide();
-        //        $('#PlansDivForDTH').show();
-        //        $('#txtRechargeAmount').removeAttr('readonly');
-        //        $('#lblmobile').html('Enter Subscriber ID');
-        //        $('#txtMobileNumer').attr("placeholder", "Enter Subscriber Id");
-        //        $('#divCircle').hide();
-
-        //        $('#txtRechargeAmount').val('');
-        //        $('#txtplanDescription').html('');
-        //        $('#txtMobileNumer').val('');
-        //        $('#btnRecharge').attr('disabled', 'true');
-        //        //$('#divplanDiscription').hide();
-        //        getPlansForDTH(operator);
-        //    }
-
-        //});
-        //$('#ddlCircle').change(function () {
-        //    var operator = $("#ddlOperator option:selected").text();
-        //    var circle = $(this).val();
-
-        //    $('#txtRechargeAmount').attr('readonly', 'true');
-        //    $('#lblmobile').html('Enter Mobile Number');
-        //    $('#txtMobileNumer').attr("placeholder", "Enter Mobile Number");
-
-        //    $('#txtRechargeAmount').val('');
-        //    $('#txtplanDescription').html('');
-        //    $('#txtMobileNumer').val('');
-        //    $('#btnRecharge').attr('disabled', 'true');
-
-        //    if (operator == 'Select Operator') {
-        //        Swal.fire({
-        //            position: 'center',
-        //            icon: 'error',
-        //            title: 'Operator Not Selected',
-        //            text: 'Please select operator first...',
-        //            allowOutsideClick: false,
-        //            showCloseButton: false,
-        //            showConfirmButton: true,
-        //        });
-        //    }
-        //    else if (circle == 0) {
-        //        $('#divPlansForMobile').hide();
-
-
-        //    }
-        //    else {
-        //        $('#loadingDiv').css('display', 'block');
-        //        $('#divPlansForMobile').show();
-        //        getPlans(operator, circle);
-        //    }
-
-
-        //});
 
         $('#txtMobileNumber').blur(function () {
             if ($("#txtMobileNumber").val().length > 0) {
@@ -650,7 +715,8 @@
         }
     }
     function showPosition(position) {
-        //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        //alert("Latitude: " + position.coords.latitude + "
+
         var data = {
             lat:position.coords.latitude,
             long:position.coords.longitude
@@ -670,125 +736,132 @@
 
     function CheckValidation() {
         var status = true;
-       // var Bankname = $('#txtBankName').val().trim();
-        var MobileNumber = $('#txtMobileNumber').val().trim();
-        var Email = $('#txtEmail').val().trim();
-        var WebsiteUrl = $('#txtWebsiteurl').val().trim();
-        var Address1 = $('#txtAddressLine1').val().trim();
-        var Address2 = $('#txtAddressLine2').val().trim();
-        var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
-        var LandlineNumber = $('#txtLandlineNumber').val().trim();
-
-        //if (Bankname.length <= 0) {
-        //    Swal.fire({
-        //        position: 'center',
-        //        icon: 'error',
-        //        title: 'Bank Name Required...!',
-        //        allowOutsideClick: false,
-        //        showCloseButton: true,
-        //        showConfirmButton: false,
-        //    })
-        //    $('#txtBankName').focus();
-        //    $('#txtBankName').val('');
-        //    status = false;
-        //}
-        //else
-        if (MobileNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Mobile Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtMobileNumber').focus();
-            $('#txtMobileNumber').val('');
-            status = false;
-         }
-        else if (Email.length <= 0) {
-             Swal.fire({
-                 position: 'center',
-                 icon: 'error',
-                 title: 'Email Id Required...!',
-                 allowOutsideClick: false,
-                 showCloseButton: true,
-                 showConfirmButton: false,
-             })
-             $('#txtEmail').focus();
-             $('#txtEmail').val('');
-             status = false;
-         }
-        else if (WebsiteUrl.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Website URL Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtWebsiteurl').focus();
-            $('#txtWebsiteurl').val('');
-            status = false;
-        }
-        else if (Address1.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Address1 is Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAddressLine1').focus();
-            $('#txtAddressLine1').val('');
-            status = false;
-        }
-        else if (Address2.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Address2 is Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            })
-            $('#txtAddressLine2').focus();
-            $('#txtAddressLine2').val('');
-            status = false;
-        }
-        else if (AdiMobileNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Additional Mobile Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtAddiMobileNumber').focus();
-            $('#txtAddiMobileNumber').val('');
-            status = false;
-        }
-        else if (LandlineNumber.length <= 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Landline Number Required...!',
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false
-            })
-            $('#txtLandlineNumber').focus();
-            $('#txtLandlineNumber').val('');
-            status = false;
-        }
-
-        if (status) {
+                if (status) {
             $('#btnsubmitDetails').click();
         }
     }
+
+    //function CheckValidation() {
+    //    var status = true;
+    //   // var Bankname = $('#txtBankName').val().trim();
+    //    var MobileNumber = $('#txtMobileNumber').val().trim();
+    //    var Email = $('#txtEmail').val().trim();
+    //    var WebsiteUrl = $('#txtWebsiteurl').val().trim();
+    //    var Address1 = $('#txtAddressLine1').val().trim();
+    //    var Address2 = $('#txtAddressLine2').val().trim();
+    //    var AdiMobileNumber = $('#txtAddiMobileNumber').val().trim();
+    //    var LandlineNumber = $('#txtLandlineNumber').val().trim();
+
+    //    //if (Bankname.length <= 0) {
+    //    //    Swal.fire({
+    //    //        position: 'center',
+    //    //        icon: 'error',
+    //    //        title: 'Bank Name Required...!',
+    //    //        allowOutsideClick: false,
+    //    //        showCloseButton: true,
+    //    //        showConfirmButton: false,
+    //    //    })
+    //    //    $('#txtBankName').focus();
+    //    //    $('#txtBankName').val('');
+    //    //    status = false;
+    //    //}
+    //    //else
+    //    if (MobileNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Mobile Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtMobileNumber').focus();
+    //        $('#txtMobileNumber').val('');
+    //        status = false;
+    //     }
+    //    else if (Email.length <= 0) {
+    //         Swal.fire({
+    //             position: 'center',
+    //             icon: 'error',
+    //             title: 'Email Id Required...!',
+    //             allowOutsideClick: false,
+    //             showCloseButton: true,
+    //             showConfirmButton: false,
+    //         })
+    //         $('#txtEmail').focus();
+    //         $('#txtEmail').val('');
+    //         status = false;
+    //     }
+    //    else if (WebsiteUrl.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Website URL Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtWebsiteurl').focus();
+    //        $('#txtWebsiteurl').val('');
+    //        status = false;
+    //    }
+    //    else if (Address1.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Address1 is Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false,
+    //        })
+    //        $('#txtAddressLine1').focus();
+    //        $('#txtAddressLine1').val('');
+    //        status = false;
+    //    }
+    //    else if (Address2.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Address2 is Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false,
+    //        })
+    //        $('#txtAddressLine2').focus();
+    //        $('#txtAddressLine2').val('');
+    //        status = false;
+    //    }
+    //    else if (AdiMobileNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Additional Mobile Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtAddiMobileNumber').focus();
+    //        $('#txtAddiMobileNumber').val('');
+    //        status = false;
+    //    }
+    //    else if (LandlineNumber.length <= 0) {
+    //        Swal.fire({
+    //            position: 'center',
+    //            icon: 'error',
+    //            title: 'Landline Number Required...!',
+    //            allowOutsideClick: false,
+    //            showCloseButton: true,
+    //            showConfirmButton: false
+    //        })
+    //        $('#txtLandlineNumber').focus();
+    //        $('#txtLandlineNumber').val('');
+    //        status = false;
+    //    }
+
+    //    if (status) {
+    //        $('#btnsubmitDetails').click();
+    //    }
+    //}
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);
@@ -802,6 +875,173 @@
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".add-row").click(function () {
+            var markup = "";
+            var name = $("#Name").val();
+            var number = $("#Number").val();
+            var email = $("#EmailId").val();
+            markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+            $("#contactsData tfoot").append(markup);
+            $("#Name").val('');
+            $("#Number").val('');
+            $("#EmailId").val('');
+        });
 
+        // Find and remove selected table rows
+        $("#contactsData").on("click", ".delete-row", function () {
+            $(this).closest("tr").remove();
+        });
+        //$(".delete-row").click(function () {
+        //    $("#contactsData tfoot").find('input[name="record"]').each(function () {
+        //    if ($(this).is(":checked")) {
+        //    $(this).parents("tr").remove();
+        //     }
+        //    });
+        //});
+        $("#btnSave").click(function () {
+            //var name = $("#Name").val();
+            //var number = $("#Number").val();
+            //var email = $("#EmailId").val();
+            //var markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+            //$("table tbody").append(markup);
+
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            var collegeLevel = $('#collegeLevelId').val();
+            var collegeMedium = $('#collegeMediumId option:selected').val();
+            var CollegeName = $('#txtCollegeName').val();
+            var UniverSity = $('#txtUniverSity').val();
+            var MobileNumber = $('#txtMobileNumber').val();
+            var Email = $('#txtEmail').val();
+            var AddressLine1 = $('#txtAddressLine1').val();
+            var AddressLine2 = $('#txtAddressLine2').val();
+            var DistrictId = $('#DistrictId').val();
+            var TehsilId = $('#TehsilId').val();
+            var BlockId = $('#BlockId').val();
+            var CityId = $('#CityId').val();
+            var WardNo = $('#WardNo').val();
+            var Latitudedd = $('#txtLatitude').val();
+            var Longitudedd = $('#txtLongitude').val();
+            var AddiMobileNumber = $('#txtAddiMobileNumber').val();
+            var LandlineNumber = $('#txtLandlineNumber').val();
+            var CollageType =$('input[name="CollageType"]:checked').val();
+            var LocationType = $('input[name="Type"]:checked').val();           
+            //LandConverted
+            var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+            var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+            var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+            var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+            var model = {
+                LocationType: LocationType,
+                CollageType: CollageType,
+                collegeLevel: collegeLevel,
+                collegeMedium: collegeMedium,
+                CollegeName: CollegeName,
+                UniverSity: UniverSity,
+                MobileNumber: MobileNumber,
+                Email: Email,
+                AddressLine1: AddressLine1,
+                AddressLine2: AddressLine2,
+                DistrictId: DistrictId,
+                TehsilId: TehsilId,
+                BlockId: BlockId,
+                CityId: CityId,
+                WardNo: WardNo,
+                Latitudedd: Latitudedd,
+                Longitudedd: Longitudedd,
+                AddiMobileNumber: AddiMobileNumber,
+                LandlineNumber: LandlineNumber,            
+                ContactDetails: contactsInfo,
+
+                CollageLogo: convertedDoc,
+                CollageLogoExtension: convertedDocExte,
+                CollageLogoContentType: convertedDocContent
+                //lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
+            }
+            //var formData = new FormData();
+            //var totalFiles = document.getElementById("UniDocument").files.length;
+
+            //for (var i = 0; i < totalFiles; i++) {
+            //    var file = document.getElementById("UniDocument").files[i];
+
+            //    formData.append("UniDocument", file);
+            //}
+
+            console.log('model data is', model);
+
+            //Send the JSON array to Controller using AJAX.
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Home/InsertSkills",
+            //    data: JSON.stringify(skills),
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "json",
+            //    success: function (r) {
+            //        alert(r + " record(s) inserted.");
+            //        location.reload();
+            //    }
+            //});
+
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/BasicDetails/ContactSaveDetails",
+                data: model,
+                success: function (result) {
+                    if (result.StatusCode == '1') {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var url = GetglobalDomain() + "/BasicDetails/CreateDetails";
+                                window.location.href = url;
+                            }
+                        });
+                        //Swal.fire({
+                        //    title: 'Data saved sussessfully!',
+                        //    showDenyButton: false,
+                        //    showCancelButton: false,
+                        //    confirmButtonText: 'Save',
+                        //    denyButtonText: `Don't save`,
+                        //}).then((result) => {
+                        //    /* Read more about isConfirmed, isDenied below */
+                        //    if (result.isConfirmed) {
+                        //        var url = GetglobalDomain() + "/BasicDetails/CreateDetails";
+                        //        window.location.href = url;
+                        //    }
+                        //})
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+                    //console.log('data is', data);
+                }
+            });
+        });
+
+    });
+</script>
 
 

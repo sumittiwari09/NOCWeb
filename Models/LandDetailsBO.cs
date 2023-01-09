@@ -26,44 +26,36 @@ namespace NewZapures_V2.Models
 
     public class LandInfoBO
     {
-        public string CollageId { get; set; }
-        public string IsLandConvert { get; set; }
-        public string OwnerName { get; set; }
-        public string OwnerBuildNo { get; set; }
-        public string OrderDate { get; set; }
-        public string LandDetail { get; set; }
-        public string LandNo { get; set; }
-        public string IsAnyOtherInfo { get; set; }
-        public string LandAreaProof { get; set; }
-        public string OwnBuildingProof { get; set; }
-        public string LandConvertProof { get; set; }
-        public string LandAreaProofExtension { get; set; }
-        public string LandAreaProofDocumentContent { get; set; }
-        public string OwnBuildingProofExtension { get; set; }
-        public string OwnBuildingProofDocumentContent { get; set; }
-        public string LandConvertProofExtension { get; set; }
-        public string LandConvertProofDocumentContent { get; set; }
+        public int iPK_ID { get; set; }
+        public int iDeptID { get; set; }
+        public int iCorsID { get; set; }
+        public int iClgID { get; set; }
+        public string iFinyr { get; set; }
+        public int iTrstID { get; set; }
+        public string sApplGUID { get; set; }
+        public string sLndArea { get; set; }
+        public string sLndDocType { get; set; }
+        public string sIsLndCnvrted { get; set; }
+        public string sOrdrNo { get; set; }
+        public string dtOrdrDate { get; set; }
+        public string sLndTyp { get; set; }
+        public string sKhasaraNo { get; set; }
+        public string dLndArea { get; set; }
+        public string dTotalArea { get; set; }
 
-        //Add Parameter
-        public string OrderNoCurrent { get; set; }
-        public string OrderDateCurrent { get; set; }
-        public string pwcNoc { get; set; }
-        public string fireNoc { get; set; }
         //image
-        public string UploadDocumentCurrent { get; set; }
-        public string UploadDocumentCurrentExtension { get; set; }
-        public string UploadDocumentCurrentContent { get; set; }
+        public string UploadConvertedDocument { get; set; }
+        public string UploadConvertedDocumentExtension { get; set; }
+        public string UploadConvertedDocumentContent { get; set; }
+        
         //image
-        public string FrontBuildingImage { get; set; }
-        public string FrontBuildingImageExtension { get; set; }
-        public string FrontBuildingImageContent { get; set; }
+        public string UploadLandTitleDoc { get; set; }
+        public string UploadLandTitleDocExtension { get; set; }
+        public string UploadLandTitleDocContent { get; set; }
+        
         //image
-        public string UploadDocumentFireNoc { get; set; }
-        public string UploadDocumentFireNocExtension { get; set; }
-        public string UploadDocumentFireNocContent { get; set; }
-        //image
-        public string UploadDocumentPwcNoc { get; set; }
-        public string UploadDocumentPwcNocExtension { get; set; }
-        public string UploadDocumentPwcNocContent { get; set; }
+        public string UploadLandDoc { get; set; }
+        public string UploadLandDocExtension { get; set; }
+        public string UploadLandDocContent { get; set; }
     }
 }

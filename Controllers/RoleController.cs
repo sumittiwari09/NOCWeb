@@ -28,7 +28,7 @@ namespace NewZapures_V2.Controllers
             var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
             var PartyId = servicesCollectiondata.PartyId;
             List<MenuMasters> menus = new List<MenuMasters>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetMenuMasterList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetMenuMasterList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -59,7 +59,7 @@ namespace NewZapures_V2.Controllers
             var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
             var PartyId = servicesCollectiondata.PartyId;
             List<SubMenuMaster> menus = new List<SubMenuMaster>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetSubMenuMasterList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetSubMenuMasterList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -89,7 +89,7 @@ namespace NewZapures_V2.Controllers
             int Id = Convert.ToInt32(Request.RequestContext.RouteData.Values["Id"]);
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertMenuMaster");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertMenuMaster");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -136,7 +136,7 @@ namespace NewZapures_V2.Controllers
                 if (Id != 0)
                 {
 
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetMenuMaster?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetMenuMaster?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -163,7 +163,7 @@ namespace NewZapures_V2.Controllers
             SubMenuMaster obj = new SubMenuMaster();
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertSubMenuMaster");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertSubMenuMaster");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -204,7 +204,7 @@ namespace NewZapures_V2.Controllers
                 if (Id != 0)
                 {
 
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetSubMenuMaster?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetSubMenuMaster?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -231,7 +231,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult RoleIndex()
         {
             List<RoleInformation> Roles = new List<RoleInformation>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetRoleInformation");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetRoleInformation");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -254,7 +254,7 @@ namespace NewZapures_V2.Controllers
             RoleInformation obj = new RoleInformation();
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertRoleInformation");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertRoleInformation");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -295,7 +295,7 @@ namespace NewZapures_V2.Controllers
                 if (Id > 0)
                 {
 
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetSelectRoleInformation?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetSelectRoleInformation?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -324,7 +324,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult RoleMappingIndex()
         {
             List<RoleMappingwithMenu> menus = new List<RoleMappingwithMenu>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetRoleMappingMenuList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetRoleMappingMenuList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -347,7 +347,7 @@ namespace NewZapures_V2.Controllers
             RoleMappingwithMenu obj = new RoleMappingwithMenu();
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertRoleMappingwithMenu");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertRoleMappingwithMenu");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -387,7 +387,7 @@ namespace NewZapures_V2.Controllers
             {
                 if (Id > 0)
                 {
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetSelectRoleWithMenu?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetSelectRoleWithMenu?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -419,7 +419,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult RoleSubMenuIndex()
         {
             List<MenuMappingwithSubmenu> obj = new List<MenuMappingwithSubmenu>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetMappingRoleWithSubMenu?Id=" + 0);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetMappingRoleWithSubMenu?Id=" + 0);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -443,7 +443,7 @@ namespace NewZapures_V2.Controllers
             MenuMappingwithSubmenu obj = new MenuMappingwithSubmenu();
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertRoleMappingwithSubMenu");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertRoleMappingwithSubMenu");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -483,7 +483,7 @@ namespace NewZapures_V2.Controllers
             {
                 if (Id > 0)
                 {
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetMappingRoleWithSubMenu?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetMappingRoleWithSubMenu?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -520,7 +520,7 @@ namespace NewZapures_V2.Controllers
             string PartyId = servicesCollectiondata.PartyId;
 
             List<RoleMastertable> Roles = new List<RoleMastertable>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetRoleMasterInformation?PartyId=" + PartyId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetRoleMasterInformation?PartyId=" + PartyId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -555,7 +555,7 @@ namespace NewZapures_V2.Controllers
             RoleMastertable obj = new RoleMastertable();
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertRoleMasterCreate");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertRoleMasterCreate");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -595,7 +595,7 @@ namespace NewZapures_V2.Controllers
             {
                 if (Id > 0)
                 {
-                    var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetRoleMasterInformation?Id=" + Id);
+                    var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetRoleMasterInformation?Id=" + Id);
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("cache-control", "no-cache");
                     //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -625,7 +625,7 @@ namespace NewZapures_V2.Controllers
             var PartyId = servicesCollectiondata.PartyId;
             List<MappingRoleWithDepartmentandGroup> Roles = new List<MappingRoleWithDepartmentandGroup>();
 
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetRoleMappingDepartmentandGroup?Id=" + PartyId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetRoleMappingDepartmentandGroup?Id=" + PartyId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -651,7 +651,7 @@ namespace NewZapures_V2.Controllers
             var partyId = servicesCollectiondata.PartyId;
             if (Request.HttpMethod == "POST")
             {
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/InsertMappingRoleWithDepartmentandGroup");
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/InsertMappingRoleWithDepartmentandGroup");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
 
@@ -730,7 +730,7 @@ namespace NewZapures_V2.Controllers
             {
                 return RedirectToAction("SignOut", "Home");
             }
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetUserPagingPermission?MappingId=" + MappingId + "&GroupId=" + GroupId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetUserPagingPermission?MappingId=" + MappingId + "&GroupId=" + GroupId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -759,7 +759,7 @@ namespace NewZapures_V2.Controllers
             int RoleId = servicesCollectiondata.RoleId;
             int DepartmentId = servicesCollectiondata.DepartmentId;
             List<UserPagingPermission> obj = new List<UserPagingPermission>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetSeletctedUserPagingPermission?MappingId=" + MappingId + "&GroupId=" + GroupId + "&DepartmentId=" + DepartmentId + "&RoleId=" + RoleId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetSeletctedUserPagingPermission?MappingId=" + MappingId + "&GroupId=" + GroupId + "&DepartmentId=" + DepartmentId + "&RoleId=" + RoleId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -857,6 +857,25 @@ namespace NewZapures_V2.Controllers
             }
             return groups;
         }
+        
+        public List<Dropdown> GetDepartmentList(string Type = "Department", int MenuId = 0)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> groups = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                groups = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return groups;
+        }
         public List<PartyMaster> GetPartyMasterList(string Type = "SelectpartyMaster", int MenuId = 0)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
@@ -889,7 +908,32 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        
+        public JsonResult GetTehsil(int distID)
+        {
+            var tehsilList  = ZapurseCommonlist.GetTehsil(distID);
+            return new JsonResult
+            {
+                Data = new { Data = tehsilList, failure = false, msg = "Success", isvalid = 1 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
         #endregion
+
+        public JsonResult FillDepartmentandGroupMaster(string Type)
+        {
+            UserModelSession servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+            string PartyId = servicesCollectiondata.PartyId;
+            List<Dropdown> data = new List<Dropdown>();
+            data = Common.GetDepartmentGroupMaster(Type, PartyId);
+            return new JsonResult
+            {
+                Data = new { Data = data, failure = true, msg = "Failed" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
 
         #region Notification
 
@@ -1030,7 +1074,7 @@ namespace NewZapures_V2.Controllers
             objRatemaster.status = type;
 
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "Admin/ChangeStatus");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Admin/ChangeStatus");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             //request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1087,7 +1131,7 @@ namespace NewZapures_V2.Controllers
             //}
 
 
-            var client2 = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/OperationStatus");
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/OperationStatus");
             var request2 = new RestRequest(Method.POST);
             request2.AddHeader("cache-control", "no-cache");
             //request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1128,7 +1172,7 @@ namespace NewZapures_V2.Controllers
         public List<ShowMenuDropDown> GetMenulist()
         {
             List<ShowMenuDropDown> menus = new List<ShowMenuDropDown>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/GetMenuMasterList");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/GetMenuMasterList");
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1233,6 +1277,12 @@ namespace NewZapures_V2.Controllers
             if (userdetailsSession != null)
             {
                 ViewBag.userType = userdetailsSession.Type;
+               var departmentList =  GetDepartmentList();
+               var districtList = ZapurseCommonlist.GetDistrict();
+                ViewBag.document = departmentList;
+                ViewBag.districts = districtList;
+
+
                 return View();
             }
             else
@@ -1292,7 +1342,7 @@ namespace NewZapures_V2.Controllers
             UserModelSession servicesCollectiondata = (UserModelSession)Session["UserDetails"];
             var PartyId = servicesCollectiondata.PartyId;
             List<Tree> _Tree = new List<Tree>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "RoleMaster/TreeList?PartyId=" + PartyId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "RoleMaster/TreeList?PartyId=" + PartyId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
