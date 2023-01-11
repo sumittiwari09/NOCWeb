@@ -17,6 +17,7 @@ namespace NewZapures_V2.Models
         public string iFk_NOCTyp { get; set; }
         public int? iStts { get; set; }
         public int? iMode { get; set; }
+        public string NewGuid { get; set; }
         public string NocDepartmentName { get; set; }
         public string NocDepartmenttype { get; set; }
         public string DepartName { get; set; }
@@ -84,7 +85,8 @@ namespace NewZapures_V2.Models
         public string sCateSubName { get; set; }
         public string UomName { get; set; }
         public string CourseName { get; set; }
-        
+        public string InsertValue { get; set; }
+        public string UploadUrl { get; set; }
     }
     public class ArchiMstDetail
     {
@@ -102,6 +104,13 @@ namespace NewZapures_V2.Models
 
 
     }
+    public class ArchiMstData
+    {
+        public int iParamId { get; set; }
+        public int iSubCatId { get; set; }
+        public int iUomId { get; set; }
+    }
+
     public class ArchitectureMst
     {
          public int iPk_MasterId{ get; set; }
@@ -123,5 +132,45 @@ namespace NewZapures_V2.Models
         public string sFK_AppId { get; set; }
         public string Type { get; set; }
         public string UploadUrl { get; set; }
+    }
+    public class EVNTMST
+    {
+        public int iPk_EventId { get; set; }
+        public int? iFk_DeptId { get; set; }
+        public string iFk_NOCDeptId { get; set; }
+        public string iFk_NOCTyp { get; set; }
+        public int? iStts { get; set; }
+        public int? iMode { get; set; }
+        public string NocDepartmentName { get; set; }
+        public string NocDepartmenttype { get; set; }
+        public string DepartName { get; set; }
+        public string Type
+        {
+            get
+            {
+                switch (iMode)
+                {
+                    case 1:
+                        return "Temporary";
+                    case 2:
+                        return "Permanent";
+                    case 3:
+                        return "Both";
+
+                    default:
+                        return "";
+                }
+            }
+        }
+        public string dtFormdate { get; set; }
+        public string dtTodate { get; set; }
+        public string sNewGuid { get; set; }
+    }
+    public class EventMstSave
+    {
+        public string sNewGuid { get; set; }
+        public int Id { get; set; }
+        public string dtFormdate { get; set; }
+        public string dtTodate { get; set; }
     }
 }

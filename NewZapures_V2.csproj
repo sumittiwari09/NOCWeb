@@ -3545,6 +3545,11 @@
     <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
     <Content Include="Views\Master\Testing.cshtml" />
+    <Content Include="Views\Master\NewArchitectureView.cshtml" />
+    <Content Include="Views\Master\EventMaster.cshtml" />
+    <Content Include="Views\Master\EventMasterTable.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\Newitem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
