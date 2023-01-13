@@ -594,8 +594,17 @@ namespace NewZapures_V2.Models
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    obj = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return obj;
 
-}
+        }
 
         public static List<Dropdown> GetLocationDropDown(string Type, int Id=0)
         {

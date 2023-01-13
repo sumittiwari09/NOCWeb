@@ -344,8 +344,6 @@ namespace NewZapures_V2.Controllers
         {
             var departmentList =ZapurseCommonlist.GetDepartmentlist();
             ViewBag.departments = departmentList;
-            ViewBag.trusteeMember = trusteeMember;
-            ViewBag.applGUID = applGUID;
             return View();
         }
 
