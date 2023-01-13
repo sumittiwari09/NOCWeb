@@ -584,6 +584,19 @@ namespace NewZapures_V2.Models
 
         }
 
+
+        public static List<Dropdown> GetDropDown(int Id,string Type)
+        {
+            List<Dropdown> obj = new List<Dropdown>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/FillDropDown?Id=" + Id + "&Type="+ Type);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+}
+
         public static List<Dropdown> GetLocationDropDown(string Type, int Id=0)
         {
             List<Dropdown> dropdowns = new List<Dropdown>();
@@ -598,6 +611,7 @@ namespace NewZapures_V2.Models
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Accept", "application/json");
             IRestResponse response = client.Execute(request);
+
             if (response.StatusCode.ToString() == "OK")
             {
                 var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);

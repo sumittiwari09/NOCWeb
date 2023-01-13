@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-sm-4">
                             <select class="singleselect" data-tags="true" id="NocDepartId" name="iFk_NOCDeptId" required>
-                                <option value="" disabled selected hidden>Select NOC Department</option>
+                                <option value="" disabled selected hidden>Select/Enter NOC Form Category</option>
                                 @{
                                     foreach (var item in lstname)
                                     {
@@ -84,7 +84,7 @@
                         </div>
                         <div class="col-sm-4">
                             <select class="singleselect" data-tags="true" id="NocDeparttypeId" name="iFk_NOCTyp" required>
-                                <option value="" disabled selected hidden>Select NOC Department Type</option>
+                                <option value="" disabled selected hidden>Select/Enter NOC Form Name</option>
                                 @{
                                     foreach (var item in lsttype)
                                     {
@@ -128,8 +128,8 @@
 
 
                                 <th>Department</th>
-                                <th>NOC Department</th>
-                                <th>NOC Type</th>
+                                <th>Form Category</th>
+                                <th>Form Name</th>
                                 <th>Mode</th>
                                 <th>Action</th>
 

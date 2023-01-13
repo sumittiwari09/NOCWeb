@@ -305,7 +305,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             ViewBag.trusteeMember = trusteeMember;
-
+            ViewBag.applGUID = applGUID;
             return View();
         }
 

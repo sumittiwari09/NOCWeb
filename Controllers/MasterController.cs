@@ -8,6 +8,7 @@ using System.Configuration;
 using System.EnterpriseServices.Internal;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -208,6 +209,27 @@ namespace NewZapures_V2.Controllers
                 if (objResponse.Data != null)
                 {
                     departments = JsonConvert.DeserializeObject<List<NOCDEPMAP>>(objResponse.Data.ToString());
+                }
+            }
+            return departments;
+        }
+        public List<EVNTMST> GetNOCEventplst(int Departid)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/Event_View?iFk_DeptId=" + Departid);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<EVNTMST> departments = new List<EVNTMST>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    departments = JsonConvert.DeserializeObject<List<EVNTMST>>(objResponse.Data.ToString());
                 }
             }
             return departments;
@@ -490,10 +512,10 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("ParameterValueConfiguration");
         }
 
-        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0)
+        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0,string Appid=null)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course));
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid="+ @Appid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -574,10 +596,10 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
-        public ActionResult NewArchitectureDetail(string guid= "abhc123")
+        public ActionResult NewArchitectureDetail(string guid= null)
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-            lst = ParameterValueConfigurationlist();
+            lst = ParameterValueConfigurationlist(0, guid);
             ViewBag.Applicableid = guid;
             return View(lst);
         }
@@ -799,11 +821,241 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        //public ActionResult NewArchitectureDetail(string guid)
-        //{
-        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-        //    lst = ParameterValueConfigurationlist();
-        //    return View(lst);
-        //}
+     
+        public ActionResult NewArchitectureView(string applGUID = "abhc123")
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist(0, applGUID);
+
+            List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllGenerateArchtable?sAppId=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (d.Data != null)
+                {
+                    LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(d.Data.ToString());
+                }
+
+            }
+            ViewBag.LstApesData=LstApesData;
+            ViewBag.applGUID = applGUID;
+            return View(lst);
+        }
+
+        public JsonResult AllGenerateArchtablelist(string applGUID)
+        {
+            List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+            List<ArchiMstData> LstData = new List<ArchiMstData>();
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllGenerateArchtable?sAppId=" + applGUID);
+            var request2 = new RestRequest(Method.GET);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client2.Execute(request2);
+            if (response.StatusCode.ToString() == "OK")
+            {
+
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(objResponse.Data.ToString());
+                   foreach(var item in LstApesData.Select(p => new {p.iParamId,p.iSubCatId,p.iUomId}).Distinct().ToList())
+                    {
+                        ArchiMstData obj = new ArchiMstData();
+                        obj.iParamId = item.iParamId;
+                        obj.iSubCatId = item.iSubCatId;
+                        obj.iUomId = item.iUomId;
+                        LstData.Add(obj);
+                    }
+                }
+                if (objResponse.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = LstData, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponse.ResponseCode == "000" && objResponse.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = LstData, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult EventMaster()
+        {
+            List<AddDepartment> departmentList = new List<AddDepartment>();
+            departmentList = GetDepartments();
+            ViewBag.Department = departmentList;
+            return View();
+        }
+        public ActionResult EventMasterTable(int DepartmentId,string type)
+        {
+            List<NOCDEPMAP> lstMap = new List<NOCDEPMAP>();
+            List<EVNTMST> lstEvent = new List<EVNTMST>();
+            if (type== "Search")
+            {
+                lstMap = GetNOCDepartMaplst(DepartmentId);
+               
+            }
+            if (type == "View")
+            {
+                lstEvent = GetNOCEventplst(DepartmentId);
+            }
+            ViewBag.lstEvent=lstEvent;
+            return View(lstMap);
+        }
+
+        public JsonResult InsertEvent(List<EventMstSave> MstSave)
+        {
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertEvent");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", _JsonSerializer.Serialize(MstSave.FirstOrDefault()), ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
+            if (response2.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponseData = JsonConvert.DeserializeObject<ResponseData>(response2.Content);
+                if (objResponseData.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult CommiteeMaster( int Id=0)
+        {
+            List<Dropdown> Prtlst = new List<Dropdown>();
+            Prtlst = Common.GetDropDown(8, "PARTYCODE");
+            List<CommiteeMaster> Commiteelst = new List<CommiteeMaster>();
+            Commiteelst = GetCommitee(8);
+            ViewBag.Prtlst=Prtlst;
+            ViewBag.deptid = 8;
+            ViewBag.Commiteelst = Commiteelst;
+            CommiteeMaster Mst = new CommiteeMaster();
+            if (Id != 0)
+            {
+                Mst = Commiteelst.Where(p => p.iPk_CommiteeId == Id).FirstOrDefault();
+            }
+            return View(Mst);
+        }
+        [HttpPost]
+        public ActionResult CommiteeMasterSave(CommiteeMaster Commitee)
+        {
+           Commitee.sComtMemLst = Request["sComtMemLst"].ToString();
+  
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllCommiteeSaveView");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json",_JsonSerializer.Serialize(Commitee), ParameterType.RequestBody);
+            IRestResponse response = client2.Execute(request2);
+            try
+            {
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
+                    if (objResponseData.ResponseCode == "001")
+                    {
+                        return RedirectToAction("SignOut", "Home");
+                    }
+                    else
+                    if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "Success!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                    else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "warning!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "error";
+                        TempData["SwalMessage"] = "Something wrong";
+                        TempData["SwalTitleMsg"] = "error!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+
+            }
+            return RedirectToAction("CommiteeMaster");
+        }
+
+        public static List<CommiteeMaster> GetCommitee(int Id)
+        {
+            List<CommiteeMaster> obj = new List<CommiteeMaster>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GetCommiteeList?Id=" + Id );
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    obj = JsonConvert.DeserializeObject<List<CommiteeMaster>>(objResponse.Data.ToString());
+                }
+            }
+            return obj;
+        }
     }
 }
