@@ -11,7 +11,7 @@
 }
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
-
+<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
 @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
 <!-- Font Awesome -->
 @*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
@@ -273,25 +273,25 @@
                                     if (landData != null && landData.Count > 0)
                                     {
                                         @*var i = 1;
-                                        foreach (var item in landData)
-                                        {
-                                            <tr>
-                                                <td>@i</td>
-                                                <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;"><i class="far fa-trash-alt"></i></span> : @item.sLndArea</td>
-                                                <td>@item.sLndDocType</td>
-                                                <td>@item.sIsLndCnvrted</td>
-                                                <td>@item.sOrdrNo</td>
-                                                <td>@item.dtOrdrDate</td>
-                                                <td>@item.sLndTyp</td>
-                                                <td>@item.sKhasaraNo</td>
-                                                <td>@item.dLndArea</td>
-                                                <td>@item.dTotalArea</td>
-                                                <td>""</td>
-                                                <td>""</td>
-                                                <td>""</td>
-                                            </tr>
-                                            i++;
-                                        }*@
+                                            foreach (var item in landData)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;"><i class="far fa-trash-alt"></i></span> : @item.sLndArea</td>
+                                                    <td>@item.sLndDocType</td>
+                                                    <td>@item.sIsLndCnvrted</td>
+                                                    <td>@item.sOrdrNo</td>
+                                                    <td>@item.dtOrdrDate</td>
+                                                    <td>@item.sLndTyp</td>
+                                                    <td>@item.sKhasaraNo</td>
+                                                    <td>@item.dLndArea</td>
+                                                    <td>@item.dTotalArea</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                </tr>
+                                                i++;
+                                            }*@
                                     }
                                     else
                                     {
@@ -320,7 +320,9 @@
 
 @*<script src="~/Content/jquery/jquery.js"></script>*@
 <script src="~/Content/select2/js/select2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
+<script src="~/Content/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
 <script type="text/javascript">
 
@@ -401,6 +403,7 @@
                 //console.log('content', convertedDocContent);
 
                 landInfoData.push({
+                    UnQID: CreateGuid(),
                     iDeptID: parseInt('@draftAppl.iFKDEPT_ID'),
                     iCorsID: parseInt('@draftAppl.iFK_CORS_ID'),
                     iClgID: parseInt('@draftAppl.clgID'),
@@ -445,13 +448,13 @@
                 }
                 else {
                     landInfoData.forEach(function (item, index) {
-
-                        var landConvertedURL = (item.lndConvertURL == "#") ? `NA` : `<a href="${item.lndConvertURL}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
-                        var landTitleURL = (item.lndTitleURL == "#") ? `NA` : `<a href="${item.lndTitleURL}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
-                        var landDocumentURL = (item.landDocURL == "#") ? `NA` : `<a href="${item.landDocURL}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        console.log(item.UploadConvertedDocument);
+                        var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument=='') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc =='') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc =='') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
 
                         htmlString += `<tr><td>${index + 1}</td>
-                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;display:none"><i class="far fa-trash-alt"></i>: </span> ${item.sLndArea}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
                                             <td>${item.sLndDocType}</td>
                                             <td>${item.sIsLndCnvrted}</td>
                                             <td>${item.sOrdrNo}</td>
@@ -468,7 +471,7 @@
                         $('#txtTotalArea').val(item.dTotalArea);
                     });
                     $("#tblLandInfo tbody").html('');
-                    $("#tblLandInfo tbody").html(htmlString);
+                    $("#tblLandInfo tbody").append(htmlString);
                     ClearAllData();
                 }
 
@@ -508,20 +511,21 @@
 
 
     function SomeFunction() {
-        var htmlString = "";
+    var htmlString = "";
     var array = @Html.Raw(Json.Encode(ViewBag.landDataList));
     for(var i = 0; i < array.length; i++) {
         landInfoData.push(array[i]);
-        //alert(array[i]); // should display "string1" then string2"
         }
         landInfoData.forEach(function (item, index) {
 
-            var landConvertedURL = (item.lndConvertURL == "#") ? `NA` : `<a href="${item.lndConvertURL}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
-            var landTitleURL = (item.lndTitleURL == "#") ? `NA` : `<a href="${item.lndTitleURL}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
-            var landDocumentURL = (item.landDocURL == "#") ? `NA` : `<a href="${item.landDocURL}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landConvertedURL = (item.UploadConvertedDocument == null) ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landTitleURL = (item.UploadLandTitleDoc == null) ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
 
+            item.UnQID = CreateGuid();
+            console.log(item.UnQID)
             htmlString += `<tr><td>${index + 1}</td>
-                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;display:none"><i class="far fa-trash-alt"></i> :</span> ${item.sLndArea}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
                                             <td>${item.sLndDocType}</td>
                                             <td>${item.sIsLndCnvrted}</td>
                                             <td>${item.sOrdrNo}</td>
@@ -548,7 +552,7 @@
         }
 
         var d = JSON.stringify(VertinaryModal);
-        console.log(d);
+        //console.log(d);
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -643,8 +647,6 @@
         reader.readAsDataURL(file);
         return imagebase64;
     }
-
-
 
     function CheckValidation() {
         var status = true;
@@ -786,7 +788,7 @@
             debugger;
             landInfoData.forEach(function (item) {
                 if (landConverted != "Not Converted") {
-                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && orderNo == item.sOrdrNo && orderDate == item.dtOrdrDate && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && (orderNo == item.sOrdrNo || item.sOrdrNo == "NA") && (orderDate == item.dtOrdrDate || item.dtOrdrDate == "NA") && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
@@ -818,8 +820,55 @@
         return status;
     }
 
+    function deleteRow(UniqueID)
+    {
+        var htmlString = "";
+        landInfoData = landInfoData.filter(function (e) {
+            return e.UnQID !== UniqueID;
+        })
+
+        console.table(landInfoData);
+
+        $('#txtTotalArea').val(0);
+        if (landInfoData.length <= 0) {
+            htmlString += `<td colspan="14" class="text-center">No Data Available</td>`
+
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").html(htmlString);
+        }
+        else {
+            landInfoData.forEach(function (item, index) {
+                var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument == '') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc == '') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc == '') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                item.UnQID = CreateGuid();
+                console.log(item.UnQID)
+
+                htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+                $('#txtTotalArea').val(item.dTotalArea);
+            });
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").append(htmlString);
+       /*     ClearAllData();*/
+        }
 
 
+    }
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
         var element = document.getElementById(id);
@@ -832,6 +881,15 @@
         // This removes any other character but numbers as entered by user
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
 </script>
 
 

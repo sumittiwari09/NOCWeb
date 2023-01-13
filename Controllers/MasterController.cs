@@ -490,10 +490,10 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("ParameterValueConfiguration");
         }
 
-        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0)
+        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0, string Appid = null)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course));
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid=" + @Appid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -574,13 +574,6 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
-        public ActionResult NewArchitectureDetail(string guid= "abhc123")
-        {
-            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-            lst = ParameterValueConfigurationlist();
-            ViewBag.Applicableid = guid;
-            return View(lst);
-        }
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
@@ -799,6 +792,95 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+
+        public ActionResult NewArchitectureView(string applGUID = "abhc123")
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist(0, applGUID);
+
+            List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllGenerateArchtable?sAppId=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (d.Data != null)
+                {
+                    LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(d.Data.ToString());
+                }
+
+            }
+            ViewBag.LstApesData = LstApesData;
+            ViewBag.applGUID = applGUID;
+            return View(lst);
+        }
+
+        public ActionResult NewArchitectureDetail(string guid = null)
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist(0, guid);
+            ViewBag.Applicableid = guid;
+            return View(lst);
+        }
+        public JsonResult AllGenerateArchtablelist(string applGUID)
+        {
+            List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+            List<ArchiMstData> LstData = new List<ArchiMstData>();
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllGenerateArchtable?sAppId=" + applGUID);
+            var request2 = new RestRequest(Method.GET);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client2.Execute(request2);
+            if (response.StatusCode.ToString() == "OK")
+            {
+
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(objResponse.Data.ToString());
+                    foreach (var item in LstApesData.Select(p => new { p.iParamId, p.iSubCatId, p.iUomId }).Distinct().ToList())
+                    {
+                        ArchiMstData obj = new ArchiMstData();
+                        obj.iParamId = item.iParamId;
+                        obj.iSubCatId = item.iSubCatId;
+                        obj.iUomId = item.iUomId;
+                        LstData.Add(obj);
+                    }
+                }
+                if (objResponse.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = LstData, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponse.ResponseCode == "000" && objResponse.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = LstData, failure = false, msg = "Success", isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "Failed", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         //public ActionResult NewArchitectureDetail(string guid)
         //{
         //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();

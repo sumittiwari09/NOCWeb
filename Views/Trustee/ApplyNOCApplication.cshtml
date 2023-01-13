@@ -1,0 +1,590 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Apply NOC Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var departmentList = (List<DropdownDeptImages>)ViewBag.departments;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+        .table thead > tr > th {
+            color: white
+        }
+
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .cardActive {
+        background: #506ee4;
+        color: white;
+        border-radius: 30px;
+    }
+
+    .wrapper .card:hover {
+        cursor: pointer
+    }
+
+    .NumActive {
+        background: #f09c02 !important
+    }
+    .shadow {
+        border-radius: 50px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Apply NOC</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card">
+    <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
+        <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+        <button id="btnNext" class="btn btn-sm btn-gradient-dark" style="display:none">Next <i class="fa fa-arrow-right"></i></button>
+        <button id="btnClear" class="btn btn-sm btn-gradient-dark" onclick="window.location.reload();"><i class="fa fa-eraser"></i>&nbsp; Clear Selection</button>
+    </div>
+    <div class="card-body container">
+        <div class="row">
+            <div class="col-lg-12" style="padding: 10px; background: #6fc3ff; color: white; border-radius: 10px; font-weight: 600; text-transform: uppercase;" id="divtextContainer">SELECT THE DEPARTMENT OF YOUR COLLEGE TYPE TO PROCEED YOUR NOC</div>
+            <div class="row col-lg-12 mt-3">
+                <div class="col-lg-6 mt-3" id="divDeptTitleContainer" style="padding: 10px;text-transform: uppercase;display: none;font-size: 15px;text-align: left;">Your Selected Department : <span id="spnDeptNameContainer" style="color: #a6001d;font-weight: 600;"></span></div>
+                <div class="col-lg-6 mt-3" id="divApplicationTitleContainer" style="padding: 10px;text-transform: uppercase;display: none;font-size: 15px;text-align: right;">Your Selected Application : <span id="spnApplicationContainer" style="color: #a6001d;font-weight: 600;"></span></div>
+
+            </div>
+            
+            <div class="col-lg-12 mt-4">
+                <div style="display: flex;place-content: space-between;">
+                    <span id="num_1" onclick="ChangeForm('divDeptContainer')" class="NumActive" style="background: #27de7b; border-radius: 50%; height: 50px; width: 50px; display: flex; place-content: center; align-items: center; font-size: 20px; z-index: 9">1</span><span></span>
+                    <span id="num_2" onclick="ChangeForm('divApplicationListContainer')" style="background: #27de7b;border-radius: 50%;height: 50px;width: 50px;display: flex;place-content: center;align-items: center;font-size: 20px;z-index:9">2</span><span></span>
+                    <span id="num_3" onclick="ChangeForm('divCollegeListContainer')" style="background: #27de7b;border-radius: 50%;height: 50px;width: 50px;display: flex;place-content: center;align-items: center;font-size: 20px;z-index:9">3</span>
+                </div>
+                <div style="display: flex;place-content: space-between;" class="mt-3">
+                    <span style="display: flex;place-content: center;align-items: center;">Select Department</span><span></span>
+                    <span style="display: flex;place-content: center;align-items: center;">Select NOC Type</span><span></span>
+                    <span style="display: flex;place-content: center;align-items: center;">Select Your College</span>
+                </div>
+                <p id="pProgess" style="transition:all 1s linear 10s"></p>
+                <input id="hdnProgress" type="hidden" />
+            </div><br />
+            <hr style="background: red;width: 85%;" />
+            <div id="divDeptContainer" class="row col-lg-12">
+                @{
+
+                    if (departmentList != null)
+                    {
+                        foreach (var item in departmentList.Where(wh => wh.imageOrder != 0).OrderBy(o => o.imageOrder).ToList())
+                        {
+
+                            <div class="form-group col-lg-4 mt-3">
+                                <div class="wrapper">
+                                    <div class="card shadow" id="divDept_@item.Id" onclick="CheckDept('chkDept_@item.Id','@item.Id');">
+                                        <input type="radio" name="chkDept" id="chkDept_@item.Id" value="@item.Text" style="display:none" />
+                                        <div class="card-body text-center">
+                                            <div>
+                                                <img src="@item.ImagePath" style="width: 10rem;height: 10rem;border-radius: 50%;background: #e0e0e0;box-shadow: inset 20px 20px 60px #bebebe, inset -20px -20px 60px #ffffff;" />
+                                            </div>
+                                            <div class="mt-3"><span style="font-size: 1.2rem;">@item.Text</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                }
+            </div>
+            <div id="divApplicationListContainer" style="display:none" class="col-lg-12">
+
+                <div class="form-group mt-3">
+                    <div class="wrapper">
+                        <div class="card">
+                            <table class="table table-borderless table-striped" id="tblNOCList">
+                                <thead>
+                                    <tr>
+                                        <th>APPLICABLE FOR</th>
+                                        <th>NOC TYPE</th>
+                                        <th>APPLICATION</th>
+                                        <th>START DATE</th>
+                                        <th>END DATE</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="5" class="text-center">No Data Availabe</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divCollegeListContainer" style="display:none" class="col-lg-12">
+
+                <div class="form-group mt-3">
+                    <div class="wrapper">
+                        <div class="card">
+                            <table class="table table-borderless table-striped" id="tblNOCClgList">
+                                <thead>
+                                    <tr>
+                                        <th>COLLEGE</th>
+                                        <th>COURSE</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="3" class="text-center">No Data Availabe</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <a href="#" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal" style="display:none">Terms and Condition</a>
+
+            <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+                <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="appSummary">Application Summary</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 20px !important;">
+                            <p style="font-size: 15px;font-weight: 500;color: black;">Your Application is processed for following selection : </p>
+                            <table class="table table-bordered" id="tblsummery" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
+                                <tr><th>College</th><td><span id="spnCollege"></span></td><th>Department</th><td><span id="spnDegree"></span></td></tr>
+                                <tr><th>Course</th><td><span id="spnCourse"></span></td><th>District</th><td>NA</td></tr>
+                                <tr><th>Tehsil</th><td>NA</td><th>SSO</th><td>NA</td></tr>
+                                <tr><th>Username</th><td colspan="3">NA</td></tr>
+                            </table>
+                            <div style="    display: flex;    gap: 10px;    align-items: baseline;">
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="customCheck1" name="customCheck" class="custom-control-input">
+                                    <label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to continue for application</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>
+                            <button type="button" class="btn btn-primary" onclick="SaveDetails();">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script>
+
+    var applicationDetails = {
+        appltrustID: "",
+        applcollegeID: "",
+        appldegreeID: "",
+        applCourseID: "",
+        applFormtypeID: ""
+    };
+
+    $(document).ready(function () {
+
+        $('#btnNext').click(function () {
+            var getProgess = $('#hdnProgress').val();
+            if (getProgess == "") {
+                $('#pProgess').css('width', '50%').css('background', 'black').css('height', '1px').css('position', 'absolute').css('top', '25px').css({
+                    transition: 'all 1s ease-in-out'
+                });
+
+                $('#hdnProgress').val('50');
+                var deptData = $("input[name='chkDept']:checked").val();
+                $('#divDeptContainer').css('display', 'none');
+                $('#divApplicationListContainer').css('display', 'block');
+                $('#divDeptTitleContainer').css('display', 'block');
+                $('#divtextContainer').html('Kindly select the type of NOC you want to apply for');
+                $('#spnDeptNameContainer').html(deptData);
+
+            }
+            else {
+                $('#pProgess').css('width', '97%').css('background', 'black').css('height', '1px').css('position', 'absolute').css('top', '25px').css({
+                    transition: 'all 1s ease-in-out'
+                });
+                $('#hdnProgress').val('100');
+
+            }
+        });
+
+    });
+
+    function CheckDept(item, deptID) {
+
+       
+       var  item1 = item.replace('chkDept_', '#divDept_');
+
+        applicationDetails.appldegreeID = deptID;
+        var GetAllDivToRemoveActiveClass = document.querySelectorAll('[id^=chkDept_]');
+        var GetAllDivToRemoveNumberActiveClass = document.querySelectorAll('[id^=num_]');
+
+        GetAllDivToRemoveActiveClass.forEach(function (input_valid) {
+           
+            $('#' + input_valid.id).removeAttr('checked');
+        });
+
+        GetAllDivToRemoveNumberActiveClass.forEach(function (input_valid) {
+            input_valid.classList.remove('NumActive');
+        });
+
+
+        $('#' + item).attr('checked', true);
+
+        GetNOCData(deptID);
+
+        $('#num_2').addClass('NumActive');
+
+        $('#btnNext').click();
+        //alert(item);
+    }
+    function ChangeForm(formID) {
+        if (formID == 'divApplicationListContainer' && applicationDetails.appldegreeID=="") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `error`,
+                html: `<p>Please Select The Department to proceed ahead...</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+        else if (formID == 'divCollegeListContainer' && applicationDetails.appldegreeID == "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `error`,
+                html: `<p>Please Select The Application Form to proceed ahead...</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+    }
+
+    //var   imagebase64 = "";
+    //   function Verify(applGUID, applNumber) {
+    //       Swal.fire({
+    //           icon: 'warning',
+    //           title: 'Are You Sure?',
+    //           html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+    //           showDenyButton: true,
+    //           showCancelButton: false,
+    //           denyButtonText: 'No',
+    //           confirmButtonText: 'Yes, I am',
+    //       }).then((result) => {
+    //           if (result.isConfirmed) {
+    //               CancelApplication(applGUID);
+    //           } else if (result.isDenied) {
+
+    //           }
+    //       });
+    //   }
+
+    //   function SetGUID(iD) {
+    //       $('#hdnGUID').val('');
+    //       $('#hdnGUID').val(iD);
+    //   }
+
+    function openModal(CollegeName, Degree, Course,collegeID,courseId,formTypeID) {
+   $('#spnCollege').html('');
+        $('#spnDegree').html('');
+        $('#spnCourse').html('');
+
+        $('#spnCollege').html(CollegeName);
+        $('#spnDegree').html(Degree);
+        $('#spnCourse').html(Course);
+
+        $('#openModal').click();
+
+        //$('#CollegeList > tbody  > tr:eq(' + rowNum + ')').each(function () {
+
+        //    var trusName = $(this).find('td:eq(2)').html();
+        //    var trustID = $(this).find('td:eq(3)').html()
+        //    var collegeID = $(this).find('td:eq(6)').html()
+        //    var degreeID = $(this).find('td:eq(12)').html()
+        //    var CourseID = $(this).find('td:eq(14)').html()
+        //    console.log(trusName, trustID, collegeID, degreeID, CourseID);
+
+
+        //    applicationDetails.appltrustID = trustID;
+           applicationDetails.applcollegeID = collegeID;
+        applicationDetails.applFormtypeID = formTypeID;
+        applicationDetails.applCourseID = courseId;
+
+        //});
+    }
+
+
+    function GetNOCData(departmentID) {
+        var htmlString = "";
+        var Data = {
+            departID: departmentID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetNOCApplicationList",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var mainData = data.Data;
+                console.log(mainData);
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+                        var sdate = item.StartDate;
+                        var edate = item.EndDate;
+                        if (sdate == "-" && edate == "-") {
+
+                            htmlString += `<tr><td>${item.ApplicableFor}</td><td>${item.Type}</td><td>${item.Applications}</td><td>${item.StartDate}</td><td>${item.EndDate}</td><td><button class="btn btn-sm btn-primary" disabled><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                        }
+                        else {
+                            htmlString += `<tr><td>${item.ApplicableFor}</td><td>${item.Type}</td><td>${item.Applications}</td><td>${item.StartDate}</td><td>${item.EndDate}</td><td><button class="btn btn-sm btn-primary" onclick="GetNOCClgData(${item.iFk_DeptId},'${item.Applications}','${item.iFk_NOCTyp}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                        }
+
+                    })
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+                else {
+                    htmlString = `<tr><td colspan="6" class="text-center">No Application Data Available To Display</td>`;
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetNOCClgData(departmentID,application,ApplicationType) {
+
+        var department = $("input[name='chkDept']:checked").val();
+
+        var GetAllDivToRemoveNumberActiveClass = document.querySelectorAll('[id^=num_]');
+        GetAllDivToRemoveNumberActiveClass.forEach(function (input_valid) {
+            input_valid.classList.remove('NumActive');
+        });
+
+        var htmlString = "";
+        var Data = {
+            departID: departmentID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GETNOCApplicationClgList",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var mainData = data.Data;
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+
+                        htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><button class="btn btn-sm btn-primary" onclick="openModal('${item.College}', '${department}', '${item.Course}','${item.collegeID}','${item.courseID}','${ApplicationType}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                    })
+                    $('#tblNOCClgList tbody').html('')
+                    $('#tblNOCClgList tbody').html(htmlString);
+
+
+                }
+                else {
+                    htmlString = `<tr><td colspan="6" class="text-center">No College Data Available To Display</td>`;
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+
+                $('#divDeptContainer').css('display', 'none');
+                $('#divApplicationListContainer').css('display', 'none');
+                $('#divCollegeListContainer').css('display', 'block');
+
+
+                $('#divApplicationTitleContainer').css('display', 'block');
+                $('#spnApplicationContainer').html(application);
+                $('#divtextContainer').html('Kindly select the type of NOC you want to apply for');
+
+
+
+
+
+                $('#num_3').addClass('NumActive');
+                $('#btnNext').click();
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+        function SaveDetails() {
+
+        if ($("#customCheck1").is(':checked')) {
+
+            var applicationModal = {
+                "iFKTst_ID": applicationDetails.appltrustID,
+                "iFKCLG_ID": applicationDetails.applcollegeID,
+                "iFKDEPT_ID": applicationDetails.appldegreeID,
+                "iFK_CORS_ID": applicationDetails.applCourseID,
+                "iFK_FormType_ID": applicationDetails.applFormtypeID,
+            }
+
+            console.log(JSON.stringify(applicationModal));
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Trustee/SaveApplicationDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(applicationModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    console.log(data);
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `Success`,
+                            html: `<p>Application Draft Saved Successfully...</p>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+
+                    }
+                    setTimeout(function () {
+                        location.href = '@Url.Action("DraftApplication", "Trustee")';
+                    }, 2000)
+
+                 /*   $('#btnClose').click();*/
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+
+
+        else {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Error`,
+                html: `<p style="font-size: 18px;">Kindly Tick the checkbox for application confirmation..</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+
+
+    }
+
+ //   function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+ //       var elementID = element.id;
+ //       var file = element.files[0];
+ //       console.log(file.name);
+ //       //console.log(elementID);
+ //       var reader = new FileReader();
+ //       reader.onloadend = function () {
+ //           imagebase64 = reader.result;
+ //           $('#' + hdnId).val(imagebase64);
+ //           $('#' + hdnExtnID).val(file.name);
+ //           //console.log(imagebase64)
+ //           //console.log(hdnId)
+ //       }
+ //       reader.readAsDataURL(file);
+ //       return imagebase64;
+ //   }
+
+
+</script>

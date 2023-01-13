@@ -31,6 +31,84 @@ namespace NewZapures_V2.Controllers
             //ViewBag.balance = Convert.ToDecimal(objResponse.BALANCE);
             return View();
         }
+        #region Committee
+        public ActionResult AdminApplicationPreview()
+        {
+            var recentApplicationList = ZapurseCommonlist.GetAdminApplication("");
+            ViewBag.applicationDetails = recentApplicationList;
+           
+            return View();
+        }
+
+        public ActionResult ApplicationPreviewLayout(string applGUID)
+        {
+            var EditdraftedApplications = ZapurseCommonlist.GetAdminApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
+            //Data To Preview
+
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+            var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
+            var AcadmicData = ZapurseCommonlist.GetAcdmcData();
+            var subjectData = ZapurseCommonlist.GetSubjectList(applGUID);
+
+            ViewBag.trusteeMember = trusteeMember;
+            ViewBag.landDataList = LandData;
+            ViewBag.AcadmicDataList = AcadmicData;
+            ViewBag.subjectDataList = subjectData;
+            return View();
+        }
+
+        public JsonResult CommitteeList(int deptID)
+        {
+
+            var committeeList = ZapurseCommonlist.getCommitteeList(deptID);
+
+            return new JsonResult
+            {
+                Data = new { Data = committeeList, failure = true, msg = "success" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult CommitteeMembersList(int committeeID)
+        {
+            var committeeList = ZapurseCommonlist.getCommitteeMembersList(committeeID);
+
+            return new JsonResult
+            {
+                Data = new { Data = committeeList, failure = true, msg = "success" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult AssignCommitteeToApplication(Committee committeeData)
+        {
+            var json = JsonConvert.SerializeObject(committeeData);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Committee/AssignCommitteeToApplication");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            ResponseData responseData = new ResponseData();
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                responseData = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+            return new JsonResult
+            {
+                Data = new { Data = responseData, failure = true, msg = responseData.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
+        #endregion
+
+
         public ActionResult Detail()
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];

@@ -325,10 +325,24 @@ namespace NewZapures_V2.Controllers
         {
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
+            //Data To Preview
+
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
+            var AcadmicData = ZapurseCommonlist.GetAcdmcData();
+            var subjectData = ZapurseCommonlist.GetSubjectList(applGUID);
+
             ViewBag.trusteeMember = trusteeMember;
             ViewBag.landDataList = LandData;
+            ViewBag.AcadmicDataList = AcadmicData;
+            ViewBag.subjectDataList = subjectData;
+            return View();
+        }
+        
+        public ActionResult ApplyNOCApplication()
+        {
+            var departmentList =ZapurseCommonlist.GetDepartmentlist();
+            ViewBag.departments = departmentList;
             return View();
         }
 
@@ -1022,6 +1036,26 @@ namespace NewZapures_V2.Controllers
             return new JsonResult
             {
                 Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Message = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetNOCApplicationList(int departID)
+        {
+            var nocList = ZapurseCommonlist.GETNOCApplicationList(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GETNOCApplicationClgList(int departID)
+        {
+            var nocList = ZapurseCommonlist.GETNOCApplicationClgList(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
