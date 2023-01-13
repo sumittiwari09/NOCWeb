@@ -173,4 +173,32 @@ namespace NewZapures_V2.Models
         public string dtFormdate { get; set; }
         public string dtTodate { get; set; }
     }
+    public class CommiteeMaster
+    {
+        public int iPk_CommiteeId { get; set; }
+        public int iComtTypid { get; set; }
+        public string sComtMemLst { get; set; }
+        public string sComtNam { get; set; }    
+        public int iStts { get; set; }
+        public int? iDeptId { get; set; }
+        public string sCtrby { get; set; }
+        public string CommiteeMember { get; set; }
+        public string CommiteeType
+        {
+            get
+            {
+                switch (iComtTypid)
+                {
+                    case 1:
+                        return "Inspection Commitee";
+                    case 2:
+                        return "Noc Approval Commitee";
+                   
+
+                    default:
+                        return "";
+                }
+            }
+        }
+    }
 }

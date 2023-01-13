@@ -900,5 +900,97 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+        public ActionResult CommiteeMaster( int Id=0)
+        {
+            List<Dropdown> Prtlst = new List<Dropdown>();
+            Prtlst = Common.GetDropDown(8, "PARTYCODE");
+            List<CommiteeMaster> Commiteelst = new List<CommiteeMaster>();
+            Commiteelst = GetCommitee(8);
+            ViewBag.Prtlst=Prtlst;
+            ViewBag.deptid = 8;
+            ViewBag.Commiteelst = Commiteelst;
+            CommiteeMaster Mst = new CommiteeMaster();
+            if (Id != 0)
+            {
+                Mst = Commiteelst.Where(p => p.iPk_CommiteeId == Id).FirstOrDefault();
+            }
+            return View(Mst);
+        }
+        [HttpPost]
+        public ActionResult CommiteeMasterSave(CommiteeMaster Commitee)
+        {
+           Commitee.sComtMemLst = Request["sComtMemLst"].ToString();
+  
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllCommiteeSaveView");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json",_JsonSerializer.Serialize(Commitee), ParameterType.RequestBody);
+            IRestResponse response = client2.Execute(request2);
+            try
+            {
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
+                    if (objResponseData.ResponseCode == "001")
+                    {
+                        return RedirectToAction("SignOut", "Home");
+                    }
+                    else
+                    if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "Success!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                    else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "warning!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "error";
+                        TempData["SwalMessage"] = "Something wrong";
+                        TempData["SwalTitleMsg"] = "error!";
+                        return RedirectToAction("CommiteeMaster");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+
+            }
+            return RedirectToAction("CommiteeMaster");
+        }
+
+        public static List<CommiteeMaster> GetCommitee(int Id)
+        {
+            List<CommiteeMaster> obj = new List<CommiteeMaster>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GetCommiteeList?Id=" + Id );
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    obj = JsonConvert.DeserializeObject<List<CommiteeMaster>>(objResponse.Data.ToString());
+                }
+            }
+            return obj;
+        }
     }
 }
