@@ -18,8 +18,10 @@ namespace NewZapures_V2.Controllers
         {
             var draftApplications = ZapurseCommonlist.GetDraftApplication(guid);
             var courses = ZapurseCommonlist.GetCourseForDept(draftApplications[0].iFKDEPT_ID);
+            var LandData = ZapurseCommonlist.GetLandBuildingInfo(guid);
             ViewBag.CourseList = courses;
             ViewBag.draftApplication = draftApplications[0];
+            ViewBag.landDataList = LandData;
             return View();
         }
 

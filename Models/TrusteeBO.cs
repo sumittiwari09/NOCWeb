@@ -88,6 +88,14 @@ namespace NewZapures_V2.Models
             public int clgType { get; set; }
             public string clgTypeName { get; set; }
             public int clgID { get; set; }
+            public int StateID { get; set; }
+            public string State { get; set; }
+            public int DistrictID { get; set; }
+            public string District { get; set; }
+            public int TehsilID { get; set; }
+            public string Tehsil { get; set; }
+            public string ContactDetails { get; set; }
+            public string ContactPerson { get; set; }
             public int iFKDEPT_ID { get; set; }
             public string DepartmentName { get; set; }
             public int iFK_CORS_ID { get; set; }
@@ -95,6 +103,11 @@ namespace NewZapures_V2.Models
             public string CourseName { get; set; }
             public string createdDate { get; set; }
             public string Applicationstatus { get; set; }
+            public int iFk_FormTypId { get; set; }
+            public string ApplicationType { get; set; }
+            public string UploadedReceiptDocument { get; set; }
+            public string UploadedReceiptDocumentExtension { get; set; }
+            public string UploadedReceiptDocumentContent { get; set; }
         }
 
         public class CollageList
@@ -290,12 +303,62 @@ namespace NewZapures_V2.Models
             public int iFKCLG_ID { get; set; }
             public int iFKDEPT_ID { get; set; }
             public int iFK_CORS_ID { get; set; }
+            public int iFK_FormType_ID { get; set; }
             public int sSSO_ID { get; set; }
             public DateTime? dtCRT_On { get; set; }
             public DateTime? dtSubOn { get; set; }
             public string iSts { get; set; }
 
         }
+
+        public class ApplyNOCApplication
+        {
+            public int iPk_EventId { get; set; }
+            public int iFk_DeptId { get; set; }
+            public int iFk_NOCDeptId { get; set; }
+            public int iFk_NOCTyp { get; set; }
+            public int iMode { get; set; }
+            public string Type
+            {
+                get
+                {
+                    switch (iMode)
+                    {
+                        case 1:
+                            return "Temporary";
+                        case 2:
+                            return "Permanent";
+                        case 3:
+                            return "Both";
+
+                        default:
+                            return "";
+                    }
+                }
+            }
+            public string dtStrDate { get; set; }
+            public string dtEndDate { get; set; }
+            public int iStts { get; set; }
+            public string sNewGuid { get; set; }
+            public int iFk_DeptMapId { get; set; }
+            public string ApplicableFor { get; set; }
+            public string Applications { get; set; }
+            public string StartDate { get; set; }
+            public string EndDate { get; set; }
+            public string CreatedBy { get; set; }
+            public string dtctrdate { get; set; }
+            public string UpdatedOn { get; set; }
+            public string UpdatedBy { get; set; }
+
+        }
+         public class ApplyNOCCLGApplication
+        {
+            public string College { get; set; }
+            public int collegeID { get; set; }
+            public string Course { get; set; }
+            public int courseID { get; set; }
+        }
+
         #endregion
 
     }

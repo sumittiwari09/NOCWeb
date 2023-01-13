@@ -512,10 +512,11 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("ParameterValueConfiguration");
         }
 
-        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0,string Appid=null)
+
+        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0, string Appid = null)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid="+ @Appid);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid=" + @Appid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -596,6 +597,7 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
+
         public ActionResult NewArchitectureDetail(string guid= null)
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
@@ -603,6 +605,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.Applicableid = guid;
             return View(lst);
         }
+
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
@@ -821,7 +824,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-     
+
         public ActionResult NewArchitectureView(string applGUID = "abhc123")
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
@@ -843,8 +846,17 @@ namespace NewZapures_V2.Controllers
                 }
 
             }
-            ViewBag.LstApesData=LstApesData;
+            ViewBag.LstApesData = LstApesData;
             ViewBag.applGUID = applGUID;
+            return View(lst);
+        }
+
+
+        public ActionResult NewArchitectureDetail(string guid = null)
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist(0, guid);
+            ViewBag.Applicableid = guid;
             return View(lst);
         }
 
@@ -865,7 +877,7 @@ namespace NewZapures_V2.Controllers
                 if (objResponse.Data != null)
                 {
                     LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(objResponse.Data.ToString());
-                   foreach(var item in LstApesData.Select(p => new {p.iParamId,p.iSubCatId,p.iUomId}).Distinct().ToList())
+                    foreach (var item in LstApesData.Select(p => new { p.iParamId, p.iSubCatId, p.iUomId }).Distinct().ToList())
                     {
                         ArchiMstData obj = new ArchiMstData();
                         obj.iParamId = item.iParamId;
@@ -901,6 +913,14 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
 
         public ActionResult EventMaster()
         {

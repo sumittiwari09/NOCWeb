@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace NewZapures_V2.Models
 {
@@ -40,7 +41,7 @@ namespace NewZapures_V2.Models
 
     public partial class GlobalClass
     {
-    
+
         public int Id { get; set; }
         public string strId { get; set; }
         public string value { get; set; }
@@ -53,11 +54,73 @@ namespace NewZapures_V2.Models
     }
     public class Dropdown
     {
-        public  int? fk_SrvTyp { get; set; }
+        public int? fk_SrvTyp { get; set; }
         public string Id { get; set; }
         public string Text { get; set; }
         public string ID1 { get; set; }
         public string PartyId { get; set; }
+    }
+
+    public class DropdownDeptImages : Dropdown
+    {
+        public string ImagePath
+        {
+            get
+            {
+                switch (Convert.ToInt32(Id))
+                {
+                    case 1:
+                        return "../images/DepartmentImages/MedicalGroup1.png";
+
+                    case 3:
+                        return "../images/DepartmentImages/Agriculture.png";
+
+                    case 4:
+                        return "../images/DepartmentImages/Nursing.png";
+
+                    case 7:
+                        return "../images/DepartmentImages/Medicalgroup3.png";
+
+                    case 8:
+                        return "../images/DepartmentImages/CollegeOfEducation.png";
+                   
+                    case 12:
+                        return "../images/DepartmentImages/AnimalHusbandary.png";
+
+                    default:
+                        return "";//"../images/NOCIMAGE.png";
+                }
+            }
+        }
+        public int imageOrder
+        {
+            get
+            {
+                switch (Convert.ToInt32(Id))
+                {
+                    case 1:
+                        return 3;
+
+                    case 3:
+                        return 2;
+
+                    case 4:
+                        return 6;
+
+                    case 7:
+                        return 5;
+
+                    case 8:
+                        return 1;
+                   
+                    case 12:
+                        return 4;
+
+                    default:
+                        return 0;//"../images/NOCIMAGE.png";
+                }
+            }
+        }
     }
     //Emitra Pages
     public class CustomList

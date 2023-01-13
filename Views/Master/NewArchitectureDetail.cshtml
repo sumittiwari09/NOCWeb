@@ -161,6 +161,22 @@
                                         <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" min="@thirditem.iminval" value="@thirditem.InsertValue" data-min="@thirditem.iminval" type="number" required="required" class="form-control col-sm-9 inputdata" style="width:70%" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" placeholder="Enter @inneritem.sCateSubName" />
                                         if (item.sCateName == "Assets")
                                         {
+                                            <div class="col-sm-3">
+                                                <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" style=" border: none; display:none;" class="form-control col-sm-12 filestyle">
+                                                <button data-id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="uploadfile"><i class="fa fa-upload"></i></button>
+                                                @{
+                                                    if (!string.IsNullOrEmpty(thirditem.UploadUrl))
+                                                    {
+                                                        <a href="~/UploadFloder/@appid/@thirditem.UploadUrl" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download="@thirditem.sCateSubName"><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;">@thirditem.sCateSubName Download</span></a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download=""><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;"></span></a>
+
+                                                    }
+                                                }
+
                             <div class="col-sm-3">
                                 <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" style=" border: none; display:none;" class="form-control col-sm-12 filestyle">
                                 <button data-id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="uploadfile"><i class="fa fa-upload"></i></button>
@@ -354,7 +370,6 @@
 <script src="~/Content/NewArchtech/Jsminmum.js"></script>
 @*<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
-
 <script type="text/javascript">
    /* var appid =  $("#appid").val();*/
     $(document).ready(function () {
@@ -421,7 +436,6 @@
         });
 
         $(".addclass").click(function () {
-
             var id = $(this).data('id');
             var item = id.split('-');
             var width = $("#Width-" + id).val();
@@ -429,7 +443,7 @@
             var Capacity = $("#Capacity-" + id).val();
             var widthmin = $("#Width-" + id).data('min');
             var Heightmin = $("#Height-" + id).data('min');
-            var Capacitymin = $("#Height-" + id).data('min');
+            var Capacitymin = $("#Capacity-" + id).data('min');
             if (width == '') {
                // alert('Please Enter Width');
                 $("#Width-" + id).focus();
@@ -541,10 +555,8 @@
                     if (response.isvalid == 1) {
                         for (var i = 0; i < response.Data.length; i++) {
                             GenerateArchtablear(response.Data[i].iParamId, response.Data[i].iSubCatId, response.Data[i].iUomId, '@appid');
-                          
                             $("#table-" + response.Data[i].iParamId + "-" + response.Data[i].iSubCatId + "-" +response.Data[i].iUomId).css('display', 'block');
                             $("#detail-" + response.Data[i].iParamId + "-" + response.Data[i].iSubCatId + "-" + response.Data[i].iUomId).css('display', 'none');
-                           
                         }
 
 
