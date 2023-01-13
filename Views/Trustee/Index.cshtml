@@ -250,7 +250,7 @@
 
     <div class="row col-lg-12">
         <div class="form-group col-lg-12">
-            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+            <table class="table table-responsive table-borderless table-striped table-hover" id="tblCapital">
                 <thead class="dark">
                     <tr>
                         <th>SNo</th>
@@ -280,7 +280,12 @@
                         {
                             <tr>
                                 <td>@i</td>
-                                <td><img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" /></td>
+                                <td>
+                                @if (@item.ProfileContentType != "")
+                                {
+                                <img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                }
+                                </td>
                                 <td>@item.trustName</td>
                                 <td>@item.Name</td>
                                 <td>@item.RoleId</td>

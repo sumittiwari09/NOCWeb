@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -157,6 +157,7 @@
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\HomePage.cs" />
     <Compile Include="Models\UploadReceipt.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
@@ -2348,6 +2349,9 @@
     <Content Include="Content\jquery\jquery-confirm.js" />
     <Content Include="Content\loader.css" />
     <Content Include="Content\LoginSignUp\img\NOC Process flow.jpeg" />
+    <Content Include="Content\NewArchtech\bootstrap.min.js" />
+    <Content Include="Content\NewArchtech\jquery-confirm.min.css" />
+    <Content Include="Content\NewArchtech\Jsminmum.js" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -3542,7 +3546,6 @@
     <Content Include="Views\Trustee\EditApplication.cshtml" />
     <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
     <Content Include="Views\AcdmcMst\index.cshtml" />
-    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
     <Content Include="Views\Trustee\CollageAttachment.cshtml" />
     <Content Include="Views\ProofOfDocument\Index.cshtml" />
     <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
@@ -3555,6 +3558,12 @@
     <Content Include="Views\UniversityMaster\Create.cshtml" />
     <Content Include="Views\Trustee\UploadFeeRecipt.cshtml" />
     <Content Include="Views\Master\Testing.cshtml" />
+    <Content Include="Views\Master\NewArchitectureView.cshtml" />
+    <Content Include="Views\Master\EventMaster.cshtml" />
+    <Content Include="Views\Master\EventMasterTable.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
+    <Content Include="Views\AdminAjaxRequestPage\Newitem.cshtml" />
+    <Content Include="Views\Master\CommiteeMaster.cshtml" />
     <Content Include="Views\Master\FinancialYear.cshtml" />
     <Content Include="Views\Master\NewArchitectureView.cshtml" />
     <Content Include="Views\Trustee\ApplyNOCApplication.cshtml" />

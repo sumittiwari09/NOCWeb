@@ -166,7 +166,23 @@ namespace NewZapures_V2.Models
             public string Whitelabel_Commission { get; set; }
         }
 
+        public static List<GlobalClass> CommiteeType()
+        {
+            List<GlobalClass> Lst = new List<GlobalClass>();
+            Lst.Add(new GlobalClass
+            {
+                Id = 1,
+                Text = "Inspection Commitee"
+            });
+            Lst.Add(new GlobalClass
+            {
+                Id = 2,
+                Text = "Noc Approval Commitee"
+            });
 
+
+            return Lst;
+        }
     }
     public class CustomEnum
     {
@@ -185,4 +201,5 @@ namespace NewZapures_V2.Models
     {
         public List<CustomEnum> ListRequest { get; set; }
     }
+  
 }

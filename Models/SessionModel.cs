@@ -343,7 +343,6 @@ namespace NewZapures_V2.Models
                 HttpContext.Current.Session["_TrustId"] = value;
             }
         }
-
         public static string TrustRegNo
         {
             get
@@ -358,7 +357,6 @@ namespace NewZapures_V2.Models
                 HttpContext.Current.Session["_TrustRegNo"] = value;
             }
         }
-
         public static string ApplicationId
         {
             get

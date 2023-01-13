@@ -3,7 +3,7 @@
     ViewBag.Title = "Preview Application";
     Layout = null;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
-
+    var applGUID = ViewBag.applGUID;
     var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
     var landData = (List<LandInfoBO>)ViewBag.landDataList;
     var acdmcs = (List<AcdmcTableData>)ViewBag.AcadmicDataList;
@@ -149,21 +149,20 @@
                 </tr>
                 <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span></div></td></tr>
                 @*<tr>
-                        <td colspan="4">
-                            <table class="table table-striped">
-                                <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo")" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
-                                <tr><td><a href="@Url.Action("CreateData","SubjectMaster")" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
-                                <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
-                                <tr><td><button onclick="GenerateArchtable('sdfd')"><i class="fa fa-plus"></i> Add Architectrual Details</button></td></tr>
-                                <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
-                                <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
-                                <tr><td><a href="@Url.Action("Index","AcdmcMst")" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
-                                <tr><td><a href="@Url.Action("CollageAttachment","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
-                            </table>
-                        </td>
-                    </tr>*@
+                    <td colspan="4">
+                        <table class="table table-striped">
+                            <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo")" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
+                            <tr><td><a href="@Url.Action("CreateData","SubjectMaster")" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
+                            <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
+                            <tr><td><button onclick="GenerateArchtable('sdfd')"><i class="fa fa-plus"></i> Add Architectrual Details</button></td></tr>
+                            <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
+                            <tr><td><a href="@Url.Action("Index","AcdmcMst")" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
+                            <tr><td><a href="@Url.Action("CollageAttachment","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
+                        </table>
+                    </td>
+                </tr>*@
             </table>
-
         </div>
         <div class="formsCollection">Land and Building Information</div>
         <div id="DivLandInfo" style="padding: 20px;">
@@ -301,7 +300,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
         <div class="formsCollection">Proof Document</div>
         <div style="display: flex;gap: 10px;align-items: baseline;margin-top:14px;">
@@ -317,7 +315,7 @@
 
 
     </div>
-</div>
+    </div>
 
 
 <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
@@ -534,6 +532,8 @@
         return false;
     }
 
+
+
     function printDiv(divName) {
         alert(divName);
           //var printContents = document.getElementById(divName).innerHTML;
@@ -546,5 +546,23 @@
         window.print();
 
         document.body.innerHTML = originalContents;
+    }
+    ArchiDiv();
+    function ArchiDiv()
+    {
+        $.ajax({
+            url: '/Master/NewArchitectureView?applGUID=' +'@applGUID' ,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+
+
+                $("#ArchitectureId").html(response);
+
+            
+
+            }
+        });
+        return false;
     }
 </script>
