@@ -7,6 +7,7 @@ namespace NewZapures_V2.Models
 {
     public class HomePage
     {
+
         public string UniGroup { get; set; }
         public string UniName { get; set; }
         public string Welcome { get; set; }
@@ -18,6 +19,7 @@ namespace NewZapures_V2.Models
         public string Url2 { get; set; }
         public string Url3 { get; set; }
         public string Menu { get; set; }
+
         public string Submenu { get; set; }
         //public string Submenuid { get; set; }
 
