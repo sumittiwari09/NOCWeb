@@ -36,6 +36,71 @@ namespace NewZapures_V2.Controllers
             lstMap = GetNOCDepartMaplst(0);
             return View(lstMap);
         }
+        
+        public ActionResult FinancialYear()
+        {
+            ViewBag.FinYear = GetFinacialyearlist();
+            return View();
+        }
+
+        public List<FinYearView> GetFinacialyearlist()
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetFinYearList");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<FinYearView> groups = new List<FinYearView>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    groups = JsonConvert.DeserializeObject<List<FinYearView>>(objResponse.Data.ToString());
+                }
+            }
+            return groups;
+        }
+
+        public ActionResult CreateFinacialyear(FinYear Master)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/InsertFinYear");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+
+            request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData CommonResponse = new ResponseData();
+                CommonResponse = _JsonSerializer.Deserialize<ResponseData>(response.Content);
+                if (CommonResponse.statusCode == 1)
+                {
+                    TempData["SwalStatusMsg"] = "success";
+                    TempData["SwalTitleMsg"] = "Success!";
+                    if (CommonResponse.Message == "Allready Exists In table")
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalTitleMsg"] = "warning!";
+                    }
+                    TempData["SwalMessage"] = CommonResponse.Message;
+                    
+
+                }
+                else
+                {
+                    TempData["SwalStatusMsg"] = "error";
+                    TempData["SwalMessage"] = "Something wrong";
+                    TempData["SwalTitleMsg"] = "error!";
+
+                }
+            }
+            return RedirectToAction("FinancialYear", "Master");
+        }
+
         public ActionResult AddDepartmentMapping(NOCDEPMAP Master)
         {
             try
@@ -447,10 +512,11 @@ namespace NewZapures_V2.Controllers
             return RedirectToAction("ParameterValueConfiguration");
         }
 
-        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0,string Appid=null)
+
+        public List<PARMTVALUCONFMSTView> ParameterValueConfigurationlist(int Id = 0, string Appid = null)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid="+ @Appid);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SelectParameterValueConfiguration?Id=" + Id + "&EnumId=" + Convert.ToInt32(TypeDocument.UOM) + "&CourseEnumId=" + Convert.ToInt32(TypeDocument.Course) + "&Appid=" + @Appid);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -531,6 +597,7 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         } 
+
         public ActionResult NewArchitectureDetail(string guid= null)
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
@@ -538,6 +605,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.Applicableid = guid;
             return View(lst);
         }
+
         public JsonResult InsertArchitectureDetail(List<ArchiMstDetail> Master)
         {
 
@@ -756,7 +824,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-     
+
         public ActionResult NewArchitectureView(string applGUID = "abhc123")
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
@@ -778,7 +846,7 @@ namespace NewZapures_V2.Controllers
                 }
 
             }
-            ViewBag.LstApesData=LstApesData;
+            ViewBag.LstApesData = LstApesData;
             ViewBag.applGUID = applGUID;
             return View(lst);
         }
@@ -800,7 +868,7 @@ namespace NewZapures_V2.Controllers
                 if (objResponse.Data != null)
                 {
                     LstApesData = JsonConvert.DeserializeObject<List<ArchiMstDetail>>(objResponse.Data.ToString());
-                   foreach(var item in LstApesData.Select(p => new {p.iParamId,p.iSubCatId,p.iUomId}).Distinct().ToList())
+                    foreach (var item in LstApesData.Select(p => new { p.iParamId, p.iSubCatId, p.iUomId }).Distinct().ToList())
                     {
                         ArchiMstData obj = new ArchiMstData();
                         obj.iParamId = item.iParamId;
@@ -836,6 +904,14 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+
+        //public ActionResult NewArchitectureDetail(string guid)
+        //{
+        //    List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+        //    lst = ParameterValueConfigurationlist();
+        //    return View(lst);
+        //}
 
         public ActionResult EventMaster()
         {

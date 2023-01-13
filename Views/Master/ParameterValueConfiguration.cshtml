@@ -19,13 +19,15 @@
 <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .hidden{
-            display:none;
-        }
-    </style>
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+
+<link href="~/Content/NewArchtech/jquery-confirm.min.css" rel="stylesheet" />
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 }
 <div class="row">
     <div class="col-sm-12">
@@ -68,20 +70,20 @@
                         <div class="col-sm-2">
                             <select class="singleselect" data-tags="true" id="iCourseId" name="iCourseId" required>
                                 @*<option value="" disabled selected hidden>Select Parameter Course</option>
-                                <option value="1">BSC</option>
-                                <option value="2">MCA</option>
-                                <option value="3">MBA</option>
-                                <option value="4">MBBS</option>*@
+                                    <option value="1">BSC</option>
+                                    <option value="2">MCA</option>
+                                    <option value="3">MBA</option>
+                                    <option value="4">MBBS</option>*@
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <select class="singleselect" data-tags="true" id="iParCatId" name="iParCatId" required>
                                 <option value="" disabled selected hidden>Select Parameter Category</option>
-                                @{ foreach(var item in Parcat)
-                {
-                                                                <option value="@item.Id">@item.Text </option>
-                }
-                                        }
+                                @{ foreach (var item in Parcat)
+                                    {
+                                        <option value="@item.Id">@item.Text </option>
+                                    }
+                                }
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -123,13 +125,13 @@
                             <div class="checkbox checkbox-success col-sm-4" style=" margin-top:-27px">
                                 <input id="iValue" name="iValue" class="styled2" type="checkbox" value="0">
                                 <label for="iValue" id="Valuelabel" style="font-weight:bold;">
-                                   Minimum Cutoff
+                                    Minimum Cutoff
                                 </label>
                             </div>
                             <div class="checkbox checkbox-success col-sm-4">
                                 <input id="iFix" name="iFix" class="styled2" type="checkbox" value="0">
                                 <label for="iFix" id="Fixlabel" style="font-weight:bold;">
-                                   Fix Mandatory
+                                    Fix Mandatory
                                 </label>
                             </div>
                         </div>
@@ -192,8 +194,8 @@
 
                             <tr>
                                 @*<th>
-            #
-        </th>*@
+                                        #
+                                    </th>*@
 
 
                                 <th>Department</th>
@@ -213,124 +215,124 @@
                             </tr>
                         </thead>
                         <tbody id="Datalist">
-                           @{ 
-                               foreach(var item in Model)
-            {
-                                                       <tr id="tr_@item.iPK_ParValId">
-                                                           <td>@item.sDeptName</td>
-                                                           <td>@item.CourseName</td>
-                                                           <td>@item.sCateName</td>
-                                                           <td>@item.sCateSubName</td>
-                                                           <td>@item.UomName</td>
-                                                           <td>
-                                                               @{
-                                                                   if (item.iParUomid == 3)
-                                                                   {
-                                                                       @(item.iminlength+" X "+item.iminwidth);
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       @item.iminval
-                                                                   }
-                                                               }
-                                                           </td>
-                                                           <td>
-                                                               @{
-                                                                   if (item.iParUomid == 3)
-                                                                   {
-                                                                       @(item.imaxlength+" X "+item.imaxwidth);
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       @item.imaxval
-                                                                   }
-                                                               }
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr id="tr_@item.iPK_ParValId">
+                                        <td>@item.sDeptName</td>
+                                        <td>@item.CourseName</td>
+                                        <td>@item.sCateName</td>
+                                        <td>@item.sCateSubName</td>
+                                        <td>@item.UomName</td>
+                                        <td>
+                                            @{
+                                                if (item.iParUomid == 3)
+                                                {
+                                                    @(item.iminlength+" X "+item.iminwidth);
+                                                }
+                                                else
+                                                {
+                                                    @item.iminval
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (item.iParUomid == 3)
+                                                {
+                                                    @(item.imaxlength+" X "+item.imaxwidth);
+                                                }
+                                                else
+                                                {
+                                                    @item.imaxval
+                                                }
+                                            }
 
-                                                           </td>
-                                                           <td>
-                                                               <div class="form-check form-switch">
-                                                                   @{
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{
 
-                                                                       if (item.iField == 1)
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Field-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iField" checked>
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Field-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iField">
+                                                    if (item.iField == 1)
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Field-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iField" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Field-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iField">
 
-                                                                       }
+                                                    }
 
-                                                                   }
+                                                }
 
-                                                               </div>
-                                                           </td>
-                                                           <td>
-                                                               <div class="form-check form-switch">
-                                                                   @{
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{
 
-                                                                       if (item.iValue == 1)
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iValue" checked>
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iValue">
+                                                    if (item.iValue == 1)
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iValue" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iValue">
 
-                                                                       }
+                                                    }
 
-                                                                   }
+                                                }
 
-                                                               </div>
-                                                           </td>
-                                                           <td>
-                                                               <div class="form-check form-switch">
-                                                                   @{
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{
 
-                                                                       if (item.iFix == 1)
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix" checked>
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix">
+                                                    if (item.iFix == 1)
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Value-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iFix">
 
-                                                                       }
+                                                    }
 
-                                                                   }
+                                                }
 
-                                                               </div>
-                                                           </td>
+                                            </div>
+                                        </td>
 
-                                                           <td>
-                                                               <div class="form-check form-switch">
-                                                                   @{
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                @{
 
-                                                                       if (item.iStts == 1)
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Status-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iStts" checked>
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Status-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iStts">
+                                                    if (item.iStts == 1)
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Status-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iStts" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input id="SubMenuMaster-@item.iPK_ParValId" class="form-check-input ChangeStatus" type="checkbox" data-id="Status-@item.iPK_ParValId" name="@item.iPK_ParValId" value="@item.iStts">
 
-                                                                       }
+                                                    }
 
-                                                                   }
+                                                }
 
-                                                               </div>
-                                                           </td>
-                                                           <td>
-                                                               @*<a href="#" class="btn btn-success btn-sm padding5" title="Update">
-                <i class="fa fa-edit"></i>
-            </a>*@
-                                                               <a href="#" class="btn btn-danger btn-sm padding5" title="Delete">
-                                                                   <i class="fa fa-times"></i>
-                                                               </a>
-                                                           </td>
-                                                       </tr>
-            }
-                           }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @*<a href="#" class="btn btn-success btn-sm padding5" title="Update">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>*@
+                                            <a href="#" class="btn btn-danger btn-sm padding5" title="Delete">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -352,7 +354,11 @@
     <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
     <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
     <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>*@
+
+    <script src="~/Content/NewArchtech/Jsminmum.js"></script>
+    <script src="~/Content/NewArchtech/bootstrap.min.js"></script>
+
     <script type="text/javascript">
 
         $(".singleselect").select2();
@@ -379,7 +385,7 @@
         //        contentType: "application/json",
         //        data: Params,
         //        success: function (response) {
-        //            
+        //
         //            console.log(response);
 
         //            if (response.isvalid == 1) {
@@ -425,7 +431,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    
+
                     console.log(response);
 
                     if (response.isvalid == 1) {
@@ -464,7 +470,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    
+
                     console.log(response);
 
                     if (response.isvalid == 1) {
@@ -509,7 +515,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    
+
                     console.log(response);
 
                     if (response.isvalid == 1) {
@@ -524,7 +530,7 @@
 
                     addvalidation();
 
-             
+
                 }
             });
         });
@@ -542,8 +548,7 @@
         });
         $("#iValue").change(function () {
             $(this).val('0');
-            if ($(this).is(':checked'))
-            {
+            if ($(this).is(':checked')) {
                 $(this).val('1');
             }
         });
@@ -575,14 +580,14 @@
             addvalidation();
         });
         function addvalidation() {
-            
+
             $("input").attr("required", false);
             $("#Min").attr('required', true);
             $("#Max").attr('required', true);
             //$("#imaxval").attr('required', true);
             //$("#iminval").attr('required', true);
             var ParUomid = $("#iParUomid").val() == '' ? 0 : $("#iParUomid").val();
-            if (ParUomid == 0 || ParUomid==null) {
+            if (ParUomid == 0 || ParUomid == null) {
                 $("#Min").prop('checked', false);
                 $("#Max").prop('checked', false);
                 $("input[type=text]").val('');
@@ -599,9 +604,9 @@
             $("#MaxSql").addClass('hidden');
             $("#MinSql").addClass('hidden');
             if (ParUomid != 3 && ParUomid != 0) {
-               $("#imaxlength").val('');
+                $("#imaxlength").val('');
                 $("#imaxwidth").val('');
-               $("#iminlength").val('');
+                $("#iminlength").val('');
                 $("#iminwidth").val('');
                 if (Maxcheckbox == 1) {
                     $("#MaxNumber").removeClass('hidden');
@@ -629,7 +634,7 @@
                     $("#iminwidth").attr('required', true);
                     $("#Max").attr('required', false);
                 }
-            } 
+            }
         }
     </script>
 }

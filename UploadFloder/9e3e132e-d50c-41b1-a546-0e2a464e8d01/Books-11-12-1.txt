@@ -1,0 +1,358 @@
+GO
+-- =============================================
+-- Author:		<Abhishek Rohila>
+-- Create date: <26.Oct.2022>
+-- Description:	<This Procedure used to save data into Remitter table>
+-- =============================================
+ALTER Procedure [dbo].[USP_ADMIN_DMT_Remitter_Save]  
+(  
+@iRmtMob nvarchar(11),  
+--@sRmtGnd varchar(50)=null,  
+@sRmtName varchar(50)=null,  
+--@sRmtPan nvarchar(10)=null,  
+--@sRmtEmailId nvarchar(500)=null,  
+--@sRmtCty nvarchar(50)=null,  
+@sRmtPinCode nvarchar(10)=null,  
+@sAddress nvarchar(500) = null,
+@iIsAct int=1,  
+@sPatyCode nvarchar(10)  
+)  
+AS  
+Begin  
+	declare @count int=0  
+	Begin try
+		select @count=iPK_RemitId from REMITMST where iRmtMob=@iRmtMob   
+		if(@count=0)
+			Begin
+				declare @country nvarchar(500) = 'India'
+				,@state nvarchar(500),@city nvarchar(500)
+
+				select top 1 @state=StateName,@city=CONCAT(DivisionName,', ',District) from Z2_DMT_BANK_PINCODE_MASTER.[dbo].PINCODE_MST where Pincode = @sRmtPinCode order by ID desc
+				Insert into REMITMST
+				(iRmtMob,sRmtName,sRmtCty,sState,sRmtCntry,sAddress,sRmtPinCode,iIsAct,dtCrtDate,sPatyCode)
+				values
+				(@iRmtMob,@sRmtName,@city,@state,@country,@sAddress,@sRmtPinCode,@iIsAct,GETDATE(),@sPatyCode)  
+				
+				select 1 as StatusCode , 'Record Saved Successfully!' as [Message]  
+			End  
+		else      
+			Begin
+				select 0 as StatusCode , 'Mobile No Already Exists' as [Message]      
+			End      
+	End try        
+	begin catch           
+		EXEC [dbo].[USP_ADMIN_StoreProcedureErrorHandling_Save] 0,0,1 --To log Stored procedure errors        
+		select -1 as StatusCode, 'Check Error - ' + cast(ERROR_Number() as varchar) + ' ' + ERROR_MESSAGE () as [Message],'' AS Body        
+	end catch     
+End
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GO
+-- =============================================
+-- Author: <Vivek Choudhary>
+-- Create date: <22.Sep.2022>
+-- Description:	<This Procedure is used to get masters data for dropdown and for binding grid on master index pages ex: notification config master, group master, wallet amount etc>
+-- =============================================
+
+ALTER Procedure [dbo].[USP_ADMIN_GetMasterDataForDropdown_View] --'AddressFromPincode','462042',null
+
+@type nvarchar(100) = null,
+@menuId nvarchar(100) = null,
+@PartyId nvarchar(20)=null,
+@Id BIGINT = NULL
+as
+if(@type='MenuList')
+	begin
+		select 0 as Id, 'Select Menu' as Text
+		union
+		select  iPK_MenuId as Id, sMenuName as Text  from MENUMST where iStatus<>2
+	end
+
+if(@type='Submenus')
+	begin
+		select iDsplyOrdId as Id, sSubMnuName as Text,iSubMnuId as ID1 from SUBMENUMST where iFK_MnuId =cast(@menuId as int) and  iStatus<>2 order by iDsplyOrdId 
+	end
+
+if(@type='DepartmentList')
+	begin
+		select iPK_DeptId as DepartmentID,sDeptName as DepartmentName,format(dtCrtdDt,'dd-MM-yyyy hh:mm:ss tt') as CreatedDate, iStts as Status from DPETMST where iStts<>2
+	end
+
+if(@type='DepartmentSingle')
+	begin
+		select iPK_DeptId as DepartmentID,sDeptName as DepartmentName from DPETMST where iPK_DeptId = cast(@menuId as int) and iStts<>2
+	end
+
+if(@type='GroupList')
+	begin
+		select g.biPK_MSTId as ID,iPK_GrpId as GroupID,sGrpName as GroupName,m.sMenuName as Menu,g.iMenuId,sm.sSubMnuName as Submenu,g.iSubMenuId,format(g.dtCrtdDt,'dd-MM-yyyy hh:mm:ss tt') as CreatedDate, g.iStatus as Status
+		from GRPMST g 
+		left join MENUMST m on m.iPK_MenuId = g.iMenuId
+		left join SUBMENUMST sm on sm.iSubMnuId = g.iSubMenuId
+		where g.iStatus<>2 and (g.sPartyCode= @PartyId or @PartyId Is Null)
+	end
+
+if(@type='GroupSingle')
+	begin
+		select g.biPK_MSTId,iPK_GrpId,sGrpName,m.sMenuName as Menu,g.iMenuId,sm.sSubMnuName as Submenu,g.iSubMenuId,format(g.dtCrtdDt,'dd-MM-yyyy hh:mm:ss tt') as CreatedDate, g.iStatus 
+		from GRPMST g 
+		left join MENUMST m on m.iPK_MenuId = g.iMenuId
+		left join SUBMENUMST sm on sm.iSubMnuId = g.iSubMenuId
+		where biPK_MSTId = cast(@menuId as int) and g.iStatus<>2
+	end
+
+if(@type='RoleList')
+	begin
+		select distinct P.iRoleId as Id,R.sRolName as Text from ROLEMST R 
+		inner join PRTYMST P on P.iRoleId = R.iPk_RolId
+	end
+
+
+if(@type='UserTypeList')
+	begin
+		select iId as Id,sName as text from CSTMENUM where iFK_EnumNo =7 order by iId
+	end
+
+if(@type='NotificationTypeMaster')
+	begin
+		select iId as Id,sName as Text from CSTMENUM where iFK_EnumNo = 14
+	end
+
+if(@type='NotificationFlowDirection')
+	begin
+		select iId as Id,sName as Text from CSTMENUM where iFK_EnumNo = 23
+	end
+		
+if(@type='SelectpartyMaster')
+	begin
+		select * from PRTYMST
+	end
+
+if(@type='ServiceProvider')
+	begin
+		Select iId,sName as Text from CSTMENUM where iFK_EnumNo = 21
+	end
+
+if(@type='Templates')
+	begin
+		Select iId,sName as Text from CSTMENUM where iFK_EnumNo = 22
+	end
+
+if(@type='GetWalletAmount')
+	begin
+		Select  sFK_PrtyCode, dMainWalltBalnc from WLLTMST where sFK_PrtyCode = @menuId and iIsActv =1
+	end
+
+if(@type='GroupsForUser')
+	begin
+		Declare @role int =0,
+				@dept int = 0
+
+		select @role=iRoleId,@dept=iDeptId from PRTYMST where sPK_PrtyCode = @menuId
+
+		select distinct g.iPK_GrpId Id, g.sGrpName from ROLDEPT M 
+		inner join GRPMST g on M.iGrpId = g.iPK_GrpId
+		where iRoleId = @role and iDeptId =@dept and g.iStatus<>2
+	end
+
+if(@type ='ChargeType')
+	BEGIN
+		select C.iId Id,C.sName text  from RATEMST R 
+		inner join CSTMENUM C on C.iId=R.iChngTyp and C.iFK_EnumNo=1 
+		where R.iIsActv=1 AND R.iFK_HrdWarSrvicId=@Id
+	END
+
+if(@type ='UserType')
+	BEGIN
+		select iId Id,sName as [text] from CSTMENUM where iFK_EnumNo =7 order by iId
+	END
+
+if(@type= 'Department')
+	begin
+		Select 0 Id,'Select Department' text
+		union
+		Select iPK_DeptId Id,sDeptName text from DPETMST where iStts=1 and sDeptName <>'Admin'
+	end
+
+if(@type= 'Group')
+	begin
+		Select 0 Id,'Select Group' text
+		union
+		Select iPK_GrpId Id,sGrpName text from GRPMST where iStatus=1 and (@PartyId is null or sPartyCode=@PartyId)
+	end
+
+if(@type= 'Role')
+	begin
+		Select 0 Id,'Select Role' text
+		union
+		Select iPk_RolId Id,sRolName text from ROLEMST where iStatus=1 and (@PartyId is null or sCrtdByPrtyCode=@PartyId)
+	end
+
+if(@type='TargetDetails')
+	begin
+		select TRGMST.lPK_Id ID,[SRVCMST].sName CatName,iCategoryId as CategoryId,dTrgAmt as TargetAmount,sTrgPeriod as TargetPeriod,dtStrDate as StartingDate,dtStrTRGDate as StartTargetDate,iTargetType as TargetType ,iStatus as Status 
+		from TRGMST INNER JOIN SRVCMST ON TRGMST.iCategoryId = SRVCMST.iPK_CatId
+		 where lPK_Id = lPK_Id and TRGMST.iStatus<>2
+	end
+
+if(@type='BankDetails')
+	begin
+		select  lPK_Id as ID ,sBankName as BankName ,sIFSC as IFSC ,sAccountNumber as AccountNumber , sAccountHolderName as AccountHolderName ,sMobileNumber as MobileNumber,iStatus as Status 
+		from BANKMST
+		where lPK_Id = lPK_Id and BANKMST.iStatus<>2
+	end
+
+if(@type='ShaktiOperators')
+	begin
+		------------------------This returns only those operators whose commission set by the admin recieved from service provider
+		select distinct iId as OperatorId,sName as OperatorName,sTyp as Type,
+					case when sName ='Airtel' then 'Airtel.png'
+						 when sName ='Idea' then 'Idea.png'
+						 when sName ='Bsnl' then 'BSNL.png'
+						 when sName ='RelianceJIO' then 'RelianceJIO.png'
+						 when sName ='Vodafone' then 'Vodafone.png'
+						 when sName ='Airtel Digital TV' then 'AirtelDTH.png'
+						 when sName ='Dish TV' then 'DishTV.png'
+						 when sName ='Tata Sky' then 'TataSky.png'
+						 when sName ='Sun Direct' then 'SunDirect.png'
+						 when sName ='Money Transfer' then 'MoneyTransfer.png'
+						 when sName ='Videocon D2H' then 'Videocon.png'	 end as OperatorImage
+						 from CSTMENUM 
+						 inner join VNDRDET on VNDRDET.iFK_OprtId =CSTMENUM.iId and CSTMENUM.iFK_EnumNo=20
+						--where CSTMENUM.iFK_EnumNo=20
+						order by iId
+	end
+
+if(@type='AddressFromPincode')
+begin
+	select top 1 ID,CONCAT(DivisionName,', ',OfficeName,', ',Pincode) as text 
+	from Z2_DMT_BANK_PINCODE_MASTER.[dbo].PINCODE_MST where Pincode =@menuId order by Id desc
+end
+
+if(@type='BankwithIFSC')
+begin
+	select IFSCCode as ID,CONCAT(Bank,' [',IFSCCode,']') as text from Z2_DMT_BANK_PINCODE_MASTER.[dbo].bankDetails 
+	order by Bank 
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GO
+-- =============================================
+-- Author:		<Abhishek Rohila>
+-- Create date: <26.Oct.2022>
+-- Description:	<This procedure use to show Beneficiary information >
+-- =============================================
+ALTER procedure  [dbo].[USP_ADMIN_DMT_Beneficiary_List] --'9039737635',NULL
+(  
+@iRmtMob nvarchar(11),  
+@iPK_BenefId nvarchar(max)=null  
+  
+)  
+As  
+Begin  
+   declare @count int=0  
+   Begin try   
+
+
+  select B.iPK_BenefId,B.sBenNam,B.sBenActNo,B.sBenActTyp,B.iIsAct,B.sBenBankName,B.sBenMob,B.sBenIfsc,sBen_ID,sBen_uuID,sBen_BnkVarifiedName
+  from BENEFMST B  
+  where B.iRmtMob=@iRmtMob and (@iPK_BenefId is null or B.sBen_ID=@iPK_BenefId)   
+    
+   End try        
+      begin catch           
+         EXEC [dbo].[USP_ADMIN_StoreProcedureErrorHandling_Save] 0,0,1 --To log Stored procedure errors        
+          select -1 as StatusCode, 'Check Error - ' + cast(ERROR_Number() as varchar) + ' ' + ERROR_MESSAGE () as [Message],'' AS Body        
+         end catch     
+End
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GO
+-- =============================================
+-- Author:		<Abhishek Rohila>
+-- Create date: <26.Oct.2022>
+-- Description:	<This procedure use to save Beneficiary information >
+-- =============================================
+ALTER procedure  [dbo].[USP_ADMIN_DMT_Beneficiary_Save]    
+(    
+@iRmtMob nvarchar(11),    
+@sBenNam nvarchar(200),    
+@sBenMob nvarchar(11),    
+@sBenActNo nvarchar(20),    
+@sBenREActNo nvarchar(20),    
+@sBenIfsc nvarchar(50),    
+@sBenActTyp nvarchar(20),    
+@iBenActVer int,    
+@iIsAct int=1,    
+@sFK_PrtyCode nvarchar(11),  
+@sBenBankName nvarchar(200),
+@sAccountHolderName nvarchar(500),
+@sBeneficiaryID nvarchar(500),
+@sBeneficiary_uuID nvarchar(500)
+)    
+As    
+Begin    
+   declare @count int=0    
+   Begin try     
+   select @count=iPK_BenefId from BENEFMST where sBenActNo=@sBenActNo    
+   if(@count=0)    
+        Begin    
+  Insert into BENEFMST(iRmtMob,sBenNam,sBenMob,sBenActNo,sBenREActNo,sBenIfsc,sBenActTyp,iBenActVer,iIsAct,dtCrtDt,sFK_PrtyCode,sBenBankName,sBen_BnkVarifiedName,sBen_uuID,sBen_ID)    
+  values(@iRmtMob,@sBenNam,@sBenMob,@sBenActNo,@sBenREActNo,@sBenIfsc,@sBenActTyp,@iBenActVer,@iIsAct,GetDate(),@sFK_PrtyCode,@sBenBankName,@sAccountHolderName,@sBeneficiary_uuID,@sBeneficiaryID)    
+   select 1 as StatusCode , 'Recorde Save Successfully' as [Message]    
+  End    
+   else    
+        Begin    
+  select 0 as StatusCode , 'Account No Already Exist' as [Message]        
+  End    
+   End try          
+      begin catch             
+         EXEC [dbo].[USP_ADMIN_StoreProcedureErrorHandling_Save] 0,0,1 --To log Stored procedure errors          
+          select -1 as StatusCode, 'Check Error - ' + cast(ERROR_Number() as varchar) + ' ' + ERROR_MESSAGE () as [Message],'' AS Body          
+         end catch       
+End 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GO
+-- =============================================
+-- Author:		<Abhishek Rohila>
+-- Create date: <26.Oct.2022>
+-- Description:	<This Procedure used to save data into Remitter table>
+-- =============================================
+ALTER Procedure [dbo].[USP_ADMIN_DMT_Remitter_Save]  
+(  
+@iRmtMob nvarchar(11),  
+--@sRmtGnd varchar(50)=null,  
+@sRmtName varchar(50)=null,  
+--@sRmtPan nvarchar(10)=null,  
+--@sRmtEmailId nvarchar(500)=null,  
+--@sRmtCty nvarchar(50)=null,  
+@sRmtPinCode nvarchar(10)=null,  
+@sAddress nvarchar(500) = null,
+@iIsAct int=1,  
+@sPatyCode nvarchar(10)  
+)  
+AS  
+Begin  
+	declare @count int=0  
+	Begin try
+		select @count=iPK_RemitId from REMITMST where iRmtMob=@iRmtMob   
+		if(@count=0)
+			Begin
+				declare @country nvarchar(500) = 'India'
+				,@state nvarchar(500),@city nvarchar(500)
+
+				select top 1 @state=StateName,@city=CONCAT(DivisionName,', ',District) from Z2_DMT_BANK_PINCODE_MASTER.[dbo].PINCODE_MST where Pincode = @sRmtPinCode order by ID desc
+				Insert into REMITMST
+				(iRmtMob,sRmtName,sRmtCty,sState,sRmtCntry,sAddress,sRmtPinCode,iIsAct,dtCrtDate,sPatyCode)
+				values
+				(@iRmtMob,@sRmtName,@city,@state,@country,@sAddress,@sRmtPinCode,@iIsAct,GETDATE(),@sPatyCode)  
+				
+				select 1 as StatusCode , 'Record Saved Successfully!' as [Message]  
+			End  
+		else      
+			Begin
+				select 0 as StatusCode , 'Mobile No Already Exists' as [Message]      
+			End      
+	End try        
+	begin catch           
+		EXEC [dbo].[USP_ADMIN_StoreProcedureErrorHandling_Save] 0,0,1 --To log Stored procedure errors        
+		select -1 as StatusCode, 'Check Error - ' + cast(ERROR_Number() as varchar) + ' ' + ERROR_MESSAGE () as [Message],'' AS Body        
+	end catch     
+End
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

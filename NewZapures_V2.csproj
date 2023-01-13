@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewZapures_V2</RootNamespace>
     <AssemblyName>NewZapures_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -157,6 +157,8 @@
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Models\HomePage.cs" />
+    <Compile Include="Models\UploadReceipt.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="Models\ResponseData.cs" />
     <Compile Include="Models\ServicesDetails.cs" />
     <Compile Include="Models\UserProfileDetailsBO.cs" />
+    <Compile Include="Models\CommitteeMembers.cs" />
     <Compile Include="Models\WalletAmtBO.cs" />
     <Compile Include="Models\WalletBalanceShow.cs" />
     <Compile Include="Models\ZapurseCommonlist.cs" />
@@ -2342,8 +2345,13 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\globalDomain.js" />
+    <Content Include="Content\jquery-confirm.css" />
+    <Content Include="Content\jquery\jquery-confirm.js" />
     <Content Include="Content\loader.css" />
     <Content Include="Content\LoginSignUp\img\NOC Process flow.jpeg" />
+    <Content Include="Content\NewArchtech\bootstrap.min.js" />
+    <Content Include="Content\NewArchtech\jquery-confirm.min.css" />
+    <Content Include="Content\NewArchtech\Jsminmum.js" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.css" />
     <Content Include="Content\OurServices\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\OurServices\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -2438,6 +2446,12 @@
     <Content Include="images\dashboard\dash-2.png" />
     <Content Include="images\dashboard\dash-3.png" />
     <Content Include="images\dashboard\dash-4.png" />
+    <Content Include="images\DepartmentImages\Agriculture.png" />
+    <Content Include="images\DepartmentImages\AnimalHusbandary.png" />
+    <Content Include="images\DepartmentImages\CollegeOfEducation.png" />
+    <Content Include="images\DepartmentImages\MedicalGroup1.png" />
+    <Content Include="images\DepartmentImages\Medicalgroup3.png" />
+    <Content Include="images\DepartmentImages\Nursing.png" />
     <Content Include="images\documents\adhaar1.jpg" />
     <Content Include="images\documents\pancard1.jpg" />
     <Content Include="images\favicon.ico" />
@@ -3532,7 +3546,6 @@
     <Content Include="Views\Trustee\EditApplication.cshtml" />
     <Content Include="Views\Trustee\ApplicationPreview.cshtml" />
     <Content Include="Views\AcdmcMst\index.cshtml" />
-    <Content Include="Views\Master\ArchitectureDetail.cshtml" />
     <Content Include="Views\Trustee\CollageAttachment.cshtml" />
     <Content Include="Views\ProofOfDocument\Index.cshtml" />
     <Content Include="Views\Master\ParameterValueConfiguration.cshtml" />
@@ -3551,6 +3564,11 @@
     <Content Include="Views\AdminAjaxRequestPage\GenerateArchtable.cshtml" />
     <Content Include="Views\AdminAjaxRequestPage\Newitem.cshtml" />
     <Content Include="Views\Master\CommiteeMaster.cshtml" />
+    <Content Include="Views\Master\FinancialYear.cshtml" />
+    <Content Include="Views\Master\NewArchitectureView.cshtml" />
+    <Content Include="Views\Trustee\ApplyNOCApplication.cshtml" />
+    <Content Include="Views\Admin\AdminApplicationPreview.cshtml" />
+    <Content Include="Views\Admin\ApplicationPreviewLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
