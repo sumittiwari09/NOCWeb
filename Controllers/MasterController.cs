@@ -851,15 +851,6 @@ namespace NewZapures_V2.Controllers
             return View(lst);
         }
 
-
-        public ActionResult NewArchitectureDetail(string guid = null)
-        {
-            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
-            lst = ParameterValueConfigurationlist(0, guid);
-            ViewBag.Applicableid = guid;
-            return View(lst);
-        }
-
         public JsonResult AllGenerateArchtablelist(string applGUID)
         {
             List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
