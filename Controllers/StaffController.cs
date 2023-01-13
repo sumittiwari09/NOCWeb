@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using static NewZapures_V2.Models.TrusteeBO;
 
 namespace NewZapures_V2.Controllers
 {
@@ -15,7 +16,7 @@ namespace NewZapures_V2.Controllers
     {
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         // GET: Trustee
-        public ActionResult Index()
+        public ActionResult Index(string guid)
         {
             
             List<StaffBO.Staff> _result = new List<StaffBO.Staff>();
@@ -36,11 +37,12 @@ namespace NewZapures_V2.Controllers
                 }
             }
             ViewBag.StaffList = _result;
+            ViewBag.guid=guid;
             #endregion
             return View();
         }
         [HttpPost]
-        public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile)
+        public ActionResult Index(StaffBO.Staff obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase experiencefile ,string guid)
         {
             obj.Guid = SessionModel.ApplicantGuid;
             byte[] Documentbyte;
@@ -173,7 +175,10 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-            return RedirectToAction("Index");
+
+            //return View();
+            return RedirectToAction("EditApplication", "Trustee", new { applGUID = SessionModel.ApplicantGuid });
+            //return RedirectToAction("Index");
         }
 
         public ActionResult Delete(int Id)

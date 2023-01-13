@@ -1,0 +1,396 @@
+﻿@using NewZapures_V2.Models
+@model HomePage
+@{
+    ViewBag.Title = "University Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //List<NewZapures_V2.Models.CustomMaster> submenu = ViewBag.submenu as List<NewZapures_V2.Models.CustomMaster>;
+    List<CustomMaster> MenuList = new List<CustomMaster>();
+    if (ViewBag.MenuList != null)
+    {
+        MenuList = (List<CustomMaster>)ViewBag.MenuList;
+    }
+
+
+}
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+}
+
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    form {
+        margin: 20px;
+    }
+
+        form input, button {
+            padding: 5px;
+        }
+
+    table {
+        width: 90%;
+        margin: 20px;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #f953c6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+
+    /* table, th, td {
+        border: 1px solid black;
+    }*/
+</style>
+
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>
+<style>
+    .horizontal-scroll-wrapper {
+        width: 100%;
+        height: 600px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .linksdisabled {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    .red-bod {
+        border: 1px dotted red;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">University Master</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            @*<div class="card-header fsc">
+                    <h4 class="mt-0 header-title float-left">University Master</h4>
+                </div>*@
+            <div class="card-body">
+                @using (Html.BeginForm("CreateHomePage", "UniverSityMST", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University Group</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <select class="form-control" name="UniGroup" id="UniGroup">
+                                    <option value="1">Select University Group </option>
+                                    <option value="2">State Universities </option>
+                                    <option value="3">Private Universities </option>
+                                    <option value="4">Deemed Universities </option>
+                                    <option value="5">Others Universities </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select  University </label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <select class="form-control" name="UniName" id="UniName">
+                                        <option value="1">Select  University</option>
+                                        <option value="2">State Universities </option>
+                                        <option value="3">Private Universities </option>
+                                        <option value="4">Deemed Universities </option>
+                                        <option value="5">Others Universities </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">WelCome Note </label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <div>
+                                    <input class="form-control col-sm-12" placeholder="Enter WelCome Note" type="text" autocomplete="off" id="Welcome" name="Welcome">
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-lg-8 text-center d-flex align-items-center justify-content-center">-->
+                            @*<div class="">*@
+                            <!--<h4 class="mt-0 header-title">Logo</h4>
+                            <input type="file" id="input-file-now" class="dropify" name="Logo" />
+                        </div>
+                    </div>-->
+                    </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">UpLoad Logo</label>
+                                <div class="is-empty  removehidde" id="collegetypedata">
+                                    <div>
+                                        <input class="form-control col-sm-12" placeholder="Logo" type="file" id="Logo" name="Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @*<div class="col-3 text-center d-flex align-items-center justify-content-center">
+                            <div class="">
+                                <h4 class="mt-0 header-title">Trust Logo</h4>
+                                <input type="file" id="input-file-now" class="dropify" name="trustfile" />
+                            </div>
+                        </div>*@
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Banner1" name="Banner1" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled>Banner1</button>
+                                @*<input type="button" class="add-file" value="Add More">*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Banner2" name="Banner2" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled>Banner2</button>
+                                @*<input type="button" class="add-file" value="Add More">*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Banner3" name="Banner3" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Banner3</button>
+                                @*<input type="button" class="add-file" value="Add More">*@
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<table id="Data">
+                            <thead>
+                                <tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>*@
+
+
+                    <h4 class="text-primary">Page Url</h4>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Url1" name="Url1" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Img</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Url2" name="Url2" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Img</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <div style="display:flex">
+                                <input class="form-control col-sm-8" type="file" multiple id="Url3" name="Url3" data-input="true" class="form-control filestyle">
+                                <button class="btn btn-sm col-sm-4 locationBTN" id="btnUpload" disabled> Upload Img</button>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="text-primary">What menus you want to show </h4>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Menu</label>
+                            <div class="is-empty  removehidde" id="collegetypedata">
+                                <select class="form-control" name="Menu" id="Menu">
+                                    <option value="0">Select Menu</option>
+                                    @{
+                                        foreach (var item in MenuList)
+                                        {
+                                            <option value="@item.Id">@item.text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Submenu</label>
+                            <div>
+                                <select class="form-control " id="Submenu" multiple="multiple" name="Submenu">
+
+                                    <option value="">Select Submenu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Add News And Announcment</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Add about Us</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Add Footer</button>
+                    <div class="row text-center">
+                        <div class="form-group col-lg-12">
+                            <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    @*new added for multiselect by kishan*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+}
+<script type="text/javascript">
+    $(function () {
+        $("#Submenu").select2();
+    });
+    console.log($("#Submenu").val());
+</script>
+<script type="text/javascript">
+
+$(document).ready(function ()
+{
+
+
+    $('#Menu').change(function () {
+        var selectedVal = $(this).val();
+        if (selectedVal > 0) {
+            AddData(selectedVal);
+        }
+    })
+    function AddData(menuId) {
+        debugger
+        var strHtml = "";
+        strHtml += " <option value=''>Select Submenu</option>";
+
+        $.ajax({
+            url: GetglobalDomain() + "/UniverSityMST/GetSubmenuList?menuId=" + menuId,
+            type: 'GET',
+
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                debugger;
+                for (var i = 0; i < response.Data.length; i++) {
+                    strHtml += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].text + "</option>"
+                }
+                console.log(strHtml);
+
+                $("#Submenu").html(strHtml);
+
+            }
+        });
+    }
+
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+});
+</script>
+

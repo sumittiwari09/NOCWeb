@@ -40,6 +40,9 @@ namespace NewZapures_V2.Controllers
                 //}
             }
             ViewBag.CollageFeeList = obj;
+            //TempData["SwalStatusMsg"] = "success";
+            //TempData["SwalMessage"] = "Data saved sussessfully!";
+            //TempData["SwalTitleMsg"] = "Success...!";
             #endregion
             return View();
         }
@@ -111,9 +114,9 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    TempData["SwalStatusMsg"] = "success";
-                    TempData["SwalMessage"] = "Data saved sussessfully!";
-                    TempData["SwalTitleMsg"] = "Success...!";
+                    //TempData["SwalStatusMsg"] = "success";
+                    //TempData["SwalMessage"] = "Data saved sussessfully!";
+                    //TempData["SwalTitleMsg"] = "Success...!";
                     return new JsonResult
                     {
                         Data = new { failure = true, msg = "Success" },

@@ -3,6 +3,7 @@
     ViewBag.Title = "Staff";
     Layout = null;// "~/Views/Shared/_Layout.cshtml";
     List<NewZapures_V2.Models.StaffBO.Staff> stafflist = ViewBag.StaffList as List<NewZapures_V2.Models.StaffBO.Staff>;
+  
 }
 @section styles {
 
@@ -74,12 +75,12 @@
     <div class="col-sm-12">
         <div class="page-title-box">
             @*<div class="float-right">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">NOC</li>
-                    <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Staff</li>
-                </ol>
-            </div>*@
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Staff</li>
+                    </ol>
+                </div>*@
             <h4 class="page-title">@ViewBag.Title</h4>
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -91,6 +92,7 @@
     </div>
     @using (Html.BeginForm("Index", "Staff", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        <input type="hidden" name="guid" value="@ViewBag.guid" />
         <div class="card-body row">
             <div class="col-8">
                 <div class="row">
@@ -191,7 +193,7 @@
     }
     <div class="row col-lg-12">
         <div class="form-group col-lg-12">
-            <table class="table table-borderless table-striped table-hover" id="tblCapital">
+            <table class="table  table-borderless table-striped table-hover" id="tblCapital">
                 <thead class="dark">
                     <tr>
                         <th>SNo</th>
@@ -243,7 +245,7 @@
             </table>
         </div>
     </div>
-   
+
     @*<div class="row">
             <div class="form-group col-lg-12" style="display: flex;align-items: end;gap:10px; float:right">
                 <button class="btn" id="btnfinalSave" style="background: #bc4e9c; float: right; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #f80759, #bc4e9c); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ color: white !important; text-transform: uppercase "><i class="fa fa-save"></i> Save</button>
@@ -251,11 +253,37 @@
             </div>
         </div>*@
 </div>
-
-
-
 @section scripts {
-    <script src="~/plugins/dropify/js/dropify.min.js"></script>
-    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+
 }
+@*<script src="~/plugins/dropify/js/dropify.min.js"></script>
+<script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+<script src="~/Content/globalDomain.js"></script>*@
+<script src="~/Content/globalDomain.js"></script>
+<script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var url = "Staff/Index";
+        GeneratePage(url);
+        function GeneratePage(url) {
+
+            $.ajax({
+                url: GetglobalDomain() + url,
+                type: 'GET',
+                dataType: "text",
+                success: function (response) {
+                    //$('#divFormContainer').html('');
+                    $('#divFormContainer1').removeAttr("style");
+                    $('#divFormContainer').html(response);
+                    $('#divLoader').css('display', 'none');
+                    return;
+                    /*  $("#AddSection").html(response);*/
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
 
