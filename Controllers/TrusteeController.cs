@@ -315,6 +315,7 @@ namespace NewZapures_V2.Controllers
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             //var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
             //ViewBag.LandDetails = LandData;
+            SessionModel.ApplicantGuid = applGUID;
             ViewBag.trusteeMember = trusteeMember;
             SessionModel.ApplicantGuid = applGUID;
             return View();
@@ -343,6 +344,8 @@ namespace NewZapures_V2.Controllers
         {
             var departmentList =ZapurseCommonlist.GetDepartmentlist();
             ViewBag.departments = departmentList;
+            ViewBag.trusteeMember = trusteeMember;
+            ViewBag.applGUID = applGUID;
             return View();
         }
 
@@ -351,59 +354,85 @@ namespace NewZapures_V2.Controllers
         //    return View();
         //}
         [HttpGet]
-        public ActionResult TrusteeGeneralInfo(string RegNo)
+        public ActionResult TrusteeGeneralInfo()
         {
-            SessionModel.TrustRegNo = RegNo;
-            TrustRoot _trustapi = new TrustRoot();
-            //modal.RegistrationNo = "COOP/2019/ALWAR/100658";
-            #region Trust API
-            var client = new RestClient("https://rajsahakarapp.rajasthan.gov.in/api/EntireSocietyDetail/GetSocietyDetailsByRegistrationNO?Reg_no=" + RegNo);
-            client.Timeout = -1;
+            string RegNo = SessionModel.TrustRegNo;
+            bool status = false;
+            #region List Trustee
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + RegNo);
             var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                _trustapi = _JsonSerializer.Deserialize<TrustRoot>(response.Content);
-                if (_trustapi.Status == "200" && _trustapi.Message == "Success")
+                TrusteeBO.TrusteeInfo _result = _JsonSerializer.Deserialize<TrusteeBO.TrusteeInfo>(response.Content);
+                if (_result != null)
                 {
-                    ErrorBO _ress = Verificationdata(_trustapi);
-                    if(_ress.ResponseCode == "1")
+                    if (_result.RegistrationNo != null)
                     {
-                        #region List Trustee
-                        client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + _trustapi.Data.RegistrationNo);
-                        request = new RestRequest(Method.GET);
-                        request.AddHeader("cache-control", "no-cache");
-                        //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-                        _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
-                        request.AddParameter("application/json", "", ParameterType.RequestBody);
-                        response = client.Execute(request);
-                        if (response.StatusCode.ToString() == "OK")
-                        {
-                            TrusteeBO.TrusteeInfo _result = _JsonSerializer.Deserialize<TrusteeBO.TrusteeInfo>(response.Content);
-                            if (_result != null)
-                            {
-                                ViewBag.TrustDetails = _result;
-                                ViewData["RegDate"] = _result.RegistrationDate;
-                                SessionModel.TrustId = _result.TrusteeInfoId;
-                                //return RedirectToAction("Index");
-                            }
-                        }
-                        #endregion
+                        status = true;
+                        ViewBag.TrustDetails = _result;
                     }
-                }
-                else
-                {
-                    return new JsonResult
-                    {
-                        Data = new { Success = false, Message = "Enter Correct Registration Number", res = _trustapi },
-                        ContentEncoding = System.Text.Encoding.UTF8,
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    };
+                    //return RedirectToAction("Index");
                 }
             }
-            //Console.WriteLine(response.Content);
             #endregion
 
+            TrustRoot _trustapi = new TrustRoot();
+            //modal.RegistrationNo = "COOP/2019/ALWAR/100658";
+            if (!status)
+            {
+                #region Trust API
+                client = new RestClient("https://rajsahakarapp.rajasthan.gov.in/api/EntireSocietyDetail/GetSocietyDetailsByRegistrationNO?Reg_no=" + RegNo);
+                client.Timeout = -1;
+                request = new RestRequest(Method.GET);
+                response = client.Execute(request);
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    _trustapi = _JsonSerializer.Deserialize<TrustRoot>(response.Content);
+                    if (_trustapi.Status == "200" && _trustapi.Message == "Success")
+                    {
+                        ErrorBO _ress = Verificationdata(_trustapi);
+                        if (_ress.ResponseCode == "1")
+                        {
+                            #region List Trustee
+                            client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + _trustapi.Data.RegistrationNo);
+                            request = new RestRequest(Method.GET);
+                            request.AddHeader("cache-control", "no-cache");
+                            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+                            _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
+                            request.AddParameter("application/json", "", ParameterType.RequestBody);
+                            response = client.Execute(request);
+                            if (response.StatusCode.ToString() == "OK")
+                            {
+                                TrusteeBO.TrusteeInfo _result = _JsonSerializer.Deserialize<TrusteeBO.TrusteeInfo>(response.Content);
+                                if (_result != null)
+                                {
+                                    ViewBag.TrustDetails = _result;
+                                    ViewData["RegDate"] = _result.RegistrationDate;
+                                    SessionModel.TrustId = _result.TrusteeInfoId;
+                                    //return RedirectToAction("Index");
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        return new JsonResult
+                        {
+                            Data = new { Success = false, Message = "Enter Correct Registration Number", res = _trustapi },
+                            ContentEncoding = System.Text.Encoding.UTF8,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                }
+                //Console.WriteLine(response.Content);
+                #endregion
+            }
             // TrusteeBO.TrusteeInfo modal = new TrusteeBO.TrusteeInfo();
             // modal.RegistrationNo = RegNo;
             // #region Save and Get details
