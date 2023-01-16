@@ -1,0 +1,229 @@
+﻿@using NewZapures_V2.Models
+@model List<PARMTVALUCONFMSTView>
+@{
+    Layout = null;
+    var appid = ViewBag.applGUID;
+    List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
+    if (ViewBag.LstApesData != null)
+    {
+        LstApesData = (List<ArchiMstDetail>)ViewBag.LstApesData;
+    }
+    
+            }
+
+<style>
+    body {
+        margin-top: 30px;
+    }
+
+    .stepwizard-step p {
+            margin-top: 0px;
+            color: #666;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+    .stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+    }
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+color: #bbb;
+    }
+
+    .stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+    display: table-cell;
+        text-align: center;
+    position: relative;
+    }
+
+    .btn-circle {
+    width: 30px;
+    height: 30px;
+        text-align: center;
+    padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+
+    .panel {
+        margin-bottom: 20px;
+        background-color: #fff;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        box-shadow: 0 1px 1px rgba(0,0,0,.05)
+    }
+
+    .panel-body {
+    padding: 15px
+    }
+
+    .panel-heading {
+    padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px
+    }
+
+    .panel-primary {
+        border-color: #428bca
+    }
+
+        .panel-primary > .panel-heading {
+    color: #fff;
+            background-color: #428bca;
+            border-color: #428bca
+        }
+
+            .panel-primary > .panel-heading + .panel-collapse > .panel-body {
+        border-top-color: #428bca
+            }
+
+            .panel-primary > .panel-heading .badge {
+    color: #428bca;
+                background-color: #fff
+            }
+
+        .panel-primary > .panel-footer + .panel-collapse > .panel-body {
+        border-bottom-color: #428bca
+        }
+</style>
+<style>
+    input[type="file"]::file-selector-button {
+    border: 2px solid #6c5ce7;
+        padding: 0.2em 0.4em;
+        border-radius: 0.2em;
+        background-color: #a29bfe;
+        transition: 1s;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+        background-color: #81ecec;
+            border: 2px solid #00cec9;
+        }
+</style>
+<div class="container col-sm-12">
+
+
+    @*<form role="form">*@
+
+    @{
+                var j = 0;
+        <input type="hidden" id="appid" value="@ViewBag.Applicableid" />
+        foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
+        {
+
+            <div class="panel panel-primary setup-content" id="step-@item.iParCatId">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@item.sCateName</h3>
+                </div>
+                <div class="panel-body">
+
+                    @foreach (var inneritem in Model.Where(p => p.iParCatId == item.iParCatId).Select(p => new { p.iParCatSubId, p.sCateSubName }).Distinct().ToList())
+                    {
+                        <div class="form-group" style="margin-bottom: 50px;">
+
+                            <div class="col-sm-12">
+
+                                @foreach (var thirditem in Model.Where(p => p.iParCatId == item.iParCatId && p.iParCatSubId == inneritem.iParCatSubId).Distinct().ToList())
+                                {
+
+                                    var i = 0;
+
+                                    if (thirditem.iParUomid != 3)
+                                    {
+                                        <h6>@inneritem.sCateSubName (@thirditem.InsertValue)</h6>
+
+
+
+                                    }
+                                    if (thirditem.iParUomid == 3)
+                                    {
+                                        <table class="table" style="width: inherit;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Width</th>
+                                                    <th>Length</th>
+                                                    <th>Capacity</th>
+                                                    <th>Download</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{ foreach (var lstdetail in LstApesData.Where(p => p.iParamId == item.iParCatId && p.iSubCatId == inneritem.iParCatSubId && p.iUomId == thirditem.iParUomid).ToList())
+                                                    {
+
+                                                        <tr>
+                                                            <td>
+                                                                @{
+                                                                    if (!string.IsNullOrEmpty(lstdetail.bAttachFile))
+                                                                    {
+                                                                        <img src="data:@lstdetail.ProfileContentType;base64,@lstdetail.bAttachFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                                    }
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @lstdetail.iWid
+                                                            </td>
+                                                            <td>
+                                                                @lstdetail.iLen
+                                                            </td>
+                                                            <td>
+                                                                @lstdetail.iQty
+                                                            </td>
+                                                            <td>
+                                                                <a href="data:@lstdetail.ProfileContentType;base64,@lstdetail.bAttachFile" download="@inneritem.sCateSubName-@lstdetail.ipk_ArchiMstDetId"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    if (!string.IsNullOrEmpty(thirditem.UploadUrl))
+                                    {
+                                        
+                                        <a href="~/UploadFloder/@appid/@thirditem.UploadUrl" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download="@thirditem.sCateSubName"><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color: blue; margin-left: 10px; padding: 10px;"><i class="fa fa-download" aria-hidden="true"></i>@thirditem.UploadUrl</span></a>
+
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+
+
+
+        }
+        @*<button class="btn btn-success pull-right" type="submit">Save</button>*@
+    }
+
+</div>
+

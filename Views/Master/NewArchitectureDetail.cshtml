@@ -71,7 +71,6 @@
         line-height: 1.428571429;
         border-radius: 15px;
     }
-
     .panel {
         margin-bottom: 20px;
         background-color: #fff;
@@ -159,15 +158,42 @@
                                 {
                                     if (thirditem.iParUomid != 3)
                                     {
-                                        <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" min="@thirditem.iMin" value="" data-min="@thirditem.iMin" type="number" required="required" class="form-control col-sm-9 inputdata" style="width:70%" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" placeholder="Enter @inneritem.sCateSubName" />
+                                        <input id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" min="@thirditem.iminval" value="@thirditem.InsertValue" data-min="@thirditem.iminval" type="number" required="required" class="form-control col-sm-9 inputdata" style="width:70%" data-id="@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" placeholder="Enter @inneritem.sCateSubName" />
                                         if (item.sCateName == "Assets")
                                         {
                                             <div class="col-sm-3">
                                                 <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" style=" border: none; display:none;" class="form-control col-sm-12 filestyle">
                                                 <button data-id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="uploadfile"><i class="fa fa-upload"></i></button>
-                                                <a href="" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download=""><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;"></span></a>
+                                                @{
+                                                    if (!string.IsNullOrEmpty(thirditem.UploadUrl))
+                                                    {
+                                                        <a href="~/UploadFloder/@appid/@thirditem.UploadUrl" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download="@thirditem.sCateSubName"><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;">@thirditem.sCateSubName Download</span></a>
 
-                                            </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download=""><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;"></span></a>
+
+                                                    }
+                                                }
+
+                            <div class="col-sm-3">
+                                <input type="file" id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" name="filename" onchange="return uploadFileAsURL(this,@item.iParCatId,@inneritem.iParCatSubId,@thirditem.iParUomid,'@inneritem.sCateSubName')" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" style=" border: none; display:none;" class="form-control col-sm-12 filestyle">
+                                <button data-id="upload-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="uploadfile"><i class="fa fa-upload"></i></button>
+                                @{
+                                    if (!string.IsNullOrEmpty(thirditem.UploadUrl))
+                                    {
+                                        <a href="~/UploadFloder/@appid/@thirditem.UploadUrl" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download="@thirditem.sCateSubName"><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;">@thirditem.sCateSubName Download</span></a>
+
+                                    }
+                                    else
+                                    {
+                                        <a href="" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download=""><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color:blue;"></span></a>
+
+                                    }
+                                }
+
+                            </div>
 
 
                                         }
@@ -191,7 +217,7 @@
                                                     <span style="color: red; font-size: 11px;">Equal or greather than @thirditem.iminwidth</span>
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="@thirditem.iMin" class="form-control">
+                                                    <input id="Capacity-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" type="number" placeholder="Enter Room Capacity" value="" min="@thirditem.iMin" data-min="@thirditem.iminval" class="form-control">
                                                     @*<span style="color: red; font-size: 11px;">Equal or greather than @thirditem.iMin</span>*@
                                                 </div>
                                                 <div class="col-sm-3">
@@ -255,7 +281,7 @@
 
 
         }
-        @*<button class="btn btn-success pull-right" type="submit">Save</button>*@
+        <button class="btn btn-success pull-right" type="submit">Save</button>
     }
     @*<div class="panel panel-primary setup-content" id="step-1">
             <div class="panel-heading">
@@ -344,11 +370,10 @@
 <script src="~/Content/NewArchtech/Jsminmum.js"></script>
 @*<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
-
 <script type="text/javascript">
    /* var appid =  $("#appid").val();*/
     $(document).ready(function () {
-
+           EditArchtable('@appid');
         $(".uploadfile").click(function () {
             var id = $(this).data("id");
             $("#" + id).click();
@@ -363,10 +388,17 @@
             GenerateArchtable(splitdata[0], splitdata[1], splitdata[2]);
         });
         $(".inputdata").blur(function () {
-
             var datamain = $(this).data('id');
+
+            var minvalue = $(this).data('min');
             var value = $("#" + datamain).val();
             if (value == '') {
+                return false;
+            }
+            if (minvalue > value) {
+                alert("Please Enter greater Than or Equal To " + minvalue);
+                $(this).val(minvalue);
+                $(this).focus();
                 return false;
             }
             var datalst = datamain.split('-');
@@ -404,7 +436,6 @@
         });
 
         $(".addclass").click(function () {
-
             var id = $(this).data('id');
             var item = id.split('-');
             var width = $("#Width-" + id).val();
@@ -412,7 +443,7 @@
             var Capacity = $("#Capacity-" + id).val();
             var widthmin = $("#Width-" + id).data('min');
             var Heightmin = $("#Height-" + id).data('min');
-            var Capacitymin = $("#Height-" + id).data('min');
+            var Capacitymin = $("#Capacity-" + id).data('min');
             if (width == '') {
                // alert('Please Enter Width');
                 $("#Width-" + id).focus();
@@ -501,7 +532,7 @@
                         $("#filedata-" + id).val('');
                         $("#file_"+id).val('');
                         /**/
-                        GenerateArchtable(item[0], item[1], item[2]);
+                        GenerateArchtablear(item[0], item[1], item[2], '@appid');
                         /**/
                     }
 
@@ -511,7 +542,32 @@
         });
 
     });
-    function GenerateArchtable(iParamId, iSubCatId, iUomId) {
+
+    function EditArchtable(applGUID) {
+        $.ajax({
+            url: GetglobalDomain() + "/Master/AllGenerateArchtablelist?applGUID=" + applGUID,
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                debugger;
+
+                    if (response.isvalid == 1) {
+                        for (var i = 0; i < response.Data.length; i++) {
+                            GenerateArchtablear(response.Data[i].iParamId, response.Data[i].iSubCatId, response.Data[i].iUomId, '@appid');
+                            $("#table-" + response.Data[i].iParamId + "-" + response.Data[i].iSubCatId + "-" +response.Data[i].iUomId).css('display', 'block');
+                            $("#detail-" + response.Data[i].iParamId + "-" + response.Data[i].iSubCatId + "-" + response.Data[i].iUomId).css('display', 'none');
+                        }
+
+
+                  }
+
+
+            }
+        });
+        return false;
+    }
+    function GenerateArchtablear(iParamId, iSubCatId, iUomId, sAppId) {
 
         $.ajax({
             url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId,
@@ -624,7 +680,7 @@
                             timer: 3000
                         })
                         /**/
-                        GenerateArchtable(iParamId, iSubCatId, iUomId, '@appid')
+                        GenerateArchtablear(iParamId, iSubCatId, iUomId, '@appid')
                         /**/
                     }
 

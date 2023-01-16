@@ -6,11 +6,12 @@
     //var university = ViewBag.universityCollection as List<Dropdown>;
     var courses = (List<Dropdown>)ViewBag.CourseList;
     var draftAppl = (TrusteeBO.DraftApplication)ViewBag.draftApplication;
+    var landData = (List<LandInfoBO>)ViewBag.landDataList;
 
 }
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
-
+<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
 @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
 <!-- Font Awesome -->
 @*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
@@ -265,12 +266,42 @@
                                     <th>Converted Doc</th>
                                     <th>Land Title Doc</th>
                                     <th>Land Doc</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    if (landData != null && landData.Count > 0)
+                                    {
+                                        @*var i = 1;
+                                            foreach (var item in landData)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;"><i class="far fa-trash-alt"></i></span> : @item.sLndArea</td>
+                                                    <td>@item.sLndDocType</td>
+                                                    <td>@item.sIsLndCnvrted</td>
+                                                    <td>@item.sOrdrNo</td>
+                                                    <td>@item.dtOrdrDate</td>
+                                                    <td>@item.sLndTyp</td>
+                                                    <td>@item.sKhasaraNo</td>
+                                                    <td>@item.dLndArea</td>
+                                                    <td>@item.dTotalArea</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                </tr>
+                                                i++;
+                                            }*@
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="13" class="text-center"></td>
+                                        </tr>
+                                    }
+                                }
                                 <tr>
-                                    <td colspan="14" class="text-center">No Data Available</td>
+                                    <td colspan="13" class="text-center">No Data Available</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -289,7 +320,9 @@
 
 @*<script src="~/Content/jquery/jquery.js"></script>*@
 <script src="~/Content/select2/js/select2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
+<script src="~/Content/sweetalert2.all.min.js"></script>
 <script src="~/Content/globalDomain.js"></script>
 <script type="text/javascript">
 
@@ -299,11 +332,15 @@
     $(document).ready(function () {
         $('.singleSelect').select2();
 
+        SomeFunction();
+
         $('#ddlLandConvert').change(function () {
             var selectedItem = $(this).val();
             if (selectedItem != 'Not Converted') {
                 $('#divConverted').css('display', 'flex');
-                $('#divLandConvertDoc').css('display', 'block');
+                $('#divLandConvertDoc').css('display', 'block').addClass('col-lg-4');
+                $('#divLandTitleDoc').removeClass('col-lg-6').addClass('col-lg-4');
+                $('#divLandDoc').removeClass('col-lg-6').addClass('col-lg-4');
             }
             else {
                 $('#divConverted').css('display', 'none');
@@ -326,35 +363,47 @@
                 var landAreaUnit = $('#txtLandArea').val().trim();
                 var totalArea = $('#txtTotalArea').val().trim();
 
-            //LandConverted
+                //LandConverted
                 var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
-                var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+                var convertedDocExte = ($('#hdnConvertedDocExten').val().split('.')[1] === undefined || $('#hdnConvertedDocExten').val().split('.')[1] === null) ? "" : "."+$('#hdnConvertedDocExten').val().split('.')[1];
                 var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+                if (convertedDocContent.length > 0) {
+
+                convertedDocContent = convertedDocContent.split(':')[1];
+                convertedDocContent = convertedDocContent.split(';')[0];
+                }
                 var convertedDocFullURL = $('#hdnConvertedDoc').val();
 
-            //Land Title
-            var landTitleDoc = $('#hdnlandTitleCertificate').val().split(',')[1];
-            var landTitleDocExte = $('#hdnlandTitleCertificateExten').val().split('.')[1];
-            var landTitleDocContent = $('#hdnlandTitleCertificate').val().split(',')[0];
-            var landTitleDocFullURL = $('#hdnlandTitleCertificate').val();
+                //Land Title
+                var landTitleDoc = $('#hdnlandTitleCertificate').val().split(',')[1];
+                var landTitleDocExte = ($('#hdnlandTitleCertificateExten').val().split('.')[1] === undefined || $('#hdnlandTitleCertificateExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandTitleCertificateExten').val().split('.')[1];
+                var landTitleDocContent = $('#hdnlandTitleCertificate').val().split(',')[0];
+                if (landTitleDocContent.length > 0) {
 
-            //Land Document
-            var landDoc = $('#hdnlandDocument').val().split(',')[1];
-            var landDocExte = $('#hdnlandDocumentExten').val().split('.')[1];
-            var landDocContent = $('#hdnlandDocument').val().split(',')[0];
-            var landDocFullURL = $('#hdnlandDocument').val();
+             landTitleDocContent = landTitleDocContent.split(':')[1];
+             landTitleDocContent = landTitleDocContent.split(';')[0];
+                }
+                var landTitleDocFullURL = $('#hdnlandTitleCertificate').val();
 
+                //Land Document
+                var landDoc = $('#hdnlandDocument').val().split(',')[1];
+                var landDocExte = ($('#hdnlandDocumentExten').val().split('.')[1] === undefined || $('#hdnlandDocumentExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandDocumentExten').val().split('.')[1];
+                var landDocContent = $('#hdnlandDocument').val().split(',')[0];
+                if (landDocContent.length > 0) {
 
+             landDocContent = landTitleDocContent.split(':')[1];
+             landDocContent = landTitleDocContent.split(';')[0];
+                }
+                var landDocFullURL = $('#hdnlandDocument').val();
 
+                totalArea = (totalArea.length <= 0) ? 0 : parseFloat(totalArea);
 
                 //console.log('base64', convertedDoc);
                 //console.log('Exten', convertedDocExte);
                 //console.log('content', convertedDocContent);
 
-
-                totalArea = (totalArea.length <= 0) ? 0 : parseFloat(totalArea);
-
                 landInfoData.push({
+                    UnQID: CreateGuid(),
                     iDeptID: parseInt('@draftAppl.iFKDEPT_ID'),
                     iCorsID: parseInt('@draftAppl.iFK_CORS_ID'),
                     iClgID: parseInt('@draftAppl.clgID'),
@@ -371,20 +420,20 @@
                     dLndArea: landAreaUnit,
                     dTotalArea: (parseFloat(totalArea) + parseFloat(landAreaUnit)),
 
-                    UploadConvertedDocument: convertedDoc,
+                    UploadConvertedDocument: (convertedDoc === undefined || convertedDoc === null) ? "" : convertedDoc,
                     UploadConvertedDocumentExtension: convertedDocExte,
                     UploadConvertedDocumentContent: convertedDocContent,
                     lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
 
-                    UploadLandTitleDoc: landTitleDoc,
+                    UploadLandTitleDoc: (landTitleDoc === undefined || landTitleDoc === null) ? "" : landTitleDoc,
                     UploadLandTitleDocExtension: landTitleDocExte,
                     UploadLandTitleDocContent: landTitleDocContent,
                     lndTitleURL: (landTitleDocFullURL.length <= 0) ? "#" : landTitleDocFullURL,
 
-                    UploadLandDoc: landDoc,
+                    UploadLandDoc: (landDoc === undefined || landDoc === null) ? "" : landDoc,
                     UploadLandDocExtension: landDocExte,
                     UploadLandDocContent: landDocContent,
-                    landDocURL: (landDocFullURL.length <= 0) ? "#" : landDocFullURL, 
+                    landDocURL: (landDocFullURL.length <= 0) ? "#" : landDocFullURL,
 
                 });
 
@@ -399,13 +448,33 @@
                 }
                 else {
                     landInfoData.forEach(function (item, index) {
-                        htmlString += `<tr><td>${index + 1}</td><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td><td class="text-center"><span><a href="${item.lndConvertURL}" download="LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.lndTitleURL}" download="landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td class="text-center"><span><a href="${item.landDocURL}" download="LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></span></td><td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>&nbsp;<button class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button></td></tr>`
+                        console.log(item.UploadConvertedDocument);
+                        var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument=='') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc =='') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc =='') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                        htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
                         $('#txtTotalArea').val(item.dTotalArea);
                     });
                     $("#tblLandInfo tbody").html('');
-                    $("#tblLandInfo tbody").html(htmlString);
+                    $("#tblLandInfo tbody").append(htmlString);
                     ClearAllData();
                 }
+
             }
         });
 
@@ -440,13 +509,50 @@
 
     });
 
+
+    function SomeFunction() {
+    var htmlString = "";
+    var array = @Html.Raw(Json.Encode(ViewBag.landDataList));
+    for(var i = 0; i < array.length; i++) {
+        landInfoData.push(array[i]);
+        }
+        landInfoData.forEach(function (item, index) {
+
+            var landConvertedURL = (item.UploadConvertedDocument == null) ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landTitleURL = (item.UploadLandTitleDoc == null) ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+            item.UnQID = CreateGuid();
+            console.log(item.UnQID)
+            htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+            $('#txtTotalArea').val(item.dTotalArea);
+        });
+        $("#tblLandInfo tbody").html('');
+        $("#tblLandInfo tbody").html(htmlString);
+}
+
+
     function saveDetails() {
         var VertinaryModal = {
             trg: landInfoData
         }
 
         var d = JSON.stringify(VertinaryModal);
-        console.log(d);
+        //console.log(d);
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -541,8 +647,6 @@
         reader.readAsDataURL(file);
         return imagebase64;
     }
-
-
 
     function CheckValidation() {
         var status = true;
@@ -679,7 +783,91 @@
             status = false;
         }
 
+        if (landInfoData.length > 0) {
+          /*  alert(landInfoData.length);*/
+            debugger;
+            landInfoData.forEach(function (item) {
+                if (landConverted != "Not Converted") {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && (orderNo == item.sOrdrNo || item.sOrdrNo == "NA") && (orderDate == item.dtOrdrDate || item.dtOrdrDate == "NA") && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: "Duplicate Entry",
+                            html: "<p>The Details you have entered are already exists into the table, Please try again find different values</p>",
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        status = false;
+                    }
+                }
+                else {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: "Duplicate Entry",
+                            html: "<p>The Details you have entered are already exists into the table, Please try again find different values</p>",
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        status = false;
+                    }
+                }
+            });
+        }
         return status;
+    }
+
+    function deleteRow(UniqueID)
+    {
+        var htmlString = "";
+        landInfoData = landInfoData.filter(function (e) {
+            return e.UnQID !== UniqueID;
+        })
+
+        console.table(landInfoData);
+
+        $('#txtTotalArea').val(0);
+        if (landInfoData.length <= 0) {
+            htmlString += `<td colspan="14" class="text-center">No Data Available</td>`
+
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").html(htmlString);
+        }
+        else {
+            landInfoData.forEach(function (item, index) {
+                var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument == '') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc == '') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc == '') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                item.UnQID = CreateGuid();
+                console.log(item.UnQID)
+
+                htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+                $('#txtTotalArea').val(item.dTotalArea);
+            });
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").append(htmlString);
+       /*     ClearAllData();*/
+        }
+
+
     }
     function numberOnly(id) {
         // Get element by id which passed as parameter within HTML element event
@@ -693,6 +881,15 @@
         // This removes any other character but numbers as entered by user
         element.value = element.value.replace(/[^A-Za-z]/, "");
     }
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
 </script>
 
 

@@ -49,7 +49,7 @@ namespace NewZapures_V2.Models
             {
                 Id = 1,
                 Text = "Temporary",
-                label= "radio-danger"
+                label = "radio-danger"
 
             });
 
@@ -120,7 +120,7 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if(objResponse.Data!= null)
+                if (objResponse.Data != null)
                     serviceDetails = JsonConvert.DeserializeObject<List<GetservicesetailsAndroidNew>>(objResponse.Data.ToString());
             }
             return serviceDetails;
@@ -216,13 +216,13 @@ namespace NewZapures_V2.Models
             });
             return Lst;
         }
-        public static List<Dropdown> GetDepartmentlist()
+        public static List<DropdownDeptImages> GetDepartmentlist()
         {
-            List<Dropdown> Lst = new List<Dropdown>();
+            List<DropdownDeptImages> Lst = new List<DropdownDeptImages>();
 
             AdminController controller = new AdminController();
 
-            Lst = controller.GetDepartments().Select(s => new Dropdown { Id = s.DepartmentID.ToString(), Text = s.DepartmentName }).Distinct().ToList();
+            Lst = controller.GetDepartments().Select(s => new DropdownDeptImages { Id = s.DepartmentID.ToString(), Text = s.DepartmentName }).Distinct().ToList();
 
             return Lst;
         }
@@ -448,8 +448,8 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if(objResponse !=null)
-                   dropdowns = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                if (objResponse != null)
+                    dropdowns = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
             }
             return dropdowns;
         }
@@ -543,7 +543,7 @@ namespace NewZapures_V2.Models
             }
             return departments;
         }
-        public static List<WalletLeft> GetWalletAmount(string partyID,string Type = "GetWalletAmount")
+        public static List<WalletLeft> GetWalletAmount(string partyID, string Type = "GetWalletAmount")
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + partyID);
             var request = new RestRequest(Method.POST);
@@ -569,7 +569,7 @@ namespace NewZapures_V2.Models
             List<AadhaarDetails> details = controller.GetAadhaarDetails(partyID);
 
             return details;
-        }       
+        }
         public static List<NotificationMaster> GetNotificationMaster()
         //public static List<NotificationMaster> GeNotificationMaster(sting serviceTypeId, int descriptionId)
         {
@@ -587,7 +587,7 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 var responseData = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if(responseData.Data!= null)
+                if (responseData.Data != null)
                     notificationsMaster = JsonConvert.DeserializeObject<List<NotificationMaster>>(responseData.Data.ToString());
             }
             return notificationsMaster;
@@ -607,8 +607,8 @@ namespace NewZapures_V2.Models
             ResponseData requestResponse = new ResponseData();
             if (response.StatusCode.ToString() == "OK")
             {
-                 requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-             
+                requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+
             }
             return requestResponse;
         }
@@ -628,7 +628,7 @@ namespace NewZapures_V2.Models
             List<NotificationOperationData> notificationData = new List<NotificationOperationData>();
             if (response.StatusCode.ToString() == "OK")
             {
-                 requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
             }
 
             if (notificationOperation.Type == "MarkasRead" || notificationOperation.Type == "Delete")
@@ -719,10 +719,10 @@ namespace NewZapures_V2.Models
             string hostName = Dns.GetHostName(); // Retrive the Name of HOST
 
             // Get the IP
-         
+
             var etc = Dns.GetHostEntry(hostName).AddressList;
             var IPv6Address = Dns.GetHostEntry(hostName).AddressList[0].ToString();
-            var IPv4Address = Dns.GetHostEntry(hostName).AddressList[etc.Length-1].ToString();
+            var IPv4Address = Dns.GetHostEntry(hostName).AddressList[etc.Length - 1].ToString();
 
             Dictionary<string, string> IpAddressCollection = new Dictionary<string, string>();
             IpAddressCollection.Add("IPv6_Address", IPv6Address);
@@ -806,8 +806,8 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
-        
-        public static List<Dropdown> GetTehsil(int MenuId,string Type = "Tehsil")
+
+        public static List<Dropdown> GetTehsil(int MenuId, string Type = "Tehsil")
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
             var request = new RestRequest(Method.POST);
@@ -864,7 +864,7 @@ namespace NewZapures_V2.Models
             return bankDetailsList;
         }
 
-        
+
         public static List<Dropdown> GetFeeType(string MenuId = "0", string Type = "FeeType")
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
@@ -898,16 +898,123 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse.Data != null) { 
-                trusteeList = JsonConvert.DeserializeObject<List<TrusteeBO.TrusteeMember>>(objResponse.Data.ToString());
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<TrusteeBO.TrusteeMember>>(objResponse.Data.ToString());
                 }
             }
             return trusteeList;
         }
 
+        public static List<LandInfoBO> GetLandBuildingInfo(string MenuId, string Type = "LandInfo")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<LandInfoBO> trusteeList = new List<LandInfoBO>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<LandInfoBO>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+        public static List<AcdmcTableData> GetAcdmcData()
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<AcdmcTableData> data = new List<AcdmcTableData>();
+            var objResponse = new ResponseData();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<AcdmcTableData>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+
+        public static List<AddCourseBO> GetSubjectList(string ApplGUID)
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "AddCourseData/GetSubjectList?Guid=" + ApplGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<AddCourseBO> data = new List<AddCourseBO>();
+            var objResponse = new ResponseData();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<AddCourseBO>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+        public static List<DraftApplication> GetAdminApplication(string applGUID = "")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetAdminApplication?applGUID=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<DraftApplication> draftApplication = new List<DraftApplication>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    draftApplication = JsonConvert.DeserializeObject<List<DraftApplication>>(requestResponse.Data.ToString());
+            }
+            return draftApplication;
+        }
         public static List<DraftApplication> GetDraftApplication(string applGUID = "")
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications?applGUID="+ applGUID);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetDarftApplications?applGUID=" + applGUID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<DraftApplication> draftApplication = new List<DraftApplication>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    draftApplication = JsonConvert.DeserializeObject<List<DraftApplication>>(requestResponse.Data.ToString());
+            }
+            return draftApplication;
+        }
+        public static List<DraftApplication> GetApplicationsToUploadReceipt(string applGUID = "")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/GetApplicationsToUploadReceipt?applGUID=" + applGUID);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -943,6 +1050,92 @@ namespace NewZapures_V2.Models
             }
             return draftApplication;
         }
+        public static List<ApplyNOCApplication> GETNOCApplicationList(int deptID)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GETNOCApplicationList?deptID=" + deptID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<ApplyNOCApplication> nocApplication = new List<ApplyNOCApplication>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    nocApplication = JsonConvert.DeserializeObject<List<ApplyNOCApplication>>(requestResponse.Data.ToString());
+            }
+            return nocApplication;
+        }
+        public static List<ApplyNOCCLGApplication> GETNOCApplicationClgList(int deptID)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GETNOCApplicationClgList?deptID=" + deptID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<ApplyNOCCLGApplication> nocApplication = new List<ApplyNOCCLGApplication>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var requestResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (requestResponse.Data != null)
+                    nocApplication = JsonConvert.DeserializeObject<List<ApplyNOCCLGApplication>>(requestResponse.Data.ToString());
+            }
+            return nocApplication;
+        }
+
+        #region Committee
+
+        public static List<Dropdown> getCommitteeList(int MenuId)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Committee/getCommitteeList?deptId=" + MenuId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> committees = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    committees = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return committees;
+        }
+        
+        public static List<CommitteeMembers> getCommitteeMembersList(int MenuId)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Committee/getCommitteeMembersList?committeeID=" + MenuId);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<CommitteeMembers> committeeMembers = new List<CommitteeMembers>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    committeeMembers = JsonConvert.DeserializeObject<List<CommitteeMembers>>(objResponse.Data.ToString());
+                }
+            }
+            return committeeMembers;
+        }
+        #endregion
+
 
         public static List<Dropdown> GetCourseForDept(int MenuId, string Type = "Course")
         {
