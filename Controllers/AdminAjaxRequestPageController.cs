@@ -26,8 +26,9 @@ namespace NewZapures_V2.Controllers
         {
             return View();
         }
-        public ActionResult GenerateArchtable(int iParamId,int iSubCatId,int iUomId,string sAppId= "abc123")
+        public ActionResult GenerateArchtable(int iParamId,int iSubCatId,int iUomId)
         {
+            string sAppId = SessionModel.ApplicantGuid;
             List<ArchiMstDetail> LstApesData = new List<ArchiMstDetail>();
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GenerateArchtable?iParamId=" + iParamId + "&iSubCatId="+ iSubCatId + "&iUomId="+ iUomId + "&sAppId="+ sAppId);
             var request = new RestRequest(Method.GET);

@@ -385,7 +385,7 @@
             $("#table-" + id).css('display', 'block');
             var splitdata = id.split('-');
             $(this).addClass('hidden');
-            GenerateArchtable(splitdata[0], splitdata[1], splitdata[2],'@appid');
+            GenerateArchtable(splitdata[0], splitdata[1], splitdata[2]);
         });
         $(".inputdata").blur(function () {
             var datamain = $(this).data('id');
@@ -570,7 +570,7 @@
     function GenerateArchtablear(iParamId, iSubCatId, iUomId, sAppId) {
 
         $.ajax({
-            url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId + '&sAppId=' + sAppId,
+            url: GetglobalDomain() + '/AdminAjaxRequestPage/GenerateArchtable?iParamId=' + iParamId + '&iSubCatId=' + iSubCatId + '&iUomId=' + iUomId,
             type: 'POST',
             dataType: "text",
             success: function (response) {
