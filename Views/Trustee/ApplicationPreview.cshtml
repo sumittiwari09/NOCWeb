@@ -8,7 +8,7 @@
     var landData = (List<LandInfoBO>)ViewBag.landDataList;
     var acdmcs = (List<AcdmcTableData>)ViewBag.AcadmicDataList;
     var subjectList = (List<AddCourseBO>)ViewBag.subjectDataList;
-    var currentDate = DateTime.Today.ToString("dd.MM.yyyy");
+    var currentDate = DateTime.Today.ToString("yyyy.MM.dd");
     var validCurrentDate = Convert.ToDateTime(currentDate).AddYears(1).ToString("dd.MM.yyyy");
 }
 

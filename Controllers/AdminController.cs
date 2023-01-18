@@ -36,7 +36,15 @@ namespace NewZapures_V2.Controllers
         {
             var recentApplicationList = ZapurseCommonlist.GetAdminApplication("");
             ViewBag.applicationDetails = recentApplicationList;
-           
+
+            return View();
+        }
+        
+        public ActionResult InspactionApplicationList()
+        {
+            var recentApplicationList = ZapurseCommonlist.GetAdminApplication("");
+            ViewBag.applicationDetails = recentApplicationList;
+
             return View();
         }
 
@@ -70,6 +78,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
         public JsonResult CommitteeMembersList(int committeeID)
         {
             var committeeList = ZapurseCommonlist.getCommitteeMembersList(committeeID);
@@ -105,7 +114,39 @@ namespace NewZapures_V2.Controllers
             };
         }
 
+        public JsonResult GetExistingCommitteeAsignment(string applicationNumber)
+        {
+            var committeeList = ZapurseCommonlist.GetExistingCommitteeAsignment(applicationNumber);
 
+            return new JsonResult
+            {
+                Data = new { Data = committeeList, failure = true, msg = "success" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult SendMail(SendMailToCommittee mailToCommittee)
+        {
+            var json = JsonConvert.SerializeObject(mailToCommittee);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Committee/SendMailToCommitteeMembers");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "success" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
         #endregion
 
 
@@ -167,116 +208,116 @@ namespace NewZapures_V2.Controllers
             var Token = Session["Token"];
             if (userdetailsSession != null)
             {
-                
-                    int Id = Convert.ToInt32(Request.RequestContext.RouteData.Values["Id"]);
-                    if (Request.HttpMethod == "POST")
+
+                int Id = Convert.ToInt32(Request.RequestContext.RouteData.Values["Id"]);
+                if (Request.HttpMethod == "POST")
+                {
+                    string HardwareList = Request["HardwareList"];
+                    string DocumentList = Request["DocumentList"];
+                    string varificationList = Request["varificationList"];
+                    string Classname = Request["ClassName"];
+                    Master.DocumentList = DocumentList;
+                    Master.HardwareList = HardwareList;
+                    Master.ClassName = Classname;
+                    string PI = objcf.getIPAdd();
+                    Master.varificationList = varificationList;
+                    if (Id == 0)
                     {
-                        string HardwareList = Request["HardwareList"];
-                        string DocumentList = Request["DocumentList"];
-                        string varificationList = Request["varificationList"];
-                        string Classname = Request["ClassName"];
-                        Master.DocumentList = DocumentList;
-                        Master.HardwareList = HardwareList;
-                        Master.ClassName = Classname;
-                        string PI = objcf.getIPAdd();
-                        Master.varificationList = varificationList;
-                        if (Id == 0)
-                        {
-                            Master.IsActive = 1;
+                        Master.IsActive = 1;
 
-                        }
-                        Master.CategoryId = Id;
-                        try
-                        {
-                            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Admin/InsertServices");
-                            var request = new RestRequest(Method.POST);
-                            request.AddHeader("cache-control", "no-cache");
+                    }
+                    Master.CategoryId = Id;
+                    try
+                    {
+                        var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Admin/InsertServices");
+                        var request = new RestRequest(Method.POST);
+                        request.AddHeader("cache-control", "no-cache");
 
-                            request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
-                            IRestResponse response = client.Execute(request);
-                            if (response.StatusCode.ToString() == "OK")
+                        request.AddParameter("application/json", _JsonSerializer.Serialize(Master), ParameterType.RequestBody);
+                        IRestResponse response = client.Execute(request);
+                        if (response.StatusCode.ToString() == "OK")
+                        {
+                            ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
+                            if (objResponseData.ResponseCode == "001")
                             {
-                                ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
-                                if (objResponseData.ResponseCode == "001")
-                                {
-                                    return RedirectToAction("SignOut", "Home");
-                                }
-                                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
-                                {
-                                    TempData["SwalStatusMsg"] = "success";
-                                    TempData["SwalMessage"] = objResponseData.Message;
-                                    TempData["SwalTitleMsg"] = "Success!";
-                                    return RedirectToAction("Detail");
-                                }
-                                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 0)
-                                {
-                                    TempData["SwalStatusMsg"] = "warning";
-                                    TempData["SwalMessage"] = objResponseData.Message;
-                                    TempData["SwalTitleMsg"] = "warning!";
-                                    return RedirectToAction("Detail");
-                                }
-                                else
-                                {
-                                    TempData["SwalStatusMsg"] = "error";
-                                    TempData["SwalMessage"] = "Something wrong";
-                                    TempData["SwalTitleMsg"] = "error!";
-                                    return RedirectToAction("Detail");
-                                }
+                                return RedirectToAction("SignOut", "Home");
+                            }
+                            else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                            {
+                                TempData["SwalStatusMsg"] = "success";
+                                TempData["SwalMessage"] = objResponseData.Message;
+                                TempData["SwalTitleMsg"] = "Success!";
+                                return RedirectToAction("Detail");
+                            }
+                            else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 0)
+                            {
+                                TempData["SwalStatusMsg"] = "warning";
+                                TempData["SwalMessage"] = objResponseData.Message;
+                                TempData["SwalTitleMsg"] = "warning!";
+                                return RedirectToAction("Detail");
+                            }
+                            else
+                            {
+                                TempData["SwalStatusMsg"] = "error";
+                                TempData["SwalMessage"] = "Something wrong";
+                                TempData["SwalTitleMsg"] = "error!";
+                                return RedirectToAction("Detail");
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            TempData["SwalStatusMsg"] = "error";
-                            TempData["SwalMessage"] = "Something wrong";
-                            TempData["SwalTitleMsg"] = "error!";
-                            return RedirectToAction("Detail");
-                        }
-                        return RedirectToAction("Details");
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        CategoryMaster objCaterMastermaster = new CategoryMaster();
-                        if (Id != 0)
-                        {
-
-                            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Admin/GetServicesDetail?Id=" + Id);
-                            var request = new RestRequest(Method.GET);
-                            request.AddHeader("cache-control", "no-cache");
-                            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
-                            request.AddParameter("application/json", "", ParameterType.RequestBody);
-                            IRestResponse response = client.Execute(request);
-                            if (response.StatusCode.ToString() == "OK")
-                            {
-                                var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                                var objResponseData = JsonConvert.DeserializeObject<ListCategoryMaster>(d.Data.ToString());
-                                //var data = _JsonSerializer.Deserialize<CategoryMaster>(response.Content);
-                                //CategoryMasterData objResponseData = _JsonSerializer.Deserialize<CategoryMasterData>(response.Content);
-                                //objUsermaster = objResponseData.ListRequest;
-
-                                if (d.ResponseCode == "001")
-                                {
-                                    return RedirectToAction("SignOut", "Home");
-                                }
-                                else if (d.ResponseCode == "000")
-                                {
-                                    objCaterMastermaster = objResponseData.ListRequest.FirstOrDefault();
-                                }
-                            }
-
-                        }
-                        List<CustomMaster> HardwareLst = new List<CustomMaster>();
-                        HardwareLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.HardwareType));
-                        List<CustomMaster> DocumentLst = new List<CustomMaster>();
-                        DocumentLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.DocumentType));
-                        List<CustomMaster> VarificationLst = new List<CustomMaster>();
-                        VarificationLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.VerificationType));
-                        ViewBag.HardwareLst = HardwareLst;
-                        ViewBag.DocumentLst = DocumentLst;
-                        ViewBag.VarificationLst = VarificationLst;
-                        //ViewBag.NotificationAllowed = isnotificationAllowed;
-                        return View(objCaterMastermaster);
+                        TempData["SwalStatusMsg"] = "error";
+                        TempData["SwalMessage"] = "Something wrong";
+                        TempData["SwalTitleMsg"] = "error!";
+                        return RedirectToAction("Detail");
                     }
-               
+                    return RedirectToAction("Details");
+                }
+                else
+                {
+                    CategoryMaster objCaterMastermaster = new CategoryMaster();
+                    if (Id != 0)
+                    {
+
+                        var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Admin/GetServicesDetail?Id=" + Id);
+                        var request = new RestRequest(Method.GET);
+                        request.AddHeader("cache-control", "no-cache");
+                        //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+                        request.AddParameter("application/json", "", ParameterType.RequestBody);
+                        IRestResponse response = client.Execute(request);
+                        if (response.StatusCode.ToString() == "OK")
+                        {
+                            var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                            var objResponseData = JsonConvert.DeserializeObject<ListCategoryMaster>(d.Data.ToString());
+                            //var data = _JsonSerializer.Deserialize<CategoryMaster>(response.Content);
+                            //CategoryMasterData objResponseData = _JsonSerializer.Deserialize<CategoryMasterData>(response.Content);
+                            //objUsermaster = objResponseData.ListRequest;
+
+                            if (d.ResponseCode == "001")
+                            {
+                                return RedirectToAction("SignOut", "Home");
+                            }
+                            else if (d.ResponseCode == "000")
+                            {
+                                objCaterMastermaster = objResponseData.ListRequest.FirstOrDefault();
+                            }
+                        }
+
+                    }
+                    List<CustomMaster> HardwareLst = new List<CustomMaster>();
+                    HardwareLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.HardwareType));
+                    List<CustomMaster> DocumentLst = new List<CustomMaster>();
+                    DocumentLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.DocumentType));
+                    List<CustomMaster> VarificationLst = new List<CustomMaster>();
+                    VarificationLst = Common.GetCustomMastersList(Convert.ToInt32(TypeDocument.VerificationType));
+                    ViewBag.HardwareLst = HardwareLst;
+                    ViewBag.DocumentLst = DocumentLst;
+                    ViewBag.VarificationLst = VarificationLst;
+                    //ViewBag.NotificationAllowed = isnotificationAllowed;
+                    return View(objCaterMastermaster);
+                }
+
             }
             else
             {
@@ -1173,11 +1214,11 @@ namespace NewZapures_V2.Controllers
             var UserDetails = (UserModelSession)Session["UserDetails"];
             if (UserDetails != null)
             {
-                var departmentList = GetDepartments();               
+                var departmentList = GetDepartments();
                 var groups = GetGroups(UserDetails.PartyId);
                 var Menus = ZapurseCommonlist.GetMenusList();
 
-                ViewBag.departmentList =departmentList;
+                ViewBag.departmentList = departmentList;
                 ViewBag.departmentList = departmentList;
                 ViewBag.groups = groups;
                 ViewBag.Menus = Menus;
@@ -1274,7 +1315,7 @@ namespace NewZapures_V2.Controllers
             }
             return groups;
         }
-       
+
 
         public ActionResult ManageUserRights()
         {

@@ -55,7 +55,7 @@
                             }
                         </select>
                     </div>
-                    <button class="btn btn-primary col-sm-1" id="Searchbtn" style="display:block; margin: 5px;"> <i class="fa fa-search"></i> search </button>
+                    <button class="btn btn-primary col-sm-1" id="Searchbtn" style="display:block; margin: 5px;"> <i class="fa fa-search"></i> Search </button>
                     <button class="btn btn-primary col-sm-1" id="Viewbtn" style="display:block; margin: 5px;"> <i class="fa fa-street-view"></i> View </button>
                 </div>
                 <div class="form-group is-empty row" id="DataEventlist">
@@ -93,12 +93,13 @@
     <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
     <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
     <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".singleselect").select2();
         $("#Searchbtn").click(function () {
             var DepartmentId = $("#DepartmentId").val();
             $.ajax({
-                url: '/Master/EventMasterTable?DepartmentId=' + DepartmentId +'&type=Search',
+                url: GetglobalDomain() + '/Master/EventMasterTable?DepartmentId=' + DepartmentId + '&type=Search',
                 type: 'POST',
                 dataType: "text",
                 success: function (response) {
@@ -106,7 +107,7 @@
 
                     $("#DataEventlist").html(response);
 
-                 
+
 
                 }
             });
@@ -116,7 +117,7 @@
             debugger;
             var DepartmentId = $("#DepartmentId").val();
             $.ajax({
-                url: '/Master/EventMasterTable?DepartmentId=' + DepartmentId + '&type=View',
+                url: GetglobalDomain() + '/Master/EventMasterTable?DepartmentId=' + DepartmentId + '&type=View',
                 type: 'POST',
                 dataType: "text",
                 success: function (response) {
@@ -131,5 +132,5 @@
             return false;
         });
     </script>
-    }
+}
 

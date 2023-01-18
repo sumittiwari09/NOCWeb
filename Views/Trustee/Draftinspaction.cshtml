@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Edit Application";
+    ViewBag.Title = "Inspection Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
     //var eAppNo = (string)ViewBag.appNo;
     //var etrustName = (string)ViewBag.trustName;
@@ -112,7 +112,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Edit Application</li>
+                    <li class="breadcrumb-item active">Inspection Application</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -122,12 +122,12 @@
 
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
-        <h4 class="mt-0 header-title float-left">Edit Application</h4>
-        <a href="@Url.Action("DraftApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Draft</a>
+        <h4 class="mt-0 header-title float-left">Inspection Application</h4>
+        @*<a href="@Url.Action("DraftApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Draft</a>*@
     </div>
     <div class="card-body ">
         <div class="row">
-            <table class="table table-bordered table-striped">
+            @*<table class="table table-bordered table-striped">
                 <tr>
                     <th style="color:black!important;font-weight:500">Application Number :</th>
                     <td>@draftAppl.ApplicationNumber</td>
@@ -167,27 +167,15 @@
                     <td>@draftAppl.CourseName</td>
                 </tr>
                 <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary" style="display:none"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
-                @*<tr>
-                        <td colspan="4">
-                            <table class="table table-striped">
-                                <tr><td> <a href="@Url.Action("Index", "LandBuildingInfo")" target="_blank"><i class="fa fa-plus"></i> Add Land and Building Information</a></td></tr>
-                                <tr><td><a href="@Url.Action("CreateData","SubjectMaster")" target="_blank"><i class="fa fa-plus"></i> Add Subject Covered</a> </td></tr>
-                                <tr><td><a href="@Url.Action("Index","FeeDetails")" target="_blank"><i class="fa fa-plus"></i> Add College Fee Structure</a></td></tr>
-                                <tr><td><button onclick="GenerateArchtable('sdfd')"><i class="fa fa-plus"></i> Add Architectrual Details</button></td></tr>
-                                <tr><td><a href="@Url.Action("CollageFacilitys","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Other Facilites</a></td></tr>
-                                <tr><td><a href="@Url.Action("Index","Staff")" target="_blank"><i class="fa fa-plus"></i> Add Staff Details</a></td></tr>
-                                <tr><td><a href="@Url.Action("Index","AcdmcMst")" target="_blank"><i class="fa fa-plus"></i> Add Acadmy Information</a></td></tr>
-                                <tr><td><a href="@Url.Action("CollageAttachment","Trustee")" target="_blank"><i class="fa fa-plus"></i> Add Proof Document</a></td></tr>
-                            </table>
-                        </td>
-                    </tr>*@
-            </table>
+                          </table>*@
             <div class="col-lg-12">
                 <div class="row">
 
                     <div class="col-lg-3">
                         <ul style="margin-left: -50px;">
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land & Building Information</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;Trust Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;College Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btn_ins_landInfo" data-id="@Url.Action("LandAreaDetails", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land & Building Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CreateData", "SubjectMaster", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-book"></i> &nbsp;Subject Covered</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "FeeDetails", new {guid=draftAppl.ApplGuid})"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("NewArchitectureDetail", "Master", new {guid=draftAppl.ApplGuid})"><i class="fa fa-building"></i> &nbsp;Architectrual Details</button></li>
@@ -195,7 +183,7 @@
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("ApplicationPreview", "Trustee", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light" data-id="@Url.Action("ApplicationPreview", "Trustee", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-paper-plane"></i> &nbsp;Sendback / Forward Application </button></li>
                             @*<li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>*@
                         </ul>

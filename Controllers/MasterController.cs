@@ -934,6 +934,7 @@ namespace NewZapures_V2.Controllers
                 lstEvent = GetNOCEventplst(DepartmentId);
             }
             ViewBag.lstEvent=lstEvent;
+            ViewBag.type= type;
             return View(lstMap);
         }
 
@@ -977,14 +978,14 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public ActionResult CommiteeMaster( int Id=0)
+        public ActionResult CommiteeMaster(int deptID =0,int Id=0)
         {
             List<Dropdown> Prtlst = new List<Dropdown>();
-            Prtlst = Common.GetDropDown(8, "PARTYCODE");
+            Prtlst = Common.GetDropDown(deptID, "PARTYCODE");
             List<CommiteeMaster> Commiteelst = new List<CommiteeMaster>();
-            Commiteelst = GetCommitee(8);
+            Commiteelst = GetCommitee(deptID);
             ViewBag.Prtlst=Prtlst;
-            ViewBag.deptid = 8;
+            ViewBag.deptid = deptID;
             ViewBag.Commiteelst = Commiteelst;
             CommiteeMaster Mst = new CommiteeMaster();
             if (Id != 0)
@@ -997,6 +998,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult CommiteeMasterSave(CommiteeMaster Commitee)
         {
            Commitee.sComtMemLst = Request["sComtMemLst"].ToString();
+            
   
             var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AllCommiteeSaveView");
             var request2 = new RestRequest(Method.POST);
@@ -1019,21 +1021,21 @@ namespace NewZapures_V2.Controllers
                         TempData["SwalStatusMsg"] = "success";
                         TempData["SwalMessage"] = objResponseData.Message;
                         TempData["SwalTitleMsg"] = "Success!";
-                        return RedirectToAction("CommiteeMaster");
+                        return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
                     }
                     else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
                     {
                         TempData["SwalStatusMsg"] = "warning";
                         TempData["SwalMessage"] = objResponseData.Message;
                         TempData["SwalTitleMsg"] = "warning!";
-                        return RedirectToAction("CommiteeMaster");
+                        return RedirectToAction("CommiteeMaster", new {deptID= Commitee.iDeptId });
                     }
                     else
                     {
                         TempData["SwalStatusMsg"] = "error";
                         TempData["SwalMessage"] = "Something wrong";
                         TempData["SwalTitleMsg"] = "error!";
-                        return RedirectToAction("CommiteeMaster");
+                        return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
                     }
                 }
             }
@@ -1044,7 +1046,7 @@ namespace NewZapures_V2.Controllers
                 TempData["SwalTitleMsg"] = "error!";
 
             }
-            return RedirectToAction("CommiteeMaster");
+            return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
         }
 
         public static List<CommiteeMaster> GetCommitee(int Id)

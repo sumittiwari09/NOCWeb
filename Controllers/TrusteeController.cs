@@ -320,6 +320,19 @@ namespace NewZapures_V2.Controllers
             SessionModel.ApplicantGuid = applGUID;
             return View();
         }
+        public ActionResult Draftinspaction(string applGUID)
+        
+        {           
+            var EditdraftedApplications = ZapurseCommonlist.GetAdminApplication(applGUID);
+            ViewBag.applicationDetails = EditdraftedApplications[0];
+            var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+            //var LandData = ZapurseCommonlist.GetLandData(EditdraftedApplications[0].ApplGuid);
+            //ViewBag.LandDetails = LandData;
+            SessionModel.ApplicantGuid = applGUID;
+            ViewBag.trusteeMember = trusteeMember;
+            SessionModel.ApplicantGuid = applGUID;
+            return View();
+        }
 
         //public ActionResult ApplicationPreview(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
         public ActionResult ApplicationPreview(string applGUID)

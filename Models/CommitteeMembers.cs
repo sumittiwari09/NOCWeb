@@ -16,7 +16,10 @@ namespace NewZapures_V2.Models
     {
         public int iPk_AsgnID { get; set; }
         public int iFk_CmtyID { get; set; }
+        public string sComtNam { get; set; }
         public int iFk_CmtytypeID { get; set; }
+        public int iDeptId { get; set; }
+        public string CommitteeType { get; set; }
         public string sApplNo { get; set; }
         public string sCrtdBy { get; set; }
         public string dtCrtdOn { get; set; }
@@ -26,5 +29,16 @@ namespace NewZapures_V2.Models
         public string dtEndDate { get; set; }
         public string tEndtime { get; set; }
 
+    }
+
+    public class SendMailToCommittee
+    {
+        public List<EmailAddress> EmailList { get; set; }
+        public string applicationNumber { get; set; }
+        public string type { get; set; }
+    }
+    public class EmailAddress
+    {
+        public string Emails { get; set; }
     }
 }

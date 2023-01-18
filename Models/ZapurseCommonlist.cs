@@ -1134,8 +1134,28 @@ namespace NewZapures_V2.Models
             }
             return committeeMembers;
         }
+        public static List<Committee> GetExistingCommitteeAsignment(string applicationNumber)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Committee/GetExistingCommitteeAsignment?applicationNumber=" + applicationNumber);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Committee> committeeMembers = new List<Committee>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    committeeMembers = JsonConvert.DeserializeObject<List<Committee>>(objResponse.Data.ToString());
+                }
+            }
+            return committeeMembers;
+        }
         #endregion
-
 
         public static List<Dropdown> GetCourseForDept(int MenuId, string Type = "Course")
         {
@@ -1161,5 +1181,36 @@ namespace NewZapures_V2.Models
             Medium,
             Large
         }
+
+        #region AddComments by Vivek
+        public static ResponseData AddComments(InspectionComments comments)
+        {
+            var json = JsonConvert.SerializeObject(comments);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddComments");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+            List<InspectionComments> commentsList = new List<InspectionComments>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if(comments.type=="Select" && objResponse.Data!= null)
+                {
+                    commentsList = JsonConvert.DeserializeObject<List<InspectionComments>>(objResponse.Data.ToString());
+                    objResponse.Data = null;
+                    objResponse.Data = commentsList;
+                }
+            }
+
+            return objResponse;
+        }
+        #endregion
+
     }
 }

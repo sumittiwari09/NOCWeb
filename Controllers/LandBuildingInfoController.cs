@@ -24,6 +24,30 @@ namespace NewZapures_V2.Controllers
             ViewBag.landDataList = LandData;
             return View();
         }
+        
+        public ActionResult LandAreaDetails(string guid)
+        {
+            var userDetails = (UserModelSession)Session["UserDetails"];
+            var LandData = ZapurseCommonlist.GetLandBuildingInfo(guid);
+            ViewBag.landDataList = LandData;
+            ViewBag.UserID = userDetails.PartyId;
+            ViewBag.applGuid = guid;
+
+            return View();
+        }
+
+
+        public JsonResult AddComments(InspectionComments comments)
+        {
+            var objResponse = ZapurseCommonlist.AddComments(comments);
+         
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Message = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
 
         [HttpPost]
         public JsonResult SaveDetails(List<LandInfoBO> trg)

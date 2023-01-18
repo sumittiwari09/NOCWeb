@@ -20,6 +20,7 @@
     {
         SelectedIncludes = Model.sComtMemLst.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(p =>p).ToList();
     }
+  var dept =  (int)ViewBag.deptid;
 }
 
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
@@ -51,8 +52,9 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
                 <h4 class="mt-0 header-title float-left">Commitee Master</h4>
+                <a href="@Url.Action("AdminApplicationPreview","Admin")" class="btn btn-sm"><i class="fa fa-arrow-circle-left"></i>&nbsp; Back To Inspection List</a>
 
             </div>
             <div class="card-body">
@@ -80,17 +82,16 @@
                                     foreach (var item in Prtlst)
                                     {
                                         <option @(Model != null && SelectedIncludes.Contains(item.Id) ? "selected" : "")  value='@item.Id'> @item.Text </option>
-
                                     }
                                 }
                             </select>
+                            <a href="@Url.Action("AddSystemUser","Role")" class="link-primary" target="_blank">Add new user</a>
                         </div>
                         <div class="col-sm-2">
-                            <input id="CommiteeName" type="text" placeholder="Enter Commitee Name" value="" title="Commitee Name" name="sComtNam" class="form-control">
-
+                            <input id="CommiteeName" type="text" placeholder="Enter Commitee Name" value="@(Model!=null?Model.sComtNam:"")" title="Commitee Name" name="sComtNam" class="form-control">
                         </div>
-                        <div class="col-sm-4" style="display:flex;">
-                            <button class="btn btn-primary btn-sm" type="submit" id="Addbtn" style="margin: 5px;"> <i class="fa fa-plus"></i>Submit</button>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary" type="submit" id="Addbtn" style="margin: 5px;"> <i class="fa fa-save"></i> Submit</button>
 
                         </div>
                     </div>
@@ -137,7 +138,8 @@
                                                 @Html.ActionLink(" ", "CommiteeMaster", "Master",
             new
             {
-            Id = item.iPk_CommiteeId
+                Id = item.iPk_CommiteeId,
+                deptID= dept
 
             },
             new { id = "btnEdit", @class = "fas fa-edit text-info font-16", title = "Edit" })

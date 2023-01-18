@@ -3,10 +3,11 @@
 @{
     ViewBag.Title = "EventMasterTable";
     List<EVNTMST> lstEvent = new List<EVNTMST>();
-    if (ViewBag.lstEvent!=null)
+    if (ViewBag.lstEvent != null)
     {
         lstEvent = (List<EVNTMST>)ViewBag.lstEvent;
     }
+    var type = (string)ViewBag.type;
     Layout = null;
 }
 @*<style>
@@ -24,7 +25,13 @@
             <th>Application</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Action</th>
+            @{
+                if (type != "View")
+                {
+
+                    <th>Action</th>
+                }
+            }
         </tr>
     </thead>
     <tbody>
@@ -41,23 +48,31 @@
                         <td>@item.NocDepartmenttype</td>
 
                         <td>
-                            <input type="date" id="fromdate_@item.NewGuid" data-text="fromdate" data-id="@item.NewGuid" value="" disabled />
+                            <input type="date" id="fromdate_@item.NewGuid" class="form-control" data-text="fromdate" data-id="@item.NewGuid" value="" disabled />
                         </td>
-                        <td><input type="date" id="Todate_@item.NewGuid" data-text="Todate" data-id="@item.NewGuid" value="" disabled /></td>
-                        <td class="row">
-                            @*<a href="@Url.Action("DepartmentMapping", "Master", new { Id = item.iPk_DeptMapId })" class="btn btn-success btn-xs padding5" title="Update">
-                                <i class="fa fa-edit"></i>
-                            </a>*@
-                            <a href="#" class="btn btn-success btn-sm  addpadding" title="Add" data-text="add" data-mstid="@item.iPk_DeptMapId" data-id="@item.NewGuid" id="add_@item.NewGuid" style="display: none; width: fit-content">
-                                <i class="fa fa-save"></i>
-                            </a>
-                            <a href="#" class="btn btn-success btn-sm padding6 updatepadding" title="Update" data-text="update" data-mstid="@item.iPk_DeptMapId" data-id="@item.NewGuid" id="update_@item.NewGuid" style="display: block; width: fit-content;margin-right:10px">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="#" class="btn btn-danger btn-sm  updatepadding" title="Delete" data-id="@item.NewGuid" id="delete_@item.NewGuid" data-mstid="@item.iPk_DeptMapId" style="display: block; width: fit-content">
-                                <i class="fa fa-minus"></i>
-                            </a>
-                        </td>
+                        <td><input type="date" id="Todate_@item.NewGuid" class="form-control" data-text="Todate" data-id="@item.NewGuid" value="" disabled /></td>
+
+                        @{
+                            if (type != "View")
+                            {
+
+
+                                <td class="row">
+                                    @*<a href="@Url.Action("DepartmentMapping", "Master", new { Id = item.iPk_DeptMapId })" class="btn btn-success btn-xs padding5" title="Update">
+                                            <i class="fa fa-edit"></i>
+                                        </a>*@
+                                    <a href="#" class="btn btn-success btn-sm  addpadding" title="Add" data-text="add" data-mstid="@item.iPk_DeptMapId" data-id="@item.NewGuid" id="add_@item.NewGuid" style="display: none; width: fit-content">
+                                        <i class="fa fa-save"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-sm padding6 updatepadding" title="Update" data-text="update" data-mstid="@item.iPk_DeptMapId" data-id="@item.NewGuid" id="update_@item.NewGuid" style="display: block; width: fit-content;margin-right:10px">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-sm  updatepadding" title="Delete" data-id="@item.NewGuid" id="delete_@item.NewGuid" data-mstid="@item.iPk_DeptMapId" style="display: block; width: fit-content">
+                                        <i class="fa fa-minus"></i>
+                                    </a>
+                                </td>
+                            }
+                        }
                     </tr>
 
 
@@ -82,10 +97,13 @@
                             <label class="control-label" style="font-weight:bold;">@item.dtTodate</label>
                             @*<input type="text" id="Todate_@item.sNewGuid" data-text="Todate" data-id="@item.sNewGuid" value="@item.dtTodate" disabled />*@
                         </td>
-                        <td class="row">
-                          
-                          
-                        </td>
+                        @{
+                            if (type != "View")
+                            {
+                                <td class="row">
+                                </td>
+                            }
+                        }
                     </tr>
 
 
@@ -95,98 +113,104 @@
 
     </tbody>
 </table>
-    <script type="text/javascript">
-        $(".padding6").click(function () {
-            debugger;
-            var text = $(this).data('text');
-            var id = $(this).data('id');
-            showfunction(text, id)
-            //if (text == 'update') {
-            //    $("#update_" + id).css('display', 'none');
-            //    $("#delete_" + id).css('display', 'none');
-            //    $("#add_" + id).css('display', 'block');
-            //    $("#fromdate_" + id).prop('disabled', false);
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $(".padding6").click(function () {
+        debugger;
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        showfunction(text, id)
+        //if (text == 'update') {
+        //    $("#update_" + id).css('display', 'none');
+        //    $("#delete_" + id).css('display', 'none');
+        //    $("#add_" + id).css('display', 'block');
+        //    $("#fromdate_" + id).prop('disabled', false);
 
-            //   /* $("#Todate_" + id).prop('disabled', false);*/
-            //}
-            //else {
-            //    $("#add_" + id).css('display', 'none');
-            //    $("#update_" + id).css('display', 'block');
-            //    $("#delete_" + id).css('display', 'block');
-            //    $("#fromdate_" + id).prop('disabled', true);
-            //    $("#Todate_" + id).prop('disabled', true);
+        //   /* $("#Todate_" + id).prop('disabled', false);*/
+        //}
+        //else {
+        //    $("#add_" + id).css('display', 'none');
+        //    $("#update_" + id).css('display', 'block');
+        //    $("#delete_" + id).css('display', 'block');
+        //    $("#fromdate_" + id).prop('disabled', true);
+        //    $("#Todate_" + id).prop('disabled', true);
 
-            //}
+        //}
 
-        });
-        $("input[type=date]").change(function () {
-            var text = $(this).data('text');
-            var id = $(this).data('id');
-            var mindate = $(this).val();
-            if (text == 'fromdate') {
-                $("#Todate_" + id).attr('min', mindate);
-                $("#Todate_" + id).prop('disabled', false);
+    });
+    $("input[type=date]").change(function () {
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        var mindate = $(this).val();
+        if (text == 'fromdate') {
+            $("#Todate_" + id).attr('min', mindate);
+            $("#Todate_" + id).prop('disabled', false);
 
-            }
-            else {
-                $("#fromdate_" + id).attr('max', mindate);
-            }
-        });
-        $(".addpadding").click(function () {
-            debugger;
-            var text = $(this).data('text');
-            var id = $(this).data('id');
-            var mstid = $(this).data('mstid');
-            var Fromdate = $("#fromdate_" + id).val();
-            var Todate = $("#Todate_" + id).val();
-            var MstSave = [];
-            MstSave.push({
-                sNewGuid: id,
-                Id: mstid,
-                dtFormdate: Fromdate,
-                dtTodate: Todate
-            });
-            var Params = JSON.stringify({
-                MstSave: MstSave
-            });
-            $.ajax({
-                url: "/Master/InsertEvent",
-                type: 'POST',
-                dataType: "json",
-                data: Params,
-                contentType: "application/json",
-                enctype: 'multipart/form-data',
-                success: function (response) {
-                    if (response.IsValid = 1) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: response.msg,
-                            showConfirmButton: false,
-                            timer: 6000
-                        });
-                        showfunction(text, id)
-
-                    }
-                }
-            });
-        });
-        function showfunction(text, id) {
-            if (text == 'update') {
-                $("#update_" + id).css('display', 'none');
-                $("#delete_" + id).css('display', 'none');
-                $("#add_" + id).css('display', 'block');
-                $("#fromdate_" + id).prop('disabled', false);
-
-                /* $("#Todate_" + id).prop('disabled', false);*/
-            }
-            else {
-                $("#add_" + id).css('display', 'none');
-                $("#update_" + id).css('display', 'block');
-                $("#delete_" + id).css('display', 'block');
-                $("#fromdate_" + id).prop('disabled', true);
-                $("#Todate_" + id).prop('disabled', true);
-
-            }
         }
-    </script>
+        else {
+            $("#fromdate_" + id).attr('max', mindate);
+        }
+    });
+    $(".addpadding").click(function () {
+        debugger;
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        var mstid = $(this).data('mstid');
+        var Fromdate = $("#fromdate_" + id).val();
+        var Todate = $("#Todate_" + id).val();
+        var MstSave = [];
+        MstSave.push({
+            sNewGuid: id,
+            Id: mstid,
+            dtFormdate: Fromdate,
+            dtTodate: Todate
+        });
+        var Params = JSON.stringify({
+            MstSave: MstSave
+        });
+        $.ajax({
+            url: GetglobalDomain() + "/Master/InsertEvent",
+            type: 'POST',
+            dataType: "json",
+            data: Params,
+            contentType: "application/json",
+            enctype: 'multipart/form-data',
+            success: function (response) {
+                if (response.IsValid = 1) {
+                    var msgIcon = "success";
+
+                    if (response.msg == "Failed")
+                        msgIcon = "error";
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: msgIcon,
+                        title: response.msg,
+                        showConfirmButton: false,
+                        timer: 6000
+                    });
+                    showfunction(text, id)
+
+                }
+            }
+        });
+    });
+    function showfunction(text, id) {
+        if (text == 'update') {
+            $("#update_" + id).css('display', 'none');
+            $("#delete_" + id).css('display', 'none');
+            $("#add_" + id).css('display', 'block');
+            $("#fromdate_" + id).prop('disabled', false);
+
+            /* $("#Todate_" + id).prop('disabled', false);*/
+        }
+        else {
+            $("#add_" + id).css('display', 'none');
+            $("#update_" + id).css('display', 'block');
+            $("#delete_" + id).css('display', 'block');
+            $("#fromdate_" + id).prop('disabled', true);
+            $("#Todate_" + id).prop('disabled', true);
+
+        }
+    }
+</script>

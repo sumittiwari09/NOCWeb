@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Preview Application";
+    ViewBag.Title = "Inspection Application";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var applData = (List<TrusteeBO.DraftApplication>)ViewBag.applicationDetails;
 
@@ -70,7 +70,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">NOC</li>
                     <li class="breadcrumb-item">Master</li>
-                    <li class="breadcrumb-item active">Admin Preview Application</li>
+                    <li class="breadcrumb-item active">Inspection Application</li>
                 </ol>
             </div>
             <h4 class="page-title">@ViewBag.Title</h4>
@@ -81,7 +81,7 @@
 
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
-        <h4 class="mt-0 header-title float-left">New Registered Applications</h4>
+        <h4 class="mt-0 header-title float-left">Application Inspection</h4>
         @*<a href="@Url.Action("EditApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Edit Application</a>*@
     </div>
     <div class="card-body">
@@ -125,12 +125,7 @@
                                     <td>@item.ContactDetails</td>
                                     <td>@item.ContactPerson</td>
                                     <td class="text-center"><a href="@item.UploadedReceiptDocument" download="@item.ApplicationNumber-@i-Receipt" title="Download File" data-toggle='tooltip' data-placement='top'><i class="fa fa-download"></i> </a></td>
-                                    <td>
-                                        <a class="btn btn-sm" title="Create Committee" href="@Url.Action("CommiteeMaster", "Master", new { deptID = item.iFKDEPT_ID })" data-toggle='tooltip' data-placement='top' target="_blank"><i class="fa fa-users-cog" style="font-size:17px"></i> </a>
-                                        <button class="btn btn-sm" onclick="openModal('@item.ApplicationNumber',@item.iFKDEPT_ID)" title="Assign Committee" data-toggle='tooltip' data-placement='top'><i class="fa fa-user-plus"></i> </button>
-                                        <button class="btn btn-sm" id="btnComiteeModal" data-toggle="modal" data-target="#mComitee" data-dismiss="modal" style="display:none"><i class="fa fa-user-plus"></i> </button>
-                                        <a class="btn btn-sm" href="@Url.Action("ApplicationPreviewLayout", "Admin", new { applGUID = item.ApplGuid })" target="_blank" title="Application Preview" data-toggle='tooltip' data-placement='top'><i class="fa fa-eye"></i> </a>
-                                    </td>
+                                    <td><a href="@Url.Action("Draftinspaction", "Trustee", new {applGUID=item.ApplGuid})" class="link-primary">Proceed For Inspection</a></td>
                                 </tr>
                             }
                             i++;

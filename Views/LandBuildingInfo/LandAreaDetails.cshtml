@@ -1,0 +1,547 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Land & Building Information";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+
+    var landData = (List<LandInfoBO>)ViewBag.landDataList;
+    var userID = (string)ViewBag.UserID;
+    var guid = (string)ViewBag.applGuid;
+
+}
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
+<!-- Font Awesome -->
+@*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">*@
+<!-- Theme style -->
+@*<link rel="stylesheet" href="../../dist/css/adminlte.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">*@
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #ffbf68; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #ffbf68); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #ffbf68); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <!--<div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>-->
+            @*<li class="breadcrumb-item">Master</li>*@
+            <!--<li class="breadcrumb-item active">Land & Building Information</li>
+                </ol>
+            </div>-->
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header fsi">
+                <h4 class="mt-0 header-title float-left">Land & Building Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-2">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Total Area</strong></label>
+                        <input type="text" class="form-control" id="txtTotalArea" autocomplete="off" value="0" disabled readonly />
+                    </div>
+
+                    @*<div class="col-lg-3">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>&nbsp;</strong></label>
+                            <button class="btn btn-sm" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;" title="Edit Comment" data-toggle='tooltip' data-placement='top'><i class="fa fa-pen"></i></button>&nbsp;&nbsp;
+
+                        </div>*@
+                    <div class="col-lg-12 mt-2" style="overflow-x: scroll;">
+                        <table class="table table-borderless" id="tblLandInfo" style="width: max-content;">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>#</th>
+                                    <th>Land Situated</th>
+                                    <th>Land Doc Type</th>
+                                    <th>Is Convereted</th>
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>Land Type</th>
+                                    <th>Khasara Number</th>
+                                    <th>Land Area</th>
+                                    <th>Total Area</th>
+                                    <th>Converted Doc</th>
+                                    <th>Land Title Doc</th>
+                                    <th>Land Doc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (landData != null && landData.Count > 0)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="13" class="text-center"></td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td colspan="13" class="text-center">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content" style="-webkit-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); -moz-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); box-shadow: -28px 28px 28px -11px rgb(180 170 170); border-radius: 50px;">
+                <div class="modal-header" style="border-radius: 51px;background: #22b1db;">
+                    <h5 class="modal-title" id="Thankyou" style="margin-left: 20px;color:white"><i class="fa fa-comment" style="font-size:15px"></i> Add Comments</h5>
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close" style="margin-right: 20px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 36px;">
+                    <div class="row" style="font-size:16px">
+
+                        <div class="col-lg-12"><span>Total Land Area (mtsq) : </span><span id="spnLandArea">{{LandArea}}</span></div>
+
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-3">
+                            Value Information :
+                        </div>
+                        <div class="col-lg-9 d-flex">
+
+                            <div class="form-group custom-control custom-radio col-sm-4">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary " type="radio" name="valueType" id="rbtn_correct" value="1">
+                                <label for="rbtn_correct" class="custom-control-label" style="width: max-content;font-weight:600">Value Is Correct</label>
+                            </div>
+
+                            <div class="form-group custom-control custom-radio col-sm-4">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="valueType" id="rbtn_wrong" value="0">
+                                <label for="rbtn_wrong" class="custom-control-label" style="width: max-content;font-weight:600">Value Is Wrong</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-9">
+
+                            <span id="spn_CollegeType" style="color:red"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-3">
+                            Comment Description :
+                        </div>
+                        <div class="col-lg-9">
+                            <textarea class="form-control frmEle" style="resize:none" rows="3" cols="4" id="txtComment" placeholder="Your Comment"></textarea>
+                            <span id="spn_TxtComment" style="color:red"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-3">
+                            Attachment If Any :
+                        </div>
+
+                        <div class="col-lg-9 d-flex">
+
+                            <div class="col-lg-5">
+                                <input type="file" id="fup_Attachment" onchange="return encodeImageFileAsURL(this,'hdnCommentAttachment')" />
+                                <input type="hidden" id="hdnCommentAttachment" />
+                            </div>
+                            <div class="col-lg-2">
+                                <div style="background: red;text-align: center;border-radius: 50%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <table class="table table-bordered table-striped" id="tbl_Comments">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Username</th>
+                                    <th>Value Is?</th>
+                                    <th>Uploaded Image</th>
+                                    <th>Comment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="6" class="text-center">No Data Available</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-radius:51px;padding-right: 30px;">
+                    @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                        <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+                    <button type="button" class="btn btn-secondary" id="btnSave">Save</button>
+                    <button type="button" class="btn btn-secondary">Delete Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-sm" id="btn_openModal" style="display:none;color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;" title="Add Comment" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal"><i class="fa fa-comment" style="font-size:15px"></i></button>
+</div>
+
+
+@*<script src="~/Content/jquery/jquery.js"></script>*@
+<script src="~/Content/select2/js/select2.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
+<script src="~/Content/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+
+    var landInfoData = [];
+    var imagebase64 = "";
+    var rwID = 0;
+
+    $(document).ready(function () {
+
+        SomeFunction();
+
+        $('#btnSave').click(function () {
+
+            var s = checkValidate();
+
+            if (s) {
+                AddComments();
+            }
+        });
+
+        $('#rbtn_correct').change(function () {
+          var  a  = $(this).is(':checked');
+            //alert(a);
+            if (a) {
+                $('#txtComment').val('All Details Are Correct');
+            }
+            else {
+                $('#txtComment').val('');
+            }
+        })
+
+        @*var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }*@
+
+    });
+
+
+    function SomeFunction() {
+    var htmlString = "";
+    var array = @Html.Raw(Json.Encode(ViewBag.landDataList));
+    for(var i = 0; i < array.length; i++) {
+        landInfoData.push(array[i]);
+        }
+        landInfoData.forEach(function (item, index) {
+
+            var landConvertedURL = (item.UploadConvertedDocument == null) ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landTitleURL = (item.UploadLandTitleDoc == null) ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+            item.UnQID = CreateGuid();
+            //console.log(item.UnQID)
+            htmlString += `<tr>
+<td> <button class="btn btn-sm" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;" title="Add Comment" onclick="openModal('${item.iPK_ID}','${item.dLndArea}')"><i class="fa fa-comment" style="font-size:15px"></i></button>
+                        </td>
+<td>${index + 1}</td>
+                                            <td>${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+            $('#txtTotalArea').val(item.dTotalArea);
+        });
+        $("#tblLandInfo tbody").html('');
+        $("#tblLandInfo tbody").html(htmlString);
+}
+
+    function charecterOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^A-Za-z]/, "");
+    }
+
+    function encodeImageFileAsURL(element, hdnId) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+    function openModal(rowId, landArea) {
+        rwID = rowId;
+        $('#spnLandArea').html('')
+        $('#spnLandArea').html(landArea);
+
+        GetComments(rowId);
+
+        $('#btn_openModal').click();
+    }
+
+
+    function AddComments() {
+        var valueType = $('input[name="valueType"]:checked').val();
+        var comments = $('#txtComment').val();
+        var attachment = $('#hdnCommentAttachment').val();
+
+       var Data = {
+           sUsrId: '@userID',
+           sDiscription: comments,
+           sUpdimg: attachment,
+           sAppid: '@guid',
+           sPageName: "Inspect_Land&BuildingInfo",
+           iVal: parseInt(valueType),
+           iFK_FieldId: parseInt(rwID),
+           type:"Add"
+        }
+        var d = JSON.stringify(Data)
+        //console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/LandBuildingInfo/AddComments",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                //console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Comment Saved Successfully',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+
+                    setTimeout(function () {
+                         location.reload()
+                    },1500)
+                    //GetComments(parseInt(rwID));
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+    function GetComments(rowID) {
+        var htmlString = "";
+       var Data = {
+           sAppid: '@guid',
+           iFK_FieldId: parseInt(rowID),
+           type:"Select"
+        }
+        var d = JSON.stringify(Data)
+        //console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/LandBuildingInfo/AddComments",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                //console.log(data);
+
+                var mainData = data.Data.Data;
+             /*   console.table(mainData)*/
+                if (mainData != null) {
+
+                    mainData.forEach(function (item, index) {
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.userName}</td><td>${item.Valueis}</td><td style="display: flex; align-items: end; gap: 10px;font-size: 15px;"><div style="background-image: url('${item.sUpdimg}');background-size:cover;height:50px;width:50px;border-radius:50%;background-position:center"></div><div><a href="${item.sUpdimg}" download="img_${item.sDiscription}" ><i class="fa fa-download"></i></a></div> </td><td>${item.sDiscription}</td><td><i class="fa fa-pen"></i></td></tr>`
+                    })
+                }
+                else {
+                    htmlString += `<tr><td colspan="6" class="text-center">No Data Available</td></tr>`
+                }
+
+                $('#tbl_Comments tbody').html('');
+                $('#tbl_Comments tbody').html(htmlString);
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+    function checkValidate() {
+        var status = true;
+
+        var valueType = $('input[name="valueType"]:checked').val();
+        var comments = $('#txtComment').val();
+
+        if (typeof (valueType) == "undefined") {
+            $('#spn_CollegeType').html('');
+            $('#spn_CollegeType').html("Please Select Value Type");
+            $('#rbtn_correct').focus();
+            status = false;
+        }
+
+        if (comments.length <= 0) {
+            $('#spn_TxtComment').html('');
+            $('#spn_TxtComment').html("Please Enter Comments");
+            $('#txtComment').focus();
+            status = false;
+        }
+
+        return status;
+    }
+
+    function clear() {
+  
+        $('#txtComment').val('');
+        $('#rbtn_correct').removeAttr('checked').change();
+        $('#rbtn_wrong').removeAttr('checked').change();
+        $('#hdnCommentAttachment').val('');
+    }
+
+</script>
+
+
+
