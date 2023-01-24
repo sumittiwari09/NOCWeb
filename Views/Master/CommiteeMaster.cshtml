@@ -5,6 +5,16 @@
     ViewBag.Title = "Commitee Master";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Dropdown> Prtlst = new List<Dropdown>();
+
+    var userdetailsSession = (UserModelSession)Session["UserDetails"];
+
+    var userDeptID = userdetailsSession.DepartmentId;
+    var userdistID = userdetailsSession.DistrictId;
+    var userCityID = userdetailsSession.CityId;
+    var userlocLvl = userdetailsSession.iLocLvl;
+
+    List<CommiteeMaster> commitees = new List<CommiteeMaster>();
+
     if (ViewBag.Prtlst != null)
     {
         Prtlst = (List<Dropdown>)ViewBag.Prtlst;
@@ -13,14 +23,29 @@
     if (ViewBag.Commiteelst != null)
     {
         Commiteelst = (List<CommiteeMaster>)ViewBag.Commiteelst;
+        if (userlocLvl == 3)
+        {
+            commitees = Commiteelst.Where(wh => wh.tehID == userCityID).ToList();
+        }
+        if (userlocLvl == 2)
+        {
+            commitees = Commiteelst.Where(wh => wh.distID == userdistID).ToList();
+        }
+        if (userlocLvl == 1)
+        {
+            commitees = Commiteelst;
+        }
+
+
     }
     var lst = Partial.CommiteeType();
     List<string> SelectedIncludes = new List<string>();
     if (Model != null && !String.IsNullOrEmpty(Model.sComtMemLst))
     {
-        SelectedIncludes = Model.sComtMemLst.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(p =>p).ToList();
+        SelectedIncludes = Model.sComtMemLst.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(p => p).ToList();
     }
-  var dept =  (int)ViewBag.deptid;
+    var dept = (int)ViewBag.deptid;
+    var userID = (string)ViewBag.userID;
 }
 
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
@@ -63,33 +88,50 @@
                     <div class="form-group  is-empty row">
                         <input type="hidden" id="iDeptId" name="iDeptId" value="@ViewBag.deptid" />
                         <input type="hidden" id="iPk_CommiteeId" name="iPk_CommiteeId" value="@(Model!=null?Model.iPk_CommiteeId:0)" />
-                        <div class="col-sm-3">
+
+
+                        <input type="hidden" id="distID" name="distID" value="@userdistID" />
+                        <input type="hidden" id="tehID" name="tehID" value="@userCityID" />
+                        <div class="col-sm-4">
                             <select class="singleselect" id="CommiteeTypeId" name="iComtTypid" required>
                                 <option value="" disabled selected hidden>Select Commitee Type</option>
                                 @{
                                     foreach (var item in lst)
                                     {
-                                        <option @(Model!=null && Model.iComtTypid==item.Id?"selected":"") id="@item.Id" value="@item.Id">@item.Text</option>
+                                        <option @(Model != null && Model.iComtTypid == item.Id ? "selected" : "") id="@item.Id" value="@item.Id">@item.Text</option>
                                     }
                                 }
                             </select>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <select class="singleselect" id="MemberId" name="sComtMemLst" required multiple="multiple">
 
                                 @{
 
                                     foreach (var item in Prtlst)
                                     {
-                                        <option @(Model != null && SelectedIncludes.Contains(item.Id) ? "selected" : "")  value='@item.Id'> @item.Text </option>
+                                        <option @(Model != null && SelectedIncludes.Contains(item.Id) ? "selected" : "") value='@item.Id'> @item.Text (@item.ID1) </option>
+
                                     }
                                 }
                             </select>
                             <a href="@Url.Action("AddSystemUser","Role")" class="link-primary" target="_blank">Add new user</a>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-4">
                             <input id="CommiteeName" type="text" placeholder="Enter Commitee Name" value="@(Model!=null?Model.sComtNam:"")" title="Commitee Name" name="sComtNam" class="form-control">
                         </div>
+                        <div class="col-sm-4">
+                            <input type="file" id="file" style="border: 0px solid #e8ebf3 ;" name="files" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+
+                            <input type="hidden" id="filedata" style="border: 0px solid #e8ebf3 ;" name="filedata" data-input="true" value="@(Model!=null?Model.filedata:"")" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                            <input type="hidden" id="sProfileExtension" value="">
+
+                        </div>
+                        <div class="col-sm-4">
+                            <input id="subject" type="text" placeholder="Enter Subject" value="@(Model!=null?Model.sSubj:"")" title="Subject" name="sSubj" class="form-control">
+
+                        </div>
+
                         <div class="col-sm-4">
                             <button class="btn btn-primary" type="submit" id="Addbtn" style="margin: 5px;"> <i class="fa fa-save"></i> Submit</button>
 
@@ -103,6 +145,8 @@
                             <tr>
                                 <th>Commitee Name</th>
                                 <th>Commitee Type</th>
+                                <th>Attachment</th>
+                                <th>Subject</th>
                                 <th>Member</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -110,11 +154,19 @@
                         </thead>
                         <tbody>
                             @{
-                                foreach (var item in Commiteelst)
+
+                                foreach (var item in commitees)
                                 {
                                     <tr id="tr_@item.iPk_CommiteeId">
                                         <td>@item.sComtNam</td>
                                         <td>@item.CommiteeType</td>
+                                        <td>
+                                            <img src="@item.filedata" alt="profile-user" class="rounded-circle" width="50" height="50" />
+
+                                        </td>
+                                        <td>
+                                            @item.sSubj
+                                        </td>
                                         <td>@item.CommiteeMember</td>
                                         <td>
                                             <div class="form-check form-switch">
@@ -139,7 +191,7 @@
             new
             {
                 Id = item.iPk_CommiteeId,
-                deptID= dept
+                deptID = dept
 
             },
             new { id = "btnEdit", @class = "fas fa-edit text-info font-16", title = "Edit" })
@@ -180,37 +232,64 @@
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".singleselect").select2();
-                //$("#Addbtn").click(function () {
-                //    debugger;
-                //    var CommiteeTypeId = $("#CommiteeTypeId").val();
-                //    var MemberId = $("#MemberId").val();
-                //    var CommiteeName = $("#CommiteeName").val();
-                //    var iDeptId = $("#iDeptId").val();
-                //    var iPk_CommiteeId = $("#iPk_CommiteeId").val();
-                //    var Commitee = [];
-                //    Commitee.push({
-                //        iPk_CommiteeId: iPk_CommiteeId,
-                //        sComtMemLst: MemberId,
-                //        sComtNam: CommiteeName,
-                //        iDeptId: iDeptId,
-                //        iComtTypid: CommiteeTypeId
-                //    });
-                //    var Params = JSON.stringify({
-                //        Commitee: Commitee
-                //    });
-                //    $.ajax({
-                //        url: GetglobalDomain() + "/Master/CommiteeMasterSave",
-                //        type: 'POST',
-                //        dataType: "json",
-                //        data: Params,
-                //        contentType: "application/json",
-                //        enctype: 'multipart/form-data',
-                //        success: function (response) {
-                //            if (response.IsValid = 1) {
+        function encodeImageFileAsURL(element) {
 
-                //            }
-                //        }
-                //    });
-                //});
+            var imagebase64 = "";
+            var file = element.files[0];
+            var name = file.name;
+            var extension = "";
+            if (name != null) {
+                var data = name.split('.');
+                var len = data.length;
+                extension = data[len - 1];
+
+            }
+            //var ID = element.id.split('_');
+            //var elementID = ID[1];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                console.log('RESULT', reader.result)
+                imagebase64 = reader.result;
+                console.log('converted');
+                console.log(imagebase64)
+                $("#filedata").val(imagebase64);
+                $("#sProfileExtension").val(extension);
+            }
+
+            reader.readAsDataURL(file);
+            return
+        }
+                    //$("#Addbtn").click(function () {
+                    //    debugger;
+                    //    var CommiteeTypeId = $("#CommiteeTypeId").val();
+                    //    var MemberId = $("#MemberId").val();
+                    //    var CommiteeName = $("#CommiteeName").val();
+                    //    var iDeptId = $("#iDeptId").val();
+                    //    var iPk_CommiteeId = $("#iPk_CommiteeId").val();
+                    //    var Commitee = [];
+                    //    Commitee.push({
+                    //        iPk_CommiteeId: iPk_CommiteeId,
+                    //        sComtMemLst: MemberId,
+                    //        sComtNam: CommiteeName,
+                    //        iDeptId: iDeptId,
+                    //        iComtTypid: CommiteeTypeId
+                    //    });
+                    //    var Params = JSON.stringify({
+                    //        Commitee: Commitee
+                    //    });
+                    //    $.ajax({
+                    //        url: GetglobalDomain() + "/Master/CommiteeMasterSave",
+                    //        type: 'POST',
+                    //        dataType: "json",
+                    //        data: Params,
+                    //        contentType: "application/json",
+                    //        enctype: 'multipart/form-data',
+                    //        success: function (response) {
+                    //            if (response.IsValid = 1) {
+
+                    //            }
+                    //        }
+                    //    });
+                    //});
     </script>
 }

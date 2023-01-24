@@ -1,0 +1,225 @@
+﻿@using NewZapures_V2.Models
+@model PARMTVALUCONFMSTView
+@{
+    Layout = null;
+    var appid = ViewBag.appid;
+}
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <input type="hidden" id="iPk_ParValId" data-id="@Model.iPK_ParValId" value="@Model.iPK_ParValId" />
+    <div class="modal-content" style="-webkit-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); -moz-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); box-shadow: -28px 28px 28px -11px rgb(180 170 170); border-radius: 50px;">
+        <div class="modal-header" style="border-radius: 51px;background: #22b1db;">
+            <h5 class="modal-title" style="margin-left: 20px;color:white">@(Model!=null?Model.sCateName:"") Comments</h5>
+            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close"  style="margin-right: 20px;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="myForm" class="form-horizontal searchform" novalidate="novalidate">
+
+                <div class="form-group is-empty">
+                    <label class="col-sm-8 control-label" style="padding: 0px;">@(Model!=null?Model.sCateSubName:"") @Model.InsertValue</label>
+
+                </div>
+                <div class="form-group is-empty row">
+                    <label for="nameInput" class="col-sm-3 control-label">Value Information</label>
+                    <div class="col-sm-8">
+                        <input type="radio" name="radiodata" id="radio_1" class="radio1" value="1">
+                        <label for="nameInput" class="control-label">Correct</label>
+                        <input type="radio" name="radiodata" id="radio_2" class="radio1" value="2" style=" margin-left: 25px;">
+                        <label for="nameInput" class="control-label">Wrong</label>
+                        @*<input name="radiobutton_1" id="radiobutton_1" value=" @(Model!= null? Model.TaxSet.ToString():"0")" class="radio2" type="hidden" />*@
+                        <span id="radio_Comments" style="color:red; display:none;">Please select at least one </span>
+                    </div>
+                </div>
+                <div class="form-group is-empty row">
+                    <label for="nameInput" class="col-sm-3 control-label">Discription</label>
+                    <div class="col-sm-8">
+                        <textarea rows="5" class="form-control" style="border: solid;border-width: thin;" id="Description" name="Description" required></textarea>
+                        <span id="Description_Comments" style="color:red; display:none;">Please select at least one </span>
+                    </div>
+                </div>
+                <div class="form-group is-empty row">
+                    <label for="nameInput" class="col-sm-3 control-label">Upload File</label>
+                    <div class="col-sm-8">
+                        <input type="file" id="file" style="border: 0px solid #e8ebf3 ;" name="files" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+
+                        <input type="hidden" id="filedata" style="border: 0px solid #e8ebf3 ;" name="filedata" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                        <input type="hidden" id="sProfileExtension" value="">
+                    </div>
+                </div>
+                <div class="loader-div">
+                    <img class="loader-img" src="~/images/Stopwatch.gif" style="height: 120px;width: auto;" />
+                </div>
+            </form>
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>User</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody id="Comtbody">
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
+        </div>
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+
+    GenerateTable();
+    $(document).ready(function () {
+        $(".radio1").change(function () {
+            var iValueInfo = $('input[name="radiodata"]:checked').val() > 0 ? $('input[name="radiodata"]:checked').val() : 0;
+            $("#radio_Comments").css('display', 'none');
+            if (iValueInfo == 0) {
+                $("#radio_Comments").css('display', 'block');
+
+            }
+        });
+        $("#Description").blur(function () {
+            let text =$(this).val();
+            let result = text.replace(/^\s+|\s+$/gm, '');
+            let length = result.length;
+            $("#Description_Comments").css('display', 'none');
+            if (length == 0) {
+                $("#Description_Comments").css('display', 'block');
+
+            }
+        });
+        $("#Savebtn").click(function () {
+            debugger;
+
+
+            var iFk_Field = $("#iPk_ParValId").val();
+
+            var iValueInfo = $('input[name="radiodata"]:checked').val() > 0 ? $('input[name="radiodata"]:checked').val() :0;
+            var sdescription = $("#Description").val();
+            var sFiledata = $("#filedata").val();
+            var i = 0;
+            if (iValueInfo == 0) {
+                $("#radio_Comments").css('display', 'block');
+                i = 1;
+            }
+            if (sdescription == "") {
+                $("#Description_Comments").css('display', 'block');
+                if (i == 0) {
+                    i = 2;
+                }
+            }
+            if (i > 0) {
+                if (i == 1) {
+                    $("#radio_Comments").focus();
+
+                }
+                if (i == 2) {
+                    $("#Description_Comments").focus();
+                }
+                return false;
+            }
+            var Params = JSON.stringify({
+                iFk_Field: iFk_Field,
+                iValueInfo: iValueInfo,
+                sdescription: sdescription,
+                sFiledata: sFiledata,
+                formName:"ArchitectureView",
+                appid:'@appid'
+            });
+            $(".loader-div").css('display', 'block');
+
+            $.ajax({
+                url: GetglobalDomain() + "/Master/SaveComments",
+                type: 'POST',
+                dataType: "json",
+                contentType: "application/json",
+                data: Params,
+                success: function (response) {
+
+                    if (response.isvalid == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Comments Save Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        $(".loader-div").css('display', 'none');
+                        $("#regular_modal").modal('hide');
+                    }
+                }
+            });
+     /*       $("#regular_modal").modal('hide');*/
+        });
+    });
+
+    function GenerateTable() {
+        debugger;
+        var iPk_ParValId = $("#iPk_ParValId").val();
+        $.ajax({
+            url: GetglobalDomain() + '/Master/CommentTable?appid=' + '@appid' + '&iFK_FieldId=' + iPk_ParValId,
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+
+
+                $("#Comtbody").html(response);
+
+                /*  $("#AddSection").html(response);*/
+
+            }
+        });
+        return false;
+    }
+    function encodeImageFileAsURL(element) {
+
+        var imagebase64 = "";
+        var file = element.files[0];
+        var name = file.name;
+        var extension = "";
+        if (name != null) {
+            var data = name.split('.');
+            var len = data.length;
+            extension = data[len - 1];
+
+        }
+        var ID = element.id.split('_');
+        var elementID = ID[1];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            console.log('RESULT', reader.result)
+            imagebase64 = reader.result;
+            console.log('converted');
+            console.log(imagebase64)
+            $("#filedata").val(imagebase64);
+            $("#sProfileExtension").val(extension);
+        }
+
+        reader.readAsDataURL(file);
+        return
+    }
+</script>
+@*<script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $(".Remark").on('click', function () {
+                debugger;
+                $("#popassign").html($("#preloadcreatepopupright1").html());
+                var ajaxurl = "/Master/RemarkComment";
+                $("#popassign").load(ajaxurl).modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false,
+                });
+                return false;
+            });
+        });
+
+    </script>*@

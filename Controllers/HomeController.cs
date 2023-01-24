@@ -16,13 +16,13 @@ using static NewZapures_V2.Models.Partial;
 
 namespace NewZapures_V2.Controllers
 {
-  //  [NoDirectAccess]
+    //  [NoDirectAccess]
     public class HomeController : Controller
     {
         // GET: Home
         JavaScriptSerializer _JsonSerializer = new JavaScriptSerializer();
         CommonFunction objcf = new CommonFunction();
-        public ResponseData ObjResponse = null; 
+        public ResponseData ObjResponse = null;
 
         //public ActionResult Profile(string Id= "R000001")
         //{
@@ -111,7 +111,7 @@ namespace NewZapures_V2.Controllers
             List<DocumentLibraryMaster> d = new List<DocumentLibraryMaster>();
             if (response.StatusCode.ToString() == "OK")
             {
-               var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (objResponse.Data != null)
                 {
                     d = JsonConvert.DeserializeObject<List<DocumentLibraryMaster>>(objResponse.Data.ToString());
@@ -126,7 +126,7 @@ namespace NewZapures_V2.Controllers
 
 
 
-        public ActionResult AddUser(string Id="")
+        public ActionResult AddUser(string Id = "")
         {
             var servicesCollection = (Data)Session["UserAllDetails"];
             if (servicesCollection.userDetails != null)
@@ -193,7 +193,7 @@ namespace NewZapures_V2.Controllers
             }
             return RedirectToAction("Finalpage", "Welcome");
         }
-        public ActionResult ProfileView(string Id,int status)
+        public ActionResult ProfileView(string Id, int status)
         {
             var base64string = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(Id));
 
@@ -242,7 +242,7 @@ namespace NewZapures_V2.Controllers
         }
         public ActionResult PaymentDetail(string Id)
         {
-         
+
             byte[] data = Convert.FromBase64String(Id);
             string userid = System.Text.Encoding.UTF8.GetString(data);
             List<ACtivedServicesHardwarelist> servicesHardwarelists = new List<ACtivedServicesHardwarelist>();
@@ -260,7 +260,7 @@ namespace NewZapures_V2.Controllers
             string strm = img;
 
             var bytess = Convert.FromBase64String(strm);
-            var servicesCollection  = (UserModelSession)Session["UserDetails"];
+            var servicesCollection = (UserModelSession)Session["UserDetails"];
 
             UploadDoc doc = new UploadDoc();
 
@@ -295,7 +295,7 @@ namespace NewZapures_V2.Controllers
 
 
 
-            
+
 
 
             ////var myfilename = string.Format(@"{0}", Guid.NewGuid());
@@ -600,8 +600,8 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult GetAllSettings(string Id = null)
         {
-          //  var json = JsonConvert.SerializeObject(reset);
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAllSettings?Id="+ Id);
+            //  var json = JsonConvert.SerializeObject(reset);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAllSettings?Id=" + Id);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -641,9 +641,9 @@ namespace NewZapures_V2.Controllers
 
             if (response.StatusCode.ToString() == "OK")
             {
-                
+
                 ObjResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if(settings.Type=="Search")
+                if (settings.Type == "Search")
                 {
                     searchedData = JsonConvert.DeserializeObject<List<Settings>>(ObjResponse.Data.ToString());
                 }
@@ -675,11 +675,19 @@ namespace NewZapures_V2.Controllers
         #region SignOut
         public ActionResult SignOut()
         {
-            Session["UserDetails"] = null;
-            Session["Token"] = null;
-            Session["UserAllDetails"] = null;
+            //try
+            //{
 
-            return View();
+            //    Session["UserDetails"] = null;
+            //    Session["Token"] = null;
+            //    Session["UserAllDetails"] = null;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw e;
+            //}
+
+            return RedirectToAction("login-alt", "authentication");
         }
         public JsonResult SignOut1()
         {
@@ -689,7 +697,7 @@ namespace NewZapures_V2.Controllers
 
             return new JsonResult
             {
-                Data = new { StatusCode=1, Data = "Logged out successfully", failure = false, msg = "Success" },
+                Data = new { StatusCode = 1, Data = "Logged out successfully", failure = false, msg = "Success" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
@@ -1238,7 +1246,7 @@ namespace NewZapures_V2.Controllers
             }
             return RedirectToAction("ClientChangeRequestList");
         }
-        
+
         #endregion
     }
 }

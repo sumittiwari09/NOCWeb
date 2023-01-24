@@ -1,0 +1,799 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "DetailsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ApplicationID = ViewBag.applGUID;
+    //Staff Details
+    List<NewZapures_V2.Models.StaffBO.Staff> stafflist = ViewBag.StaffList as List<NewZapures_V2.Models.StaffBO.Staff>;
+    var stName = ""; var stRole = ""; var stQuli = ""; var stMobile = ""; var stEmail = "";
+    for (int i = 0; i < stafflist.Count; i++)
+    {
+        stName = stafflist[0].Name;
+        stRole = stafflist[0].Role;
+        stMobile = stafflist[0].Mobile;
+        stQuli = stafflist[0].Qualification;
+        stEmail = stafflist[0].Email;
+    }
+    //trustDetails
+    List<NewZapures_V2.Models.TrusteeBO.Trustee> trusteelist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+    //Trust GenInfo
+    TrusteeBO.TrusteeInfo TrustDetails = ViewBag.TrustDetails as TrusteeBO.TrusteeInfo;
+    //College For ApplyList
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> trustlist = ViewBag.CollageApplyList as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+    var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+    //Subject List
+    List<AddCourseBO> SubjectDataList = ViewBag.SubjectDataList as List<AddCourseBO>;
+    //Fee Details
+    NewZapures_V2.Models.TrusteeBO.CollageFeeMst FeeList = ViewBag.CollageFeeList as NewZapures_V2.Models.TrusteeBO.CollageFeeMst;
+    //College Facility
+    TrusteeBO.CollageFacility CollageFacilityMster = ViewBag.CollageFacilityMster as TrusteeBO.CollageFacility;
+    //land info  details
+    var landData = (List<LandInfoBO>)ViewBag.landDataList;
+    //acadmy
+    var AllData = ViewBag.AllData as List<AcdmcTableData>;
+    //College List Data
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> collagelist = ViewBag.CollageList as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+}
+
+
+<link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />
+
+<style>
+    .min-height220 {
+        min-height: 220px
+    }
+
+    .min-height410 {
+        min-height: 410px
+    }
+
+    .noc-form-view-custom .panel-heading {
+        background: #f0eeee !important;
+        border: 1px solid #dcd9d9 !important;
+        border-color: #dcd9d9 !important;
+    }
+
+        .noc-form-view-custom .panel-heading .panel-title {
+            font-size: 16px;
+            margin: 0;
+        }
+</style>
+
+<div class="noc-general-details">
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="noc-layouts min-height480">
+                <h3 class="title-heading mb-3"> Staff Details</h3>
+
+                <div class="noc-general-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <fieldset class="form-group">
+                                <div class="">
+                                    <legend class="noc-form-label pt-0">Select Type</legend>
+                                    <div class="row pl-3">
+                                        <div class="form-check col-6 pt-1">
+                                            <input class="form-check-input" type="radio" name="teaching-type" id="teachingtypeR" value="teaching" disabled>
+                                            <label class="form-check-label" for="teachingtypeR">
+                                                Teaching
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="person-name" class="noc-form-label">Name of Person</label>
+                            <input type="text" class="form-control noc-input-text" id="person-name" placeholder="Name of Person" value="@stName" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="person-role" class="noc-form-label">Role</label>
+                            <input type="text" class="form-control noc-input-text" id="person-name" placeholder="Name of Person" value="@stRole" disabled>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="person-mobile" class="noc-form-label">Mobile No.</label>
+                            <input type="number" class="form-control noc-input-text" id="person-mobile" min="0" maxlength="10" placeholder="@stMobile" value="" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="person-email" class="noc-form-label">Email Address</label>
+                            <input type="email" class="form-control noc-input-text" id="person-email" placeholder="Email Address" value="@stEmail" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="person-quali" class="noc-form-label">Qualification</label>
+                            <input type="text" class="form-control noc-input-text" id="person-quali" placeholder="Qualification" value="@stQuli" disabled>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-5">
+
+            <div class="noc-layouts min-height220">
+                <h3 class="title-heading mb-3"> Collage Facility</h3>
+                <div class="noc-general-form p-0">
+                    <div class="noc-layouts-tbl">
+                        <table class="table table-borderless" id="tblCollageFacility">
+                            <thead class="sticky">
+                                <tr>
+                                    <th>SNo</th>
+                                    <th>Facility Name</th>
+                                    <th>Image</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CollageFacilityMster != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in CollageFacilityMster.list)
+                                    {
+                                        if (item.IsSelect == true)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>
+
+                                                    @item.FacilityName
+
+                                                </td>
+                                                <td>
+                                                    @if (item.uploadFile != "")
+                                                    {
+                                                        <img src="data:@item.ContentType;base64,@item.uploadFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!---Feee Details-->
+            <div class="">
+                <div class="">
+                    <div class="noc-layouts min-height220">
+                        <h3 class="title-heading mb-3">Fee Details</h3>
+
+                        <div class="noc-layouts-tbl">
+                            <table class="table table-borderless" id="tblCollageFeeInfo">
+                                <thead class="sticky">
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Fees</th>
+                                        <th>Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (FeeList.rateLists != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var item in FeeList.rateLists)
+                                        {
+                                            if (item.IsSelect == true)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>
+                                                        @item.RateName
+                                                    </td>
+                                                    <td>
+                                                        @item.Rate
+                                                    </td>
+                                                </tr>
+                                            }
+                                            i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" style="text-align: center;"> No Data Available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--AddCourse Subject--->
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="noc-layouts min-height220">
+                <h3 class="title-heading mb-3">Course Subject Details</h3>
+                <div class="noc-layouts-tbl">
+                    <table class="table table-responsive-md table-bordered dt-responsive nowrap" id="tblSubject">
+                        <thead class="dark">
+                            <tr>
+                                <th>S.No</th>
+                                <th>College</th>
+                                <th>Degrees</th>
+                                <th>Course</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (SubjectDataList != null)
+                            {
+                                int i = 1;
+                                foreach (var item in SubjectDataList)
+                                {
+                                    <tr id="tr_@item.iPK_SubId">
+                                        <td>@i</td>
+                                        <td>@item.CollegeName</td>
+                                        <td>@item.TagDegrees</td>
+                                        <td>@item.TagCourse</td>
+                                        <td>@item.SubjectName</td>
+                                        @*<td style="text-align:center">
+                                                <button class="btn btn col-sm-6 btnyellow" type="button" id="btnEdit">
+                                                    <a id="@item.iPK_SubId" class="mdi mdi-pencil" name="2" data-id="@item.iPK_SubId" title="Edit" onclick="EditSubject(@item.iPK_SubId,'Get','NULL');"></a>
+                                                </button>
+                                            </td>*@
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">College Details</h3>
+
+                <div class="noc-general-form ">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <fieldset class="form-group">
+                                <div class="">
+                                    <legend class="noc-form-label pt-0"> College type</legend>
+                                    <div class="row pl-3">
+                                        <div class="form-check col-12 pt-1">
+                                            <input class="form-check-input" type="radio" name="college-type" id="collegetype1" value="Co-Education" disabled>
+                                            <label class="form-check-label" for="collegetype1">
+                                                Co-Education
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <fieldset class="form-group">
+                                <div class="">
+                                    <legend class="noc-form-label pt-0">Type</legend>
+                                    <div class="row pl-3">
+                                        <div class="form-check col-12 pt-1">
+                                            <input class="form-check-input" type="radio" name="college-type-urban" id="college-type-urban1" value="" disabled>
+                                            <label class="form-check-label" for="college-type-urban1">
+                                                Urban
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="college-lavel" class="noc-form-label">College Level</label>
+                            <input type="text" class="form-control noc-input-text" id="college-lavel" placeholder="College Level" disabled>
+
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="college-medium" class="noc-form-label">College Medium</label>
+                            <input type="text" class="form-control noc-input-text" id="college-medium" placeholder="College Medium" disabled>
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="College-Name" class="noc-form-label">College Name</label>
+                            <input type="text" class="form-control noc-input-text" id="College-Name" placeholder="Enter College Name" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="University-Name" class="noc-form-label">University</label>
+                            <input type="text" class="form-control noc-input-text" id="University-Name" placeholder="Enter University Name" disabled>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="mobile-no" class="noc-form-label">Mobile Number</label>
+                            <input type="number" class="form-control noc-input-text" id="mobile-no" maxlength="10" placeholder="Enter Mobile Number" disabled>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email-adress" class="noc-form-label">Email</label>
+                            <input type="email" class="form-control noc-input-text" id="email-adress" placeholder="demo@gmail.com" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address-line1" class="noc-form-label">Address Line1</label>
+                            <input type="text" class="form-control noc-input-text" id="address-line1" placeholder="Address Line1" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address-line2" class="noc-form-label">Address Line2</label>
+                            <input type="text" class="form-control noc-input-text" id="address-line2" placeholder="Address Line2" disabled>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="address-District" class="noc-form-label">District</label>
+                            <input type="text" class="form-control noc-input-text" id="address-District" placeholder="District" disabled>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address-Tehsil" class="noc-form-label">Tehsil</label>
+                            <input type="text" class="form-control noc-input-text" id="address-Tehsil" placeholder="Tehsil" disabled>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="address-Block" class="noc-form-label">Block</label>
+                            <input type="text" class="form-control noc-input-text" id="address-Block" placeholder="Block" disabled>
+
+                        </div>
+                        @*<div class="col-md-6 mb-3">
+                                <div class="custom-file d-flex align-items-center justify-content-between">
+                                    <div class="noc-form-label">Pan Card</div>
+                                    <div class="noc-upload-btn"> <i class="fas fa-download"></i> Uploaded</div>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-5">
+
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">Trustee General Information</h3>
+
+                <div class="noc-general-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="trust-name" class="noc-form-label">Name of Trust</label>
+                            <input type="text" class="form-control noc-input-text" id="trust-name" placeholder="Name of Trust" value="@TrustDetails.Name" readonly disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="trust-type" class="noc-form-label">Trust Type</label>
+                            <input type="text" class="form-control noc-input-text" id="trust-type" placeholder="Trust Type" value="@TrustDetails.TrustType" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="registration-no" class="noc-form-label">Registration Number</label>
+                            <input type="text" class="form-control noc-input-text" id="registration-no" placeholder="Registration Number" value="@TrustDetails.RegistrationNo" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="trustee-sso" class="noc-form-label">SSOID</label>
+                            <input type="text" class="form-control noc-input-text" id="trustee-sso" placeholder="SSO ID" value="@TrustDetails.SSOID" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="trustee-dist" class="noc-form-label">District</label>
+                            <input type="text" class="form-control noc-input-text" id="trustee-dist" placeholder="District" value="@TrustDetails.District" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="trustee-act" class="noc-form-label">Act</label>
+                            <input type="text" class="form-control noc-input-text" id="trustee-act" placeholder="Act" value="@TrustDetails.Act" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="trustee-status" class="noc-form-label">Status</label>
+                            <input type="text" class="form-control noc-input-text" id="trustee-status" placeholder="Status" value="@TrustDetails.Status" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="reg-date" class="noc-form-label">Date of Registration</label>
+                            <input type="text" class="form-control noc-input-text" id="reg-date" placeholder="MM/DD/YYYY" value="@TrustDetails.RegistrationDate" disabled>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Other Facility-->
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3"> Other Facility</h3>
+                <div class="noc-general-form min-height410">
+                    <div class="row">
+                        <table class="table table-borderless" id="tblCollageFacility">
+                            <thead class="sticky">
+                                <tr>
+                                    <th>SNo</th>
+                                    <th>Facility Name</th>
+                                    <th>Image</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CollageFacilityMster != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in CollageFacilityMster.list)
+                                    {
+                                        if (item.IsSelect == true)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>
+
+                                                    @item.FacilityName
+
+                                                </td>
+                                                <td>
+                                                    @if (item.uploadFile != "")
+                                                    {
+                                                        <img src="data:@item.ContentType;base64,@item.uploadFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!---Trust Commitee Members-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">Trust Commitee Members</h3>
+                <div class="noc-layouts-tbl">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>SNo</th>
+                                <th>Profile</th>
+                                <th>Trust Name</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Mobile No</th>
+                                <th>Email</th>
+                                <th>AadhaarNo</th>
+                                <th>PanNo</th>
+                                <th>Is Primary</th>
+                                <th>Is Authorize</th>
+                                <th style="text-align:center">Aadhaar</th>
+                                <th style="text-align:center">Pan</th>
+                                <th style="text-align:center">Authorized Doc</th>
+                                @*<th>Action</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (trusteelist.Count() > 0)
+                            {
+                                int i = 1;
+                                foreach (var item in trusteelist)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>
+                                            @if (@item.ProfileContentType != "")
+                                            {
+                                                <img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                            }
+                                        </td>
+                                        <td>@item.trustName</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.RoleId</td>
+                                        <td>@item.Mobile</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.AadhaarNo</td>
+                                        <td>@item.PanNo</td>
+                                        <td>@item.isPrimary</td>
+                                        <td>@item.isAuthorize</td>
+                                        <td style="text-align:center">
+                                            @if (item.Aadhaar != "")
+                                            {
+                                                <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                            }
+                                        </td>
+                                        <td style="text-align:center">
+                                            @if (item.Pan != "")
+                                            {
+                                                <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                            }
+                                        </td>
+                                        <td style="text-align:center">
+                                            @if (item.Authorized != "")
+                                            {
+                                                <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Authorized })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                            }
+                                        </td>
+                                        @*<td>
+                                                <a id="" class="Deleteclass" name="2" data-id="@item.Id" href="@Url.Action("DeleteTrustMemeber", "Trustee", new { Id = item.Id })" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
+                                            </td>*@
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="15" style="text-align:center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---Trust Gen Info-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">Trust General Info</h3>
+                <div class="noc-layouts-tbl">
+                    <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                        @*<tr>
+                                <td colspan="6">Trust Administrative Details</td>
+                            </tr>*@
+                        <thead class="dark">
+                            <tr>
+                                <th>SNo</th>
+                                <th>Name</th>
+                                <th>Post Name</th>
+                                <th>Occupation</th>
+                                <th>Address</th>
+                                <th>Contact No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (TrustDetails.AdminList != null && TrustDetails.AdminList.Count > 0)
+                            {
+                                int i = 1;
+                                foreach (var item in TrustDetails.AdminList)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.PostName</td>
+                                        <td>@item.Occupation</td>
+                                        <td>@item.Address</td>
+                                        <td>@item.ContactNo</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--College List For Apply-->
+    <!--landinformation List details-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">LandInformation List</h3>
+                <div class="noc-layouts-tbl">
+                    <table class="table table-borderless" id="tblLandInfo">
+                        <thead>
+                            <tr>
+                                <th>SrNo.</th>
+                                <th>Land Situated</th>
+                                <th>Land Doc Type</th>
+                                <th>Is Convereted</th>
+                                <th>Order No</th>
+                                <th>Order Date</th>
+                                <th>Land Type</th>
+                                <th>Khasara Number</th>
+                                <th>Land Area</th>
+                                <th>Total Area</th>
+                                <th>Converted Doc</th>
+                                <th>Land Title Doc</th>
+                                <th>Land Doc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (landData != null && landData.Count > 0)
+                                {
+                                    @*var i = 1;
+                                        foreach (var item in landData)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;"><i class="far fa-trash-alt"></i></span> : @item.sLndArea</td>
+                                                <td>@item.sLndDocType</td>
+                                                <td>@item.sIsLndCnvrted</td>
+                                                <td>@item.sOrdrNo</td>
+                                                <td>@item.dtOrdrDate</td>
+                                                <td>@item.sLndTyp</td>
+                                                <td>@item.sKhasaraNo</td>
+                                                <td>@item.dLndArea</td>
+                                                <td>@item.dTotalArea</td>
+                                                <td>""</td>
+                                                <td>""</td>
+                                                <td>""</td>
+                                            </tr>
+                                            i++;
+                                        }*@
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="13" class="text-center"></td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="13" class="text-center">No Data Available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Acadmy information-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">AcadmyInformation List</h3>
+                <div class="noc-layouts-tbl">
+                    <table id="datatable-buttons" class="table table-striped table-bordered table-responsive-lg" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead class="sticky">
+                            <tr>
+                                <th scope="col">Sr No</th>
+                                <th scope="col">From Year</th>
+                                <th scope="col">To Year</th>
+                                <th scope="col">No Of Student Appear</th>
+                                <th scope="col">Result</th>
+                                <th scope="col">No Of Student Passed</th>
+                                <th scope="col">Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                if (AllData != null)
+                                {
+                                    if (AllData.Count <= 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6" rowspan="1" style="text-align:center">No Data Available</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        var i = 1;
+                                        foreach (var item in AllData)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td scope="col">@item.FromYear</td>
+                                                <td scope="col">@item.ToYear</td>
+                                                <td scope="col">@item.NoOfStudent</td>
+                                                <td scope="col">@item.Result</td>
+                                                <td scope="col">@item.NoOfStudentPass</td>
+                                                <td scope="col">@item.Percentage</td>
+                                            </tr>
+                                            i++;
+                                        }
+
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Artech Details--->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="noc-layouts">
+                <h3 class="title-heading mb-3">Architectrual Details</h3>
+
+                <div class="noc-layouts-tbl">
+                    <div class="hidden mt-2 noc-form-view-custom" id="ArchitectureId">
+
+                    </div><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    @*<script src="~/plugins/dropify/js/dropify.min.js"></script>
+        <script src="~/scripts/pages/jquery.form-upload.init.js"></script>*@
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script type="text/javascript">
+      $(document).ready(function () {
+
+          CollegeList();
+                ArchiDiv();
+            });
+   function ArchiDiv()
+    {
+        $.ajax({
+            url: GetglobalDomain() +'/Master/NewArchitectureView?applGUID=' + '@ApplicationID',
+            type: 'POST',
+            dataType: "text",
+            success: function (response) {
+                $("#ArchitectureId").html(response);
+            }
+        });
+        return false;
+        }
+
+        //college list
+   function CollegeList() {
+       //var urls = "/FormView/CollageList"
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: GetglobalDomain() + "/FormView/CollageListView",
+        dataType: 'json',
+        type: 'GET',
+        cache: false,
+        success: function (data) {
+            debugger
+            //console.log(JSON.stringify(data.Data));
+            $('#collegetype1').val(data.Data[0].CollegeType);
+            $('#college-type-urban1').val('');
+            //$('#college-type-urban1').val(data.Data[0].AreaType);
+            $('#college-lavel').val(data.Data[0].CollegeLevel);
+            $('#college-medium').val(data.Data[0].sCollegeMedium);
+            $('#College-Name').val(data.Data[0].CollageName);
+            $('#University-Name').val(data.Data[0].CollageName);
+            $('#mobile-no').val(data.Data[0].MobileNo);
+            $('#email-adress').val(data.Data[0].Email);
+            $('#address-line1').val(data.Data[0].AddressLineOne);
+            $('#address-line2').val(data.Data[0].AddressLineTwo);
+            $('#address-District').val(data.Data[0].DistrictName);
+            $('#address-Tehsil').val(data.Data[0].TehsilName);
+            $('#address-Block').val(data.Data[0].BlockName);
+
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+    return false;
+}
+
+</script>

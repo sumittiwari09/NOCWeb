@@ -1,0 +1,38 @@
+﻿@using NewZapures_V2.Models
+@model List<CommitedMstview>
+@{
+    Layout = null;
+}
+
+@{
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ValueName</td>
+                <td>
+                    <img src="@item.sUpdimg" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                </td>
+                <td>
+                    @item.sDiscription
+                </td>
+                <td>
+                    @{
+                        if (!string.IsNullOrEmpty(item.Remarklist))
+                        {
+                            foreach (var lab in item.Remarklist.Split(','))
+                            {
+                                <span style=" border: solid; padding: 4px; font-weight: 900; border-radius: 20px; background: black; color: wheat;">@lab</span>
+                            }
+                        }
+                    }
+
+                </td>
+                <td>
+                    <button class="btn btn-primary" title="Remark" onclick="Remarkdata(@item.iComtId,'ArchitectureView')">Remark</button>
+                </td>
+            </tr>
+        }
+    }
+}

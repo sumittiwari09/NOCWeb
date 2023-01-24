@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var applData = (List<TrusteeBO.DraftApplication>)ViewBag.applicationDetails;
 
+    var userdetailsSession = (UserModelSession)Session["UserDetails"];
+
+    var cityID = userdetailsSession.CityId;
+
 }
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
 
@@ -92,6 +96,9 @@
                     <tr class="text-center">
                         <th>#</th>
                         <th>Application Number</th>
+                        <th>NOC MODE</th>
+                        <th>NOC Type</th>
+                        <th>Application Form</th>
                         <th hidden>Application GUID</th>
                         <th hidden>DepartmentID</th>
                         <th>State</th>
@@ -110,25 +117,28 @@
                         if (applData != null && applData.Count > 0)
                         {
                             var i = 1;
-                            foreach (var item in applData)
+                            foreach (var item in applData.Where(wh => wh.TehsilID == cityID).ToList())
                             {
-                                <tr>
-                                    <td>@i</td>
-                                    <td>@item.ApplicationNumber</td>
-                                    <td hidden>@item.ApplGuid</td>
-                                    <td hidden>@item.iFKDEPT_ID</td>
-                                    <td>@item.State</td>
-                                    <td>@item.District</td>
-                                    <td>@item.Tehsil</td>
-                                    <td>@item.TrustName</td>
-                                    <td>@item.CollegeName</td>
-                                    <td>@item.ContactDetails</td>
-                                    <td>@item.ContactPerson</td>
-                                    <td class="text-center"><a href="@item.UploadedReceiptDocument" download="@item.ApplicationNumber-@i-Receipt" title="Download File" data-toggle='tooltip' data-placement='top'><i class="fa fa-download"></i> </a></td>
-                                    <td><a href="@Url.Action("Draftinspaction", "Trustee", new {applGUID=item.ApplGuid})" class="link-primary">Proceed For Inspection</a></td>
-                                </tr>
-                            }
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@item.ApplicationNumber</td>
+                                            <td>@item.NocMode</td>
+                                            <td>@item.NOCType</td>
+                                            <td>@item.ApplicationType</td>
+                                            <td hidden>@item.ApplGuid</td>
+                                            <td hidden>@item.iFKDEPT_ID</td>
+                                            <td>@item.State</td>
+                                            <td>@item.District</td>
+                                            <td>@item.Tehsil</td>
+                                            <td>@item.TrustName</td>
+                                            <td>@item.CollegeName</td>
+                                            <td>@item.ContactDetails</td>
+                                            <td>@item.ContactPerson</td>
+                                            <td class="text-center"><a href="@item.UploadedReceiptDocument" download="@item.ApplicationNumber-@i-Receipt" title="Download File" data-toggle='tooltip' data-placement='top'><i class="fa fa-download"></i> </a></td>
+                                            <td><a href="@Url.Action("Draftinspaction", "Trustee", new {applGUID=item.ApplGuid})" class="link-primary">Proceed For Inspection</a></td>
+                                        </tr>
                             i++;
+                            }
                         }
                         else
                         {

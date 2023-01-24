@@ -909,7 +909,7 @@ namespace NewZapures_V2.Controllers
             };
         }
         
-        public JsonResult GetTehsil(int distID)
+        public JsonResult GetTehsil(string distID)
         {
             var tehsilList  = ZapurseCommonlist.GetTehsil(distID);
             return new JsonResult

@@ -68,9 +68,21 @@ namespace NewZapures_V2.Controllers
 
         public JsonResult CommitteeList(int deptID)
         {
+            var userdetailsSession = (UserModelSession)Session["UserDetails"];
+            var committeeList = new List<Dropdown>();
+            if (userdetailsSession!= null)
+            {
+                 committeeList = ZapurseCommonlist.getCommitteeList(deptID);
 
-            var committeeList = ZapurseCommonlist.getCommitteeList(deptID);
-
+                if(userdetailsSession.iLocLvl==2)
+                {
+                    committeeList = committeeList.Where(wh => Convert.ToInt32(wh.ID1) == userdetailsSession.DistrictId).ToList();
+                }
+                if(userdetailsSession.iLocLvl==3)
+                {
+                    committeeList = committeeList.Where(wh => Convert.ToInt32(wh.PartyId) == userdetailsSession.CityId).ToList();
+                }
+            }
             return new JsonResult
             {
                 Data = new { Data = committeeList, failure = true, msg = "success" },

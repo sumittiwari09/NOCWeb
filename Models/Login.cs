@@ -42,6 +42,7 @@ namespace NewZapures_V2.Models
         public int StateId { get; set; }
         public int DistrictId { get; set; }
         public int CityId { get; set; }
+        public int iLocLvl { get; set; }
     }
 
 }

@@ -1,0 +1,203 @@
+﻿.noc-layouts {
+    width: 100%;
+    float: left;
+    background: #fff;
+    margin-top: 30px;
+    border-radius: 10px;
+    border: 1px solid #dcd9d9;
+    box-shadow: 0 1px 2px 0 rgb(234 240 249 / 50%);
+}
+
+    .noc-layouts .title-heading {
+        background: #686767;
+        width: 100%;
+        float: left;
+        padding: 8px 15px;
+        color: #fff;
+        margin: 0;
+        font-size: 20px;
+        border-radius: 10px 10px 0 0;
+    }
+
+.noc-selections {
+    width: 100%;
+    float: left;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+    .noc-selections .form-group {
+        margin: 0px;
+    }
+
+    .noc-selections .noc-submit-btn {
+        min-width: 100px;
+    }
+
+.theme-button-mockup {
+    font-size: 16px;
+    color: #fff;
+    background: #62a7ff;
+    border: 1px solid #62a7ff;
+    min-height: 38px;
+    border-radius: 5px;
+    padding: 5px 25px;
+    transition: all 500ms ease;
+}
+
+    .theme-button-mockup:hover {
+        background: #fff;
+        color: #62a7ff;
+    }
+
+.noc-selections .noc-selections-select {
+    width: 28%;
+    float: left;
+}
+
+.noc-layouts-tbl {
+    width: 100%;
+    float: left;
+}
+
+    .noc-layouts-tbl table.table {
+        width: 100%;
+        margin-bottom: 0px;
+        margin-top: 15px;
+    }
+
+        .noc-layouts-tbl table.table th {
+            background: #c7d9f0;
+            font-size: 16px;
+            color: #474545;
+        }
+
+        .noc-layouts-tbl table.table td {
+            color: #474646;
+            font-size: 14px;
+        }
+
+        .noc-layouts-tbl table.table tr:nth-child(even) {
+            background: #f4f9ff;
+        }
+
+.theme-edit-btn {
+    color: #fff;
+    background: #96cc6a;
+    border: 1px solid #96cc6a;
+    border-radius: 5px;
+    padding: 8px 15px;
+    transition: all 500ms ease;
+    display: inline-block;
+}
+
+    .theme-edit-btn:hover {
+        color: #96cc6a;
+        background: #fff;
+    }
+
+.theme-delete-btn {
+    color: #fff;
+    background: #f96363;
+    border: 1px solid #f96363;
+    border-radius: 5px;
+    padding: 8px 15px;
+    transition: all 500ms ease;
+    display: inline-block;
+}
+
+    .theme-delete-btn:hover {
+        color: #f96363;
+        background: #fff;
+    }
+
+   /**/
+
+/*===========NOC Detail Form Start============*/
+
+.noc-general-details {
+    width: 100%;
+    float: left;
+}
+
+    .noc-general-details table th {
+        padding: 5px 10px;
+        font-size: 13px !important;
+    }
+
+    .noc-general-details table td {
+        padding: 5px 10px;
+        font-size: 13px !important;
+    }
+
+.noc-general-form {
+    width: 100%;
+    float: left;
+    padding: 0px 15px;
+}
+
+.noc-form-label {
+    font-size: 14px;
+    color: rgba(0,0,0,.5);
+}
+
+.noc-input-text {
+    color: rgba(0,0,0,.8);
+    font-size: 13px;
+    height: 38px;
+}
+
+    .noc-input-text::placeholder {
+        color: rgba(0,0,0,.4);
+    }
+
+.noc-pending-btn {
+    background: #a0a6ab;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 12px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.noc-upload-btn {
+    background: #74c687;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 12px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.noc-input-upload {
+    height: 38px;
+    border: 1px solid #e8ebf3;
+    border-bottom: 1px solid #e8ebf3;
+    border-radius: .25rem;
+}
+
+.noc-input-text:disabled {
+    background: #fff;
+}
+
+.noc-input-upload .custom-file-input:focus, .custom-file-label:focus {
+    border: 1px solid #506ee4;
+    border-color: #506ee4;
+}
+
+.min-height670 {
+    min-height: 670px;
+}
+
+.min-height480 {
+    min-height: 480px;
+}
+/*===========NOC Detail Form End============*/

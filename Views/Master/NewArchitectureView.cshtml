@@ -8,17 +8,17 @@
     {
         LstApesData = (List<ArchiMstDetail>)ViewBag.LstApesData;
     }
-    
-            }
+    int Id = ViewBag.Id;
 
+}
 <style>
     body {
         margin-top: 30px;
     }
 
     .stepwizard-step p {
-            margin-top: 0px;
-            color: #666;
+        margin-top: 0px;
+        color: #666;
     }
 
     .stepwizard-row {
@@ -26,9 +26,9 @@
     }
 
     .stepwizard {
-    display: table;
-    width: 100%;
-    position: relative;
+        display: table;
+        width: 100%;
+        position: relative;
     }
 
     .stepwizard-step button[disabled] {
@@ -38,31 +38,31 @@
 
     .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
         opacity: 1 !important;
-color: #bbb;
+        color: #bbb;
     }
 
     .stepwizard-row:before {
-    top: 14px;
-    bottom: 0;
-    position: absolute;
-    content: " ";
-    width: 100%;
-    height: 1px;
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
         background-color: #ccc;
         z-index: 0;
     }
 
     .stepwizard-step {
-    display: table-cell;
+        display: table-cell;
         text-align: center;
-    position: relative;
+        position: relative;
     }
 
     .btn-circle {
-    width: 30px;
-    height: 30px;
+        width: 30px;
+        height: 30px;
         text-align: center;
-    padding: 6px 0;
+        padding: 6px 0;
         font-size: 12px;
         line-height: 1.428571429;
         border-radius: 15px;
@@ -78,11 +78,11 @@ color: #bbb;
     }
 
     .panel-body {
-    padding: 15px
+        padding: 15px
     }
 
     .panel-heading {
-    padding: 10px 15px;
+        padding: 10px 15px;
         border-bottom: 1px solid transparent;
         border-top-left-radius: 3px;
         border-top-right-radius: 3px
@@ -93,45 +93,50 @@ color: #bbb;
     }
 
         .panel-primary > .panel-heading {
-    color: #fff;
+            color: #fff;
             background-color: #428bca;
             border-color: #428bca
         }
 
             .panel-primary > .panel-heading + .panel-collapse > .panel-body {
-        border-top-color: #428bca
+                border-top-color: #428bca
             }
 
             .panel-primary > .panel-heading .badge {
-    color: #428bca;
+                color: #428bca;
                 background-color: #fff
             }
 
         .panel-primary > .panel-footer + .panel-collapse > .panel-body {
-        border-bottom-color: #428bca
+            border-bottom-color: #428bca
         }
 </style>
 <style>
     input[type="file"]::file-selector-button {
-    border: 2px solid #6c5ce7;
+        border: 2px solid #6c5ce7;
         padding: 0.2em 0.4em;
         border-radius: 0.2em;
         background-color: #a29bfe;
         transition: 1s;
     }
 
-    input[type="file"]::file-selector-button:hover {
-        background-color: #81ecec;
+        input[type="file"]::file-selector-button:hover {
+            background-color: #81ecec;
             border: 2px solid #00cec9;
         }
 </style>
+
 <div class="container col-sm-12">
 
 
     @*<form role="form">*@
 
     @{
-                var j = 0;
+        var j = 0;
+
+
+
+
         <input type="hidden" id="appid" value="@ViewBag.Applicableid" />
         foreach (var item in Model.Select(p => new { p.iParCatId, p.sCateName }).Distinct().ToList())
         {
@@ -155,9 +160,19 @@ color: #bbb;
 
                                     if (thirditem.iParUomid != 3)
                                     {
-                                        <h6>@inneritem.sCateSubName (@thirditem.InsertValue)</h6>
+                                        <div class="col-sm-12 row">
+                                            <h6 class="col-sm-8">@inneritem.sCateSubName (@thirditem.InsertValue)</h6>
 
-
+                                            @if (Id == 1)
+                                            {
+                                                <a data-preloaderid="#preloadcreatepopupright"
+                                                   href="@Url.Action("AddComments", "Master", new { Id = thirditem.iPK_ParValId, appid = appid })"
+                                                   data-toggle="modal" data-target="#regular_modal"
+                                                   class="col-sm-4 btn btn-light border rounded-pill shadow-sm mb-1 ajaxmodal" title="@inneritem.sCateSubName Assign">
+                                                    <i class="fa fa-pencil"> Comments</i>
+                                                </a>
+                                            }
+                                        </div>
 
                                     }
                                     if (thirditem.iParUomid == 3)
@@ -205,7 +220,7 @@ color: #bbb;
                                     }
                                     if (!string.IsNullOrEmpty(thirditem.UploadUrl))
                                     {
-                                        
+
                                         <a href="~/UploadFloder/@appid/@thirditem.UploadUrl" id="download-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" download="@thirditem.sCateSubName"><span id="showfile-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" style="color: blue; margin-left: 10px; padding: 10px;"><i class="fa fa-download" aria-hidden="true"></i>@thirditem.UploadUrl</span></a>
 
                                     }
@@ -226,4 +241,24 @@ color: #bbb;
     }
 
 </div>
+
+<script type="text/javascript">
+
+    $(".ajaxmodal").click(function () {
+        debugger;
+        var targetmodal = $(this).data("target");
+        var ajaxurl = $(this).attr("href");
+
+        //$(targetmodal).html($($(this).data("preloaderid")).html());
+
+        $(targetmodal).load(ajaxurl).modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false,
+        });
+
+        return false;
+    });
+
+</script>
 

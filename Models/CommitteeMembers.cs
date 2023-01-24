@@ -11,6 +11,8 @@ namespace NewZapures_V2.Models
         public string Name { get; set; }
         public string SSOID { get; set; }
         public string EmailAddress { get; set; }
+        public string subject { get; set; }
+        public string files { get; set; }
     }
     public class Committee
     {
@@ -24,6 +26,8 @@ namespace NewZapures_V2.Models
         public string sCrtdBy { get; set; }
         public string dtCrtdOn { get; set; }
         public string isNotfy { get; set; }
+        public string sSubj { get; set; }
+        public string sUplimg { get; set; }
         public string dtStrtDate { get; set; }
         public string tStrttime { get; set; }
         public string dtEndDate { get; set; }

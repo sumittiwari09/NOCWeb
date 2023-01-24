@@ -10,6 +10,16 @@
 }
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 
+<style>
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #e8ebf3 !important;
+        height: 38px !important;
+    }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
+            padding: 4px;
+        }
+</style>
 @if (loggedInUserType == "4")
 {
     <div style="display: grid;color:red;place-content: center;height: 100vh;font-size: 35px;">You dont have enough permission to view this page please contact to admin</div>
@@ -36,131 +46,129 @@ else
                 <div class="card-body">
                     @using (Html.BeginForm("Savesystemuserdetails", "Role", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        <div class="row">
-                            <div class="col-lg-12 row" style="margin-left: -12px;">
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Enter SSO ID</label>
-                                    <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtFullName" name="FirstName">
-                                    </div>
+
+
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Enter SSO ID</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Enter SSOID" id="txtFullName" name="FirstName">
+                            </div>
+                        </div>
+
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Select Member Type</label>
+                            </div>
+                            <div class="form-group col-lg-4 d-flex">
+
+                                <div class="form-group custom-control custom-radio col-sm-4">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="loclvl" id="rbtn_state" value="01">
+                                    <label for="rbtn_state" class="custom-control-label" style="width: max-content;">State</label>
                                 </div>
 
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select District</label>
-                                    <div>
-                                        <select id="ddldistrict" class="form-control" name="DistrictId">
-                                            <option value="0">Select District</option>
-                                            @{
-                                                if (districtList != null)
-                                                {
-                                                    foreach (var item in districtList)
-                                                    {
-                                                        <option value=@item.Id>@item.Text</option>
-                                                    }
-                                                }
+                                <div class="form-group custom-control custom-radio col-sm-4">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="loclvl" id="rbtn_distirct" value="02">
+                                    <label for="rbtn_distirct" class="custom-control-label" style="width: max-content;">District</label>
+                                </div>
+
+                                <div class="form-group custom-control custom-radio col-sm-4">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="loclvl" id="rbtn_tehsil" value="03">
+                                    <label for="rbtn_tehsil" class="custom-control-label" style="width: max-content;">Tehsil</label>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="row" id="divDistrict" style="display:none;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Select District</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <select id="ddldistrict" class="form-control col-lg-9" multiple data-placeholder="Select District">
+                                    @*<option value="0">Select District</option>*@
+                                    @{
+                                        if (districtList != null)
+                                        {
+                                            foreach (var item in districtList)
+                                            {
+                                                <option value=@item.Id>@item.Text</option>
                                             }
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Tehsil</label>
-                                    <div>
-                                        <select id="ddltehsil" class="form-control" name="CityId">
-                                        </select>
-                                    </div>
-                                </div>
-
-                               
+                                        }
+                                    }
+                                </select>
+                                <input type="hidden" id="hdnDisTid" name="DistrictId" />
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-lg-12 row" style="margin-left: -12px;">
+                        <div class="row" id="divTehsil" style="display:none;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Select Tehsil</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <select id="ddltehsil" class="form-control col-lg-9" multiple data-placeholder="Select Tehsil">
+                                </select>
+                                <input type="hidden" id="hdnTehsilid" name="CityId" />
+                            </div>
+                        </div>
 
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number</label>
-                                    <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" id="txtMobileNumber">
-                                    </div>
-                                </div>
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Mobile Number</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Enter Mobile Number" oninput="numberOnly(this.id);" maxlength="10" name="MobileNumber" id="txtMobileNumber">
+                            </div>
+                        </div>
 
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email</label>
-                                    <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtEmail" name="EmailId" oninput="FillUserName(this.id)">
-                                    </div>
-                                </div>
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Email Address</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtEmail" placeholder="Enter Email Address" name="EmailId" oninput="FillUserName(this.id)">
+                            </div>
+                        </div>
 
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Department</label>
-                                    <div>
-                                        <select id="ddlrole" class="form-control" name="Type">
-                                            @{
-                                                if (dept != null)
-                                                {
-                                                    foreach (var item in dept)
-                                                    {
-                                                        <option value=@item.Id>@item.Text</option>
-                                                    }
-                                                }
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Select Department</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <select id="ddlrole" class="form-control col-sm-9" name="Type">
+                                    @{
+                                        if (dept != null)
+                                        {
+                                            foreach (var item in dept.Where(wh => wh.Text != "Admin").ToList())
+                                            {
+                                                <option value=@item.Id>@item.Text</option>
                                             }
-                                        </select>
-                                    </div>
-                                </div>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-2">
+                                <label for="example-text-input" class="col-sm-12">Select Role</label>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <select id="RoleId" class="form-control col-sm-9" name="RoleId">
+                                </select>
+                            </div>
+                        </div>
 
-
-
-
-                               
+                        <div class="row" style="display:flex;align-items:center">
+                            <div class="form-group col-lg-7" style="text-align:end">
+                                <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnSave" onclick="CheckValidation()">Activate User Button</button>
+                                <button type="submit" id="btnsubmitDetails" style="display:none"></button>
 
                             </div>
                         </div>
 
-
-                        <div class="row">
-                            <div class="col-lg-12 row" style="margin-left: -12px;">
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-6" style="margin-left:-10px">Select Role Group</label>
-                                    <div>
-                                        <select id="RoleId" class="form-control" name="RoleId">
-                                        </select>
-                                    </div>
-                                </div>
-
-                                @*<div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Username</label>
-                                    <div>
-                                        <input class="form-control col-sm-12" type="text" autocomplete="off" id="txtUsername" name="EmailId" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-lg-4">
-                                    <label for="example-text-input" class="col-sm-8" style="margin-left:-10px">Password</label>
-                                    <div>
-                                        <input class="form-control col-sm-12" type="password" autocomplete="off" id="txtPassword" name="Password">
-                                        <span id="withoutslash-login" style="display: none; top: -26px; position: relative; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 29rem; ">
-                                            <i class="fa fa-eye EyeIcon" id="logineye" style="color:black!important" onclick="revealPassword(this,'txtPassword')"></i>
-                                        </span>
-
-                                        <span id="withslash-login" style="top: -26px; position: relative; display: flex; place-content: end; margin-right: 10px; align-items: center; width: fit-content; left: 29rem;">
-                                            <i class="fa fa-eye-slash EyeIcon" id="logineye" onclick="revealPassword(this,'txtPassword')"></i>
-                                        </span>
-                                    </div>
-                                </div>*@
-
-                                <div class="form-group col-lg-offset-6 col-lg-2">
-                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
-                                    <div>
-                                        <button type="button" class="btn btn-gradient-primary waves-effect waves-light" id="btnSave" onclick="CheckValidation()">Activate User Button</button>
-                                        <button type="submit" id="btnsubmitDetails" style="display:none"></button>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
                     }
                 </div>
             </div>
@@ -178,13 +186,39 @@ else
         $("#ddlrole").select2();
         $("#RoleId").select2();
         $("#ddldistrict").select2();
+        $("#ddltehsil").select2();
         BindRole();
+
+        $('input[type=radio]').click(function () {
+            var sd = $(this).val();
+
+            if (sd == "01" || sd=="03") {
+                $('#divDistrict').css('display', 'flex').attr("data-placeholder", "Select District");
+                $('#divTehsil').css('display', 'flex').attr("data-placeholder", "Select Tehsil");
+            }
+            if (sd == "02") {
+                $('#divDistrict').css('display', 'flex').attr("data-placeholder", "Select District");
+                $('#divTehsil').css('display','none')
+            }
+           
+        });
 
 
         $("#ddldistrict").change(function () {
             var distID = $(this).val();
-            BindTehsil(distID);
+            //console.log(distID);
+            var distIDString = distID.toString();
+            $('#hdnDisTid').val(distIDString);
+            BindTehsil(distIDString);
 
+
+        });
+
+        $("#ddltehsil").change(function () {
+            var tehsilID = $(this).val();
+            //console.log(distID);
+            var tehIDString = tehsilID.toString();
+            $('#hdnTehsilid').val(tehIDString);
         });
 
 
@@ -312,6 +346,13 @@ else
         var Type = $('#ddlrole option:selected').val();
         var RoleId = $('#RoleId option:selected').val();
 
+        var district = $('#hdnDisTid').val();
+        var tehsil = $('#hdnTehsilid').val();
+
+        var memberType = $('input[name=loclvl]:checked').val();
+
+        //console.log(memberType);
+
 
 
         if (FirstName.length <= 0) {
@@ -329,6 +370,193 @@ else
             $('#btnSave').css('cursor', 'pointer');
 
             status = false;
+        }
+
+        else if (typeof (memberType) == 'undefined')
+        {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Member type...!',
+                allowOutsideClick: false,
+                showCloseButton: false,
+                showConfirmButton: false,
+                timer: 2000,
+            })
+            status = false;
+            $('#btnSave').html('Activate User Button');
+            $('#btnSave').css('cursor', 'pointer');
+        }
+        else if (typeof (memberType) != 'undefined' && (memberType=="01" || memberType=="03")) {
+
+            if (district.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select District...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                status = false;
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+            }
+            else if (tehsil.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Tehsil...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                status = false;
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+            }
+            else if (MobileNumber.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Mobile Number Required...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#txtMobileNumber').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+            else if (Email.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Email Address Required...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#txtEmail').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+
+            else if (Type == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Department...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#ddlrole').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+            else if (RoleId == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Group...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#RoleId').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+        }
+        else if (typeof (memberType) != 'undefined' && (memberType == "02")) {
+
+            if (district.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select District...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+              
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+            status = false;
+            }
+            else if (MobileNumber.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Mobile Number Required...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#txtMobileNumber').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+            else if (Email.length <= 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Email Address Required...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#txtEmail').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+
+            else if (Type == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Department...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#ddlrole').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
+            else if (RoleId == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Group...!',
+                    allowOutsideClick: false,
+                    showCloseButton: false,
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $('#RoleId').focus();
+                $('#btnSave').html('Activate User Button');
+                $('#btnSave').css('cursor', 'pointer');
+                status = false;
+            }
         }
         else if (MobileNumber.length <= 0) {
             Swal.fire({
@@ -365,7 +593,7 @@ else
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Please Select Role...!',
+                title: 'Please Select Department...!',
                 allowOutsideClick: false,
                 showCloseButton: false,
                 showConfirmButton: false,
@@ -530,7 +758,7 @@ else
     }
 
     function BindRole() {
-        
+
         var strHTML = "";
 
 
@@ -546,7 +774,7 @@ else
             data: Params,
             success: function (response) {
 
-                
+
 
 
                 for (var i = 0; i < response.Data.length; i++) {
@@ -572,13 +800,13 @@ else
 
     }
     function BindTehsil(DistID) {
-        
+
         var strHTML = "";
 
 
         var Params = JSON.stringify(
             {
-                distID: parseInt(DistID)
+                distID: DistID
             });
         $.ajax({
             url: GetglobalDomain() + "/Role/GetTehsil",
@@ -587,9 +815,9 @@ else
             contentType: "application/json",
             data: Params,
             success: function (response) {
-                strHTML = "<option value='0'>Select Tehsil</option>";
+                strHTML = "";
                 for (var i = 0; i < response.Data.length; i++) {
-                   
+
                     strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
                 }
                 //$("#ddltehsil").select2("destroy");

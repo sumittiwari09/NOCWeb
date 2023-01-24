@@ -86,6 +86,7 @@ namespace NewZapures_V2.Models
         public int DepartmentId { get; set; }
         public int GroupId { get; set; }
         public int RoleId { get; set; }
+        public int levelId { get; set; }
         public int Status { get; set; }
         public string PartyId { get; set; }
         public string DepartmentName { get; set; }

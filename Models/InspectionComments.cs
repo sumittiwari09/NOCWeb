@@ -21,5 +21,33 @@ namespace NewZapures_V2.Models
         public int? iVal { get; set; }
         public string Valueis { get; set; }
         public string type { get; set; }
+
+
+      
+       
+        
+    }
+    public class CommitedMstview : InspectionComments
+    {
+        public string sName { get; set; }
+        public string CtDate { get; set; }
+        public string Remarklist { get; set; }
+        public string ValueName
+        {
+            get
+            {
+                switch (iVal)
+                {
+                    case 1:
+                        return "Correct";
+                    case 2:
+                        return "Wrong";
+
+
+                    default:
+                        return "";
+                }
+            }
+        }
     }
 }

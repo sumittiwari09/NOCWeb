@@ -255,7 +255,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="modal-footer" style="border-radius:51px;padding-right: 30px;">
+                <div class="modal-footer">
                     @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
                         <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
                     <button type="button" class="btn btn-secondary" id="btnSave">Save</button>
@@ -488,11 +488,11 @@
                 //console.log(data);
 
                 var mainData = data.Data.Data;
-             /*   console.table(mainData)*/
+                console.table(mainData)
                 if (mainData != null) {
-
+                  
                     mainData.forEach(function (item, index) {
-                        htmlString += `<tr><td>${index + 1}</td><td>${item.userName}</td><td>${item.Valueis}</td><td style="display: flex; align-items: end; gap: 10px;font-size: 15px;"><div style="background-image: url('${item.sUpdimg}');background-size:cover;height:50px;width:50px;border-radius:50%;background-position:center"></div><div><a href="${item.sUpdimg}" download="img_${item.sDiscription}" ><i class="fa fa-download"></i></a></div> </td><td>${item.sDiscription}</td><td><i class="fa fa-pen"></i></td></tr>`
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.userName}</td><td>${item.Valueis}</td><td style="display: flex; align-items: end; gap: 10px;font-size: 15px;"><div style="background-image: url('${item.sUpdimg}');background-size:cover;height:50px;width:50px;border-radius:50%;background-position:center"></div><div><a href="${item.sUpdimg}" download="img_${item.sDiscription}" ><i class="fa fa-download"></i></a></div> </td><td>${item.sDiscription}</td><td><span class="btn btn-sm btn-primary" onclick="Remarkdata(${item.iComtId},'Land_Bulidinginfo')"><i class="fa fa-pen"></i> Remark</span></td></tr>`
                     })
                 }
                 else {
@@ -534,7 +534,7 @@
     }
 
     function clear() {
-  
+
         $('#txtComment').val('');
         $('#rbtn_correct').removeAttr('checked').change();
         $('#rbtn_wrong').removeAttr('checked').change();

@@ -58,8 +58,8 @@ namespace NewZapures_V2.Models
         public string AddressLine2 { get; set; }
         public string MobileNumber { get; set; }
         public int? StateId { get; set; }
-        public int? DistrictId { get; set; }
-        public int? CityId { get; set; }
+        public string DistrictId { get; set; }
+        public string CityId { get; set; }
         public int? CountryId { get; set; }
         public int? AreaId { get; set; }
         public string PanCard { get; set; }
@@ -96,6 +96,7 @@ namespace NewZapures_V2.Models
         public int IsGST_Applicable { get; set; }
         public int IsTDS_Applicable { get; set; }
         public int appTandCId { get; set; }
+        public int loclvl { get; set; }
 
     }
 

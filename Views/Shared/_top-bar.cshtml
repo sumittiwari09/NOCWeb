@@ -2,17 +2,30 @@
 @{
     var servicesCollection = (Data)Session["UserAllDetails"];
     var userdetails = (UserModelSession)Session["UserDetails"];
-    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
-    var profileImage = BaseURL + userdetails.profileImage;
+    var profileImage = "";
+    var userName = "";
+    var BaseURL = "";
+    var notificationNumber = 0;
+    List<NotificationOperationData> notificationData = null;
+    NotificationOperationRequest NotificationOpRequest = null;
+    var i = 0;
+    if (userdetails != null)
+    {
+        BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+        profileImage = BaseURL + userdetails.profileImage;
 
-    var userName = userdetails.Username.Substring(0, 1);
+        userName = userdetails.Username.Substring(0, 1);
 
-    var NotificationOpRequest = new NotificationOperationRequest { PartyId = userdetails.PartyId, RowID = 0, Type = "View" };
+        NotificationOpRequest = new NotificationOperationRequest { PartyId = userdetails.PartyId, RowID = 0, Type = "View" };
 
-    var notificationData = (List<NotificationOperationData>)ZapurseCommonlist.NotificationOperation(NotificationOpRequest);
-    var notificationNumber = notificationData.Count();
-    var i = 1;
-
+        notificationData = (List<NotificationOperationData>)ZapurseCommonlist.NotificationOperation(NotificationOpRequest);
+        notificationNumber = notificationData.Count();
+        i = 1;
+    }
+    else
+    {
+        RenderPage("~/Views/Authentication/login-alt.cshtml");
+    }
 }
 
 <style type="text/css">
@@ -139,15 +152,18 @@
                 <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" style="display: flex; justify-content: center; align-items: center;" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 
                     @{
-                        if (!string.IsNullOrEmpty(userdetails.profileImage))
+                        if (userdetails != null)
                         {
-                            <img src="@profileImage" alt="profile-user" class="rounded-circle" />
-                        }
-                        else
-                        {
-                            <div class="rounded-circle" id="divUsernamInitials"></div>
+                            if (!string.IsNullOrEmpty(userdetails.profileImage))
+                            {
+                                <img src="@profileImage" alt="profile-user" class="rounded-circle" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle" id="divUsernamInitials"></div>
 
-                            @*<img src="~/images/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
+                                @*<img src="~/images/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
+                            }
                         }
                     }
 
@@ -157,13 +173,14 @@
                     @*<img src="../images/users/user-4.jpg" alt="profile-user" class="rounded-circle" />*@
 
                     <span class="ml-1 nav-user-name hidden-sm">
+
                         @(userdetails != null && userdetails.Username!=""? userdetails.Username  : "Amelia") <i class="mdi mdi-chevron-down"></i>
                         @*Amelia<i class="mdi mdi-chevron-down"></i>*@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="@Url.Action("MyProfile","Home")"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
-                    <a class="dropdown-item" href="@Url.Action("ProfileView","Home",new {Id= userdetails.PartyId,status=0})"><i class="fas fa-user-secret text-muted mr-2"></i> Profile View</a>
+                    @*<a class="dropdown-item" href="@Url.Action("ProfileView","Home",new {Id= userdetails.PartyId,status=0})"><i class="fas fa-user-secret text-muted mr-2"></i> Profile View</a>*@
                     @*<a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
                         <a class="dropdown-item" href="@Url.Action("Index","MyPayments")"><i class="mdi mdi-credit-card text-muted mr-2"></i> My Payments</a>
                         <a class="dropdown-item" href="#"><i class="fas fa-money-bill text-muted mr-2"></i> My Earning</a>*@
@@ -270,7 +287,6 @@
 <script>
 
     $(document).ready(function () {
-
 
        if ('@userName' != "") {
             $('#divUsernamInitials').html('');

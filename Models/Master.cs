@@ -226,6 +226,10 @@ namespace NewZapures_V2.Models
         public int? iDeptId { get; set; }
         public string sCtrby { get; set; }
         public string CommiteeMember { get; set; }
+        public string filedata { get; set; }
+        public string sSubj { get; set; }
+        public int distID { get; set; }
+        public int tehID { get; set; }
         public string CommiteeType
         {
             get

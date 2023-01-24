@@ -825,7 +825,7 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public ActionResult NewArchitectureView(string applGUID = "abhc123")
+        public ActionResult NewArchitectureView(string applGUID, int Id = 0)
         {
             List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
             lst = ParameterValueConfigurationlist(0, applGUID);
@@ -848,6 +848,7 @@ namespace NewZapures_V2.Controllers
             }
             ViewBag.LstApesData = LstApesData;
             ViewBag.applGUID = applGUID;
+            ViewBag.Id = Id;
             return View(lst);
         }
 
@@ -978,21 +979,31 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public ActionResult CommiteeMaster(int deptID =0,int Id=0)
+        public ActionResult CommiteeMaster(int Id=0)
         {
+            var userdetailsSession = (UserModelSession)Session["UserDetails"];
+           if(userdetailsSession != null)
+            {
+
             List<Dropdown> Prtlst = new List<Dropdown>();
-            Prtlst = Common.GetDropDown(deptID, "PARTYCODE");
+            Prtlst = Common.GetDropDown(userdetailsSession.DepartmentId, "PARTYCODE",userdetailsSession.PartyId);
             List<CommiteeMaster> Commiteelst = new List<CommiteeMaster>();
-            Commiteelst = GetCommitee(deptID);
+            Commiteelst = GetCommitee(userdetailsSession.DepartmentId);
             ViewBag.Prtlst=Prtlst;
-            ViewBag.deptid = deptID;
+            ViewBag.deptid = userdetailsSession.DepartmentId;
             ViewBag.Commiteelst = Commiteelst;
+                ViewBag.userID = userdetailsSession.PartyId;
             CommiteeMaster Mst = new CommiteeMaster();
             if (Id != 0)
             {
                 Mst = Commiteelst.Where(p => p.iPk_CommiteeId == Id).FirstOrDefault();
             }
             return View(Mst);
+            }
+            else
+            {
+               return RedirectToAction("login-alt","Authentication");
+            }
         }
         [HttpPost]
         public ActionResult CommiteeMasterSave(CommiteeMaster Commitee)
@@ -1021,21 +1032,21 @@ namespace NewZapures_V2.Controllers
                         TempData["SwalStatusMsg"] = "success";
                         TempData["SwalMessage"] = objResponseData.Message;
                         TempData["SwalTitleMsg"] = "Success!";
-                        return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
+                        return RedirectToAction("CommiteeMaster");
                     }
                     else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
                     {
                         TempData["SwalStatusMsg"] = "warning";
                         TempData["SwalMessage"] = objResponseData.Message;
                         TempData["SwalTitleMsg"] = "warning!";
-                        return RedirectToAction("CommiteeMaster", new {deptID= Commitee.iDeptId });
+                        return RedirectToAction("CommiteeMaster");
                     }
                     else
                     {
                         TempData["SwalStatusMsg"] = "error";
                         TempData["SwalMessage"] = "Something wrong";
                         TempData["SwalTitleMsg"] = "error!";
-                        return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
+                        return RedirectToAction("CommiteeMaster");
                     }
                 }
             }
@@ -1046,7 +1057,7 @@ namespace NewZapures_V2.Controllers
                 TempData["SwalTitleMsg"] = "error!";
 
             }
-            return RedirectToAction("CommiteeMaster", new { deptID = Commitee.iDeptId });
+            return RedirectToAction("CommiteeMaster");
         }
 
         public static List<CommiteeMaster> GetCommitee(int Id)
@@ -1070,5 +1081,140 @@ namespace NewZapures_V2.Controllers
             }
             return obj;
         }
+
+        public ActionResult RemarkComment(int Id, string appid,string formName)
+        {
+            var userdetailsSession = (UserModelSession)Session["UserDetails"];
+            InspectionComments mst = new InspectionComments();
+
+            mst.iFK_FieldId = Id;
+            mst.sUsrId = userdetailsSession.PartyId;
+            mst.sPageName = formName;
+            mst.type = "Remark";
+            mst.sAppid = appid;
+            List<CommitedMstview> obj = new List<CommitedMstview>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GetCommentTable");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", _JsonSerializer.Serialize(mst), ParameterType.RequestBody);
+            //CommitedMstview mstdata = new CommitedMstview();
+            IRestResponse response = client.Execute(request);
+
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    obj = JsonConvert.DeserializeObject<List<CommitedMstview>>(objResponse.Data.ToString());
+                    //return View(obj.Where(p => p.sUsrId != userdetailsSession.PartyId));
+                }
+            }
+            ViewBag.Id = Id;
+            ViewBag.appid = appid;
+            ViewBag.formName = formName;
+            return View(obj);
+
+        }
+
+        public JsonResult SaveComments(int iFk_Field, int iValueInfo = 0, string sdescription = "", string sFiledata = "", string appid = "", int icomtid = 0, string Type = "Select",string formName="")
+        {
+            var userdetailsSession = (UserModelSession)Session["UserDetails"];
+            InspectionComments mst = new InspectionComments();
+            mst.iFK_FieldId = iFk_Field;
+            mst.sAppid = appid;
+            mst.sDiscription = sdescription;
+            mst.sUpdimg = sFiledata;
+            mst.iVal = iValueInfo;
+            mst.sUsrId =userdetailsSession.PartyId;
+            mst.sPageName = formName;
+            mst.type = Type;
+            mst.iComtId = icomtid;
+            var client2 = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/SaveComment");
+            var request2 = new RestRequest(Method.POST);
+            request2.AddHeader("cache-control", "no-cache");
+            // request2.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request2.AddParameter("application/json", _JsonSerializer.Serialize(mst), ParameterType.RequestBody);
+            IRestResponse response2 = client2.Execute(request2);
+            if (response2.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponseData = JsonConvert.DeserializeObject<ResponseData>(response2.Content);
+                if (objResponseData.ResponseCode == "001")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Data = "", failure = false, msg = objResponseData.Message, isvalid = 1 },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+            }
+
+            return new JsonResult
+            {
+                Data = new { Data = "", failure = true, msg = "", isvalid = 0 },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult ShowArtichForComments(string applGUID)
+        {
+            return RedirectToAction("NewArchitectureView", new { applGUID = applGUID, Id = 1 });
+        }
+        public ActionResult AddComments(int Id, string appid)
+        {
+            List<PARMTVALUCONFMSTView> lst = new List<PARMTVALUCONFMSTView>();
+            lst = ParameterValueConfigurationlist(0, appid);
+            PARMTVALUCONFMSTView data = new PARMTVALUCONFMSTView();
+            data = lst.FirstOrDefault(p => p.iPK_ParValId == Id);
+            ViewBag.appid = appid;
+            return View(data);
+        }
+        public ActionResult CommentTable(string appid, int iFK_FieldId)
+        {
+            var userdetailsSession = (UserModelSession)Session["UserDetails"];
+           InspectionComments mst = new InspectionComments();
+            mst.sAppid = appid;
+            mst.iFK_FieldId = iFK_FieldId;
+            mst.sUsrId = userdetailsSession.PartyId;
+            mst.sPageName = "ArchitectureView";
+            mst.type = "Select";
+            List<CommitedMstview> obj = new List<CommitedMstview>();
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GetCommentTable");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", _JsonSerializer.Serialize(mst), ParameterType.RequestBody);
+            //CommitedMstview mstdata = new CommitedMstview();
+            List<CommitedMstview> obj1 = new List<CommitedMstview>();
+            IRestResponse response = client.Execute(request);
+
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    obj = JsonConvert.DeserializeObject<List<CommitedMstview>>(objResponse.Data.ToString());
+                    obj1 = obj.Where(p => p.sUsrId != userdetailsSession.PartyId).ToList();
+
+                }
+            }
+
+            return View(obj1);
+        }
+
     }
 }

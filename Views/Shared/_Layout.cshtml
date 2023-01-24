@@ -1,6 +1,16 @@
 ﻿@using NewZapures_V2.Models;
 @{
     var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+
+    //if(servicesCollectiondata==null)
+    //{
+    //   RenderPage("~/Views/Authentication/login-alt.cshtml");
+    //}
+    if (servicesCollectiondata == null)
+    {
+        NewZapures_V2.Controllers.HomeController home = new NewZapures_V2.Controllers.HomeController();
+        home.SignOut();
+    }
 }
 <!DOCTYPE html>
 <html lang="en">

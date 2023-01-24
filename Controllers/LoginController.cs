@@ -49,121 +49,126 @@ namespace NewZapures_V2.Controllers
 
             using (RAJSSO.SSO SSO = new RAJSSO.SSO(AppName))
             {
-                //try
-                //{
-                //if (SSO.CreateSSOSession())
-                //{
-                    var jsonUserDetail = "";
-
-                var jsonSSODetail = "";
-                var jsonUserDetails = "";
-                var jsonInternLogin = "";
-
-                //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                //RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
-
-                //if (detail != null)
-                //{
-
-                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
-                RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
-                if (UserDetail != null)
+                try
                 {
-                    SSOUserDetail _SSOUserDetail = new SSOUserDetail();
-                    _SSOUserDetail.FirstName = UserDetail.FirstName;
-                    _SSOUserDetail.IpPhone = UserDetail.IpPhone;
-                    _SSOUserDetail.TelephoneNumber = UserDetail.TelephoneNumber;
-                    _SSOUserDetail.State = UserDetail.State;
-                    _SSOUserDetail.SSOID = UserDetail.SSOID;
-                    _SSOUserDetail.PostalCode = UserDetail.PostalCode;
-                    _SSOUserDetail.PostalAddress = UserDetail.PostalAddress;
-                    _SSOUserDetail.Photo = UserDetail.Photo;
-                    _SSOUserDetail.Mobile = UserDetail.Mobile;
-                    _SSOUserDetail.MailPersonal = UserDetail.MailPersonal;
-                    _SSOUserDetail.LastName = UserDetail.LastName;
-                    _SSOUserDetail.MailOfficial = UserDetail.MailOfficial;
-                    _SSOUserDetail.EmployeeNumber = UserDetail.EmployeeNumber;
-                    _SSOUserDetail.DisplayName = UserDetail.DisplayName;
-                    _SSOUserDetail.Designation = UserDetail.Designation;
-                    _SSOUserDetail.DepartmentName = UserDetail.DepartmentName;
-                    _SSOUserDetail.DepartmentId = UserDetail.DepartmentId;
-                    _SSOUserDetail.DateOfBirth = UserDetail.DateOfBirth;
-                    _SSOUserDetail.City = UserDetail.City;
-                    _SSOUserDetail.BhamashahMemberId = UserDetail.BhamashahMemberId;
-                    _SSOUserDetail.BhamashahId = UserDetail.BhamashahId;
-                    _SSOUserDetail.AadhaarId = UserDetail.AadhaarId;
-                    _SSOUserDetail.Gender = UserDetail.Gender;
-                    _SSOUserDetail.OldSSOIDs = UserDetail.OldSSOIDs;
+                    //if (SSO.CreateSSOSession())
+                    //{
+                        var jsonUserDetail = "";
 
-                    SessionModel.SSOUserDetail = _SSOUserDetail;
-                    jsonUserDetail = new JavaScriptSerializer().Serialize(_SSOUserDetail);
+                    //    var jsonSSODetail = "";
+                    //    var jsonUserDetails = "";
+                    //    var jsonInternLogin = "";
 
-                    //Check ssoID in partymaster
-                    //(if present then get the department and roleid and groupid from partymaster itself
-                    //(if not the put into usrMaster with Applicant Roleid,DeptID and groupid)
+                    //    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                    //    RAJSSO.SSOTokenDetail detail = SSO.GetSessionValue();
 
-                    //userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
-                    //List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
-                    //List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
+                    //    if (detail != null)
+                    //    {
 
-                    //Session["Token"] = objResponse.JWT;
-                    //Session["UserDetails"] = userModel;
-                    //Session["UserPermissions"] = permissions;
-                    //Session["notificationList"] = notificationsData;
+                            //System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                            //RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail(detail.SSOID, WebServiceUser, WebServicePwd);
+                            RAJSSO.SSOUserDetail UserDetail = SSO.GetUserDetail("UNOC.TEST", WebServiceUser, WebServicePwd);
+                         
+                            if (UserDetail != null)
+                            {
+                                SSOUserDetail _SSOUserDetail = new SSOUserDetail();
+                                _SSOUserDetail.FirstName = UserDetail.FirstName;
+                                _SSOUserDetail.IpPhone = UserDetail.IpPhone;
+                                _SSOUserDetail.TelephoneNumber = UserDetail.TelephoneNumber;
+                                _SSOUserDetail.State = UserDetail.State;
+                                _SSOUserDetail.SSOID = UserDetail.SSOID;
+                                _SSOUserDetail.PostalCode = UserDetail.PostalCode;
+                                _SSOUserDetail.PostalAddress = UserDetail.PostalAddress;
+                                _SSOUserDetail.Photo = UserDetail.Photo;
+                                _SSOUserDetail.Mobile = UserDetail.Mobile;
+                                _SSOUserDetail.MailPersonal = UserDetail.MailPersonal;
+                                _SSOUserDetail.LastName = UserDetail.LastName;
+                                _SSOUserDetail.MailOfficial = UserDetail.MailOfficial;
+                                _SSOUserDetail.EmployeeNumber = UserDetail.EmployeeNumber;
+                                _SSOUserDetail.DisplayName = UserDetail.DisplayName;
+                                _SSOUserDetail.Designation = UserDetail.Designation;
+                                _SSOUserDetail.DepartmentName = UserDetail.DepartmentName;
+                                _SSOUserDetail.DepartmentId = UserDetail.DepartmentId;
+                                _SSOUserDetail.DateOfBirth = UserDetail.DateOfBirth;
+                                _SSOUserDetail.City = UserDetail.City;
+                                _SSOUserDetail.BhamashahMemberId = UserDetail.BhamashahMemberId;
+                                _SSOUserDetail.BhamashahId = UserDetail.BhamashahId;
+                                _SSOUserDetail.AadhaarId = UserDetail.AadhaarId;
+                                _SSOUserDetail.Gender = UserDetail.Gender;
+                                _SSOUserDetail.OldSSOIDs = UserDetail.OldSSOIDs;
 
-                    var userModel = AddUpdateSSO(_SSOUserDetail);
+                                SessionModel.SSOUserDetail = _SSOUserDetail;
+                                jsonUserDetail = new JavaScriptSerializer().Serialize(_SSOUserDetail);
 
-                    List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel[0].RoleId, userModel[0].DepartmentId);
-                    List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
-                    SSO.IncreaseSession();
+                                //Check ssoID in partymaster
+                                //(if present then get the department and roleid and groupid from partymaster itself
+                                //(if not the put into usrMaster with Applicant Roleid,DeptID and groupid)
 
-                    if (userModel[0].PartyId == "A000001")
-                    {
-                        //if (permissions != null)
-                        //{
-                        //Session["Token"] = objResponse.JWT;
-                        Session["UserDetails"] = userModel[0];
-                        Session["UserPermissions"] = permissions;
-                        Session["notificationList"] = notificationsData;
+                                //userModel = JsonConvert.DeserializeObject<UserModelSession>(objResponse.Data.ToString());
+                                //List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel.RoleId, userModel.DepartmentId);
+                                //List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
 
-                        //}
-                        //return RedirectToAction("WelcomeNoc", "Dashboard");
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-                    else if (userModel[0].Type == "11")
-                    {
-                        //if (permissions != null)
-                        //{
-                        //Session["Token"] = objResponse.JWT;
-                        Session["UserDetails"] = userModel[0];
-                        Session["UserPermissions"] = permissions;
-                        Session["notificationList"] = notificationsData;
+                                //Session["Token"] = objResponse.JWT;
+                                //Session["UserDetails"] = userModel;
+                                //Session["UserPermissions"] = permissions;
+                                //Session["notificationList"] = notificationsData;
 
-                        //}
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-                    else
-                    {
-                        if (permissions != null)
-                        {
-                            //Session["Token"] = objResponse.JWT;
-                            Session["UserDetails"] = userModel[0];
-                            Session["UserPermissions"] = permissions;
-                            Session["notificationList"] = notificationsData;
+                                var userModel = AddUpdateSSO(_SSOUserDetail);
 
-                            return RedirectToAction("WelcomeNoc", "Dashboard");
-                        }
-                    }
+                                List<UserPermissions> permissions = LoginController.GetPermissionDetails(userModel[0].RoleId, userModel[0].DepartmentId);
+                                List<NotificationMaster> notificationsData = ZapurseCommonlist.GetNotificationMaster();
+                                SSO.IncreaseSession();
 
+                                if (userModel[0].PartyId == "A000001")
+                                {
+                                    //if (permissions != null)
+                                    //{
+                                    //Session["Token"] = objResponse.JWT;
+                                    Session["UserDetails"] = userModel[0];
+                                    Session["UserPermissions"] = permissions;
+                                    Session["notificationList"] = notificationsData;
+
+                                    //}
+                                    //return RedirectToAction("WelcomeNoc", "Dashboard");
+                                    return RedirectToAction("Index", "Dashboard");
+                                }
+                                else if (userModel[0].Type == "11")
+                                {
+                                    //if (permissions != null)
+                                    //{
+                                    //Session["Token"] = objResponse.JWT;
+                                    Session["UserDetails"] = userModel[0];
+                                    Session["UserPermissions"] = permissions;
+                                    Session["notificationList"] = notificationsData;
+
+                                    //}
+                                    return RedirectToAction("Index", "Dashboard");
+                                }
+                                else
+                                {
+                                    if (permissions != null)
+                                    {
+                                        //Session["Token"] = objResponse.JWT;
+                                        Session["UserDetails"] = userModel[0];
+                                        Session["UserPermissions"] = permissions;
+                                        Session["notificationList"] = notificationsData;
+
+                                        return RedirectToAction("WelcomeNoc", "Dashboard");
+                                    }
+                                }
+
+                            }
+                    //    }
+                    //}
                 }
-                //}
-                //}
+                catch (Exception e)
+                {
+                    throw e;
+                }
+
+                return View();
             }
-
-            return View();
         }
-
         public List<UserModelSession> AddUpdateSSO(SSOUserDetail userDetail)
         {
             ResponseData objResponse = new ResponseData();

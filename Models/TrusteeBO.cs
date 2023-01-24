@@ -105,6 +105,9 @@ namespace NewZapures_V2.Models
             public string Applicationstatus { get; set; }
             public int iFk_FormTypId { get; set; }
             public string ApplicationType { get; set; }
+            public string NocMode { get; set; }
+            public int NOCDeptID { get; set; }
+            public string NOCType { get; set; }
             public string UploadedReceiptDocument { get; set; }
             public string UploadedReceiptDocumentExtension { get; set; }
             public string UploadedReceiptDocumentContent { get; set; }

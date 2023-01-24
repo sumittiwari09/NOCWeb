@@ -807,7 +807,7 @@ namespace NewZapures_V2.Models
             return MenusList;
         }
 
-        public static List<Dropdown> GetTehsil(int MenuId, string Type = "Tehsil")
+        public static List<Dropdown> GetTehsil(string MenuId, string Type = "Tehsil")
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
             var request = new RestRequest(Method.POST);

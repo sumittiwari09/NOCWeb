@@ -585,10 +585,10 @@ namespace NewZapures_V2.Models
         }
 
 
-        public static List<Dropdown> GetDropDown(int Id,string Type)
+        public static List<Dropdown> GetDropDown(int Id,string Type, string PartyId = null)
         {
             List<Dropdown> obj = new List<Dropdown>();
-            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/FillDropDown?Id=" + Id + "&Type="+ Type);
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/FillDropDown?Id=" + Id + "&Type="+ Type + "&PartyId=" + PartyId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

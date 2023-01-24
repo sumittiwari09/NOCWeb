@@ -90,6 +90,19 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="form-group is-empty row" id="Level">
+                        <label for="nameInput" class="col-sm-3 control-label">Level</label>
+                        <div class="col-sm-6">
+                            <select class="singleselect" name="levelId" id="levelId">
+                                <option value="0">Select Level</option>
+                                @for (var i = 1; i <= 11; i++)
+                                {
+                                    <option value="@i">Level @i</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group is-empty row">
 
                         <label for="nameInput" class="col-sm-3 control-label">Active</label>
@@ -215,6 +228,9 @@
                         }
                         else {
                         }*@
+
+                        if (response.Data[i].Text !== "Admin") {
+
                         if ('@type' == "0") {
                             strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
                         }
@@ -223,6 +239,7 @@
 
                                 strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
                             }
+                        }
                         }
                     }
                     $("#DepartmentId").select2("destroy");

@@ -1,0 +1,117 @@
+﻿@using NewZapures_V2.Models
+@model List<CommitedMstview>
+@{
+    Layout = null;
+    int Id = ViewBag.Id;
+    var appid = ViewBag.appid;
+    var formName = ViewBag.formName;
+}
+
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content" style="-webkit-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); -moz-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); box-shadow: -28px 28px 28px -11px rgb(180 170 170);">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Remark Information</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div style="height: 300px;overflow-y:scroll">
+
+            @{
+                foreach (var item in Model.Where(p => p.iComtId == Id).ToList())
+                {
+                    <input id="iFk_FieldId" type="hidden" value="@item.iFK_FieldId" />
+
+                    <div class="card">
+                        <div class="card-header" style="
+    width: 50%;
+    background: gainsboro;
+    font-weight: bold;
+    border-radius: 20px;
+    border: solid;
+    margin-right: 50%;
+">
+                            @item.sName (@item.CtDate)
+                            <p class="card-title" style="color: red;font-weight: bold;">@item.sDiscription</p>
+                        </div>
+
+                    </div>
+                }
+
+                foreach (var item in Model.Where(p => p.iComtId != Id).ToList())
+                {
+
+                    <div class="card">
+                        <div class="card-header" style="
+    width: 50%;
+    background: burlywood;
+    font-weight: bold;
+    border-radius: 20px;
+    border: solid;
+    margin-left: 50%;
+">
+                            @item.sName (@item.CtDate)
+                            <p class="card-title" style="color: red;font-weight: bold;">@item.sDiscription</p>
+                            @*<h5 class="card-text"> </h5>*@
+                        </div>
+
+                    </div>
+                }
+            }
+            </div>
+            <div class="row">
+                @*<label for="nameInput" class="col-sm-3 control-label">Discription</label>*@
+                <div class="col-sm-12" style="margin-top: 15px;">
+                    <textarea rows="2" class="form-control" style="border: solid;border-width: thin; resize:none" id="Description1" name="Description" placeholder="Enter Discription" required></textarea>
+                    <span id="Description_Comments1" style="color:red; display:none;">Please enter discription </span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="Remarksave">Save Remark</button>
+        </div>
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $("#Remarksave").click(function () {
+        debugger;
+        var description = $("#Description1").val();
+        if (description == '') {
+            $("#Description_Comments1").css('display', 'block');
+            return false;
+        }
+        var iFk_FieldId = $("#iFk_FieldId").val();
+         var Params = JSON.stringify({
+             iFk_Field: iFk_FieldId,
+             sdescription: description,
+             icomtid:'@Id',
+             appid: '@appid',
+             formName: '@formName',
+             Type:"Remark"
+         });
+        $.ajax({
+            url: GetglobalDomain() + "/Master/SaveComments",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+
+                if (response.isvalid == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Comments Save Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    $("#popassign").modal('hide');
+                }
+            }
+        });
+    });
+</script>
