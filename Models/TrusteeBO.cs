@@ -108,6 +108,7 @@ namespace NewZapures_V2.Models
             public string NocMode { get; set; }
             public int NOCDeptID { get; set; }
             public string NOCType { get; set; }
+            public string NOCStatus { get; set; }
             public string UploadedReceiptDocument { get; set; }
             public string UploadedReceiptDocumentExtension { get; set; }
             public string UploadedReceiptDocumentContent { get; set; }
@@ -131,6 +132,41 @@ namespace NewZapures_V2.Models
             public int DegreeID { get; set; }
             public string Courses { get; set; }
             public int CoursesID { get; set; }
+
+
+            //public string CollageId { get; set; }
+            //public string TrustInfoId { get; set; }
+            //public string TrustName { get; set; }
+            //public string TrustRegistrationNo { get; set; }
+            //public string CollageName { get; set; }
+            //public string MobileNo { get; set; }
+            //public string Email { get; set; }
+            //public string CollageLogo { get; set; }
+            //public string CollageContectType { get; set; }
+            //public string AddMobileNo { get; set; }
+            //public string AddPhoneNo { get; set; }
+            //public string WebsiteURL { get; set; }
+            //public string Degree { get; set; }
+            //public int DegreeID { get; set; }
+            //public string Courses { get; set; }
+            //public int CoursesID { get; set; }
+
+
+            public string CollegeMedium { get; set; }
+            public string CollegeLevel { get; set; }
+            public string AddressLineOne { get; set; }
+            public string AddressLineTwo { get; set; }
+            public string DistrictName { get; set; }
+            public string TehsilName { get; set; }
+            public string BlockName { get; set; }
+            public string CityName { get; set; }
+            //public int CoursesID { get; set; }
+            public int RuralType { get; set; }
+            public string AreaType { get; set; }
+            public string CollegeType { get; set; }
+
+
+
         }
 
         public class CollageFacility
@@ -165,8 +201,8 @@ namespace NewZapures_V2.Models
             public string CourseId { get; set; }
             public string FinancialYear { get; set; }
             public string ApplicationNumber { get; set; }
-            public string Guid { get; set; } 
-            public List<RateList> rateLists { get; set; }          
+            public string Guid { get; set; }
+            public List<RateList> rateLists { get; set; }
         }
 
         public class RateList
@@ -257,29 +293,29 @@ namespace NewZapures_V2.Models
         }
 
         public class CollageattachmentAPI
-        {           
+        {
             public int iPk_Id { get; set; }
             public int iFk_TrstId { get; set; }
             public int iFk_ClgId { get; set; }
             public int iFk_CourseId { get; set; }
             public string sSSOID { get; set; }
             public int bIsCnnctUnvrctyDrctn { get; set; }
-            
+
             public int bIsTimeFrm { get; set; }
-           
+
             public int bIsLadDwn { get; set; }
-            
+
             public int bIsSffcentLand { get; set; }
-            
+
             public int bIsAffidvtAsprGuid { get; set; }
-            
+
             public int bIsOtherDoc { get; set; }
-            
+
             public string sCrtdBy { get; set; }
             public DateTime? dtCrtdDt { get; set; }
             public string sUpdtBy { get; set; }
             public DateTime? dtUpdDt { get; set; }
-            public string iFk_sAplcnNo { get; set; }           
+            public string iFk_sAplcnNo { get; set; }
         }
 
         public class DocumentsDetails
@@ -307,11 +343,44 @@ namespace NewZapures_V2.Models
             public int iFKDEPT_ID { get; set; }
             public int iFK_CORS_ID { get; set; }
             public int iFK_FormType_ID { get; set; }
+            public string stypeID { get; set; }
             public int sSSO_ID { get; set; }
             public DateTime? dtCRT_On { get; set; }
             public DateTime? dtSubOn { get; set; }
             public string iSts { get; set; }
+            public string type { get; set; }
+            public List<CourseDataForNOC> courseData { get; set; }
+            public List<SubjectDataForNOC> subjData { get; set; }
+            public List<TNOCDataForNOC> TnocData { get; set; }
+            public List<PNOCDataForNOC> PnocData { get; set; }
 
+        }
+
+        public class CourseDataForNOC
+        {
+            public int TypeId { get; set; }
+            public int courseID { get; set; }
+            public string subjectIdList { get; set; }
+        }
+        public class SubjectDataForNOC
+        {
+            public int TypeId { get; set; }
+            public int courseID { get; set; }
+            public string subjectIdList { get; set; }
+        }
+        public class TNOCDataForNOC
+        {
+            public int typeID { get; set; }
+            public string pkId { get; set; }
+            public int courseID { get; set; }
+            public int subID { get; set; }
+        }
+        public class PNOCDataForNOC
+        {
+            public int typeID { get; set; }
+            public string pkId { get; set; }
+            public int courseID { get; set; }
+            public int subID { get; set; }
         }
 
         public class ApplyNOCApplication
@@ -354,12 +423,53 @@ namespace NewZapures_V2.Models
             public string UpdatedBy { get; set; }
 
         }
-         public class ApplyNOCCLGApplication
+        public class ApplyNOCCLGApplication
         {
             public string College { get; set; }
             public int collegeID { get; set; }
             public string Course { get; set; }
             public int courseID { get; set; }
+        }
+
+        public class OldNOCData
+        {
+            public int iPK_Id { get; set; }
+            public int iFk_ClgID { get; set; }
+            public string collegeName { get; set; }
+            public int iFk_CORSID { get; set; }
+            public string courseName { get; set; }
+            public int iNocTypID { get; set; }
+            public string nocTypeName { get; set; }
+            public int iFk_SYID { get; set; }
+            public string sessionYear { get; set; }
+            public string sNOCNo { get; set; }
+            public string dtNOCRcvdOn { get; set; }
+            public string dtNOCExprOn { get; set; }
+            public string sRemrk { get; set; }
+            public string dtCrtedOn { get; set; }
+
+            //image
+            public string NocDoc { get; set; }
+            public string NocDocExtension { get; set; }
+            public string NocDocContent { get; set; }
+
+        }
+
+        public class NOCExistingData
+        {
+            public int PKID { get; set; }
+            public int collegeID { get; set; }
+            public string collegeName { get; set; }
+
+            public int courseID { get; set; }
+            public string courseName { get; set; }
+            public int iFk_SbjID { get; set; }
+            public string SubjectName { get; set; }
+            public string NOCStatus { get; set; }
+            public string NOCNo { get; set; }
+            public string NOCOrderDate { get; set; }
+            public string NOCDocument { get; set; }
+
         }
 
         #endregion

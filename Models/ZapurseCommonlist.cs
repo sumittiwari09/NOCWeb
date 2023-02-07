@@ -927,10 +927,118 @@ namespace NewZapures_V2.Models
             }
             return trusteeList;
         }
-        public static List<AcdmcTableData> GetAcdmcData()
+        public static List<Dropdown> GetClgListForDepartment(string MenuId, string Type = "GetCollegeForDepartment")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> trusteeList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+    
+        public static List<Dropdown> GetAvailableNOC(string MenuId, string Type = "AvailableNOC")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> trusteeList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+        
+        public static List<Dropdown> GetCourseForCollege(string MenuId, string Type = "GetCourseForCollege")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> trusteeList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+        
+        public static List<NOCExistingData> GetExistingNOCForCollege(string MenuId, string Type = "GetExistingNOCForCollege")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<NOCExistingData> trusteeList = new List<NOCExistingData>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<NOCExistingData>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+       public static List<Dropdown> GetSubjectForCourse(string MenuId, string Type = "GetSubjectForCourse")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> trusteeList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
+        public static List<AcdmcTableData> GetAcdmcData(string GUIID)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData?GUIID=" + GUIID);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1088,7 +1196,7 @@ namespace NewZapures_V2.Models
             }
             return nocApplication;
         }
-
+       
         #region Committee
 
         public static List<Dropdown> getCommitteeList(int MenuId)
@@ -1175,6 +1283,123 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
+        
+        public static List<Dropdown> GetFee(string MenuId, string Type = "GetFeeForApplication")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+        
+        public static List<Dropdown> GetInspectionFee(string MenuId="", string Type = "InspectionFee")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+
+        public static List<Dropdown> GetColleges(int MenuId=0, string Type = "GetMyColleges")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+        
+        public static List<TrusteeBO.OldNOCData> GetOldNOCData(int MenuId=0, string Type = "GetOLDNOCData")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<TrusteeBO.OldNOCData> MenusList = new List<TrusteeBO.OldNOCData>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<TrusteeBO.OldNOCData>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+        
+        public static List<Dropdown> GetCoursesForCollege(int MenuId, string Type = "GetCoursesForCollege")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+        
+        public static List<Dropdown> GetSessionYears(int MenuId=0, string Type = "GetSessionYears")
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> MenusList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                MenusList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return MenusList;
+        }
+
+
+
         public enum ModalSize
         {
             Small,
@@ -1212,5 +1437,24 @@ namespace NewZapures_V2.Models
         }
         #endregion
 
+
+        public static List<Dropdown> GetUserSendbackForward(string MenuId, string partyID)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetUserSendbackForward?MenuId=" + MenuId + "&PartyId=" + partyID);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> modules = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                modules = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            }
+            return modules;
+        }
     }
 }

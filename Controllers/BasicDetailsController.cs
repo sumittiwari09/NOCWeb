@@ -189,7 +189,8 @@ namespace NewZapures_V2.Controllers
             IRestResponse response = client.Execute(request);
             if (response.StatusCode.ToString() == "OK")
             {
-                List<TrusteeBO.CollageList> _result = _JsonSerializer.Deserialize<List<TrusteeBO.CollageList>>(response.Content);
+                //var data = JsonConvert.SerializeObject(response.Content);
+                List<TrusteeBO.CollageList> _result = JsonConvert.DeserializeObject<List<TrusteeBO.CollageList>>(response.Content);
                 if (_result != null)
                 {
                     ViewBag.collagelist = _result;

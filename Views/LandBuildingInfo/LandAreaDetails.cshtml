@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Land & Building Information";
+    ViewBag.Title = "Land Details";
     Layout = null;// "~/Views/Shared/_Layout.cshtml";
 
     var landData = (List<LandInfoBO>)ViewBag.landDataList;
@@ -110,7 +110,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header fsi">
-                <h4 class="mt-0 header-title float-left">Land & Building Information</h4>
+                <h4 class="mt-0 header-title float-left">Land Details</h4>
             </div>
             <div class="card-body">
                 <div class="row col-lg-12 mt-3">
@@ -137,6 +137,7 @@
                                     <th>Order Date</th>
                                     <th>Land Type</th>
                                     <th>Khasara Number</th>
+                                    <th>Is Owned/Rented</th>
                                     <th>Land Area</th>
                                     <th>Total Area</th>
                                     <th>Converted Doc</th>
@@ -357,6 +358,7 @@
                                             <td>${item.dtOrdrDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
+  <td>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
@@ -490,7 +492,7 @@
                 var mainData = data.Data.Data;
                 console.table(mainData)
                 if (mainData != null) {
-                  
+
                     mainData.forEach(function (item, index) {
                         htmlString += `<tr><td>${index + 1}</td><td>${item.userName}</td><td>${item.Valueis}</td><td style="display: flex; align-items: end; gap: 10px;font-size: 15px;"><div style="background-image: url('${item.sUpdimg}');background-size:cover;height:50px;width:50px;border-radius:50%;background-position:center"></div><div><a href="${item.sUpdimg}" download="img_${item.sDiscription}" ><i class="fa fa-download"></i></a></div> </td><td>${item.sDiscription}</td><td><span class="btn btn-sm btn-primary" onclick="Remarkdata(${item.iComtId},'Land_Bulidinginfo')"><i class="fa fa-pen"></i> Remark</span></td></tr>`
                     })

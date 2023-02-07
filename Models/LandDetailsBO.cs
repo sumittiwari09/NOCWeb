@@ -40,6 +40,7 @@ namespace NewZapures_V2.Models
         public string dtOrdrDate { get; set; }
         public string sLndTyp { get; set; }
         public string sKhasaraNo { get; set; }
+        public string slndAccureTyp { get; set; }
         public decimal dLndArea { get; set; }
         public decimal dTotalArea { get; set; }
 
@@ -57,5 +58,10 @@ namespace NewZapures_V2.Models
         public string UploadLandDoc { get; set; }
         public string UploadLandDocExtension { get; set; }
         public string UploadLandDocContent { get; set; }
+        
+        //image
+        public string UploadLandAccureTypeDoc { get; set; }
+        public string UploadLandAccureTypeDocExtension { get; set; }
+        public string UploadLandAccureTypeDocContent { get; set; }
     }
 }

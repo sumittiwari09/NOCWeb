@@ -1,19 +1,22 @@
 ﻿@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Academic Master";
-    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 
     var FromYear = ViewBag.FromYear as List<Dropdown>;
     var ToYear = ViewBag.ToYear as List<Dropdown>;
     var Result = ViewBag.Result as List<Dropdown>;
+    var Course = ViewBag.Course as List<Dropdown>;
     var AllData = ViewBag.AllData as List<AcdmcTableData>;
+    var GUIId = ViewBag.GUIId as string;
+
 }
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
 <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 }
 @section Scripts {
@@ -45,17 +48,6 @@
         top: 0;
         z-index: 1;
     }
-
-    .fsc {
-        background: #6441A5;
-        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
-        background: linear-gradient(to left, #506ee4, #5b3a96);
-        border-radius: 12px;
-    }
-
-        .fsc h4 {
-            color: white !important;
-        }
 </style>
 <html>
 <head>
@@ -63,27 +55,23 @@
     <title></title>
 </head>
 <body>
-    <!--<div class="row">
+    <div class="row">
         <div class="col-sm-12">
-            <div class="page-title-box">-->
-    @*<div class="float-right">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">NOC</li>
-                <li class="breadcrumb-item">Master</li>
-                <li class="breadcrumb-item active">Academic Master</li>
-            </ol>
-        </div>
-        <h4 class="page-title">@ViewBag.Title</h4>*@
-    <!--</div>--><!--end page-title-box-->
-    <!--</div>--><!--end col-->
-    <!--</div>-->
+            <div class="page-title-box">
+                @*<div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Academic Master</li>
+                    </ol>
+                </div>*@
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
-                    <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
-                    @*<a href="@Url.Action("EditApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Edit Application</a>*@
-                </div>
                 <div class="card-body">
 
                     <div class="row">
@@ -93,19 +81,18 @@
 
                                 <select id="ddlFromYear">
                                     <option value="0" role=separator>From Year</option>
-                                   
                                     @{
-                                            if (FromYear != null)
+                                        if (FromYear != null)
+                                        {
+                                            foreach (var item in FromYear)
                                             {
-                                                foreach (var item in FromYear)
-                                                {
-                                                    <option data-image="~/images/404.png">@item.Text</option>
+                                                <option data-image="~/images/404.png">@item.Text</option>
 
 
 
-                                                }
                                             }
                                         }
+                                    }
                                 </select>
 
                             </div>
@@ -117,26 +104,54 @@
 
                                 <select id="ddlToYear">
                                     <option value="0" role=separator>To Year</option>
-                                   
-
                                     @{
-                                            if (ToYear != null)
+                                        if (ToYear != null)
+                                        {
+                                            foreach (var item in ToYear)
                                             {
-                                                foreach (var item in ToYear)
-                                                {
-                                                    <option data-image="~/images/404.png">@item.Text</option>
+                                                <option data-image="~/images/404.png">@item.Text</option>
 
 
 
-                                                }
                                             }
                                         }
+                                    }
                                 </select>
 
                             </div>
 
                         </div>
 
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group col-lg-12">
+
+
+                                <select id="ddlCourse">
+                                    <option value="0" role=separator>Select Courses</option>
+                                    @{
+                                        if (Course != null)
+                                        {
+                                            foreach (var item in Course)
+                                            {
+                                                <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                            }
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <input class="form-control" type="text" id="txtTotOfStudentAppear" placeholder="Total Student Appear" autocomplete="off" required>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12 d-flex">
@@ -151,15 +166,16 @@
 
 
                                     <select id="ddlResult">
-                                        @*<option value="0" role=separator>Select Result</option>
-                                            <option value="0" role=separator>Select Result</option>
-                                            <option value="0" role=separator>Select Result</option>*@
+                                        <option value="0" role=separator>Select Result</option>
                                         @{
                                             if (Result != null)
                                             {
                                                 foreach (var item in Result)
                                                 {
                                                     <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
                                                 }
                                             }
                                         }
@@ -178,34 +194,27 @@
                                 <input class="form-control" type="text" id="txtNoOfStudentPassed" placeholder="No Of Student Passed" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col-4" style="display:none">
+                            <div class="col-lg-12">
 
+                                <input class="form-control" type="text" id="txtPercentage" placeholder="Percentage" autocomplete="off" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                        </div>
+                        <div class="col-lg-1">
+                            <div>&nbsp;</div>
                             <input type="button" class="btn btn-primary" id="btnSaveData" onclick="SaveData();" value="Add" title="Add" />
                         </div>
 
-                        @*<div class="col-4">
-                                <div class="col-lg-12">
-
-                                    <input class="form-control" type="text" id="txtPercentage" placeholder="Percentage" autocomplete="off" required>
-                                </div>
-                            </div>*@
-
                     </div>
-                    @*<div class="row">
-                            <div class="col-lg-8">
-                            </div>
-                            <div class="col-lg-1">
-                                <div>&nbsp;</div>
-                                <input type="button" class="btn btn-primary" id="btnSaveData" onclick="SaveData();" value="Add" title="Add" />
-                            </div>
-
-                        </div>*@
                 </div>
             </div>
         </div>
     </div>
-
-
     <div class="row mt-3">
         <div class="col-lg-12">
 
@@ -215,6 +224,8 @@
                         <th scope="col">Sr No</th>
                         <th scope="col">From Year</th>
                         <th scope="col">To Year</th>
+                        <th scope="col">Courses</th>
+                        <th scope="col">Total Student Appear</th>
                         <th scope="col">No Of Student Appear</th>
                         <th scope="col">Result</th>
                         <th scope="col">No Of Student Passed</th>
@@ -229,7 +240,7 @@
                             if (AllData.Count <= 0)
                             {
                                 <tr>
-                                    <td colspan="6" rowspan="1" style="text-align:center">No Data Available</td>
+                                    <td colspan="9" rowspan="1" style="text-align:center">No Data Available</td>
                                 </tr>
                             }
                             else
@@ -241,6 +252,8 @@
                                         <td>@i</td>
                                         <td scope="col">@item.FromYear</td>
                                         <td scope="col">@item.ToYear</td>
+                                        <td scope="col">@item.Course</td>
+                                        <td scope="col">@item.TotalStudent</td>
                                         <td scope="col">@item.NoOfStudent</td>
                                         <td scope="col">@item.Result</td>
                                         <td scope="col">@item.NoOfStudentPass</td>
@@ -258,12 +271,14 @@
 
         </div>
     </div>
-    <script type="text/javascript">
 
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#ddlResult").select2();
             $("#ddlToYear").select2();
             $("#ddlFromYear").select2();
+            $("#ddlCourse").select2();
+
         });
         function SaveData() {
             var FromYear = $('#ddlFromYear').val();
@@ -271,6 +286,9 @@
             var Result = $('#ddlResult').val();
             var NoOfStdntApp = $('#txtNoOfStudentAppear').val();
             var NoOfStdntPass = $('#txtNoOfStudentPassed').val();
+            var TotalStudent = $('#txtTotOfStudentAppear').val();
+            var Course = $('#ddlCourse').val();
+            var GUIID = '@GUIId';
 
 
             var isSaved = true;
@@ -279,7 +297,10 @@
                 ToYear: 0,
                 NoOfStudent: 0,
                 NoOfStudentPass: 0,
-                Fk_Result: 0
+                Fk_Result: 0,
+                TotalStudent: 0,
+                Course: 0,
+                GUIID:''
 
             }
 
@@ -287,7 +308,7 @@
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Please Select Department...!',
+                    title: 'Please Select FromYear...!',
                     allowOutsideClick: false,
                     showCloseButton: true,
                 });
@@ -297,7 +318,7 @@
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Please Select Course...!',
+                    title: 'Please Select ToYear...!',
                     allowOutsideClick: false,
                     showCloseButton: true,
                 });
@@ -307,7 +328,7 @@
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Please Select Course...!',
+                    title: 'Please Select Result...!',
                     allowOutsideClick: false,
                     showCloseButton: true,
                 });
@@ -340,7 +361,9 @@
                 Data.Fk_Result = parseInt(Result);
                 Data.NoOfStudent = parseInt(NoOfStdntApp);
                 Data.NoOfStudentPass = parseInt(NoOfStdntPass);
-
+                Data.TotalStudent = TotalStudent;
+                Data.Course = Course;
+                Data.GUIID = GUIID;
             }
             var d = JSON.stringify(Data)
             if (isSaved) {
@@ -378,7 +401,7 @@
                         }
 
                         setTimeout(function () {
-                            $("#btnEA_Acadmic").click();
+                            $('#btnEA_Acadmic').click();
                             //var url = GetglobalDomain() + "/AcdmcMst/Index";
                             //window.location.href = url;
                         }, 700)
@@ -391,7 +414,6 @@
                 });
             }
         }
-
     </script>
 </body>
 </html>

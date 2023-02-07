@@ -321,8 +321,8 @@ namespace NewZapures_V2.Controllers
             return View();
         }
         public ActionResult Draftinspaction(string applGUID)
-        
-        {           
+        {
+            UserModelSession servicesCollectiondata = (UserModelSession)Session["UserDetails"];
             var EditdraftedApplications = ZapurseCommonlist.GetAdminApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
@@ -330,6 +330,7 @@ namespace NewZapures_V2.Controllers
             //ViewBag.LandDetails = LandData;
             SessionModel.ApplicantGuid = applGUID;
             ViewBag.trusteeMember = trusteeMember;
+            ViewBag.usrid = servicesCollectiondata.PartyId;
             SessionModel.ApplicantGuid = applGUID;
             return View();
         }
@@ -343,7 +344,7 @@ namespace NewZapures_V2.Controllers
 
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
-            var AcadmicData = ZapurseCommonlist.GetAcdmcData();
+            var AcadmicData = ZapurseCommonlist.GetAcdmcData(applGUID);
             var subjectData = ZapurseCommonlist.GetSubjectList(applGUID);
 
             ViewBag.trusteeMember = trusteeMember;
@@ -353,6 +354,12 @@ namespace NewZapures_V2.Controllers
             return View();
         }
         
+        public ActionResult ApplyNOCApplicationNew()
+        {
+            var departmentList = ZapurseCommonlist.GetDepartmentlist();
+            ViewBag.departments = departmentList;
+            return View();
+        }
         public ActionResult ApplyNOCApplication()
         {
             var departmentList =ZapurseCommonlist.GetDepartmentlist();
@@ -1059,7 +1066,7 @@ namespace NewZapures_V2.Controllers
         public JsonResult SaveApplicationDetails(TrusteeBO.SaveApplicationModal applicationModal)
         {
             var json = JsonConvert.SerializeObject(applicationModal);
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/SaveApplication");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/SaveMultipleNOC");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -1080,9 +1087,87 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+        
+        public JsonResult AddTrackingData(TrackingData track)
+        {
+            var json = JsonConvert.SerializeObject(track);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/AddTrackingData");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+
+            }
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Message = objResponse.Message },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult GetCollegeListForDepartment(string departID)
+        {
+            var clgList = ZapurseCommonlist.GetClgListForDepartment(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult GetAvailableNOC(string applicationType)
+        {
+            var clgList = ZapurseCommonlist.GetAvailableNOC(applicationType);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "Available NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
         public JsonResult GetNOCApplicationList(int departID)
         {
             var nocList = ZapurseCommonlist.GETNOCApplicationList(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetCourseForCollege(string collegeID)
+        {
+            var nocList = ZapurseCommonlist.GetCourseForCollege(collegeID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult GetExistingNOCForCollege(string collegeID)
+        {
+            var nocList = ZapurseCommonlist.GetExistingNOCForCollege(collegeID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetSubjectForCourse(string CourseID)
+        {
+            var nocList = ZapurseCommonlist.GetSubjectForCourse(CourseID);
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
@@ -1096,6 +1181,37 @@ namespace NewZapures_V2.Controllers
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetFee(string ApplicationId)
+        {
+            var nocList = ZapurseCommonlist.GetFee(ApplicationId);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult GetInspectionFee()
+        {
+            var nocList = ZapurseCommonlist.GetInspectionFee();
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult GetUserSendbackForward(string MenuId, string PartyId)
+        {
+            var rolIst = ZapurseCommonlist.GetUserSendbackForward(MenuId, PartyId);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = rolIst, Failure = false, Message = "Role List" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };

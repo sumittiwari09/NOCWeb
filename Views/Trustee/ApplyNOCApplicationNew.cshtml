@@ -1,0 +1,1546 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Apply NOC Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var departmentList = (List<DropdownDeptImages>)ViewBag.departments;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+<link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Apply NOC</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card">
+    <div class="card-header fsc">
+        <h4 class="mt-0 header-title float-left">@ViewBag.Title</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <label for="noc-text-input " class="noc-form-label">Department</label>
+                <select class="singleSelect form-control" id="ddlDeptList">
+                    @{
+                        <option value="0">Select Department</option>
+                        if (departmentList != null)
+                        {
+                            foreach (var item in departmentList)
+                            {
+
+                                <option value=@item.Id>@item.Text</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-6">
+                <label for="noc-text-input " class="noc-form-label">College</label>
+                <select class="singleSelect form-control" id="ddlClgList">
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-lg-12">
+                <label for="noc-text-input " class="noc-form-label">Select Application Type</label>
+                <div class="d-flex">
+                    <div class="form-group custom-control custom-radio col-sm-4">
+                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="ApplicationType" id="rbtn_Noc" value="NOC">
+                        <label for="rbtn_Noc" class="custom-control-label" style="width: max-content;">NOC</label>
+                    </div>
+
+                    <div class="form-group custom-control custom-radio col-sm-4">
+                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="ApplicationType" id="rbtn_inspection" value="inspection">
+                        <label for="rbtn_inspection" class="custom-control-label" style="width: max-content;">Only Inspection Fee</label>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <hr />
+        <div class="row mt-3" id="divNOCTypeContainer" style="display:none">
+            <div class="col-lg-12">
+                <label for="noc-text-input " class="noc-form-label">NOC Type</label>
+                <div class="d-flex">
+                    <div class="form-group custom-control custom-radio col-sm-4">
+                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="NOCType" id="rbtn_New" value="New College">
+                        <label for="rbtn_New" class="custom-control-label" style="width: max-content;">New College</label>
+                    </div>
+
+                    <div class="form-group custom-control custom-radio col-sm-4">
+                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="NOCType" id="rbtn_existing" value="Existing College">
+                        <label for="rbtn_existing" class="custom-control-label" style="width: max-content;">Existing College</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <hr />
+
+
+        <div class="row mt-3" id="divNOCForContainer" style="display:none">
+            <div class="col-lg-12">
+                <label for="noc-text-input " class="noc-form-label">NOC For</label>
+                <div class="row col-12" id="divAvailableNOCContainer">
+                    @*<div class="form-group custom-control custom-radio col-sm-4">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_Noc">
+                            <label for="rbtn_Noc" class="custom-control-label" style="width: max-content;">NOC</label>
+                        </div>
+
+                        <div class="form-group custom-control custom-radio col-sm-4">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_inspection">
+                            <label for="rbtn_inspection" class="custom-control-label" style="width: max-content;">Only Inspection Fee</label>
+                        </div>*@
+                </div>
+
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12" id="divinspectionFee" style="display:none">
+                <div>Inspection Fee : <span id="spnInsFee"></span></div>
+            </div>
+            <div class="col-lg-12 mt-4">
+                <button type="button" class="theme-button-mockup" onclick="SaveDetails()"><i class="fas fa-plus"></i> Submit</button>
+            </div>
+        </div>
+
+
+        <div class="row mt-2">
+            <div class="noc-layouts noc-layouts1" id="divNew_Course">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 w-75">Application For New Course</h4>
+                    <a href="javascript:void(0)" class="theme-button-mockup" onclick="openModalCourse('Course')"><i class="fas fa-plus"></i> Add</a>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                        <table class="table" id="tblCourse">
+                            <thead>
+
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Name</th>
+                                    <th>Subjects</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divNew_Subjects">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 w-75">New Subjects</h4>
+                    <a href="javascript:void(0)" class="theme-button-mockup" onclick="openModalCourse('Subject')"><i class="fas fa-plus"></i> Add</a>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                        <table class="table" id="tblSubject">
+                            <thead>
+
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Name</th>
+                                    <th>Subjects</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divTNOC_Extension_Of_Subject">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">TNOC Extension Noc of Subject</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                        <table class="table" id="tblTNOCList">
+                            <thead>
+
+                                <tr>
+                                    <th>#</th>
+                                    <th>PKID</th>
+                                    <th>Course ID</th>
+                                    <th>Course Name</th>
+                                    <th hidden>Subject ID</th>
+                                    <th>Subject Name</th>
+                                    <th>Noc Status</th>
+                                    <th>Noc Order Date</th>
+                                    <th>Noc Order No.</th>
+                                    <th>Noc Document</th>
+                                    <th>TNOC Extention</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divPNOC_Of_Subject">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">PNOC Noc of Subject</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                        <table class="table" id="tblPNOCList">
+                            <thead>
+
+                                <tr>
+                                    <th>#</th>
+                                    <th>PKID</th>
+                                    <th>Course ID</th>
+                                    <th>Course Name</th>
+                                    <th hidden>Subject ID</th>
+                                    <th>Subject Name</th>
+                                    <th>Noc Status</th>
+                                    <th>Noc Order Date</th>
+                                    <th>Noc Order No.</th>
+                                    <th>Noc Document</th>
+                                    <th>PNOC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="noc-layouts noc-layouts1" id="divChange_in_Girls_to_Co-Education">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">Change in Girls to Co-Education</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of Management (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of 25% parents of student (min.100) in this previous year (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divChange_in_Name_of_College">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">Change in Name of College</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">ChallanNew Name in English</label>
+                            <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="New Name in English">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">New Name in Hindi</label>
+                            <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="New Name in Hindi">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divCollege_Place_Change">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">College Place Change</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">New Place Name and Address</label>
+                            <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="New Place Name and Address">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for new place in same tehsil certified by Tehshildar</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divChange_in_College_Management">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">Change in College Management</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Name of New Society</label>
+                            <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="New Name in English">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Document for Annexure 8 For Change Management</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                            <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts noc-layouts1" id="divMerger">
+                <div class="title-heading d-flex align-items-center justify-content-between">
+                    <h4 class="p-0 title-heading m-0 ">Merger Details- Applicant College Information</h4>
+                </div>
+                <div class="card-body w-100 float-left">
+                    <div class="row">
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Proposal of Society for merger</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">All NOCs issued in single pdf file</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Latest University Affiliation of college</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">NOC of the affiliating university for merger</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Affidavit of Consent of 100% Parents</label>
+                            <div>
+                                <input type="file" id="" class="form-control" name="" />
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="title-heading d-flex align-items-center justify-content-between rounded-0">
+                    <h4 class="p-0 title-heading m-0 ">Merger Details- Other College information</h4>
+                </div>
+
+                <div class="card-body row">
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">All NOCs issued in single pdf file</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">Latest University Affilliation of college</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">NOC of the affiliating university for merger</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">Affidavit of consent of 100% Parents</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">Land title Certificate</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">Blue print of building</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="noc-text-input " class="noc-form-label" style="">Staff information (Teaching and non-teaching)</label>
+                        <div>
+                            <input type="file" id="" class="form-control" name="" />
+                            <input type="hidden" id="" />
+                            <input type="hidden" id="" />
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                        <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="noc-layouts noc-layouts1">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Add Course</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-3 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
+                                <select class="form-control noc-input-text" name="" id="">
+                                    <option value="">B.C.A</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <div class="">
+                                    <label for="example-text-input" class="noc-form-label" style="">Subjects</label>
+                                    <select class="form-control noc-input-text" name="" id="">
+                                        <option value="">Computer Application</option>
+                                        <option value=""></option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 w-100 float-left pt-3 text-right">
+                                <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="noc-layouts noc-layouts1">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Add New Subjects</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-3 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
+                                <select class="form-control noc-input-text" name="" id="">
+                                    <option value="">B.Sc.</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <div class="">
+                                    <label for="example-text-input" class="noc-form-label" style="">Subjects Name</label>
+                                    <select class="form-control noc-input-text" name="" id="">
+                                        <option value="">Adiotherapy Technology</option>
+                                        <option value=""></option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 w-100 float-left pt-3 text-right">
+                                <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+
+            <a href="#" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal" style="display:none">Terms and Condition</a>
+
+            <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+                <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="appSummaryTitle">Add New Course</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 20px !important;">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="example-text-input" style="">Select Course</label>
+                                    <select class="singleselect form-control noc-input-text" name="" id="ddlCourseList">
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="example-text-input" style="">Select Subject</label>
+                                    <select class="singleselect form-control noc-input-text" name="" id="ddlSubjectList" multiple>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer" id="divModal">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script>
+    var courseDetails = [];
+    var subjectDetails = [];
+
+    var PNOCDetails = [];
+    var TNOCDetails = [];
+
+    var TypeId = "";
+    var AddCourseID = 0;
+    var AddSubjectID = 0;
+    var AddTNOCID = 0;
+    var AddPNOCID = 0;
+
+    var TNOCPKIDs = "";
+    var PNOCPKIDs = "";
+
+    var applicationDetails = {
+        appltrustID: "",
+        applcollegeID: "",
+        appldegreeID: "",
+        applCourseID: "",
+        applFormtypeID: ""
+    };
+
+    $(document).ready(function () {
+        $("#ddlDeptList").select2();
+        $('#ddlDeptList').change(function () {
+
+            var deptID = $(this).val();
+
+            GetCollegeForDept(deptID);
+        });
+
+        $('#ddlCourseList').change(function () {
+
+            var deptID = $(this).val();
+            GetSubjectForCourse(deptID);
+        });
+
+        $('#ddlClgList').change(function () {
+
+            $("#divNOCTypeContainer").css('display', 'none');
+            $("#divNOCForContainer").css('display', 'none');
+
+
+
+            $("#rbtn_Noc").prop('checked', false);
+            $("#rbtn_inspection").prop('checked', false);
+            $("#rbtn_New").prop('checked', false);
+            $("#rbtn_existing").prop('checked', false);
+
+
+            var GetAllToRemoveActiveClass = document.querySelectorAll('.noc-layouts1');
+
+            GetAllToRemoveActiveClass.forEach(function (input_valid) {
+                //console.log(input_valid);
+                $(input_valid).css('display', 'none');
+            });
+
+        });
+
+        $("input[name='NOCType']").change(function () {
+
+            var deptID = $("input[name='NOCType']:checked").val();
+
+            GetAvailableNOC(deptID);
+        });
+
+        $("input[name='ApplicationType']").change(function () {
+
+            var deptID = $("input[name='ApplicationType']:checked").val();
+
+            if (deptID == 'NOC') {
+
+                $("#divNOCTypeContainer").css('display', 'block');
+                $("#divNOCForContainer").css('display', 'block');
+                $('#divinspectionFee').css('display', 'none');
+            }
+            else {
+                $("#divNOCTypeContainer").css('display', 'none');
+                $("#divNOCForContainer").css('display', 'none');
+                $('#divinspectionFee').css('display', 'block');
+
+                GetinspectionFee('');
+            }
+
+        });
+
+
+        var GetAllToRemoveActiveClass = document.querySelectorAll('.noc-layouts1');
+
+        GetAllToRemoveActiveClass.forEach(function (input_valid) {
+            //console.log(input_valid);
+            $(input_valid).css('display', 'none');
+        });
+
+
+    });
+
+    function CheckDept(item, deptID) {
+
+
+       var  item1 = item.replace('chkDept_', '#divDept_');
+
+        applicationDetails.appldegreeID = deptID;
+        var GetAllDivToRemoveActiveClass = document.querySelectorAll('[id^=chkDept_]');
+        var GetAllDivToRemoveNumberActiveClass = document.querySelectorAll('[id^=num_]');
+
+        GetAllDivToRemoveActiveClass.forEach(function (input_valid) {
+
+            $('#' + input_valid.id).removeAttr('checked');
+        });
+
+        GetAllDivToRemoveNumberActiveClass.forEach(function (input_valid) {
+            input_valid.classList.remove('NumActive');
+        });
+
+
+        $('#' + item).attr('checked', true);
+
+        GetNOCData(deptID);
+
+        $('#num_2').addClass('NumActive');
+
+        $('#btnNext').click();
+        //alert(item);
+    }
+
+    function ChangeForm(formID) {
+        if (formID == 'divApplicationListContainer' && applicationDetails.appldegreeID=="") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `error`,
+                html: `<p>Please Select The Department to proceed ahead...</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+        else if (formID == 'divCollegeListContainer' && applicationDetails.appldegreeID == "") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `error`,
+                html: `<p>Please Select The Application Form to proceed ahead...</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+    }
+
+    //var   imagebase64 = "";
+    //   function Verify(applGUID, applNumber) {
+    //       Swal.fire({
+    //           icon: 'warning',
+    //           title: 'Are You Sure?',
+    //           html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+    //           showDenyButton: true,
+    //           showCancelButton: false,
+    //           denyButtonText: 'No',
+    //           confirmButtonText: 'Yes, I am',
+    //       }).then((result) => {
+    //           if (result.isConfirmed) {
+    //               CancelApplication(applGUID);
+    //           } else if (result.isDenied) {
+
+    //           }
+    //       });
+    //   }
+
+    //   function SetGUID(iD) {
+    //       $('#hdnGUID').val('');
+    //       $('#hdnGUID').val(iD);
+    //   }
+
+    function openModal(CollegeName, Degree, Course,collegeID,courseId,formTypeID) {
+   $('#spnCollege').html('');
+        $('#spnDegree').html('');
+        $('#spnCourse').html('');
+
+        $('#spnCollege').html(CollegeName);
+        $('#spnDegree').html(Degree);
+        $('#spnCourse').html(Course);
+
+        $('#openModal').click();
+
+        //$('#CollegeList > tbody  > tr:eq(' + rowNum + ')').each(function () {
+
+        //    var trusName = $(this).find('td:eq(2)').html();
+        //    var trustID = $(this).find('td:eq(3)').html()
+        //    var collegeID = $(this).find('td:eq(6)').html()
+        //    var degreeID = $(this).find('td:eq(12)').html()
+        //    var CourseID = $(this).find('td:eq(14)').html()
+        //    console.log(trusName, trustID, collegeID, degreeID, CourseID);
+
+
+        //    applicationDetails.appltrustID = trustID;
+           applicationDetails.applcollegeID = collegeID;
+        applicationDetails.applFormtypeID = formTypeID;
+        applicationDetails.applCourseID = courseId;
+
+        //});
+    }
+
+    function openModalCourse(item) {
+        $(".singleselect").select2();
+        var clg = $('#ddlClgList').val();
+
+        GetCourseForCollege(clg);
+
+        var modalFooter = '';
+
+        if (item == 'Course')
+            modalFooter = '<button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button><button type="button" class="btn btn-primary" onclick="AddCourse()">Add</button><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
+
+        if (item == 'Subject')
+            modalFooter = '<button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button><button type="button" class="btn btn-primary" onclick="AddSubject()">Add</button><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
+
+        $('#appSummaryTitle').html('');
+        $('#appSummaryTitle').html(`Add New ${item}`);
+
+        $('#divModal').html('');
+        $('#divModal').html(modalFooter);
+
+        $('#openModal').click();
+    }
+
+    function AddCourse() {
+        var courseTableHtml = '';
+        var cors = $('#ddlCourseList').val();
+        var corsname = $('#ddlCourseList option:selected').text();
+
+
+        var subjIDList = $('#ddlSubjectList').val();
+        var subjnameList = $('#ddlSubjectList').select2("data");
+
+        var subList = '';
+
+        for (var i = 0; i <= subjnameList.length - 1; i++) {
+            if (subList.length > 0) {
+                subList += ', ' + subjnameList[i].text;
+            }
+            else {
+                subList = subjnameList[i].text;
+            }
+        }
+
+        courseDetails.push({
+            courseID: cors,
+            courseName: corsname,
+            subjectIdList: subjIDList.toString(),
+            subjNameList: subList,
+            TypeId : AddCourseID
+        })
+
+        //console.table(courseDetails);
+
+
+        if (courseDetails.length > 0) {
+            courseDetails.forEach(function (item, index) {
+                courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><a href="javascript:void(0)" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></a></td></tr>`
+            });
+            $('#chkbtn_1').attr('disabled', true);
+        }
+
+        //console.log(courseTableHtml);
+        $('#tblCourse tbody').html('');
+        $('#tblCourse tbody').html(courseTableHtml);
+
+        $('#ddlSubjectList').html('');
+        $('#ddlCourseList').html('');
+        $('#btnClose').click();
+
+
+    }
+
+    function AddSubject() {
+        var subjectTableHtml = '';
+        var cors = $('#ddlCourseList').val();
+        var corsname = $('#ddlCourseList option:selected').text();
+
+
+        var subjIDList = $('#ddlSubjectList').val();
+        var subjnameList = $('#ddlSubjectList').select2("data");
+
+        var subList = '';
+
+        for (var i = 0; i <= subjnameList.length - 1; i++) {
+            if (subList.length > 0) {
+                subList += ', ' + subjnameList[i].text;
+            }
+            else {
+                subList = subjnameList[i].text;
+            }
+        }
+
+        subjectDetails.push({
+            courseID: cors,
+            courseName: corsname,
+            subjectIdList: subjIDList.toString(),
+            subjNameList: subList,
+            TypeId: AddSubjectID
+        })
+
+        //console.table(courseDetails);
+
+
+        if (subjectDetails.length > 0) {
+            subjectDetails.forEach(function (item, index) {
+                subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><a href="javascript:void(0)" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></a></td></tr>`
+            });
+            $('#chkbtn_2').attr('disabled', true);
+        }
+
+        //console.log(courseTableHtml);
+        $('#tblSubject tbody').html('');
+        $('#tblSubject tbody').html(subjectTableHtml);
+
+        $('#ddlSubjectList').html('');
+        $('#ddlCourseList').html('');
+        $('#btnClose').click();
+
+
+    }
+
+    function GetCollegeForDept(departmentID) {
+        var htmlString = "";
+        var Data = {
+            departID: departmentID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetCollegeListForDepartment",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                //console.log(data);
+
+                var mainData = data.Data;
+                //console.log(mainData);
+                htmlString = `<option value=0>Select College</option>`
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+
+                        htmlString += `<option value=${item.Id}>${item.Text}</option>`
+                    })
+
+                }
+                $('#ddlClgList').html('');
+                $('#ddlClgList').html(htmlString);
+                $('#ddlClgList').select2();
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetAvailableNOC(ApplicationType) {
+        var htmlString = "";
+        var Data = {
+            applicationType: ApplicationType,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetAvailableNOC",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                //console.log(mainData);
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+                        if (item.Id == "0") {
+
+                            htmlString = `<div class="form-group custom-control custom-checkbox col-sm-3">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="checkbox" checked disabled name="CollageType" id="chkbtn_${item.Id}" value="${item.Id}">
+                            <label for="chkbtn_${item.Id}" class="custom-control-label" style="width: max-content;">${item.Text}</label>
+                        </div>`;
+                        }
+                        else {
+                            htmlString += `<div class="form-group custom-control custom-checkbox col-sm-3">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="checkbox" name="CollageType" id="chkbtn_${item.Id}" onChange=toggalDiv('${item.ID1}','chkbtn_${item.Id}',${item.Id}) value="${item.Id}">
+                            <label for="chkbtn_${item.Id}" class="custom-control-label" style="width: max-content;">${item.Text}</label>
+                        </div>`;
+                        }
+
+                    })
+                }
+                $('#divAvailableNOCContainer').html('');
+                $('#divAvailableNOCContainer').html(htmlString);
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetCourseForCollege(collegeID) {
+        var htmlString = `<option value="0">Select Course</option>`;
+        var Data = {
+            collegeID: collegeID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetCourseForCollege",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                console.log(mainData);
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+                        htmlString += `<option value="${item.Id}">${item.Text}</option>`;
+                    })
+                }
+                $('#ddlCourseList').html('');
+                $('#ddlCourseList').html(htmlString);
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetExistingNOCForCollege(collegeID,selectionType) {
+        var htmlString = ``;
+        var Data = {
+            collegeID: collegeID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetExistingNOCForCollege",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                console.log(mainData);
+                if (mainData != null && mainData.length > 0) {
+                    mainData.forEach(function (item, index) {
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.PKID}</td><td>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.PKID}" onChange="CreateNOCData('${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
+                    })
+                }
+
+                if (selectionType == 'TNOC') {
+
+                $('#tblTNOCList tbody').html('');
+                    $('#tblTNOCList tbody').html(htmlString);
+                }
+                if (selectionType == 'PNOC') {
+                $('#tblPNOCList tbody').html('');
+                    $('#tblPNOCList tbody').html(htmlString);
+                }
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function CreateNOCData(typeSelection, ipkID,corseID,subjID) {
+
+        if (typeSelection == 'TNOC') {
+
+            if (TNOCPKIDs.length > 0) {
+                TNOCPKIDs += ", "+ipkID;
+            }
+            else {
+                TNOCPKIDs += ipkID
+            }
+
+            console.log(TNOCPKIDs);
+            TNOCDetails = [];
+            TNOCDetails.push({
+                typeID: AddTNOCID,
+                courseID: corseID,
+                subID: subjID,
+                pkId: TNOCPKIDs
+            })
+        }
+
+        if (typeSelection == 'PNOC') {
+
+            if (PNOCPKIDs.length > 0) {
+                PNOCPKIDs += ", " + ipkID;
+            }
+            else {
+                PNOCPKIDs += ipkID
+            }
+
+            PNOCDetails = [];
+            PNOCDetails.push({
+                typeID: AddPNOCID,
+                courseID: corseID,
+                subID: subjID,
+                pkId: TNOCPKIDs
+            })
+        }
+
+    }
+
+    function GetSubjectForCourse(CourseID) {
+        var htmlString = '';
+        var Data = {
+            CourseID: CourseID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetSubjectForCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                //console.log(mainData);
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+                        htmlString += `<option value="${item.Id}">${item.Text}</option>`;
+                    })
+                }
+                $('#ddlSubjectList').html('');
+                $('#ddlSubjectList').html(htmlString);
+                $('#ddlSubjectList').select2({
+                    placeholder: "Select Subject"
+                });
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetNOCData(departmentID) {
+        var htmlString = "";
+        var Data = {
+            departID: departmentID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetNOCApplicationList",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var mainData = data.Data;
+                console.log(mainData);
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+                        var sdate = item.StartDate;
+                        var edate = item.EndDate;
+                        if (sdate == "-" && edate == "-") {
+
+                            htmlString += `<tr><td>${item.ApplicableFor}</td><td>${item.Type}</td><td>${item.Applications}</td><td>${item.StartDate}</td><td>${item.EndDate}</td><td><button class="btn btn-sm btn-primary" disabled><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                        }
+                        else {
+                            htmlString += `<tr><td>${item.ApplicableFor}</td><td>${item.Type}</td><td>${item.Applications}</td><td>${item.StartDate}</td><td>${item.EndDate}</td><td><button class="btn btn-sm btn-primary" onclick="GetNOCClgData(${item.iFk_DeptId},'${item.Applications}','${item.iFk_NOCTyp}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                        }
+
+                    })
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+                else {
+                    htmlString = `<tr><td colspan="6" class="text-center">No Application Data Available To Display</td>`;
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetNOCClgData(departmentID,application,ApplicationType) {
+
+        var department = $("input[name='chkDept']:checked").val();
+
+        var GetAllDivToRemoveNumberActiveClass = document.querySelectorAll('[id^=num_]');
+        GetAllDivToRemoveNumberActiveClass.forEach(function (input_valid) {
+            input_valid.classList.remove('NumActive');
+        });
+
+        var htmlString = "";
+        var Data = {
+            departID: departmentID,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GETNOCApplicationClgList",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var mainData = data.Data;
+                if (mainData != null && mainData.length>0) {
+                    mainData.forEach(function (item) {
+
+                        htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><input type="checkbox"/></td>`
+                        //htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><button class="btn btn-sm btn-primary" onclick="openModal('${item.College}', '${department}', '${item.Course}','${item.collegeID}','${item.courseID}','${ApplicationType}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                    })
+                    $('#tblNOCClgList tbody').html('')
+                    $('#tblNOCClgList tbody').html(htmlString);
+
+
+                }
+                else {
+                    htmlString = `<tr><td colspan="6" class="text-center">No College Data Available To Display</td>`;
+                    $('#tblNOCList tbody').html('')
+                    $('#tblNOCList tbody').html(htmlString);
+                }
+
+                $('#divDeptContainer').css('display', 'none');
+                $('#divApplicationListContainer').css('display', 'none');
+                $('#divCollegeListContainer').css('display', 'block');
+
+
+                $('#divApplicationTitleContainer').css('display', 'block');
+                $('#spnApplicationContainer').html(application);
+                $('#divtextContainer').html('Kindly select the type of NOC you want to apply for');
+
+
+
+
+
+                $('#num_3').addClass('NumActive');
+                $('#btnNext').click();
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function SaveDetails() {
+
+        //if ($("#customCheck1").is(':checked')) {
+
+       var deptID =  $('#ddlDeptList').val();
+       var clgID = $('#ddlClgList').val();
+
+        var type = $("input[name='ApplicationType']:checked").val();
+
+            var applicationModal = {
+                "iFKCLG_ID": parseInt(clgID),
+                "iFKDEPT_ID": parseInt(deptID),
+                "stypeID": TypeId,
+                "courseData": courseDetails,
+                "subjData": subjectDetails,
+                "TnocData": TNOCDetails,
+                "PnocData": PNOCDetails,
+                "type": type
+            }
+
+            console.log(JSON.stringify(applicationModal));
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Trustee/SaveApplicationDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(applicationModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    console.log(data);
+                    console.log(data.Data.UserID);
+                    var applicationNumber = data.Data.UserID
+                    //if (data.StatusCode == 1) {
+
+                        //Swal.fire({
+                        //    position: 'center',
+                        //    icon: 'success',
+                        //    title: `Success`,
+                        //    html: `<p>Data Saved Successfully...</p>`,
+                        //    allowOutsideClick: false,
+                        //    showCloseButton: true,
+                        //    showConfirmButton: false,
+                        //});
+
+                    //}
+
+
+                    /*if (type == 'NOC') {*/
+
+                    getFee(applicationNumber, type);
+                    //}
+                    @*setTimeout(function () {
+                        location.href = '@Url.Action("DraftApplication", "Trustee")';
+                    }, 2000)*@
+
+                 /*   $('#btnClose').click();*/
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        //}
+
+
+        //else {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: `Error`,
+        //        html: `<p style="font-size: 18px;">Kindly Tick the checkbox for application confirmation..</p>`,
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //        showConfirmButton: false,
+        //    });
+        //}
+
+    }
+
+    function getFee(applNo, Applicationtype) {
+        if (Applicationtype == 'NOC') {
+
+            var applicationModal = {
+                "ApplicationId": applNo
+            }
+
+            console.log(JSON.stringify(applicationModal));
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Trustee/GetFee",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(applicationModal),
+                success: function (data) {
+                    //console.log('ajax');
+                    var htmlString = `<tr><th>Form Name</th><th>Amount</th></tr>`;
+                    var mainData = data.Data
+
+                    if (mainData.length > 0) {
+                        mainData.forEach(function (item) {
+                            htmlString += `<tr><td>${item.ID1}</td><td>${item.Text}</td></tr>`
+                        });
+                    }
+
+
+                    console.log(data);
+
+                    setTimeout(function () {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'sucess',
+                            title: `Fee Summary`,
+                            html: `<table class="table table-striped">${htmlString}</table>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+
+
+
+                    }, 2000)
+
+                    /*   $('#btnClose').click();*/
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+        else {
+            GetinspectionFee('inspection');
+        }
+    }
+
+    function GetinspectionFee(type) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetInspectionFee",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: null,
+            success: function (data) {
+                var fee = data.Data[0].Text
+                //$('#divinspectionFee').css('display','block');
+                $('#spnInsFee').html('');
+                $('#spnInsFee').html(fee);
+
+                if (type == 'inspection') {
+                    setTimeout(function () {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'sucess',
+                            title: `Fee Summary`,
+                            html: `<table class="table table-striped"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                    }, 2000)
+
+                }
+
+                },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function toggalDiv(divID,itemID,itemVal) {
+
+        if (TypeId.length > 0) {
+            TypeId += ', ' + itemVal;
+        }
+        else {
+            TypeId += itemVal;
+        }
+
+        if (divID == '#divTNOC_Extension_Of_Subject') {
+            var clg = $('#ddlClgList').val();
+            GetExistingNOCForCollege(clg, 'TNOC');
+            AddTNOCID = itemVal;
+
+        }
+        if (divID == '#divPNOC_Of_Subject') {
+            var clg = $('#ddlClgList').val();
+            GetExistingNOCForCollege(clg, 'PNOC');
+            AddPNOCID = itemVal
+        }
+
+        if (divID == '#divNew_Subjects') {
+            AddSubjectID = itemVal;
+        }
+
+        if (divID == "#divNew_Course") {
+            AddCourseID = itemVal;
+            //var checkedStatus = $('#' + itemID).is(':checked');
+
+            //if (courseDetails.length > 0) {
+
+            //    if (!checkedStatus) {
+            //        Swal.fire({
+            //            position: 'center',
+            //            icon: 'error',
+            //            title: 'Please Delete the existing data to uncheck the option',
+            //            allowOutsideClick: false,
+            //            showCloseButton: true,
+            //            showConfirmButton: false,
+            //        });
+            //    }
+            //}
+
+
+        }
+
+        $(divID).css('display', 'block');
+    }
+ //   function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+ //       var elementID = element.id;
+ //       var file = element.files[0];
+ //       console.log(file.name);
+ //       //console.log(elementID);
+ //       var reader = new FileReader();
+ //       reader.onloadend = function () {
+ //           imagebase64 = reader.result;
+ //           $('#' + hdnId).val(imagebase64);
+ //           $('#' + hdnExtnID).val(file.name);
+ //           //console.log(imagebase64)
+ //           //console.log(hdnId)
+ //       }
+ //       reader.readAsDataURL(file);
+ //       return imagebase64;
+ //   }
+
+
+</script>

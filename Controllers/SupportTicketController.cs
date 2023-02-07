@@ -102,7 +102,6 @@ namespace NewZapures_V2.Controllers
             }
             return data;
         }
-
         public JsonResult SaveData(SupportTicket mapping)
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];

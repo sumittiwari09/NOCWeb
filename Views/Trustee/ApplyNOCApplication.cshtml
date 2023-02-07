@@ -179,6 +179,10 @@
                                     <tr><td colspan="3" class="text-center">No Data Availabe</td></tr>
                                 </tbody>
                             </table>
+
+                            @*<button class="btn btn-sm btn-primary" onclick="openModal('${item.College}', '${department}', '${item.Course}','${item.collegeID}','${item.courseID}','${ApplicationType}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button>*@
+                            <button class="btn btn-sm btn-primary"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button>
+
                         </div>
                     </div>
                 </div>
@@ -464,7 +468,8 @@
                 if (mainData != null && mainData.length>0) {
                     mainData.forEach(function (item) {
 
-                        htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><button class="btn btn-sm btn-primary" onclick="openModal('${item.College}', '${department}', '${item.Course}','${item.collegeID}','${item.courseID}','${ApplicationType}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
+                        htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><input type="checkbox"/></td>`
+                        //htmlString += `<tr><td>${item.College}</td><td>${item.Course}</td><td><button class="btn btn-sm btn-primary" onclick="openModal('${item.College}', '${department}', '${item.Course}','${item.collegeID}','${item.courseID}','${ApplicationType}')"><i class="fa fa-paper-plane"></i>&nbsp; Apply</button></td>`
                     })
                     $('#tblNOCClgList tbody').html('')
                     $('#tblNOCClgList tbody').html(htmlString);

@@ -1,0 +1,524 @@
+﻿
+@{
+    ViewBag.Title = "Old NOC Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var sessionyearsList = (List<NewZapures_V2.Models.Dropdown>)ViewBag.sessionYears;
+    var collegeList = (List<NewZapures_V2.Models.Dropdown>)ViewBag.colleges;
+
+}
+<link href="~/Content/JitendraCSS/OldNOC.css" rel="stylesheet" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+<style>
+    hr {
+        margin-bottom: 1rem !important;
+        border: 0.2px solid #ededed;
+        width: 90%;
+        background-color: red !important;
+    }
+
+    div .form-group > span {
+        color: red;
+        font-weight: 500;
+    }
+</style>
+
+<div class="noc-layouts">
+    <div class="title-heading" style="display: flex;align-items: center;place-content: space-between;">
+        Old NOC Details
+        <a href="@Url.Action("OldNOCIndex", "Admin")" class="theme-button-mockup" id="btnAdd">Back To List</a>
+    </div>
+    <div class="card-body w-100 float-left">
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label">College Name</label>
+                <select class="singleSelect form-control" id="ddlCollegeList">
+                    @{
+                        <option value="0">Select College</option>
+                        if (collegeList != null)
+                        {
+                            foreach (var item in collegeList)
+                            {
+
+                                <option value=@item.Id>@item.Text</option>
+                            }
+                        }
+                    }
+                </select>
+                <span id="spnCollegeList" style="display:none">Please Select College</span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Course</label>
+                <select class="singleSelect form-control" id="ddlCourses">
+                </select>
+                <span id="spnCourseList" style="display:none">Please Select Course</span>
+                @*<input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="Course">*@
+            </div>
+            
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Subject</label>
+                <select class="singleSelect form-control" id="ddlSubject">
+                </select>
+                <span id="spnSubjectList" style="display:none">Please Select Subject</span>
+                @*<input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="Course">*@
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Type</label>
+
+                <select class="singleSelect form-control" id="ddlNocType">
+                    <option value="0">Select NOC Type</option>
+                    <option value="1">TNOC</option>
+                    <option value="2">PNOC</option>
+                </select>
+
+                <span id="spnNOCTypeList" style="display:none">Please Select NOC Type</span>
+                @*<input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="TNOC/PNOC" placeholder="Type">*@
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Session Year</label>
+                <select class="singleSelect form-control" id="ddlSessionYear">
+                    @{
+                        <option value="0">Select Session Year</option>
+                        if (sessionyearsList != null)
+                        {
+                            foreach (var item in sessionyearsList)
+                            {
+
+                                <option value=@item.Id>@item.Text</option>
+                            }
+                        }
+                    }
+                </select>
+
+                <span id="spnSessionYearList" style="display:none">Please Select Session Year</span>
+
+                @*<div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control noc-input-text" name="RegistrationDate" value="" id="RegistrationDate" placeholder="From Date" autocomplete="off" readonly disabled>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control noc-input-text" name="RegistrationDate" value="" id="RegistrationDate" placeholder="To Date" autocomplete="off" readonly disabled>
+                        </div>
+                    </div>*@
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC No.</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" placeholder="NOC No." id="txtNocNO" oninput="RecheckInputValidation('#txtNocNO', '#spnNOCNo');">
+                <span id="spnNOCNo" style="display:none">Please Enter NOC Number</span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC Received On</label>
+                <input class="form-control noc-input-text" type="date" autocomplete="off" placeholder="NOC Received On" id="txtNocRcvdDate" oninput="RecheckInputValidation('#txtNocRcvdDate', '#spnNOCRcvdDate');">
+                <span id="spnNOCRcvdDate" style="display:none">Please Select NOC Received Date</span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC Expire Date</label>
+                <input class="form-control noc-input-text" type="date" autocomplete="off" placeholder="NOC Expore Date" id="txtNocExprDate" oninput="RecheckInputValidation('#txtNocExprDate', '#spnNOCExprDate');">
+                <span id="spnNOCExprDate" style="display:none">Please Select NOC Expiry Date</span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Upload NOC</label>
+                <div>
+                    <input type="file" class="form-control-file" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnNOCDoc','hdnNOCDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                    <input type="hidden" id="hdnNOCDoc" />
+                    <input type="hidden" id="hdnNOCDocExten" />
+                </div>
+            </div>
+            <div class="col-lg-11 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Remark</label>
+                <textarea class="form-control noc-input-text" autocomplete="off" id="txtRemark" name="" value="" placeholder="Remark Here..." style="height:80px;resize:none;" oninput="RecheckInputValidation('#txtRemark', '#spnRemark');"></textarea>
+                <span id="spnRemark" style="display:none">Please Enter Remark</span>
+            </div>
+            <div class="col-lg-1 text-right" style="bottom: -67px;">
+                <button type="button" class="theme-button-mockup" id="btnAdd">ADD</button>
+            </div>
+            <hr />
+            <div class="col-lg-12 text-right">
+                <button type="button" class="theme-button-mockup" onclick="saveDetails()">Submit</button>
+            </div>
+        </div>
+        <div class="noc-layouts-tbl mt-1">
+            <table class="table" id="tblNocData">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>College Name</th>
+                        <th>Course</th>
+                        <th>Type</th>
+                        <th>Session Year</th>
+                        <th>NOC No.</th>
+                        <th>NOC Received On</th>
+                        <th>NOC Expire Date</th>
+                        <th>NOC Document</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @*<tr>
+                            <td>1</td>
+                            <td>Raj College</td>
+                            <td>MCA</td>
+                            <td>TNOC/PNOC</td>
+                            <td>2021</td>
+                            <td>2023</td>
+                            <td>0123456789</td>
+                            <td>01/01/2021</td>
+                            <td>31/12/2023</td>
+                            <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                        </tr>*@
+                    <tr><td colspan="10" class="text-center">No Data Available</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+
+<script>
+    var NOCData = [];
+
+    $(document).ready(function () {
+        $("#singleSelect").select2();
+
+        $("#txtNocRcvdDate").change(function () {
+            debugger;
+            var startdate = $(this).val();
+            $("#txtNocRcvdDate").prop('disabled', false);
+            document.getElementById("txtNocExprDate").min = startdate;
+
+        });
+
+        $('#ddlCollegeList').change(function () {
+            var id = $(this).val();
+            if (id > 0) {
+                bindCorse(id);
+                $('#spnCollegeList').css('display', 'none');
+            }
+            else {
+                $('#spnCollegeList').css('display', 'block');
+            }
+        })
+
+        $('#ddlCourses').change(function () {
+            var id = $(this).val();
+            if (id > 0) {
+                $('#spnCourseList').css('display', 'none');
+            }
+            else {
+                $('#spnCourseList').css('display', 'block');
+            }
+        })
+
+        $('#ddlNocType').change(function () {
+            var id = $(this).val();
+            if (id > 0) {
+                $('#spnNOCTypeList').css('display', 'none');
+            }
+            else {
+                $('#spnNOCTypeList').css('display', 'block');
+            }
+        })
+
+        $('#ddlSessionYear').change(function () {
+            var id = $(this).val();
+            if (id > 0) {
+                $('#spnSessionYearList').css('display', 'none');
+            }
+            else {
+                $('#spnSessionYearList').css('display', 'block');
+            }
+        })
+
+        $('#btnAdd').click(function () {
+            var htmlString = "";
+
+            if (CheckValidation()) {
+                var clgID = $('#ddlCollegeList').val();
+                var clg = $('#ddlCollegeList option:selected').text().trim();
+
+                var corsId = $('#ddlCourses').val();
+                var cors = $('#ddlCourses option:selected').text().trim();
+
+                var NocTypeID = $('#ddlNocType').val();
+                var NocType = $('#ddlNocType option:selected').text().trim();
+
+                var sessionYrID = $('#ddlSessionYear').val();
+                var sessionYr = $('#ddlSessionYear option:selected').text().trim();
+
+                var NocNo = $('#txtNocNO').val();
+
+                var NocRcvd = $('#txtNocRcvdDate').val();
+
+                var NocExpr = $('#txtNocExprDate').val();
+
+                var remark = $('#txtRemark').val();
+
+                var nocData = $('#hdnNOCDoc').val().split(',')[1];
+                var nocDataExte = ($('#hdnNOCDocExten').val().split('.')[1] === undefined || $('#hdnNOCDocExten').val().split('.')[1] === null) ? "" : "." + $('#hdnNOCDocExten').val().split('.')[1];
+                var nocDataContent = $('#hdnNOCDoc').val().split(',')[0];
+                if (nocDataContent.length > 0) {
+                    nocDataContent = nocDataContent.split(':')[1];
+                    nocDataContent = nocDataContent.split(';')[0];
+                }
+                var nocDocFullURL = $('#hdnNOCDoc').val();
+
+
+
+                NOCData.push({
+                    iFk_ClgID: parseInt(clgID),
+                    collegeName: clg,
+                    iFk_CORSID: parseInt(corsId),
+                    courseName: cors,
+                    iNocTypID: parseInt(NocTypeID),
+                    nocTypeName: NocType,
+                    iFk_SYID: sessionYrID,
+                    sessionYear: sessionYr,
+                    sNOCNo: NocNo,
+                    dtNOCRcvdOn: NocRcvd,
+                    dtNOCExprOn: NocExpr,
+                    sRemrk: remark,
+
+                    NocDoc: (nocData === undefined || nocData === null) ? "" : nocData,
+                    NocDocExtension: nocDataExte,
+                    NocDocContent: nocDataContent,
+                    NOCDocURL: (nocDocFullURL.length <= 0) ? "#" : nocDocFullURL,
+                });
+
+                if (NOCData.length > 0) {
+                    NOCData.forEach(function (item, index) {
+                        htmlString += `<tr><td>${index + 1}</td><td>${item.collegeName}</td><td>${item.courseName}</td><td>${item.nocTypeName}</td><td>${item.sessionYear}</td><td>${item.sNOCNo}</td><td>${item.dtNOCRcvdOn}</td><td>${item.dtNOCExprOn}</td><td><a href="${item.NOCDocURL}" class="noc-upload-btn" download><i class="fas fa-download"></i></a></td><td>${item.sRemrk}</td></tr>`
+                    });
+
+                    $('#tblNocData tbody').html('');
+                    $('#tblNocData tbody').html(htmlString);
+                }
+                else {
+                    htmlString = `<tr><td colspan="10" class="text-center">No Data Available</td></tr>`;
+                    $('#tblNocData tbody').html('');
+                    $('#tblNocData tbody').html(htmlString);
+                }
+                clearAll();
+            }
+        });
+    });
+
+    function RecheckInputValidation(item, spanID) {
+        var itemVal = $(item).val();
+
+        if (itemVal.length > 0) {
+            $(spanID).css('display', 'none');
+        }
+        else {
+            $(spanID).css('display', 'block');
+        }
+    }
+
+
+    function CheckValidation() {
+        var status = true;
+
+        var clgID = $('#ddlCollegeList').val();
+        var clg = $('#ddlCollegeList option:selected').text().trim();
+
+        var corsId = $('#ddlCourses').val();
+        var cors = $('#ddlCourses option:selected').text().trim();
+
+        var NocTypeID = $('#ddlNocType').val();
+        var NocType = $('#ddlNocType option:selected').text().trim();
+
+        var sessionYrID = $('#ddlSessionYear').val();
+        var sessionYr = $('#ddlSessionYear option:selected').text().trim();
+
+        var NocNo = $('#txtNocNO').val();
+
+        var NocRcvd = $('#txtNocRcvdDate').val();
+
+        var NocExpr = $('#txtNocExprDate').val();
+
+        var remark = $('#txtRemark').val();
+
+        if (clgID <= 0) {
+
+            $('#spnCollegeList').css('display', 'block');
+            status = false;
+        }
+        if (corsId <= 0) {
+            $('#spnCourseList').css('display', 'block');
+            status = false;
+        }
+        if (NocTypeID <= 0) {
+            $('#spnNOCTypeList').css('display', 'block');
+            status = false;
+        }
+        if (sessionYrID <= 0) {
+            $('#spnSessionYearList').css('display', 'block');
+            status = false;
+        }
+        if (NocNo.length <= 0) {
+            $('#spnNOCNo').css('display', 'block');
+            status = false;
+        }
+
+        if (NocRcvd.length <= 0) {
+            $('#spnNOCRcvdDate').css('display', 'block');
+
+            status = false;
+        }
+        if (NocExpr.length <= 0) {
+
+            $('#spnNOCExprDate').css('display', 'block');
+            status = false;
+        }
+        if (remark.length <= 0) {
+            $('#spnRemark').css('display', 'block');
+
+            status = false;
+        }
+
+        return status;
+    }
+
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        var filesize = element.files[0].size;
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+        var i = 0; while (filesize > 900) { filesize /= 1024; i++; }
+        var exactSize = (Math.round(filesize * 100) / 100) + ' ' + fSExt[i];
+        console.log('FILE SIZE = ', exactSize);
+        //alert(exactSize);
+        /* console.log(file.name);*/
+
+
+        var sizeCheck = exactSize.split(' ')[0];
+        var sizeCheckExt = exactSize.split(' ')[1];
+
+        //console.log(sizeCheck);
+        //console.log(sizeCheckExt);
+
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            if (sizeCheck > 1 && sizeCheckExt == "MB") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'File size must be lesser then 1 MB...!',
+                    html: `<p>your selected file size : ${sizeCheck} ${sizeCheckExt}</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+            }
+            else {
+
+                $('#' + hdnId).val(imagebase64);
+                $('#' + hdnExtnID).val(file.name);
+            }
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function bindCorse(clgID) {
+        var htmlString = `<option value=0>Select Course</option>`;
+
+
+        var Data = {
+            clgID: clgID
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Admin/GetCourseForCollege",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+
+                var mainData = data.Data;
+
+                mainData.forEach(function (item) {
+                    htmlString += `<option value=${item.Id}>${item.Text}</option>`;
+                });
+
+                $('#ddlCourses').html('');
+                $('#ddlCourses').html(htmlString);
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    }
+
+    function saveDetails() {
+        var VertinaryModal = {
+            oldNOCs: NOCData
+        }
+
+        var d = JSON.stringify(VertinaryModal);
+        //console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Admin/saveNOCData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                //console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function clearAll() {
+        $('#ddlCollegeList').val(0);
+        $('#ddlCourses').val(0);
+        $('#ddlNocType').val(0);
+        $('#ddlSessionYear').val(0);
+        $('#txtNocNO').val('');
+        $('#txtNocRcvdDate').val('');
+        $('#txtNocExprDate').val('');
+        $('#txtRemark').val('');
+        $('#hdnNOCDoc').val('');
+        $('#hdnNOCDocExten').val('');
+        $('#fluConvertedDoc').val('');
+
+        $('#ddlCollegeList').focus();
+
+    }
+
+</script>

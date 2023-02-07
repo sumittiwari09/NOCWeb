@@ -48,7 +48,7 @@
                                 <th>Department</th>
                                 <th>Group Name</th>
                                 <th>Role Name</th>
-
+                                <th>Level Name</th>
                                 <th>Active</th>
                                 <th>Action</th>
                             </tr>
@@ -68,6 +68,21 @@
                                         </td>
                                         <td>
                                             @item.RoleName
+                                        </td>
+
+                                        <td>
+                                            @{
+                                                if (item.levelId == 0)
+                                                {
+                                                    <span>NA</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Level @item.levelId</span>
+
+                                                }
+                                            }
+
                                         </td>
                                         <td>
                                             <div class="form-check form-switch">
@@ -104,16 +119,16 @@
                                                 <a id="btnDeactive_@item.Id" class="Deleteclass" name="2" data-id="@item.Id" onclick="DeleteData(@item.Id)" title="Delete"><i class="fas fa-times text-danger font-16"></i></a>
                                                 //if (item.DepartmentId != 5)
                                                 //{
-                                                    <a href="@Url.Action("Userpermission", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
-                                                        <i class="fas fa-cogs text-blue font-16"></i>
-                                                    </a>
+                                                <a href="@Url.Action("Userpermission", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
+                                                    <i class="fas fa-cogs text-blue font-16"></i>
+                                                </a>
                                                 @*}
-                                                else
-                                                {
-                                                    <a href="@Url.Action("UserPermissionforUser", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
-                                                        <i class="fas fa fa-cogs text-blue font-16"></i>
-                                                    </a>
-                                                }*@
+                                                    else
+                                                    {
+                                                        <a href="@Url.Action("UserPermissionforUser", "Role", new { MappingId = item.Id, GroupId = item.GroupId })" class="Deleteclass" title="Setting">
+                                                            <i class="fas fa fa-cogs text-blue font-16"></i>
+                                                        </a>
+                                                    }*@
                                             }
 
                                         </td>
@@ -171,7 +186,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    
+
                     if (response.isvalid == 1) {
                         var msg = 'Status Changes Successfully';
                         if (type == 1) {
@@ -241,7 +256,7 @@
                                 success: function (response) {
 
 
-                                    
+
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',

@@ -18,12 +18,13 @@
     var appid = draftAppl.ApplGuid;
     var currentDate = DateTime.Today.ToString("yyyy.MM.dd");
     var validCurrentDate = Convert.ToDateTime(currentDate).AddYears(1).ToString("dd.MM.yyyy");
+    var partyID = (string)ViewBag.usrid;
 
 }
 
 @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
 
-@*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 @*<link href="~/Content/Architecturefile.css" rel="stylesheet" />*@
 @*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
 <style type="text/css">
@@ -123,51 +124,51 @@
 <div class="card">
     <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
         <h4 class="mt-0 header-title float-left">Inspection Application</h4>
-        @*<a href="@Url.Action("DraftApplication", "Trustee", new {applGUID=@draftAppl.ApplGuid})" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To Draft</a>*@
+        <a href="@Url.Action("InspactionApplicationList", "Admin")" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To List</a>
     </div>
     <div class="card-body ">
         <div class="row">
             @*<table class="table table-bordered table-striped">
-        <tr>
-            <th style="color:black!important;font-weight:500">Application Number :</th>
-            <td>@draftAppl.ApplicationNumber</td>
-            <th hidden style="color:black!important;font-weight:500">Trust Name</th>
-            <td hidden>@draftAppl.TrustName</td>
-            <th style="color:black!important;font-weight:500">Department Name</th>
-            <td>@draftAppl.DepartmentName</td>
-        </tr>
-        <tr><td colspan="6" style="background: #bdbdbd;color:black"><i class="fa fa-users"></i>  Trust Comitee Members</td></tr>
-        <tr>
-            <td colspan="6">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr><th>Member Name</th><th>Is Primary</th></tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            if (trusteeMember != null)
-                            {
+                <tr>
+                    <th style="color:black!important;font-weight:500">Application Number :</th>
+                    <td>@draftAppl.ApplicationNumber</td>
+                    <th hidden style="color:black!important;font-weight:500">Trust Name</th>
+                    <td hidden>@draftAppl.TrustName</td>
+                    <th style="color:black!important;font-weight:500">Department Name</th>
+                    <td>@draftAppl.DepartmentName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><i class="fa fa-users"></i>  Trust Comitee Members</td></tr>
+                <tr>
+                    <td colspan="6">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr><th>Member Name</th><th>Is Primary</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (trusteeMember != null)
+                                    {
 
-                                foreach (var item in trusteeMember)
-                                {
-                                    <tr><td>@item.sPrsnName</td><td>@((string.IsNullOrEmpty(item.iisprimary) || item.iisprimary=="0")?"No":"Yes" )</td></tr>
+                                        foreach (var item in trusteeMember)
+                                        {
+                                            <tr><td>@item.sPrsnName</td><td>@((string.IsNullOrEmpty(item.iisprimary) || item.iisprimary=="0")?"No":"Yes" )</td></tr>
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
 
-        <tr>
-            <th style="color:black!important;font-weight:500">College Name :</th>
-            <td>@draftAppl.CollegeName</td>
-            <td colspan="2"></td>
-            <th style="color:black!important;font-weight:500">Course</th>
-            <td>@draftAppl.CourseName</td>
-        </tr>
-        <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary" style="display:none"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
-                  </table>*@
+                <tr>
+                    <th style="color:black!important;font-weight:500">College Name :</th>
+                    <td>@draftAppl.CollegeName</td>
+                    <td colspan="2"></td>
+                    <th style="color:black!important;font-weight:500">Course</th>
+                    <td>@draftAppl.CourseName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary" style="display:none"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
+                          </table>*@
             <div class="col-lg-12">
                 <div class="row">
 
@@ -175,7 +176,7 @@
                         <ul style="margin-left: -50px;">
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;Trust Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;College Details</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btn_ins_landInfo" data-id="@Url.Action("LandAreaDetails", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land & Building Information</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btn_ins_landInfo" data-id="@Url.Action("LandAreaDetails", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CreateData", "SubjectMaster", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-book"></i> &nbsp;Subject Covered</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "FeeDetails", new {guid=draftAppl.ApplGuid})"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("ShowArtichForComments", "Master", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-building"></i> &nbsp;Architectrual Details</button></li>
@@ -185,9 +186,9 @@
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
                             <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
-                            <li><button class="btn btn-outline-primary waves-effect waves-light" data-id="@Url.Action("ApplicationPreview", "Trustee", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-paper-plane"></i> &nbsp;Sendback / Forward Application </button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light" data-toggle="modal" data-target="#appSummary"><i class="fa fa-paper-plane"></i> &nbsp;Sendback / Forward Application </button></li>
                             @*<li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
-                        <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>*@
+                                <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>*@
                         </ul>
 
                     </div>
@@ -212,241 +213,97 @@
             </div>
             <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
                 <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="appSummary">Application Summary</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-content" style="-webkit-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); -moz-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); box-shadow: -28px 28px 28px -11px rgb(180 170 170); border-radius: 50px;">
+                        <div class="modal-header" style="border-radius: 51px;background: #22b1db;">
+                            <h5 class="modal-title" id="appSummary" style="margin-left: 20px;color:white">Sendback / Forward Application For : @draftAppl.ApplicationNumber</h5>
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close" style="margin-right: 20px;width: 35px;">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" style="padding: 20px !important;">
-                            <p style="font-size: 15px;font-weight: 500;color: black;">Your Application is processed for following selection : </p>
-                            <table class="table table-bordered" id="tblsummery" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
-                                <tr><th>Trust</th><td><span id="spnTrust">@draftAppl.TrustName</span></td><th>College</th><td><span id="spnCollege">@draftAppl.CollegeName</span></td></tr>
-                                <tr><th>Degree</th><td><span id="spnDegree">@draftAppl.DepartmentName</span></td><th>Course</th><td><span id="spnCourse">@draftAppl.CourseName</span></td></tr>
-                                <tr><th>District</th><td>NA</td><th>College Type</th><td>@draftAppl.clgTypeName</td></tr>
-                                <tr><th>SSO</th><td>NA</td><th>Username</th><td>NA</td></tr>
-                            </table>
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Choose Application Status</b>&nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppStaus"></span></label>
+                                    <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_approve" value="1">
+                                            <label for="rbtn_approve" class="custom-control-label" style="width: max-content;">APPROVE</label>
+                                        </div>
 
-                            <p style="padding: 10px;background: #989898;border-radius: 10px;color: black;"><i class="fa fa-arrow-down" style="color:black"></i> Land & Building Information</p>
-                            <table class="table table-bordered" id="tblLandInfo" style="font-size: 15px;text-align: justify;font-family: sans-serif;">
-                                <thead>
-                                    <tr>
-                                        <th>Land Area</th>
-                                        <th>Land Doc Type</th>
-                                        <th>Is Land Converted</th>
-                                        <th>Order No</th>
-                                        <th>Order Date</th>
-                                        <th>Land Type</th>
-                                        <th>Khasara No</th>
-                                        <th>Land Area</th>
-                                        <th>Total Area</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @*@{
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_reject" value="2">
+                                            <label for="rbtn_reject" class="custom-control-label" style="width: max-content;">REJECT</label>
+                                        </div>
 
-                                    foreach (var item in lands)
-                                    {
-                                        <tr>
-                                            <td>@item.sLndArea</td>
-                                            <td>@item.sLndDocType</td>
-                                            <td>@item.sIsLndCnvrted</td>
-                                            <td>@item.sOrdrNo</td>
-                                            <td>@item.dtOrdrDate</td>
-                                            <td>@item.sLndTyp</td>
-                                            <td>@item.sKhasaraNo</td>
-                                            <td>@item.dLndArea</td>
-                                            <td>@item.dTotalArea</td>
-                                        </tr>
-                                    }
-                                }*@
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_hold" value="3">
+                                            <label for="rbtn_hold" class="custom-control-label" style="width: max-content;">HOLD</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                </tbody>
-                            </table>
-                            <div style="display: flex;gap: 10px; align-items: baseline;">
+                            <div class="row" style="margin-top: -15px;">
+                                <div class="form-group col-lg-8">
+                                    <label for="example-text-input" class="col-sm-12"><b>Remark/Comments</b> &nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppComment"></span></label>
+                                    <div class="form-group col-sm-12" style="text-align:center">
+                                        <textarea id="txtComments" class="form-control" rows="3" style="resize:none" placeholder="Enter comments" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Attachment</b></label>
+                                    <div class="form-group col-sm-12" style="text-align:center">
+                                        <input type="file" class="file-box" />
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" id="customCheck1" name="customCheck" class="custom-control-input">
-                                    @*<label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to continue for application</label>*@
-                                    <label class="custom-control-label" for="customCheck1" style="font-weight: 600;font-size: 14px;">All Above Mention information is correct I would Like to submit my application</label>
+                            <div class="row" style="margin-top: -10px;">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Send to</b> &nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppAction"></span></label>
+                                    <div class="row form-group col-sm-12" style="text-align:center">
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input appAcctionType" type="radio" name="appAcctionType" id="rbtn_sb" value="sendback">
+                                            <label for="rbtn_sb" class="custom-control-label" style="width: max-content;">Sendback</label>
+                                        </div>
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input appAcctionType" type="radio" name="appAcctionType" id="rbtn_fr" value="forward">
+                                            <label for="rbtn_fr" class="custom-control-label" style="width: max-content;">Forward</label>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <div class="form-group col-lg-4" id="divRole" style="display:none">
+                                    <label for="example-text-input" class="col-sm-12"><b>Select Role</b></label>
+                                    <div class="form-group col-sm-12">
+                                        <select id="ddlRole" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                         <div class="modal-footer">
                             @*<button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>*@
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal">Submit</button>
+                            <button type="button" class="btn btn-primary" onclick="AddTrackingData()">Submit</button>
                             @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>*@
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Thankyou"></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <h2>Thank You</h2>
-
-                            <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
-
-                            <div style="margin-top: 20px;font-size:18px">
-                                Thank you for using our service. <br />
-                                Click OK to Process over you account. <br />
-                                Cancel to finish journey.<br />
-                                You can login later with your created credentials
-                            </div>
-                            <hr />
-                            <div style="width: 90%;margin: auto;border: none;">
-                                <table class="table table-responsive">
-                                    <tr><th style="width: 46%;">Your Application Number Is </th><td>:</td><td><span id="registraionNumber">@draftAppl.ApplicationNumber</span></td></tr>
-                                    <tr><th style="width: 46%;">Your Processed Fee Is </th><td>:</td><td><span id="registraionNumber">@draftAppl.Fees</span></td></tr>
-                                </table>
-                            </div>
-                            <hr />
-
-                        </div>
-                        <div class="modal-footer">
-                            @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
-                        <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
-
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mChallan" data-dismiss="modal">Countiue For Reciept</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @*Modal Start*@
-            <div class="modal fade bd-example-modal-lg" id="mChallan" tabindex="-1" role="dialog" aria-labelledby="mChallan" data-backdrop="static" style="display:none;">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div style="display: flex;align-items: center;width: 90%;place-content: space-between;">
-                                <h3 class="modal-title" id="mChallan">E-CHALLAN</h3>
-                                <button class="btn btn-purple" onclick="printDiv('divchallan')"><i class="fa fa-print"></i> Print Challan</button>
-                            </div>
-                            <button type="button" class="close" id="closeTNC" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="Container" id="divchallan" style="border:2px solid black;padding: 0 23px;padding-bottom: 0px;">
-                                <div class="text-center" style="margin-top: 8px;font-size: 15px;font-weight: 600;line-height: 17px;">
-                                    <span>E-CHALLAN (Manual Payment)</span><br />
-                                    <span>Government Of Rajsthan</span><br />
-                                    <span>College Education Department</span>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;" />
-                                <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
-                                    <p style="font-size: 15px;color:black;font-weight: 500;">Valid Upto : <span>@currentDate</span></p>
-                                    <p style="font-size: 15px;color:black;font-weight: 500;">Remitters Copy</p>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div style="display: flex;align-items: center;place-content: space-between;margin-top: -12px;">
-                                    <p style="font-size: 15px;color:black;font-weight: 500;">GRN : <span>24033220</span></p>
-                                    <p style="font-size: 15px;color:black;font-weight: 500;">Date : <span>@currentDate</span></p>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div>
-                                    <table class="table table-borderless table-striped" style="margin-left: -20px;margin-top: -12px;">
-                                        <tr><th>Barcode : </th><td>{BarcodeHere}</td></tr>
-                                        <tr><th>Office Name : </th><td>Dy. Dir. COLLEGE EDUCATION JAIPUR</td></tr>
-                                        <tr><th>Location : </th><td>JAIPUR (SECTT.)</td></tr>
-                                        <tr><th>Year : </th><td>@currentDate To @validCurrentDate</td></tr>
-                                    </table>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div style="height: 10rem;">
-                                    <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
-                                        <thead>
-                                            <tr><th>Head (0202)</th><th>Amount &#8377;</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr><td>@draftAppl.CollegeName</td><td>@draftAppl.Fees</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div>
-                                    <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
-
-                                        <tr><th>Discount : </th><td>&#8377; 0</td></tr>
-                                        <tr><th>Total/Net Amount : </th><td>&#8377; @draftAppl.Fees<br />(One Lakh Rupee Only)</td></tr>
-
-                                    </table>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div>
-                                    <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
-                                        <thead>
-                                            <tr><th colspan="2" class="text-center">Payee Details</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>TIN/Actt. no/VehicleNo/TaxId/Lease No :</th>
-                                                <td>NA</td>
-                                            </tr>
-
-                                            <tr>
-                                                <th>PAN No :</th>
-                                                <td>NA</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Remitter Name :</th>
-                                                <td>College Name</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Address :</th>
-                                                <td>College Addess Jaipur , 000000</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Remarks :</th>
-                                                <td>NOC Fee</td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot style="border-top:1px solid black">
-                                            <tr><td colspan="2" class="text-center" style="padding: 2px;">FOR USE IN RECEIVING BANK</td></tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <hr style="border: 1px solid;width: 47.6rem;margin-left: -25px;margin-top: -10px;" />
-                                <div>
-                                    <table class="table table-borderless" style="margin-left: -20px;margin-top: -12px;width: 105%;">
-
-                                        <tr><th>Cheque/DD No : </th><td>00000</td></tr>
-                                        <tr><th>Bank CIN No : </th><td>NA</td></tr>
-                                        <tr><th>Bank : </th><td>SBI Anywhere</td></tr>
-
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        @*<div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CheckTermsAndCondition()">I Accept</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>*@
-                    </div>
-                </div>
-            </div>
-
-            @*Modal End*@
-
         </div>
     </div>
 </div>
 @section scripts {
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
-    @*<script src="~/Content/select2/js/select2.js"></script>*@
+    <script src="~/Content/select2/js/select2.js"></script>
 }
 <script type="text/javascript">
+    var appStatus = 0;
+    var appAction = 0;
     function Remarkdata(Id, formName) {
         debugger;
         $("#popassign").html($("#preloadcreatepopupright1").html());
@@ -478,6 +335,23 @@
                 GenerateArchtable(url);
             }, 1000);
             /* $('#divLoader').css('display', 'none');*/
+        });
+
+        $('.appAcctionType').click(function () {
+            $('#divRole').css('display', 'block');
+            $('#spnAppAction').html('');
+            appAction = $('input[name="appAcctionType"]:checked').val()
+
+            getRoleListToSendbackForward(appAction);
+        });
+
+        $('#txtComments').on('input',function () {
+            $('#spnAppComment').html('');
+        });
+
+        $('input[name="appStatus"]').click(function () {
+            $('#spnAppStaus').html('');
+            appStatus = $('input[name="appStatus"]:checked').val()
         });
     });
 
@@ -549,6 +423,54 @@
         return false;
     }
 
+    function AddTrackingData() {
+        var s = checkValidate()
+        if (s) {
+
+        var comments = $('#txtComments').val();
+
+        var Data = {
+            sApplNo: '@draftAppl.ApplicationNumber',
+            sNrtn: comments,
+            sAction: appAction,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/AddTrackingData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        showConfirmButton: true,
+                    });
+
+                    setTimeout(function () {
+                        location.href = GetglobalDomain() + '@Url.Action("InspactionApplicationList", "Admin")';
+                    }, 1500)
+
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        }
+        return false;
+    }
+
     function printDiv(divName) {
         alert(divName);
         //var printContents = document.getElementById(divName).innerHTML;
@@ -562,4 +484,71 @@
 
         document.body.innerHTML = originalContents;
     }
+
+    function checkValidate() {
+        var status = true;
+
+        var AppComment = $('#txtComments').val()
+
+        if (appStatus<=0) {
+            $('#spnAppStaus').html('');
+            $('#spnAppStaus').html('Please Select Status');
+
+            status = false;
+        }
+
+        if (AppComment.length <= 0) {
+            $('#spnAppComment').html('');
+            $('#spnAppComment').html('Please Enter Comments');
+
+            status = false;
+        }
+        if (appAction <= 0) {
+            $('#spnAppAction').html('');
+            $('#spnAppAction').html('Please Select Action');
+
+            status = false;
+        }
+        return status;
+    }
+
+    function getRoleListToSendbackForward(appType) {
+        //appAction = $('input[name="appAcctionType"]:checked').val()
+
+        var Data = {
+            MenuId: appType,
+            PartyId: '@partyID'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetUserSendbackForward",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+                var htmlString = `<option value="">Select Role</option>`;
+                var mainData = data.Data;
+                if (mainData != null && mainData.length > 0) {
+                    mainData.forEach(function (item) {
+                        htmlString += `<option value=${item.Id}>${item.Text}</option>`
+                    });
+                $('#ddlRole').html('');
+                $('#ddlRole').html(htmlString);
+                $('#ddlRole').select2();
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
 </script>

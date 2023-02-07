@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using static NewZapures_V2.Models.Common;
 using static NewZapures_V2.Models.Partial;
+using static NewZapures_V2.Models.TrusteeBO;
 
 namespace NewZapures_V2.Controllers
 {
@@ -31,7 +32,81 @@ namespace NewZapures_V2.Controllers
             //ViewBag.balance = Convert.ToDecimal(objResponse.BALANCE);
             return View();
         }
+        #region OLD NOC
+        public ActionResult OldNOCIndex()
+        {
+            var oldNOCData = ZapurseCommonlist.GetOldNOCData();
+            ViewBag.oldNOCDataList = oldNOCData;
+            return View();
+        }
+        public ActionResult OldNOC()
+        {
+            var collegeList = ZapurseCommonlist.GetColleges();
+            var sessionYearList = ZapurseCommonlist.GetSessionYears();
+
+            ViewBag.colleges = collegeList;
+            ViewBag.sessionYears = sessionYearList;
+            return View();
+        }
+
+        public JsonResult GetCourseForCollege(int clgID)
+        {
+            var collegeList = ZapurseCommonlist.GetCoursesForCollege(clgID);
+
+            return new JsonResult
+            {
+                Data = new { Data = collegeList, failure = true, msg = "success" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult saveNOCData(List<TrusteeBO.OldNOCData> oldNOCs)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(oldNOCs);
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddOldNOC");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Accept", "application/json");
+                IRestResponse response = client.Execute(request);
+                ResponseData objResponse = new ResponseData();
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+
+                    //TempData["isSaved"] = 1;
+                    //TempData["msg"] = " Details Saved...";
+                    //return RedirectToAction("Index", "LandBuildingInfo");
+                }
+                else
+                {
+                    //TempData["isSaved"] = 0;
+                    //TempData["msg"] = " Details Not Saved...";
+                    //return RedirectToAction("Index", "LandBuildingInfo");
+                }
+
+                return new JsonResult
+                {
+                    Data = new { StatusCode = objResponse.statusCode, Data = "", Failure = false, Message = objResponse.Message },
+                    ContentEncoding = System.Text.Encoding.UTF8,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
         #region Committee
+
         public ActionResult AdminApplicationPreview()
         {
             var recentApplicationList = ZapurseCommonlist.GetAdminApplication("");
@@ -39,7 +114,7 @@ namespace NewZapures_V2.Controllers
 
             return View();
         }
-        
+
         public ActionResult InspactionApplicationList()
         {
             var recentApplicationList = ZapurseCommonlist.GetAdminApplication("");
@@ -56,7 +131,7 @@ namespace NewZapures_V2.Controllers
 
             var trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
-            var AcadmicData = ZapurseCommonlist.GetAcdmcData();
+            var AcadmicData = ZapurseCommonlist.GetAcdmcData(applGUID);
             var subjectData = ZapurseCommonlist.GetSubjectList(applGUID);
 
             ViewBag.trusteeMember = trusteeMember;
@@ -70,15 +145,15 @@ namespace NewZapures_V2.Controllers
         {
             var userdetailsSession = (UserModelSession)Session["UserDetails"];
             var committeeList = new List<Dropdown>();
-            if (userdetailsSession!= null)
+            if (userdetailsSession != null)
             {
-                 committeeList = ZapurseCommonlist.getCommitteeList(deptID);
+                committeeList = ZapurseCommonlist.getCommitteeList(deptID);
 
-                if(userdetailsSession.iLocLvl==2)
+                if (userdetailsSession.iLocLvl == 2)
                 {
                     committeeList = committeeList.Where(wh => Convert.ToInt32(wh.ID1) == userdetailsSession.DistrictId).ToList();
                 }
-                if(userdetailsSession.iLocLvl==3)
+                if (userdetailsSession.iLocLvl == 3)
                 {
                     committeeList = committeeList.Where(wh => Convert.ToInt32(wh.PartyId) == userdetailsSession.CityId).ToList();
                 }
@@ -137,7 +212,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult SendMail(SendMailToCommittee mailToCommittee)
         {
             var json = JsonConvert.SerializeObject(mailToCommittee);

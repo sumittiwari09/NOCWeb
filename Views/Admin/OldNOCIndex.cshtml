@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Old NOC Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var oldNOCs = (List<NewZapures_V2.Models.TrusteeBO.OldNOCData>)ViewBag.oldNOCDataList;
+   
+}
+<link href="~/Content/JitendraCSS/OldNOC.css" rel="stylesheet" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+<style>
+    hr {
+        margin-bottom: 1rem !important;
+        border: 0.2px solid #ededed;
+        width: 90%;
+        background-color: red !important;
+    }
+
+    div .form-group > span {
+        color: red;
+        font-weight: 500;
+    }
+</style>
+
+<div class="noc-layouts">
+    <div class="title-heading" style="display: flex;align-items: center;place-content: space-between;">
+        Old NOC List
+        <a href="@Url.Action("OldNOC", "Admin")" class="theme-button-mockup" id="btnAdd">Add New</a>
+    </div>
+    <div class="card-body w-100 float-left">
+        <div class="noc-layouts-tbl mt-1">
+            <table class="table" id="tblNocData">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>College Name</th>
+                        <th>Course</th>
+                        <th>Type</th>
+                        <th>Session Year</th>
+                        <th>NOC No.</th>
+                        <th>NOC Received On</th>
+                        <th>NOC Expire Date</th>
+                        <th>NOC Document</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @*<tr>
+                            <td>1</td>
+                            <td>Raj College</td>
+                            <td>MCA</td>
+                            <td>TNOC/PNOC</td>
+                            <td>2021</td>
+                            <td>2023</td>
+                            <td>0123456789</td>
+                            <td>01/01/2021</td>
+                            <td>31/12/2023</td>
+                            <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                        </tr>*@
+                    <tr><td colspan="10" class="text-center">No Data Available</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Content/globalDomain.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+
+<script>
+    var NOCData = [];
+    var htmlString = '';
+    $(document).ready(function () {
+     var array = @Html.Raw(Json.Encode(oldNOCs));
+    for(var i = 0; i < array.length; i++) {
+        NOCData.push(array[i]);
+        }
+
+        BindTableData();
+    });
+
+
+    function BindTableData() {
+       
+        if (NOCData.length > 0) {
+            NOCData.forEach(function (item, index) {
+                htmlString += `<tr><td>${index + 1}</td><td>${item.collegeName}</td><td>${item.courseName}</td><td>${item.nocTypeName}</td><td>${item.sessionYear}</td><td>${item.sNOCNo}</td><td>${item.dtNOCRcvdOn}</td><td>${item.dtNOCExprOn}</td><td><a href="${item.NOCDocURL}" class="noc-upload-btn" download><i class="fas fa-download"></i></a></td><td>${item.sRemrk}</td></tr>`
+            });
+
+            $('#tblNocData tbody').html('');
+            $('#tblNocData tbody').html(htmlString);
+        }
+        else {
+            htmlString = `<tr><td colspan="10" class="text-center">No Data Available</td></tr>`;
+            $('#tblNocData tbody').html('');
+            $('#tblNocData tbody').html(htmlString);
+        }
+
+    }
+</script>

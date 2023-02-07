@@ -1,6 +1,6 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Land & Building Information";
+    ViewBag.Title = "Land Details";
     Layout = null;// "~/Views/Shared/_Layout.cshtml";
 
     //var university = ViewBag.universityCollection as List<Dropdown>;
@@ -111,7 +111,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header fsi">
-                <h4 class="mt-0 header-title float-left">Land & Building Information</h4>
+                <h4 class="mt-0 header-title float-left">Land Details</h4>
             </div>
             <div class="card-body">
 
@@ -171,7 +171,7 @@
 
                     <div class="col-lg-4">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Attach your converted Document</strong></label>
-                        <input type="file" class="form-control-file" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" autocomplete="off" />
+                        <input type="file" class="form-control-file" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
                         <input type="hidden" id="hdnConvertedDoc" />
                         <input type="hidden" id="hdnConvertedDocExten" />
                     </div>
@@ -199,18 +199,43 @@
                         <input type="text" class="form-control col-sm-12" id="txtLandArea" oninput="numberOnly(this.id)" autocomplete="off" />
                     </div>
                 </div>
+                
+                <div class="row col-lg-12 mt-3">
+
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Accure Type</strong></label>
+                       <div style="display:flex">
+                        <div class="form-group custom-control custom-radio col-sm-4">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_owned" value="owned">
+                            <label for="rbtn_owned" class="custom-control-label" style="width: max-content;">Owned</label>
+                        </div>
+                        
+                        <div class="form-group custom-control custom-radio col-sm-4">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_rented" value="rented">
+                            <label for="rbtn_rented" class="custom-control-label" style="width: max-content;">Rented</label>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px" id="lblAccureType"><strong>Upload<span id="spnAccureType" style="text-transform:capitalize"></span> Certificate</strong></label>
+                        <input type="file" class="form-control-file" id="fluIsowned_RentedCertificate" onchange="return encodeImageFileAsURL(this,'hdnIsowned_RentedCertificate','hdnIsowned_RentedCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                        <input type="hidden" id="hdnIsowned_RentedCertificate" />
+                        <input type="hidden" id="hdnIsowned_RentedCertificateExten" />
+                    </div>
+                </div>
 
                 <div class="row col-lg-12 mt-3">
                     <div class="col-lg-5">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Title Certificate</strong></label>
-                        <input type="file" class="form-control-file" id="flulandTitleCertificate" onchange="return encodeImageFileAsURL(this,'hdnlandTitleCertificate','hdnlandTitleCertificateExten')" autocomplete="off" />
+                        <input type="file" class="form-control-file" id="flulandTitleCertificate" onchange="return encodeImageFileAsURL(this,'hdnlandTitleCertificate','hdnlandTitleCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
                         <input type="hidden" id="hdnlandTitleCertificate" />
                         <input type="hidden" id="hdnlandTitleCertificateExten" />
                     </div>
 
                     <div class="col-lg-5">
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>Land Document</strong></label>
-                        <input type="file" class="form-control-file" id="flulandDocument" onchange="return encodeImageFileAsURL(this,'hdnlandDocument','hdnlandDocumentExten')" autocomplete="off" />
+                        <input type="file" class="form-control-file" id="flulandDocument" onchange="return encodeImageFileAsURL(this,'hdnlandDocument','hdnlandDocumentExten')"  accept=".png,.jpg,.jpeg,.gif,.pdf"  autocomplete="off" />
                         <input type="hidden" id="hdnlandDocument" />
                         <input type="hidden" id="hdnlandDocumentExten" />
                     </div>
@@ -249,7 +274,7 @@
                         <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>&nbsp;</strong></label>
                         <button class="btn" type="button" id="btnSave" style="color: black!important;background: #ffbf68;background: -webkit-linear-gradient(to left, #b91d73, #f953c6);background: linear-gradient(to left, #ffbf62, #ffbf68);border: black;"><i class="fa fa-save"></i> Save Details</button>
                     </div>
-                    <div class="col-lg-12" style="overflow-x: scroll;">
+                    <div class="col-lg-12 mt-3" style="overflow-x: scroll;">
                         <table class="table table-borderless" id="tblLandInfo" style="width: max-content;">
                             <thead>
                                 <tr>
@@ -261,6 +286,7 @@
                                     <th>Order Date</th>
                                     <th>Land Type</th>
                                     <th>Khasara Number</th>
+                                    <th>Is Owned/Rented</th>
                                     <th>Land Area</th>
                                     <th>Total Area</th>
                                     <th>Converted Doc</th>
@@ -296,7 +322,7 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="13" class="text-center"></td>
+                                            <td colspan="14" class="text-center"></td>
                                         </tr>
                                     }
                                 }
@@ -362,15 +388,15 @@
                 var khasaraNo = $('#txtkhasaraNo').val().trim();
                 var landAreaUnit = $('#txtLandArea').val().trim();
                 var totalArea = $('#txtTotalArea').val().trim();
+                var lndAccureType = $('input[name="lndAccureType"]:checked').val();
 
                 //LandConverted
                 var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
                 var convertedDocExte = ($('#hdnConvertedDocExten').val().split('.')[1] === undefined || $('#hdnConvertedDocExten').val().split('.')[1] === null) ? "" : "."+$('#hdnConvertedDocExten').val().split('.')[1];
                 var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
                 if (convertedDocContent.length > 0) {
-
-                convertedDocContent = convertedDocContent.split(':')[1];
-                convertedDocContent = convertedDocContent.split(';')[0];
+                    convertedDocContent = convertedDocContent.split(':')[1];
+                    convertedDocContent = convertedDocContent.split(';')[0];
                 }
                 var convertedDocFullURL = $('#hdnConvertedDoc').val();
 
@@ -379,9 +405,8 @@
                 var landTitleDocExte = ($('#hdnlandTitleCertificateExten').val().split('.')[1] === undefined || $('#hdnlandTitleCertificateExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandTitleCertificateExten').val().split('.')[1];
                 var landTitleDocContent = $('#hdnlandTitleCertificate').val().split(',')[0];
                 if (landTitleDocContent.length > 0) {
-
-             landTitleDocContent = landTitleDocContent.split(':')[1];
-             landTitleDocContent = landTitleDocContent.split(';')[0];
+                    landTitleDocContent = landTitleDocContent.split(':')[1];
+                    landTitleDocContent = landTitleDocContent.split(';')[0];
                 }
                 var landTitleDocFullURL = $('#hdnlandTitleCertificate').val();
 
@@ -390,11 +415,20 @@
                 var landDocExte = ($('#hdnlandDocumentExten').val().split('.')[1] === undefined || $('#hdnlandDocumentExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandDocumentExten').val().split('.')[1];
                 var landDocContent = $('#hdnlandDocument').val().split(',')[0];
                 if (landDocContent.length > 0) {
-
-             landDocContent = landTitleDocContent.split(':')[1];
-             landDocContent = landTitleDocContent.split(';')[0];
+                    landDocContent = landTitleDocContent.split(':')[1];
+                    landDocContent = landTitleDocContent.split(';')[0];
                 }
                 var landDocFullURL = $('#hdnlandDocument').val();
+
+                //Land Accure Document
+                var landAccureDoc = $('#hdnIsowned_RentedCertificate').val().split(',')[1];
+                var landAccureDocExte = ($('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === undefined || $('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === null) ? "" : "." + $('#hdnIsowned_RentedCertificateExten').val().split('.')[1];
+                var landAccureDocContent = $('#hdnIsowned_RentedCertificate').val().split(',')[0];
+                if (landAccureDocContent.length > 0) {
+                    landAccureDocContent = landAccureDoc.split(':')[1];
+                    landAccureDocContent = landAccureDoc.split(';')[0];
+                }
+                var landAccureDocFullURL = $('#hdnIsowned_RentedCertificate').val();
 
                 totalArea = (totalArea.length <= 0) ? 0 : parseFloat(totalArea);
 
@@ -435,6 +469,14 @@
                     UploadLandDocContent: landDocContent,
                     landDocURL: (landDocFullURL.length <= 0) ? "#" : landDocFullURL,
 
+
+                    UploadLandAccureTypeDoc: (landAccureDoc === undefined || landAccureDoc === null) ? "" : landAccureDoc,
+                    UploadLandAccureTypeDocExtension: landAccureDocExte,
+                    UploadLandAccureTypeDocContent: landAccureDocContent,
+                    landAccureDocURL: (landAccureDocFullURL.length <= 0) ? "#" : landAccureDocFullURL,
+
+
+                    slndAccureTyp: lndAccureType
                 });
 
                 console.table(landInfoData);
@@ -461,6 +503,7 @@
                                             <td>${item.dtOrdrDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
+                                            <td>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
@@ -473,6 +516,10 @@
                     $("#tblLandInfo tbody").html('');
                     $("#tblLandInfo tbody").append(htmlString);
                     ClearAllData();
+
+                    $('#fluIsowned_RentedCertificate').attr('disabled','true')
+                    $('#rbtn_rented').attr('disabled','true')
+                    $('#rbtn_owned').attr('disabled','true')
                 }
 
             }
@@ -480,6 +527,12 @@
 
         $('#btnSave').click(function () {
             saveDetails();
+        });
+
+        $('input[name="lndAccureType"]').click(function () {
+            var accureType = $(this).val();
+            $('#spnAccureType').html('');
+            $('#spnAccureType').html(' ' + accureType);
         });
 
 
@@ -532,6 +585,7 @@
                                             <td>${item.dtOrdrDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
+                                            <td>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
@@ -629,18 +683,54 @@
         $('#flulandTitleCertificate').val('');
         $('#fluConvertedDoc').val('');
 
+
+        //$('#fluIsowned_RentedCertificate').val('');
+
+        //$('input[name="lndAccureType"]').removeAttr('checked');
+        //$('input[name="lndAccureType"]').change();
+        //$('#hdnIsowned_RentedCertificate').val('');
+        //$('#hdnIsowned_RentedCertificateExten').val('');
+
     }
 
     function encodeImageFileAsURL(element,hdnId,hdnExtnID) {
         var elementID = element.id;
         var file = element.files[0];
-        console.log(file.name);
+        var filesize = element.files[0].size;
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+        var i = 0; while (filesize > 900) { filesize /= 1024; i++; }
+        var exactSize = (Math.round(filesize * 100) / 100) + ' ' + fSExt[i];
+        console.log('FILE SIZE = ', exactSize);
+        //alert(exactSize);
+       /* console.log(file.name);*/
+
+
+        var sizeCheck = exactSize.split(' ')[0];
+        var sizeCheckExt = exactSize.split(' ')[1];
+
+        //console.log(sizeCheck);
+        //console.log(sizeCheckExt);
+
         //console.log(elementID);
         var reader = new FileReader();
         reader.onloadend = function () {
             imagebase64 = reader.result;
+            if (sizeCheck > 1 && sizeCheckExt=="MB") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'File size must be lesser then 1 MB...!',
+                    html: `<p>your selected file size : ${sizeCheck} ${sizeCheckExt}</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+            }
+            else {
+
             $('#' + hdnId).val(imagebase64);
             $('#' + hdnExtnID).val(file.name);
+            }
             //console.log(imagebase64)
             //console.log(hdnId)
         }
@@ -658,6 +748,9 @@
         var orderDate = $('#txtOrderDate').val().trim();
         var khasaraNo = $('#txtkhasaraNo').val().trim();
         var landAreaUnit = $('#txtLandArea').val().trim();
+        var lndAccureType = $('input[name="lndAccureType"]:checked').val();
+        var lndAccureImg = $('#hdnIsowned_RentedCertificate').val();
+        var lndAccureTitle = $('#lblAccureType').text();
         if (landArea == "Select Area") {
             Swal.fire({
                 position: 'center',
@@ -783,6 +876,29 @@
             status = false;
         }
 
+        else if (typeof(lndAccureType) == "undefined") {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Please Select Accure Type...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (lndAccureImg.length<=0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Please ${lndAccureTitle}...!`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+
         if (landInfoData.length > 0) {
           /*  alert(landInfoData.length);*/
             debugger;
@@ -853,6 +969,7 @@
                                             <td>${item.dtOrdrDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
+                                            <td>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>

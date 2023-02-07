@@ -83,6 +83,7 @@ namespace NewZapures_V2.Controllers
             if (response.StatusCode.ToString() == "OK")
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if(objResponse.Data!= null)
                 feeMasters = JsonConvert.DeserializeObject<List<FeeMaster>>(objResponse.Data.ToString());
             }
             return feeMasters;

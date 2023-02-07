@@ -35,7 +35,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.SubjectDataList = subjects;
 
             var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
-            var AcadmicData = ZapurseCommonlist.GetAcdmcData();
+            var AcadmicData = ZapurseCommonlist.GetAcdmcData(applGUID);
             ViewBag.AllData = AcadmicData;
 
             ViewBag.applGUID = applGUID;

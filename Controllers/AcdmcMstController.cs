@@ -25,14 +25,15 @@ namespace NewZapures_V2.Controllers
 
                 var ddlYear = GetYear();
                 var result = GetResult();
-                var AllData = GetAcdmcData();
+                var AllData = GetAcdmcData(guid);
+                var ddlCourse = GetCourseData(userdetailsSession.DepartmentId);
                 ViewBag.FromYear = ddlYear;
                 ViewBag.ToYear = ddlYear;
                 ViewBag.Result = result;
+                ViewBag.Course = ddlCourse;
                 ViewBag.AllData = AllData;
+                ViewBag.GUIId = guid;
             }
-
-
             return View();
         }
 
@@ -110,10 +111,10 @@ namespace NewZapures_V2.Controllers
         }
 
 
-        public List<AcdmcTableData> GetAcdmcData()
+        public List<AcdmcTableData> GetAcdmcData(string GUIID)
         {
 
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData");
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetAcdmcData?GUIID="+GUIID);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -132,5 +133,29 @@ namespace NewZapures_V2.Controllers
             }
             return data;
         }
+
+        public List<Dropdown> GetCourseData(int departmentID)
+        {
+            var data = ZapurseCommonlist.GetCourseForDept(departmentID);
+            //var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetCourseData");
+            //var request = new RestRequest(Method.POST);
+            //request.AddHeader("cache-control", "no-cache");
+            ////request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            //request.AddParameter("application/json", "", ParameterType.RequestBody);
+            //request.AddHeader("Content-Type", "application/json");
+            //request.AddHeader("Accept", "application/json");
+            //IRestResponse response = client.Execute(request);
+            //List<Dropdown> data = new List<Dropdown>();
+            //if (response.StatusCode.ToString() == "OK")
+            //{
+            //    objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            //    if (objResponse.Data != null)
+            //    {
+            //        data = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+            //    }
+            //}
+            return data;
+        }
+
     }
 }
