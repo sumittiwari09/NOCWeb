@@ -159,6 +159,7 @@
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
     <Compile Include="Models\HomePage.cs" />
+    <Compile Include="Models\TrackingData.cs" />
     <Compile Include="Models\InspectionComments.cs" />
     <Compile Include="Models\UploadReceipt.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
@@ -2347,6 +2348,7 @@
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.js" />
     <Content Include="Content\DashboardCss\vendor\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\globalDomain.js" />
+    <Content Include="Content\JitendraCSS\OldNOC.css" />
     <Content Include="Content\JitendraCSS\newCustom.css" />
     <Content Include="Content\jquery-confirm.css" />
     <Content Include="Content\jquery\jquery-confirm.js" />
@@ -3579,6 +3581,9 @@
     <Content Include="Views\FormView\DetailsList.cshtml" />
     <Content Include="Views\Master\AddComments.cshtml" />
     <Content Include="Views\Master\CommentTable.cshtml" />
+    <Content Include="Views\Admin\OldNOC.cshtml" />
+    <Content Include="Views\Admin\OldNOCIndex.cshtml" />
+    <Content Include="Views\Trustee\ApplyNOCApplicationNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
